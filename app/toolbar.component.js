@@ -9,19 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var editor_component_1 = require("./editor.component");
-var AppComponent = (function () {
-    function AppComponent() {
+var ToolbarComponent = (function () {
+    function ToolbarComponent() {
     }
-    AppComponent = __decorate([
+    ToolbarComponent = __decorate([
         core_1.Component({
-            selector: 'clowdflows-app',
-            templateUrl: 'app/app.component.html',
-            directives: [editor_component_1.EditorComponent]
+            selector: 'toolbar',
+            templateUrl: 'app/toolbar.component.html',
+            styleUrls: ['app/toolbar.component.css'],
+            directives: []
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], ToolbarComponent);
+    return ToolbarComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.ToolbarComponent = ToolbarComponent;
+//# sourceMappingURL=toolbar.component.js.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"widget-tree.component.js","sourceRoot":"","sources":["widget-tree.component.ts"],"names":[],"mappings":";;;;;;;;;;AAAA,qBAAwB,eAAe,CAAC,CAAA;AAQxC;IAAA;IAAmC,CAAC;IANpC;QAAC,gBAAS,CAAC;YACP,QAAQ,EAAE,aAAa;YACvB,WAAW,EAAE,gCAAgC;YAC7C,SAAS,EAAE,CAAC,+BAA+B,CAAC;YAC5C,UAAU,EAAE,EAAE;SACjB,CAAC;;2BAAA;IACiC,0BAAC;AAAD,CAAC,AAApC,IAAoC;AAAvB,2BAAmB,sBAAI,CAAA"}

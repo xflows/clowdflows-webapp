@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {EditorComponent} from "./editor.component";
+
 @Component({
-  selector: 'my-app',
-  template: '<h1>My SECOND Angular 2 App</h1>'
+  selector: 'clowdflows-app',
+  templateUrl: 'app/app.component.html',
+  directives: [EditorComponent]
 })
 export class AppComponent { }

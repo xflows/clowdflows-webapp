@@ -1,0 +1,22 @@
+#widget-canvas {
+  position: absolute;
+  top: 97px;
+  left: 300px;
+  right: 0px;
+  bottom: 0px;
+}
+#widget-canvas #tabs {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  list-style: none;
+  padding-left: 0px;
+  border-bottom: 1px solid #231f20;
+}
+#widget-canvas #tabs .tab {
+  float: left;
+  min-width: 200px;
+  background-color: #f6a828;
+  color: white;
+  border-right: 1px solid #231f20;
+}

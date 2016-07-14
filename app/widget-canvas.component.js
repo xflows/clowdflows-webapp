@@ -9,19 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var editor_component_1 = require("./editor.component");
-var AppComponent = (function () {
-    function AppComponent() {
+var WidgetCanvasComponent = (function () {
+    function WidgetCanvasComponent() {
     }
-    AppComponent = __decorate([
+    WidgetCanvasComponent = __decorate([
         core_1.Component({
-            selector: 'clowdflows-app',
-            templateUrl: 'app/app.component.html',
-            directives: [editor_component_1.EditorComponent]
+            selector: 'widget-canvas',
+            templateUrl: 'app/widget-canvas.component.html',
+            styleUrls: ['app/widget-canvas.component.css'],
+            directives: []
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], WidgetCanvasComponent);
+    return WidgetCanvasComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.WidgetCanvasComponent = WidgetCanvasComponent;
+//# sourceMappingURL=widget-canvas.component.js.map

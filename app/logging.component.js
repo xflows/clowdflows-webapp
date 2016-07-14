@@ -9,19 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var editor_component_1 = require("./editor.component");
-var AppComponent = (function () {
-    function AppComponent() {
+var LoggingComponent = (function () {
+    function LoggingComponent() {
     }
-    AppComponent = __decorate([
+    LoggingComponent = __decorate([
         core_1.Component({
-            selector: 'clowdflows-app',
-            templateUrl: 'app/app.component.html',
-            directives: [editor_component_1.EditorComponent]
+            selector: 'logging',
+            templateUrl: 'app/logging.component.html',
+            directives: []
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], LoggingComponent);
+    return LoggingComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.LoggingComponent = LoggingComponent;
+//# sourceMappingURL=logging.component.js.map

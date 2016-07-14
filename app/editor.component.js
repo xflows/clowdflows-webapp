@@ -9,19 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var editor_component_1 = require("./editor.component");
-var AppComponent = (function () {
-    function AppComponent() {
+var toolbar_component_1 = require("./toolbar.component");
+var widget_tree_component_1 = require("./widget-tree.component");
+var widget_canvas_component_1 = require("./widget-canvas.component");
+var logging_component_1 = require("./logging.component");
+var EditorComponent = (function () {
+    function EditorComponent() {
     }
-    AppComponent = __decorate([
+    EditorComponent = __decorate([
         core_1.Component({
-            selector: 'clowdflows-app',
-            templateUrl: 'app/app.component.html',
-            directives: [editor_component_1.EditorComponent]
+            selector: 'editor',
+            templateUrl: 'app/editor.component.html',
+            directives: [toolbar_component_1.ToolbarComponent, widget_tree_component_1.WidgetTreeComponent, widget_canvas_component_1.WidgetCanvasComponent, logging_component_1.LoggingComponent]
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], EditorComponent);
+    return EditorComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.EditorComponent = EditorComponent;
+//# sourceMappingURL=editor.component.js.map
