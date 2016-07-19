@@ -8,22 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var editor_component_1 = require("./editor.component");
-var clowdflows_service_1 = require('./clowdflows.service');
-var AppComponent = (function () {
-    function AppComponent() {
+var core_1 = require("@angular/core");
+var ConfigService = (function () {
+    function ConfigService() {
+        this.api_base_url = 'http://127.0.0.1:8001/api/';
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'clowdflows-app',
-            templateUrl: 'app/app.component.html',
-            directives: [editor_component_1.EditorComponent],
-            providers: [clowdflows_service_1.ClowdFlowsService]
-        }), 
+    ConfigService = __decorate([
+        core_1.Injectable(), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], ConfigService);
+    return ConfigService;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.ConfigService = ConfigService;
+;
+//# sourceMappingURL=config.service.js.map
