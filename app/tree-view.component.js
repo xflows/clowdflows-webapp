@@ -8,18 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var ConfigService = (function () {
-    function ConfigService() {
-        this.api_base_url = 'http://127.0.0.1:8001/api/';
-        this.test_token = '03f8dcf3d938b4388a1fc331328a49e6ff66fd36';
+var core_1 = require('@angular/core');
+var TreeViewComponent = (function () {
+    function TreeViewComponent() {
     }
-    ConfigService = __decorate([
-        core_1.Injectable(), 
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Array)
+    ], TreeViewComponent.prototype, "categories", void 0);
+    TreeViewComponent = __decorate([
+        core_1.Component({
+            selector: 'tree-view',
+            templateUrl: 'app/tree-view.component.html',
+            styleUrls: ['app/tree-view.component.css'],
+            directives: [TreeViewComponent]
+        }), 
         __metadata('design:paramtypes', [])
-    ], ConfigService);
-    return ConfigService;
+    ], TreeViewComponent);
+    return TreeViewComponent;
 }());
-exports.ConfigService = ConfigService;
-;
-//# sourceMappingURL=config.service.js.map
+exports.TreeViewComponent = TreeViewComponent;
+//# sourceMappingURL=tree-view.component.js.map

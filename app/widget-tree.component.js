@@ -10,10 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var clowdflows_service_1 = require('./clowdflows.service');
+var tree_view_component_1 = require("./tree-view.component");
 var WidgetTreeComponent = (function () {
     function WidgetTreeComponent(clowdflowsService) {
         this.clowdflowsService = clowdflowsService;
-        this.widgetTree = null;
     }
     WidgetTreeComponent.prototype.ngOnInit = function () {
         this.getWidgetLibrary();
@@ -27,7 +27,7 @@ var WidgetTreeComponent = (function () {
             selector: 'widget-tree',
             templateUrl: 'app/widget-tree.component.html',
             styleUrls: ['app/widget-tree.component.css'],
-            directives: []
+            directives: [tree_view_component_1.TreeViewComponent]
         }), 
         __metadata('design:paramtypes', [clowdflows_service_1.ClowdFlowsService])
     ], WidgetTreeComponent);

@@ -4,20 +4,8 @@
             <input type="text" class="form-control input-sm" placeholder="Widget search">
         </div>
     </form>
-    <ul id="widgets-tree">
-        <li>
-            <i class="fa fa-folder-open-o"></i> Local services
-            <ul>
-                <li>
-                    <i class="fa fa-folder-open-o"></i> Strings
-                    <ul>
-                        <li>Create string</li>
-                        <li>Display string</li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        {{ widgetTree }}
-    </ul>
+    <div id="widget-tree">
+        <tree-view [categories]="widgetTree"></tree-view>
+    </div>
     <a class="btn btn-info btn-sm">Import webservice</a>
 </div>

@@ -18,9 +18,17 @@ var ClowdFlowsService = (function () {
         this.config = config;
         this.widgetLibraryUrl = 'widget-library/';
     }
+    ClowdFlowsService.prototype.getAuthTokenHeaders = function () {
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        var authToken = this.config.test_token;
+        headers.append('Authorization', "Token " + authToken);
+        return headers;
+    };
     ClowdFlowsService.prototype.getWidgetLibrary = function () {
-        console.log(this.config.api_base_url + this.widgetLibraryUrl);
-        return this.http.get(this.config.api_base_url + this.widgetLibraryUrl)
+        var headers = this.getAuthTokenHeaders();
+        return this.http
+            .get(this.config.api_base_url + this.widgetLibraryUrl, { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(this.handleError);

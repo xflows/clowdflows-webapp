@@ -8,13 +8,6 @@
   overflow: auto;
   border-right: 1px solid #231f20;
 }
-#widgets #widgets-tree {
-  padding-left: 0px;
-}
-#widgets #widgets-tree > li {
-  padding-left: 5px;
-}
-#widgets ul {
-  list-style: none;
-  padding-left: 20px;
+#widgets #widget-tree {
+  margin-left: -20px;
 }
