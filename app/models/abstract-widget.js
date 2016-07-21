@@ -1,6 +1,7 @@
 "use strict";
 var AbstractWidget = (function () {
     function AbstractWidget() {
+        this.hidden = false;
     }
     return AbstractWidget;
 }());

@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 import {ConfigService} from "./config.service";
-import {Category} from "./models/category";
+import {Category} from "../models/category";
+import {User} from "../models/user";
 
 @Injectable()
 export class ClowdFlowsService {
@@ -26,8 +27,16 @@ export class ClowdFlowsService {
         return this.http
             .get(this.config.api_base_url + this.widgetLibraryUrl, {headers})
             .toPromise()
-            .then(response => <Category[]> response.json())
+            .then(response => ClowdFlowsService.parseWidgetLibrary(response))
             .catch(this.handleError);
+    }
+
+    static parseWidgetLibrary(response):Category[] {
+        let widgetTree:Category[] = [];
+        for (let cat of <Category[]> response.json()) {
+            widgetTree.push(new Category(cat.name, cat.user, cat.order, cat.children, cat.widgets));
+        }
+        return widgetTree;
     }
 
     private handleError(error:any) {

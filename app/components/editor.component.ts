@@ -6,7 +6,7 @@ import {LoggingComponent} from "./logging.component";
 
 @Component({
     selector: 'editor',
-    templateUrl: 'app/editor.component.html',
+    templateUrl: 'app/components/editor.component.html',
     directives: [ToolbarComponent,WidgetTreeComponent,WidgetCanvasComponent,LoggingComponent]
 })
 export class EditorComponent { }

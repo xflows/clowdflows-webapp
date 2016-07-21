@@ -9,22 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var toolbar_component_1 = require("./toolbar.component");
-var widget_tree_component_1 = require("./widget-tree.component");
-var widget_canvas_component_1 = require("./widget-canvas.component");
-var logging_component_1 = require("./logging.component");
-var EditorComponent = (function () {
-    function EditorComponent() {
+var ToolbarComponent = (function () {
+    function ToolbarComponent() {
     }
-    EditorComponent = __decorate([
+    ToolbarComponent = __decorate([
         core_1.Component({
-            selector: 'editor',
-            templateUrl: 'app/editor.component.html',
-            directives: [toolbar_component_1.ToolbarComponent, widget_tree_component_1.WidgetTreeComponent, widget_canvas_component_1.WidgetCanvasComponent, logging_component_1.LoggingComponent]
+            selector: 'toolbar',
+            templateUrl: 'app/components/toolbar.component.html',
+            styleUrls: ['app/components/toolbar.component.css'],
+            directives: []
         }), 
         __metadata('design:paramtypes', [])
-    ], EditorComponent);
-    return EditorComponent;
+    ], ToolbarComponent);
+    return ToolbarComponent;
 }());
-exports.EditorComponent = EditorComponent;
-//# sourceMappingURL=editor.component.js.map
+exports.ToolbarComponent = ToolbarComponent;
+//# sourceMappingURL=toolbar.component.js.map

@@ -1,4 +1,4 @@
 
 export class User {
-    username: String;
+    constructor(public username: String){};
 }

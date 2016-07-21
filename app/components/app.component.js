@@ -9,18 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var LoggingComponent = (function () {
-    function LoggingComponent() {
+var editor_component_1 = require("./editor.component");
+var clowdflows_service_1 = require('../services/clowdflows.service');
+var AppComponent = (function () {
+    function AppComponent() {
     }
-    LoggingComponent = __decorate([
+    AppComponent = __decorate([
         core_1.Component({
-            selector: 'logging',
-            templateUrl: 'app/logging.component.html',
-            directives: []
+            selector: 'clowdflows-app',
+            templateUrl: 'app/components/app.component.html',
+            directives: [editor_component_1.EditorComponent],
+            providers: [clowdflows_service_1.ClowdFlowsService]
         }), 
         __metadata('design:paramtypes', [])
-    ], LoggingComponent);
-    return LoggingComponent;
+    ], AppComponent);
+    return AppComponent;
 }());
-exports.LoggingComponent = LoggingComponent;
-//# sourceMappingURL=logging.component.js.map
+exports.AppComponent = AppComponent;
+//# sourceMappingURL=app.component.js.map

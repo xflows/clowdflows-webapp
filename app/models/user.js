@@ -1,7 +1,9 @@
 "use strict";
 var User = (function () {
-    function User() {
+    function User(username) {
+        this.username = username;
     }
+    ;
     return User;
 }());
 exports.User = User;

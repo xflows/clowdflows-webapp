@@ -1,0 +1,17 @@
+<ul>
+    <li *ngFor="let category of categories">
+        <span class="category" (click)="category.toggleCollapsed()" [class.hidden]="category.hidden">
+            <i class="fa fa-folder-open-o"></i> {{category.name}}
+        </span>
+        <div [class.hidden]="category.collapsed">
+            <tree-view [categories]="category.children"></tree-view>
+            <ul>
+                <li *ngFor="let widget of category.widgets">
+                <span class="widget" [class.hidden]="widget.hidden">
+                    {{widget.name}}
+                </span>
+                </li>
+            </ul>
+        </div>
+    </li>
+</ul>

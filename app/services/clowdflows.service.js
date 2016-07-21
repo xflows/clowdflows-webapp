@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var http_1 = require("@angular/http");
 require('rxjs/add/operator/toPromise');
 var config_service_1 = require("./config.service");
+var category_1 = require("../models/category");
 var ClowdFlowsService = (function () {
     function ClowdFlowsService(http, config) {
         this.http = http;
@@ -30,8 +31,16 @@ var ClowdFlowsService = (function () {
         return this.http
             .get(this.config.api_base_url + this.widgetLibraryUrl, { headers: headers })
             .toPromise()
-            .then(function (response) { return response.json(); })
+            .then(function (response) { return ClowdFlowsService.parseWidgetLibrary(response); })
             .catch(this.handleError);
+    };
+    ClowdFlowsService.parseWidgetLibrary = function (response) {
+        var widgetTree = [];
+        for (var _i = 0, _a = response.json(); _i < _a.length; _i++) {
+            var cat = _a[_i];
+            widgetTree.push(new category_1.Category(cat.name, cat.user, cat.order, cat.children, cat.widgets));
+        }
+        return widgetTree;
     };
     ClowdFlowsService.prototype.handleError = function (error) {
         console.error('An error occurred', error);

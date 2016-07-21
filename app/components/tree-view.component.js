@@ -19,8 +19,8 @@ var TreeViewComponent = (function () {
     TreeViewComponent = __decorate([
         core_1.Component({
             selector: 'tree-view',
-            templateUrl: 'app/tree-view.component.html',
-            styleUrls: ['app/tree-view.component.css'],
+            templateUrl: 'app/components/tree-view.component.html',
+            styleUrls: ['app/components/tree-view.component.css'],
             directives: [TreeViewComponent]
         }), 
         __metadata('design:paramtypes', [])

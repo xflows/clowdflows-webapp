@@ -1,14 +1,14 @@
 import {AbstractOption} from "./abstract-option";
 export class AbstractInput {
-    name:String;
-    short_name:String;
-    description:String;
-    variable:String;
+    name:string;
+    short_name:string;
+    description:string;
+    variable:string;
     required:boolean;
     parameter:boolean;
     multi:boolean;
-    default:String;
-    parameter_type:String;
-    order:Number;
+    default:string;
+    parameter_type:string;
+    order:number;
     options: AbstractOption[];
 }

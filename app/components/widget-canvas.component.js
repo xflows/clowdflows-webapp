@@ -9,19 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var ToolbarComponent = (function () {
-    function ToolbarComponent() {
+var WidgetCanvasComponent = (function () {
+    function WidgetCanvasComponent() {
     }
-    ToolbarComponent = __decorate([
+    WidgetCanvasComponent = __decorate([
         core_1.Component({
-            selector: 'toolbar',
-            templateUrl: 'app/toolbar.component.html',
-            styleUrls: ['app/toolbar.component.css'],
+            selector: 'widget-canvas',
+            templateUrl: 'app/components/widget-canvas.component.html',
+            styleUrls: ['app/components/widget-canvas.component.css'],
             directives: []
         }), 
         __metadata('design:paramtypes', [])
-    ], ToolbarComponent);
-    return ToolbarComponent;
+    ], WidgetCanvasComponent);
+    return WidgetCanvasComponent;
 }());
-exports.ToolbarComponent = ToolbarComponent;
-//# sourceMappingURL=toolbar.component.js.map
+exports.WidgetCanvasComponent = WidgetCanvasComponent;
+//# sourceMappingURL=widget-canvas.component.js.map
