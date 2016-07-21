@@ -66,6 +66,9 @@ export class WidgetTreeComponent implements OnInit {
             for (let childCategory of category.children) {
                 collapse(childCategory);
             }
+            for (let widget of category.widgets) {
+                widget.hidden = false;
+            }
         }
 
         for (let category of this.widgetTree) {

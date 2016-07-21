@@ -64,6 +64,10 @@ var WidgetTreeComponent = (function () {
                 var childCategory = _a[_i];
                 collapse(childCategory);
             }
+            for (var _b = 0, _c = category.widgets; _b < _c.length; _b++) {
+                var widget = _c[_b];
+                widget.hidden = false;
+            }
         }
         for (var _i = 0, _a = this.widgetTree; _i < _a.length; _i++) {
             var category = _a[_i];
