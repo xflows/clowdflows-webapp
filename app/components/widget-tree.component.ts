@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ClowdFlowsService} from '../services/clowdflows.service';
 import {Category} from "../models/category";
 import {TreeViewComponent} from "./tree-view.component";
+import {ConfigService} from "../services/config.service";
 
 @Component({
     selector: 'widget-tree',
@@ -14,7 +15,8 @@ export class WidgetTreeComponent implements OnInit {
     widgetTree:Category[];
     filterString:string;
 
-    constructor(private clowdflowsService:ClowdFlowsService) {
+    constructor(private clowdflowsService:ClowdFlowsService,
+                private config:ConfigService) {
     }
 
     ngOnInit() {

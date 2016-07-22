@@ -9,9 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var config_service_1 = require("../services/config.service");
 var TreeViewComponent = (function () {
-    function TreeViewComponent() {
+    function TreeViewComponent(config) {
+        this.config = config;
     }
+    TreeViewComponent.prototype.iconUrl = function (widget) {
+        var url = '/app/images/question-mark.png';
+        if (widget.static_image) {
+            url = this.config.base_url + "/static/" + widget.cfpackage + "/icons/treeview/" + widget.static_image;
+        }
+        return url;
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
@@ -23,7 +32,7 @@ var TreeViewComponent = (function () {
             styleUrls: ['app/components/tree-view.component.css'],
             directives: [TreeViewComponent]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [config_service_1.ConfigService])
     ], TreeViewComponent);
     return TreeViewComponent;
 }());

@@ -8,4 +8,9 @@ ul > li {
 .widget,
 .category {
   cursor: pointer;
+  line-height: 16px;
+}
+.widget-tree-icon {
+  height: 16px;
+  width: auto;
 }

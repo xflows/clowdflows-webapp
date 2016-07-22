@@ -11,8 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var ConfigService = (function () {
     function ConfigService() {
-        this.api_base_url = 'http://127.0.0.1:8001/api/';
-        this.test_token = '03f8dcf3d938b4388a1fc331328a49e6ff66fd36';
+        this.base_url = 'http://127.0.0.1:8000';
+        this.api_base_url = this.base_url + '/api/';
+        this.test_token = '655454c37a7165af91880d98b8253e9416126a17';
     }
     ConfigService = __decorate([
         core_1.Injectable(), 

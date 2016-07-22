@@ -8,7 +8,7 @@
             <ul>
                 <li *ngFor="let widget of category.widgets">
                 <span class="widget" [class.hidden]="widget.hidden">
-                    {{widget.name}}
+                    <img class="widget-tree-icon" src="{{ iconUrl(widget) }}"/> {{widget.name}}
                 </span>
                 </li>
             </ul>
