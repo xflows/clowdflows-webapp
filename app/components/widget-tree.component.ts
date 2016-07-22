@@ -28,12 +28,12 @@ export class WidgetTreeComponent implements OnInit {
     filterTree() {
         function applyFilter(category:Category, filterString:string) {
             let hide = true;
-
-            if (category.name.indexOf(filterString) != -1) {
+            let filterRegEx = new RegExp(filterString, 'i');
+            if (category.name.match(filterRegEx)) {
                 hide = false;
             }
             for (let widget of category.widgets) {
-                if (widget.name.indexOf(filterString) != -1) {
+                if (widget.name.match(filterRegEx)) {
                     hide = false;
                     widget.hidden = false;
                 } else {
@@ -42,7 +42,12 @@ export class WidgetTreeComponent implements OnInit {
             }
 
             for (let childCategory of category.children) {
-                hide = applyFilter(childCategory, filterString);
+                let childrenHide = applyFilter(childCategory, filterString);
+
+                // If any of the children match, show the parent as well
+                if (!childrenHide) {
+                    hide = false;
+                }
             }
             category.hidden = hide;
             category.collapsed = hide;

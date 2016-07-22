@@ -25,12 +25,13 @@ var WidgetTreeComponent = (function () {
     WidgetTreeComponent.prototype.filterTree = function () {
         function applyFilter(category, filterString) {
             var hide = true;
-            if (category.name.indexOf(filterString) != -1) {
+            var filterRegEx = new RegExp(filterString, 'i');
+            if (category.name.match(filterRegEx)) {
                 hide = false;
             }
             for (var _i = 0, _a = category.widgets; _i < _a.length; _i++) {
                 var widget = _a[_i];
-                if (widget.name.indexOf(filterString) != -1) {
+                if (widget.name.match(filterRegEx)) {
                     hide = false;
                     widget.hidden = false;
                 }
@@ -40,7 +41,11 @@ var WidgetTreeComponent = (function () {
             }
             for (var _b = 0, _c = category.children; _b < _c.length; _b++) {
                 var childCategory = _c[_b];
-                hide = applyFilter(childCategory, filterString);
+                var childrenHide = applyFilter(childCategory, filterString);
+                // If any of the children match, show the parent as well
+                if (!childrenHide) {
+                    hide = false;
+                }
             }
             category.hidden = hide;
             category.collapsed = hide;
