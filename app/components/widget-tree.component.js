@@ -11,11 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var clowdflows_data_service_1 = require('../services/clowdflows-data.service');
 var tree_view_component_1 = require("./tree-view.component");
-var config_service_1 = require("../services/config.service");
 var WidgetTreeComponent = (function () {
-    function WidgetTreeComponent(clowdflowsService, config) {
+    function WidgetTreeComponent(clowdflowsService) {
         this.clowdflowsService = clowdflowsService;
-        this.config = config;
         this.addWidgetRequest = new core_1.EventEmitter();
     }
     WidgetTreeComponent.prototype.ngOnInit = function () {
@@ -96,7 +94,7 @@ var WidgetTreeComponent = (function () {
             styleUrls: ['app/components/widget-tree.component.css'],
             directives: [tree_view_component_1.TreeViewComponent]
         }), 
-        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService, config_service_1.ConfigService])
+        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService])
     ], WidgetTreeComponent);
     return WidgetTreeComponent;
 }());

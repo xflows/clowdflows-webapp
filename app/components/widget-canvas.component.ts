@@ -7,5 +7,5 @@ import {Component, Input} from '@angular/core';
     directives: []
 })
 export class WidgetCanvasComponent {
-    @Input() widgets:string[];
+    @Input() workflow:any;
 }

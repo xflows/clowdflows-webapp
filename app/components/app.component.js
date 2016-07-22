@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var editor_component_1 = require("./editor.component");
 var clowdflows_data_service_1 = require('../services/clowdflows-data.service');
 var AppComponent = (function () {
@@ -18,8 +19,9 @@ var AppComponent = (function () {
         core_1.Component({
             selector: 'clowdflows-app',
             templateUrl: 'app/components/app.component.html',
-            directives: [editor_component_1.EditorComponent],
-            providers: [clowdflows_data_service_1.ClowdFlowsDataService]
+            directives: [editor_component_1.EditorComponent, router_1.ROUTER_DIRECTIVES],
+            providers: [clowdflows_data_service_1.ClowdFlowsDataService],
+            precompile: [editor_component_1.EditorComponent]
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

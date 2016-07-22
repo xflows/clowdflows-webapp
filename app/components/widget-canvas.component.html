@@ -1,5 +1,5 @@
 <div id="widget-canvas">
-    <ul>
-        <li *ngFor="let widget of widgets">{{ widget }}</li>
+    <ul *ngIf="workflow">
+        <li *ngFor="let widget of workflow.widgets">{{ widget.name }}</li>
     </ul>
 </div>

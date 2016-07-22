@@ -11,25 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require("@angular/http");
 require('rxjs/add/operator/toPromise');
-var config_service_1 = require("./config.service");
+var config_1 = require("../config");
 var category_1 = require("../models/category");
 var ClowdFlowsDataService = (function () {
-    function ClowdFlowsDataService(http, config) {
+    function ClowdFlowsDataService(http) {
         this.http = http;
-        this.config = config;
         this.widgetLibraryUrl = 'widget-library/';
+        this.workflowsUrl = 'workflows/';
     }
     ClowdFlowsDataService.prototype.getAuthTokenHeaders = function () {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        var authToken = this.config.test_token;
-        headers.append('Authorization', "Token " + authToken);
+        headers.append('Authorization', "Token " + config_1.TEST_TOKEN);
         return headers;
     };
     ClowdFlowsDataService.prototype.getWidgetLibrary = function () {
         var headers = this.getAuthTokenHeaders();
         return this.http
-            .get(this.config.api_base_url + this.widgetLibraryUrl, { headers: headers })
+            .get("" + config_1.API_ENDPOINT + this.widgetLibraryUrl, { headers: headers })
             .toPromise()
             .then(function (response) { return ClowdFlowsDataService.parseWidgetLibrary(response); })
             .catch(this.handleError);
@@ -46,9 +45,20 @@ var ClowdFlowsDataService = (function () {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);
     };
+    ClowdFlowsDataService.prototype.getWorkflow = function (id) {
+        var headers = this.getAuthTokenHeaders();
+        return this.http
+            .get("" + config_1.API_ENDPOINT + this.workflowsUrl + id + "/", { headers: headers })
+            .toPromise()
+            .then(function (response) { return ClowdFlowsDataService.parseWorkflow(response); })
+            .catch(this.handleError);
+    };
+    ClowdFlowsDataService.parseWorkflow = function (response) {
+        return response.json();
+    };
     ClowdFlowsDataService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, config_service_1.ConfigService])
+        __metadata('design:paramtypes', [http_1.Http])
     ], ClowdFlowsDataService);
     return ClowdFlowsDataService;
 }());

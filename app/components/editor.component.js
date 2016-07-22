@@ -9,21 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var toolbar_component_1 = require("./toolbar.component");
 var widget_tree_component_1 = require("./widget-tree.component");
 var widget_canvas_component_1 = require("./widget-canvas.component");
 var logging_component_1 = require("./logging.component");
-var config_service_1 = require("../services/config.service");
 var clowdflows_data_service_1 = require("../services/clowdflows-data.service");
 var EditorComponent = (function () {
-    function EditorComponent(config, clowdflowsDataService) {
-        this.config = config;
+    function EditorComponent(clowdflowsDataService, route) {
         this.clowdflowsDataService = clowdflowsDataService;
-        this.canvasWidgets = [];
+        this.route = route;
+        this.workflow = {};
     }
     EditorComponent.prototype.addWidgetToCanvas = function (abstractWidget) {
         // TODO: construct actual Widget from AbstractWidget here and call data service to save.
-        this.canvasWidgets.push(abstractWidget.name);
+        console.log(abstractWidget.name);
+    };
+    EditorComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.sub = this.route.params.subscribe(function (params) {
+            var id = +params['id'];
+            _this.clowdflowsDataService.getWorkflow(id)
+                .then(function (workflow) { return _this.workflow = workflow; });
+        });
+    };
+    EditorComponent.prototype.ngOnDestroy = function () {
+        this.sub.unsubscribe();
     };
     EditorComponent = __decorate([
         core_1.Component({
@@ -31,7 +42,7 @@ var EditorComponent = (function () {
             templateUrl: 'app/components/editor.component.html',
             directives: [toolbar_component_1.ToolbarComponent, widget_tree_component_1.WidgetTreeComponent, widget_canvas_component_1.WidgetCanvasComponent, logging_component_1.LoggingComponent]
         }), 
-        __metadata('design:paramtypes', [config_service_1.ConfigService, clowdflows_data_service_1.ClowdFlowsDataService])
+        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService, router_1.ActivatedRoute])
     ], EditorComponent);
     return EditorComponent;
 }());

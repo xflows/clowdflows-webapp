@@ -2,7 +2,6 @@ import {Component, Output, OnInit, EventEmitter} from '@angular/core';
 import {ClowdFlowsDataService} from '../services/clowdflows-data.service';
 import {Category} from "../models/category";
 import {TreeViewComponent} from "./tree-view.component";
-import {ConfigService} from "../services/config.service";
 import {AbstractWidget} from "../models/abstract-widget";
 
 @Component({
@@ -17,9 +16,7 @@ export class WidgetTreeComponent implements OnInit {
     filterString:string;
     @Output() addWidgetRequest = new EventEmitter<AbstractWidget>();
 
-    constructor(private clowdflowsService:ClowdFlowsDataService,
-                private config:ConfigService) {
-    }
+    constructor(private clowdflowsService:ClowdFlowsDataService) { }
 
     ngOnInit() {
         this.getWidgetLibrary();
