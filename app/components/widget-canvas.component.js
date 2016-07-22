@@ -12,6 +12,10 @@ var core_1 = require('@angular/core');
 var WidgetCanvasComponent = (function () {
     function WidgetCanvasComponent() {
     }
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Array)
+    ], WidgetCanvasComponent.prototype, "widgets", void 0);
     WidgetCanvasComponent = __decorate([
         core_1.Component({
             selector: 'widget-canvas',

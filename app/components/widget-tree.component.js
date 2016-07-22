@@ -9,13 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var clowdflows_service_1 = require('../services/clowdflows.service');
+var clowdflows_data_service_1 = require('../services/clowdflows-data.service');
 var tree_view_component_1 = require("./tree-view.component");
 var config_service_1 = require("../services/config.service");
 var WidgetTreeComponent = (function () {
     function WidgetTreeComponent(clowdflowsService, config) {
         this.clowdflowsService = clowdflowsService;
         this.config = config;
+        this.addWidgetRequest = new core_1.EventEmitter();
     }
     WidgetTreeComponent.prototype.ngOnInit = function () {
         this.getWidgetLibrary();
@@ -81,6 +82,13 @@ var WidgetTreeComponent = (function () {
             collapse(category);
         }
     };
+    WidgetTreeComponent.prototype.addWidgetToCanvas = function (abstractWidget) {
+        this.addWidgetRequest.emit(abstractWidget);
+    };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetTreeComponent.prototype, "addWidgetRequest", void 0);
     WidgetTreeComponent = __decorate([
         core_1.Component({
             selector: 'widget-tree',
@@ -88,7 +96,7 @@ var WidgetTreeComponent = (function () {
             styleUrls: ['app/components/widget-tree.component.css'],
             directives: [tree_view_component_1.TreeViewComponent]
         }), 
-        __metadata('design:paramtypes', [clowdflows_service_1.ClowdFlowsService, config_service_1.ConfigService])
+        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService, config_service_1.ConfigService])
     ], WidgetTreeComponent);
     return WidgetTreeComponent;
 }());

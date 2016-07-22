@@ -13,16 +13,25 @@ var toolbar_component_1 = require("./toolbar.component");
 var widget_tree_component_1 = require("./widget-tree.component");
 var widget_canvas_component_1 = require("./widget-canvas.component");
 var logging_component_1 = require("./logging.component");
+var config_service_1 = require("../services/config.service");
+var clowdflows_data_service_1 = require("../services/clowdflows-data.service");
 var EditorComponent = (function () {
-    function EditorComponent() {
+    function EditorComponent(config, clowdflowsDataService) {
+        this.config = config;
+        this.clowdflowsDataService = clowdflowsDataService;
+        this.canvasWidgets = [];
     }
+    EditorComponent.prototype.addWidgetToCanvas = function (abstractWidget) {
+        // TODO: construct actual Widget from AbstractWidget here and call data service to save.
+        this.canvasWidgets.push(abstractWidget.name);
+    };
     EditorComponent = __decorate([
         core_1.Component({
             selector: 'editor',
             templateUrl: 'app/components/editor.component.html',
             directives: [toolbar_component_1.ToolbarComponent, widget_tree_component_1.WidgetTreeComponent, widget_canvas_component_1.WidgetCanvasComponent, logging_component_1.LoggingComponent]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [config_service_1.ConfigService, clowdflows_data_service_1.ClowdFlowsDataService])
     ], EditorComponent);
     return EditorComponent;
 }());

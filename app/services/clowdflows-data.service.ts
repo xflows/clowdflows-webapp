@@ -3,16 +3,15 @@ import {Http, Headers} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 import {ConfigService} from "./config.service";
 import {Category} from "../models/category";
-import {User} from "../models/user";
 
 @Injectable()
-export class ClowdFlowsService {
+export class ClowdFlowsDataService {
 
     widgetLibraryUrl = 'widget-library/';
 
     constructor(private http:Http,
-                private config:ConfigService) {
-    }
+                private config:ConfigService
+    ) { }
 
     getAuthTokenHeaders():Headers {
         let headers = new Headers();
@@ -27,7 +26,7 @@ export class ClowdFlowsService {
         return this.http
             .get(this.config.api_base_url + this.widgetLibraryUrl, {headers})
             .toPromise()
-            .then(response => ClowdFlowsService.parseWidgetLibrary(response))
+            .then(response => ClowdFlowsDataService.parseWidgetLibrary(response))
             .catch(this.handleError);
     }
 

@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {ClowdFlowsService} from '../services/clowdflows.service';
+import {Component, Output, OnInit, EventEmitter} from '@angular/core';
+import {ClowdFlowsDataService} from '../services/clowdflows-data.service';
 import {Category} from "../models/category";
 import {TreeViewComponent} from "./tree-view.component";
 import {ConfigService} from "../services/config.service";
+import {AbstractWidget} from "../models/abstract-widget";
 
 @Component({
     selector: 'widget-tree',
@@ -14,8 +15,9 @@ export class WidgetTreeComponent implements OnInit {
 
     widgetTree:Category[];
     filterString:string;
+    @Output() addWidgetRequest = new EventEmitter<AbstractWidget>();
 
-    constructor(private clowdflowsService:ClowdFlowsService,
+    constructor(private clowdflowsService:ClowdFlowsDataService,
                 private config:ConfigService) {
     }
 
@@ -81,5 +83,9 @@ export class WidgetTreeComponent implements OnInit {
         for (let category of this.widgetTree) {
             collapse(category);
         }
+    }
+
+    addWidgetToCanvas(abstractWidget:AbstractWidget) {
+        this.addWidgetRequest.emit(abstractWidget);
     }
 }

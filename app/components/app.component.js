@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var editor_component_1 = require("./editor.component");
-var clowdflows_service_1 = require('../services/clowdflows.service');
+var clowdflows_data_service_1 = require('../services/clowdflows-data.service');
 var AppComponent = (function () {
     function AppComponent() {
     }
@@ -19,7 +19,7 @@ var AppComponent = (function () {
             selector: 'clowdflows-app',
             templateUrl: 'app/components/app.component.html',
             directives: [editor_component_1.EditorComponent],
-            providers: [clowdflows_service_1.ClowdFlowsService]
+            providers: [clowdflows_data_service_1.ClowdFlowsDataService]
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

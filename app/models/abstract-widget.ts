@@ -2,15 +2,12 @@ import {AbstractInput} from "./abstract-input";
 import {AbstractOutput} from "./abstract-output";
 export class AbstractWidget {
 
+    name:string;
+    interactive:boolean;
+    static_image:string;
+    order:number;
+    cfpackage:string;
+    outputs:AbstractOutput[];
+    inputs:AbstractInput[];
     hidden:boolean = false;
-
-    constructor(
-        public name:string,
-        public interactive:boolean,
-        public static_image:string,
-        public order:number,
-        public cfpackage:string,
-        public outputs:AbstractOutput[],
-        public inputs:AbstractInput[]
-    ) { }
 }

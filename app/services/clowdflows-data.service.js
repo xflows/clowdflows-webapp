@@ -13,28 +13,28 @@ var http_1 = require("@angular/http");
 require('rxjs/add/operator/toPromise');
 var config_service_1 = require("./config.service");
 var category_1 = require("../models/category");
-var ClowdFlowsService = (function () {
-    function ClowdFlowsService(http, config) {
+var ClowdFlowsDataService = (function () {
+    function ClowdFlowsDataService(http, config) {
         this.http = http;
         this.config = config;
         this.widgetLibraryUrl = 'widget-library/';
     }
-    ClowdFlowsService.prototype.getAuthTokenHeaders = function () {
+    ClowdFlowsDataService.prototype.getAuthTokenHeaders = function () {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
         var authToken = this.config.test_token;
         headers.append('Authorization', "Token " + authToken);
         return headers;
     };
-    ClowdFlowsService.prototype.getWidgetLibrary = function () {
+    ClowdFlowsDataService.prototype.getWidgetLibrary = function () {
         var headers = this.getAuthTokenHeaders();
         return this.http
             .get(this.config.api_base_url + this.widgetLibraryUrl, { headers: headers })
             .toPromise()
-            .then(function (response) { return ClowdFlowsService.parseWidgetLibrary(response); })
+            .then(function (response) { return ClowdFlowsDataService.parseWidgetLibrary(response); })
             .catch(this.handleError);
     };
-    ClowdFlowsService.parseWidgetLibrary = function (response) {
+    ClowdFlowsDataService.parseWidgetLibrary = function (response) {
         var widgetTree = [];
         for (var _i = 0, _a = response.json(); _i < _a.length; _i++) {
             var cat = _a[_i];
@@ -42,15 +42,15 @@ var ClowdFlowsService = (function () {
         }
         return widgetTree;
     };
-    ClowdFlowsService.prototype.handleError = function (error) {
+    ClowdFlowsDataService.prototype.handleError = function (error) {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);
     };
-    ClowdFlowsService = __decorate([
+    ClowdFlowsDataService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, config_service_1.ConfigService])
-    ], ClowdFlowsService);
-    return ClowdFlowsService;
+    ], ClowdFlowsDataService);
+    return ClowdFlowsDataService;
 }());
-exports.ClowdFlowsService = ClowdFlowsService;
-//# sourceMappingURL=clowdflows.service.js.map
+exports.ClowdFlowsDataService = ClowdFlowsDataService;
+//# sourceMappingURL=clowdflows-data.service.js.map

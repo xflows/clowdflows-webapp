@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
     selector: 'widget-canvas',
@@ -6,4 +6,6 @@ import {Component} from '@angular/core';
     styleUrls: ['app/components/widget-canvas.component.css'],
     directives: []
 })
-export class WidgetCanvasComponent { }
+export class WidgetCanvasComponent {
+    @Input() widgets:string[];
+}

@@ -13,6 +13,7 @@ var config_service_1 = require("../services/config.service");
 var TreeViewComponent = (function () {
     function TreeViewComponent(config) {
         this.config = config;
+        this.addWidgetRequest = new core_1.EventEmitter();
     }
     TreeViewComponent.prototype.iconUrl = function (widget) {
         var url = '/app/images/question-mark.png';
@@ -21,10 +22,20 @@ var TreeViewComponent = (function () {
         }
         return url;
     };
+    TreeViewComponent.prototype.toggleCollapsed = function (category) {
+        category.collapsed = !category.collapsed;
+    };
+    TreeViewComponent.prototype.addWidgetToCanvas = function (abstractWidget) {
+        this.addWidgetRequest.emit(abstractWidget);
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
     ], TreeViewComponent.prototype, "categories", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], TreeViewComponent.prototype, "addWidgetRequest", void 0);
     TreeViewComponent = __decorate([
         core_1.Component({
             selector: 'tree-view',

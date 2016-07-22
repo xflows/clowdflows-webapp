@@ -1,13 +1,13 @@
 <ul>
     <li *ngFor="let category of categories">
-        <span class="category" (click)="category.toggleCollapsed()" [class.hidden]="category.hidden">
+        <span class="category" (click)="toggleCollapsed(category)" [class.hidden]="category.hidden">
             <i class="fa fa-folder-open-o"></i> {{category.name}}
         </span>
         <div [class.hidden]="category.collapsed">
-            <tree-view [categories]="category.children"></tree-view>
+            <tree-view [categories]="category.children" (addWidgetRequest)="addWidgetToCanvas($event)"></tree-view>
             <ul>
                 <li *ngFor="let widget of category.widgets">
-                <span class="widget" [class.hidden]="widget.hidden">
+                <span class="widget" [class.hidden]="widget.hidden" (click)="addWidgetToCanvas(widget)">
                     <img class="widget-tree-icon" src="{{ iconUrl(widget) }}"/> {{widget.name}}
                 </span>
                 </li>

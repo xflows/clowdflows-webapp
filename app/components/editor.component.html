@@ -1,4 +1,4 @@
 <toolbar></toolbar>
-<widget-tree></widget-tree>
-<widget-canvas></widget-canvas>
+<widget-tree (addWidgetRequest)="addWidgetToCanvas($event)"></widget-tree>
+<widget-canvas [widgets]="canvasWidgets"></widget-canvas>
 <logging></logging>
