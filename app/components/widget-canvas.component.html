@@ -1,5 +1,24 @@
 <div id="widget-canvas">
-    <ul *ngIf="workflow">
-        <li *ngFor="let widget of workflow.widgets">{{ widget.name }}</li>
-    </ul>
+    <!--<ul *ngIf="workflow">-->
+        <!--<li *ngFor="let widget of workflow.widgets">{{ widget.name }}</li>-->
+    <!--</ul>-->
+    <svg>
+        <g class="widget" *ngFor="let widget of workflow.widgets" [attr.transform]="'translate('+ widget.x + ',' + widget.y + ')'">
+            <rect
+                    class="output"
+                    width="40"
+                    height="16" />
+            <rect
+                    class="input"
+                    width="40"
+                    height="16" />
+            <rect
+                    class="widget-box"
+                    width="56.622086"
+                    [attr.height]="50 + (16 + 10) * (widget.inputs.length - 1)" />
+            <text [attr.y]="70 + (16 + 10) * (widget.inputs.length - 1)">
+                {{widget.name}}
+            </text>
+        </g>
+    </svg>
 </div>
