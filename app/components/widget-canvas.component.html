@@ -1,24 +1,29 @@
 <div id="widget-canvas">
-    <!--<ul *ngIf="workflow">-->
-        <!--<li *ngFor="let widget of workflow.widgets">{{ widget.name }}</li>-->
-    <!--</ul>-->
     <svg>
-        <g class="widget" *ngFor="let widget of workflow.widgets" [attr.transform]="'translate('+ widget.x + ',' + widget.y + ')'">
-            <rect
-                    class="output"
-                    width="40"
-                    height="16" />
-            <rect
-                    class="input"
-                    width="40"
-                    height="16" />
-            <rect
-                    class="widget-box"
-                    width="56.622086"
-                    [attr.height]="50 + (16 + 10) * (widget.inputs.length - 1)" />
-            <text [attr.y]="70 + (16 + 10) * (widget.inputs.length - 1)">
+        <g class="widget" *ngFor="let widget of workflow.widgets"
+           [attr.width]="ui_constants.widgetWidth"
+           [attr.transform]="'translate('+ widget.x + ',' + widget.y + ')'">
+            <g *ngFor="let input of widget.inputs; let i = index">
+                <rect class="input" [attr.x]="input.x" [attr.y]="input.y"
+                      [attr.width]="ui_constants.signalWidth"
+                      [attr.height]="ui_constants.signalHeight" />
+            </g>
+            <g *ngFor="let output of widget.outputs; let i = index">
+                <rect class="output" [attr.x]="output.x" [attr.y]="output.y"
+                      [attr.width]="ui_constants.signalWidth"
+                      [attr.height]="ui_constants.signalHeight"/>
+            </g>
+            <rect class="widget-box" [attr.x]="ui_constants.signalWidth" rx="2" ry="2"
+                  [attr.width]="ui_constants.widgetBoxWidth"
+                  [attr.height]="widget.boxHeight" />
+            <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle">
                 {{widget.name}}
             </text>
+        </g>
+        <g class="connection" *ngFor="let connection of workflow.connections">
+            <path [attr.stroke-width]="ui_constants.connectionWidth" stroke="#a3a3a3" stroke-linejoin="round" fill="none" rel="2"
+                  [attr.d]="connection.bezierPoints">
+            </path>
         </g>
     </svg>
 </div>

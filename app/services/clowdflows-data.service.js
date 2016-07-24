@@ -13,6 +13,7 @@ var http_1 = require("@angular/http");
 require('rxjs/add/operator/toPromise');
 var config_1 = require("../config");
 var category_1 = require("../models/category");
+var workflow_1 = require("../models/workflow");
 var ClowdFlowsDataService = (function () {
     function ClowdFlowsDataService(http) {
         this.http = http;
@@ -54,7 +55,9 @@ var ClowdFlowsDataService = (function () {
             .catch(this.handleError);
     };
     ClowdFlowsDataService.parseWorkflow = function (response) {
-        return response.json();
+        var data = response.json();
+        var workflow = new workflow_1.Workflow(data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
+        return workflow;
     };
     ClowdFlowsDataService = __decorate([
         core_1.Injectable(), 

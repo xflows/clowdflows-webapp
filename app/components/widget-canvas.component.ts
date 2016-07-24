@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {UI} from "../services/ui-constants";
 
 @Component({
     selector: 'widget-canvas',
@@ -8,4 +9,5 @@ import {Component, Input} from '@angular/core';
 })
 export class WidgetCanvasComponent {
     @Input() workflow:any;
+    ui_constants = UI;
 }

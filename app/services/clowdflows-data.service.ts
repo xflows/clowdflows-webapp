@@ -11,7 +11,8 @@ export class ClowdFlowsDataService {
     widgetLibraryUrl = 'widget-library/';
     workflowsUrl = 'workflows/';
 
-    constructor(private http:Http) { }
+    constructor(private http:Http) {
+    }
 
     getAuthTokenHeaders():Headers {
         let headers = new Headers();
@@ -42,7 +43,7 @@ export class ClowdFlowsDataService {
         return Promise.reject(error.message || error);
     }
 
-    getWorkflow(id:number):Promise<any>  {
+    getWorkflow(id:number):Promise<any> {
         let headers = this.getAuthTokenHeaders();
         return this.http
             .get(`${API_ENDPOINT}${this.workflowsUrl}${id}/`, {headers})
@@ -52,6 +53,9 @@ export class ClowdFlowsDataService {
     }
 
     static parseWorkflow(response):Workflow {
-        return response.json();
+        let data = response.json();
+        let workflow = new Workflow(data.url, data.widgets, data.connections, data.is_subprocess, data.name,
+                                    data.public, data.description, data.widget, data.template_parent);
+        return workflow;
     }
 }

@@ -9,8 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var ui_constants_1 = require("../services/ui-constants");
 var WidgetCanvasComponent = (function () {
     function WidgetCanvasComponent() {
+        this.ui_constants = ui_constants_1.UI;
     }
     __decorate([
         core_1.Input(), 

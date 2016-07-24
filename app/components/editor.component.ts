@@ -7,7 +7,6 @@ import {LoggingComponent} from "./logging.component";
 import {AbstractWidget} from "../models/abstract-widget";
 import {ClowdFlowsDataService} from "../services/clowdflows-data.service";
 
-
 @Component({
     selector: 'editor',
     templateUrl: 'app/components/editor.component.html',
