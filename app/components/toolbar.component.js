@@ -11,7 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var ToolbarComponent = (function () {
     function ToolbarComponent() {
+        this.runWorkflowRequest = new core_1.EventEmitter();
     }
+    ToolbarComponent.prototype.runWorkflow = function () {
+        this.runWorkflowRequest.emit("run");
+    };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], ToolbarComponent.prototype, "runWorkflowRequest", void 0);
     ToolbarComponent = __decorate([
         core_1.Component({
             selector: 'toolbar',

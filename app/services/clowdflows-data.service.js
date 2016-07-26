@@ -19,7 +19,6 @@ var ClowdFlowsDataService = (function () {
         this.http = http;
         this.widgetLibraryUrl = 'widget-library/';
         this.workflowsUrl = 'workflows/';
-        this.widgetsUrl = 'widgets/';
     }
     ClowdFlowsDataService.prototype.getAuthTokenHeaders = function () {
         var headers = new http_1.Headers();
@@ -57,6 +56,15 @@ var ClowdFlowsDataService = (function () {
             .then(function (response) { return ClowdFlowsDataService.parseWorkflow(response); })
             .catch(this.handleError);
     };
+    ClowdFlowsDataService.prototype.runWorkflow = function (workflow) {
+        var headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .post(workflow.url + "run/", {}, { headers: headers })
+            .toPromise()
+            .then()
+            .catch(this.handleError);
+    };
     ClowdFlowsDataService.parseWorkflow = function (response) {
         var data = response.json();
         var workflow = new workflow_1.Workflow(data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
@@ -66,7 +74,7 @@ var ClowdFlowsDataService = (function () {
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .put(widget.url, JSON.stringify(widget), { headers: headers })
+            .patch(widget.url, JSON.stringify(widget), { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(this.handleError);

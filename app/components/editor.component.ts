@@ -25,6 +25,10 @@ export class EditorComponent implements OnInit, OnDestroy {
         console.log(abstractWidget.name);
     }
 
+    runWorkflow() {
+        this.clowdflowsDataService.runWorkflow(this.workflow);
+    }
+
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             let id = +params['id'];

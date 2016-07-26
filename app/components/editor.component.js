@@ -25,6 +25,9 @@ var EditorComponent = (function () {
         // TODO: construct actual Widget from AbstractWidget here and call data service to save.
         console.log(abstractWidget.name);
     };
+    EditorComponent.prototype.runWorkflow = function () {
+        this.clowdflowsDataService.runWorkflow(this.workflow);
+    };
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.sub = this.route.params.subscribe(function (params) {

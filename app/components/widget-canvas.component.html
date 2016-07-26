@@ -20,11 +20,13 @@
                   [attr.width]="ui_constants.widgetBoxWidth"
                   [attr.height]="widget.boxHeight" />
             <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle">
-                {{widget.name}}
+                <tspan>{{widget.name}}</tspan>
             </text>
+            <text class="widget-error-icon" text-anchor="middle" [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY + 22" *ngIf="widget.error"></text>
+            <text class="widget-finished-icon" text-anchor="middle" [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY + 22" *ngIf="widget.finished">&#10004;</text>
         </g>
         <g class="connection" *ngFor="let connection of workflow.connections">
-            <path [attr.stroke-width]="ui_constants.connectionWidth" stroke="#a3a3a3" stroke-linejoin="round" fill="none" rel="2"
+            <path [attr.stroke-width]="ui_constants.connectionWidth" stroke-linejoin="round" fill="none"
                   [attr.d]="connection.bezierPoints">
             </path>
         </g>

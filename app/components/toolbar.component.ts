@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Output, EventEmitter} from '@angular/core';
 
 @Component({
     selector: 'toolbar',
@@ -6,4 +6,10 @@ import {Component} from '@angular/core';
     styleUrls: ['app/components/toolbar.component.css'],
     directives: []
 })
-export class ToolbarComponent { }
+export class ToolbarComponent {
+    @Output() runWorkflowRequest = new EventEmitter();
+
+    runWorkflow() {
+        this.runWorkflowRequest.emit("run");
+    }
+}

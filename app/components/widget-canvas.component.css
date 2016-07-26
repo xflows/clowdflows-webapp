@@ -48,3 +48,12 @@
   stroke-miterlimit: 4;
   stroke-dasharray: none;
 }
+#widget-canvas .widget .widget-error-icon {
+  fill: #ff572b;
+}
+#widget-canvas .widget .widget-finished-icon {
+  fill: #448019;
+}
+#widget-canvas .connection path {
+  stroke: #a3a3a3;
+}

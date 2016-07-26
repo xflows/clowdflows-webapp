@@ -11,7 +11,6 @@ export class ClowdFlowsDataService {
 
     widgetLibraryUrl = 'widget-library/';
     workflowsUrl = 'workflows/';
-    widgetsUrl = 'widgets/';
 
     constructor(private http:Http) {
     }
@@ -56,6 +55,16 @@ export class ClowdFlowsDataService {
             .catch(this.handleError);
     }
 
+    runWorkflow(workflow):Promise<any> {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .post(`${workflow.url}run/`, {}, {headers})
+            .toPromise()
+            .then()
+            .catch(this.handleError);
+    }
+
     static parseWorkflow(response):Workflow {
         let data = response.json();
         let workflow = new Workflow(data.url, data.widgets, data.connections, data.is_subprocess, data.name,
@@ -67,7 +76,7 @@ export class ClowdFlowsDataService {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .put(widget.url, JSON.stringify(widget), {headers})
+            .patch(widget.url, JSON.stringify(widget), {headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
