@@ -4,12 +4,14 @@ import 'rxjs/add/operator/toPromise';
 import {API_ENDPOINT, TEST_TOKEN} from "../config";
 import {Category} from "../models/category";
 import {Workflow} from "../models/workflow";
+import {Widget} from "../models/widget";
 
 @Injectable()
 export class ClowdFlowsDataService {
 
     widgetLibraryUrl = 'widget-library/';
     workflowsUrl = 'workflows/';
+    widgetsUrl = 'widgets/';
 
     constructor(private http:Http) {
     }
@@ -23,6 +25,7 @@ export class ClowdFlowsDataService {
 
     getWidgetLibrary():Promise<Category[]> {
         let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
         return this.http
             .get(`${API_ENDPOINT}${this.widgetLibraryUrl}`, {headers})
             .toPromise()
@@ -45,6 +48,7 @@ export class ClowdFlowsDataService {
 
     getWorkflow(id:number):Promise<any> {
         let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
         return this.http
             .get(`${API_ENDPOINT}${this.workflowsUrl}${id}/`, {headers})
             .toPromise()
@@ -57,5 +61,15 @@ export class ClowdFlowsDataService {
         let workflow = new Workflow(data.url, data.widgets, data.connections, data.is_subprocess, data.name,
                                     data.public, data.description, data.widget, data.template_parent);
         return workflow;
+    }
+
+    saveWidget(widget:Widget) {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .put(widget.url, JSON.stringify(widget), {headers})
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
     }
 }

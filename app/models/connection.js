@@ -12,9 +12,9 @@ var Connection = (function () {
     Object.defineProperty(Connection.prototype, "bezierPoints", {
         get: function () {
             var outputX = this.output_widget.x + this.output.x + ui_constants_1.UI.signalWidth;
-            var outputY = this.output_widget.y + this.output.y + (ui_constants_1.UI.signalHeight - ui_constants_1.UI.connectionWidth) / 2;
+            var outputY = this.output_widget.y + this.output.y + ui_constants_1.UI.signalHeight / 2;
             var inputX = this.input_widget.x + this.input.x;
-            var inputY = this.input_widget.y + this.input.y + (ui_constants_1.UI.signalHeight - ui_constants_1.UI.connectionWidth) / 2;
+            var inputY = this.input_widget.y + this.input.y + ui_constants_1.UI.signalHeight / 2;
             var p1 = [outputX, outputY];
             var p2 = [inputX, inputY];
             var coeffMulDirection = 100;

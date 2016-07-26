@@ -21,9 +21,9 @@ export class Connection {
 
     get bezierPoints():string {
         let outputX:number = this.output_widget.x + this.output.x + UI.signalWidth;
-        let outputY:number = this.output_widget.y + this.output.y + (UI.signalHeight - UI.connectionWidth)/2;
+        let outputY:number = this.output_widget.y + this.output.y + UI.signalHeight/2;
         let inputX:number = this.input_widget.x + this.input.x;
-        let inputY:number = this.input_widget.y + this.input.y + (UI.signalHeight - UI.connectionWidth)/2;
+        let inputY:number = this.input_widget.y + this.input.y + UI.signalHeight/2;
 
         var p1 = [outputX, outputY];
         var p2 = [inputX, inputY];

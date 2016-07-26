@@ -1,6 +1,9 @@
 <div id="widget-canvas">
-    <svg>
+    <svg id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg">
         <g class="widget" *ngFor="let widget of workflow.widgets"
+           draggable
+           (positionChangeRequest)="move($event, widget)"
+           (endMoveRequest)="saveWidget(widget)"
            [attr.width]="ui_constants.widgetWidth"
            [attr.transform]="'translate('+ widget.x + ',' + widget.y + ')'">
             <g *ngFor="let input of widget.inputs; let i = index">
