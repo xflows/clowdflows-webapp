@@ -7,6 +7,7 @@ export class Widget {
     inputs:Input[];
     parameters:Input[];
     outputs:Output[];
+    showDialog:boolean = false;
 
     constructor(
         public url:string,

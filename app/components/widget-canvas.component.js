@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var ui_constants_1 = require("../services/ui-constants");
 var draggable_directive_1 = require("../directives/draggable.directive");
 var clowdflows_data_service_1 = require("../services/clowdflows-data.service");
+var widget_dialog_component_1 = require("./widget-dialog.component");
 var WidgetCanvasComponent = (function () {
     function WidgetCanvasComponent(clowdflowsDataService) {
         this.clowdflowsDataService = clowdflowsDataService;
@@ -24,6 +25,9 @@ var WidgetCanvasComponent = (function () {
     WidgetCanvasComponent.prototype.saveWidget = function (widget) {
         this.clowdflowsDataService.saveWidget(widget);
     };
+    WidgetCanvasComponent.prototype.showDialog = function (widget) {
+        widget.showDialog = true;
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Object)
@@ -33,7 +37,7 @@ var WidgetCanvasComponent = (function () {
             selector: 'widget-canvas',
             templateUrl: 'app/components/widget-canvas.component.html',
             styleUrls: ['app/components/widget-canvas.component.css'],
-            directives: [draggable_directive_1.Draggable]
+            directives: [widget_dialog_component_1.WidgetDialogComponent, draggable_directive_1.Draggable]
         }), 
         __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService])
     ], WidgetCanvasComponent);

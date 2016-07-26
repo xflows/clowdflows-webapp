@@ -14,6 +14,7 @@ var Widget = (function () {
         this.interaction_waiting = interaction_waiting;
         this.type = type;
         this.progress = progress;
+        this.showDialog = false;
         this.inputs = new Array();
         for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
             var input = inputs_1[_i];
