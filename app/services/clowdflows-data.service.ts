@@ -72,6 +72,10 @@ export class ClowdFlowsDataService {
         return workflow;
     }
 
+    static runWorkflow(response) {
+
+    }
+
     saveWidget(widget:Widget) {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction

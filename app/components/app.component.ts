@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewContainerRef} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {EditorComponent} from "./editor.component";
 import {ClowdFlowsDataService} from '../services/clowdflows-data.service';
@@ -11,4 +11,5 @@ import {ClowdFlowsDataService} from '../services/clowdflows-data.service';
     precompile: [EditorComponent]
 })
 export class AppComponent {
+    public constructor(private viewContainerRef:ViewContainerRef) {  }
 }

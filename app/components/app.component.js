@@ -13,7 +13,8 @@ var router_1 = require('@angular/router');
 var editor_component_1 = require("./editor.component");
 var clowdflows_data_service_1 = require('../services/clowdflows-data.service');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(viewContainerRef) {
+        this.viewContainerRef = viewContainerRef;
     }
     AppComponent = __decorate([
         core_1.Component({
@@ -23,7 +24,7 @@ var AppComponent = (function () {
             providers: [clowdflows_data_service_1.ClowdFlowsDataService],
             precompile: [editor_component_1.EditorComponent]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [core_1.ViewContainerRef])
     ], AppComponent);
     return AppComponent;
 }());

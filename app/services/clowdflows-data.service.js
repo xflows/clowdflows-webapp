@@ -70,6 +70,8 @@ var ClowdFlowsDataService = (function () {
         var workflow = new workflow_1.Workflow(data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
         return workflow;
     };
+    ClowdFlowsDataService.runWorkflow = function (response) {
+    };
     ClowdFlowsDataService.prototype.saveWidget = function (widget) {
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
