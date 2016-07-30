@@ -9,4 +9,13 @@ import {Widget} from "../models/widget";
 })
 export class WidgetDialogComponent {
     @Input() widget:Widget;
+
+    closeDialog() {
+        this.widget.showDialog = false;
+    }
+
+    apply() {
+        // TODO: Save parameters here
+        this.widget.showDialog = false;
+    }
 }

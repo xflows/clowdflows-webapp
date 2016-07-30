@@ -13,6 +13,13 @@ var widget_1 = require("../models/widget");
 var WidgetDialogComponent = (function () {
     function WidgetDialogComponent() {
     }
+    WidgetDialogComponent.prototype.closeDialog = function () {
+        this.widget.showDialog = false;
+    };
+    WidgetDialogComponent.prototype.apply = function () {
+        // TODO: Save parameters here
+        this.widget.showDialog = false;
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', widget_1.Widget)

@@ -18,13 +18,13 @@ var Widget = (function () {
         this.inputs = new Array();
         for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
             var input = inputs_1[_i];
-            var input_obj = new input_1.Input(input.url, input.deserialize_value, input.name, input.short_name, input.description, input.variable, input.required, input.parameter, input.multi_id, input.parameter_type, input.order, input.inner_output, input.outer_output);
+            var input_obj = new input_1.Input(input.url, input.deserialized_value, input.name, input.short_name, input.description, input.variable, input.required, input.parameter, input.multi_id, input.parameter_type, input.order, input.inner_output, input.outer_output);
             this.inputs.push(input_obj);
         }
         this.parameters = new Array();
         for (var _a = 0, parameters_1 = parameters; _a < parameters_1.length; _a++) {
             var input = parameters_1[_a];
-            var input_obj = new input_1.Input(input.url, input.deserialize_value, input.name, input.short_name, input.description, input.variable, input.required, input.parameter, input.multi_id, input.parameter_type, input.order, input.inner_output, input.outer_output);
+            var input_obj = new input_1.Input(input.url, input.deserialized_value, input.name, input.short_name, input.description, input.variable, input.required, input.parameter, input.multi_id, input.parameter_type, input.order, input.inner_output, input.outer_output);
             this.parameters.push(input_obj);
         }
         this.outputs = new Array();
