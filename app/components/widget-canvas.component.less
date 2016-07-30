@@ -1,3 +1,5 @@
+@import "../common";
+
 @widget-box-width: 56px;
 @signal-width: 40px;
 @signal-height: 16px;
@@ -37,6 +39,7 @@
 
   .widget {
     min-height: 80px;
+    .noselect();
 
     .widget-box {
       fill: #ffffff;

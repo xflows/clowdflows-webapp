@@ -5,12 +5,14 @@ import {API_ENDPOINT, TEST_TOKEN} from "../config";
 import {Category} from "../models/category";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
+import {Input} from "../models/input";
 
 @Injectable()
 export class ClowdFlowsDataService {
 
     widgetLibraryUrl = 'widget-library/';
     workflowsUrl = 'workflows/';
+    inputsUrl = 'inputs/';
 
     constructor(private http:Http) {
     }
@@ -81,6 +83,15 @@ export class ClowdFlowsDataService {
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .patch(widget.url, JSON.stringify(widget), {headers})
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
+    saveParameter(parameter:Input) {
+        let headers = this.getAuthTokenHeaders();
+        return this.http
+            .put(parameter.url, JSON.stringify({value: parameter.deserialized_value}), {headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);

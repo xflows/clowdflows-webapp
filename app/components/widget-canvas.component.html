@@ -1,6 +1,6 @@
 <div id="widget-canvas">
     <svg id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg">
-        <g class="widget" *ngFor="let widget of workflow.widgets"
+        <g class="widget noselect" *ngFor="let widget of workflow.widgets"
            draggable
            (positionChangeRequest)="move($event, widget)"
            (endMoveRequest)="saveWidget(widget)"

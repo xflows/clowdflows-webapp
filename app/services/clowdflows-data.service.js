@@ -19,6 +19,7 @@ var ClowdFlowsDataService = (function () {
         this.http = http;
         this.widgetLibraryUrl = 'widget-library/';
         this.workflowsUrl = 'workflows/';
+        this.inputsUrl = 'inputs/';
     }
     ClowdFlowsDataService.prototype.getAuthTokenHeaders = function () {
         var headers = new http_1.Headers();
@@ -77,6 +78,14 @@ var ClowdFlowsDataService = (function () {
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .patch(widget.url, JSON.stringify(widget), { headers: headers })
+            .toPromise()
+            .then(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
+    ClowdFlowsDataService.prototype.saveParameter = function (parameter) {
+        var headers = this.getAuthTokenHeaders();
+        return this.http
+            .put(parameter.url, JSON.stringify({ value: parameter.deserialized_value }), { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(this.handleError);

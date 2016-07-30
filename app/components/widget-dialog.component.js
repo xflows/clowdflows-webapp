@@ -10,15 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var widget_1 = require("../models/widget");
+var clowdflows_data_service_1 = require("../services/clowdflows-data.service");
 var WidgetDialogComponent = (function () {
-    function WidgetDialogComponent() {
+    function WidgetDialogComponent(clowdflowsDataService) {
+        this.clowdflowsDataService = clowdflowsDataService;
     }
     WidgetDialogComponent.prototype.closeDialog = function () {
         this.widget.showDialog = false;
     };
     WidgetDialogComponent.prototype.apply = function () {
-        // TODO: Save parameters here
+        for (var _i = 0, _a = this.widget.parameters; _i < _a.length; _i++) {
+            var parameter = _a[_i];
+            this.clowdflowsDataService.saveParameter(parameter);
+        }
         this.widget.showDialog = false;
+    };
+    WidgetDialogComponent.prototype.onCheckboxChange = function (parameter, event) {
+        var isChecked = event.currentTarget.checked;
+        parameter.deserialized_value = isChecked ? 'true' : 'false';
     };
     __decorate([
         core_1.Input(), 
@@ -31,7 +40,7 @@ var WidgetDialogComponent = (function () {
             styleUrls: ['app/components/widget-dialog.component.css'],
             directives: []
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService])
     ], WidgetDialogComponent);
     return WidgetDialogComponent;
 }());

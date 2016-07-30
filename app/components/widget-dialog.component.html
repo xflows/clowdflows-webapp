@@ -1,4 +1,4 @@
-<div class="widget-dialog panel panel-default">
+<div class="widget-dialog panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">{{widget.name}}</h3>
     </div>
@@ -7,28 +7,28 @@
             <div class="form-group form-group-sm" *ngFor="let p of widget.parameters">
                 <div class="checkbox" *ngIf="p.parameter_type == 'checkbox'">
                     <label>
-                        <input type="checkbox" [checked]="p.deserialized_value == 'true'"/> {{p.name}}
+                        <input type="checkbox" (change)="onCheckboxChange(p, $event)" [checked]="p.deserialized_value == 'true'"/> {{p.name}}
                     </label>
                 </div>
                 <label [attr.for]="'input-' + p.name" *ngIf="p.parameter_type != 'checkbox'"
                        class="control-label">{{p.name}}</label>
 
                 <input [attr.id]="'input-' + p.name" *ngIf="p.parameter_type == 'text'" type="text"
-                       [value]="p.deserialized_value"
+                       [(ngModel)]="p.deserialized_value"
                        [title]="p.description"
                        class="form-control"/>
                 <input [attr.id]="'input-' + p.name" *ngIf="p.parameter_type == 'password'" type="password"
-                       [value]="p.deserialized_value"
+                       [(ngModel)]="p.deserialized_value"
                        [title]="p.description"
                        class="form-control"/>
                 <select [attr.id]="'input-' + p.name" *ngIf="p.parameter_type == 'select'" [title]="p.description"
-                        class="form-control">
+                        class="form-control" [(ngModel)]="p.deserialized_value">
                     <option *ngFor="let o of p.options" [value]="o.value"
-                            [selected]="o.value == p.deserialized_value"></option>
+                            [selected]="o.value == p.deserialized_value">{{o.name}}</option>
                 </select>
                 <textarea [attr.id]="'input-' + p.name" *ngIf="p.parameter_type == 'textarea'"
                           [title]="p.description"
-                          class="form-control">
+                          class="form-control" [(ngModel)]="p.deserialized_value">
                     {{p.deserialized_value}}
                 </textarea>
                 <input [attr.id]="'input-' + p.name" *ngIf="p.parameter_type == 'file'" [title]="p.description"
@@ -41,7 +41,7 @@
     <div class="panel-footer">
         <div class="form-group form-group-sm">
             <button (click)="closeDialog()" class="btn btn-default">Close</button>
-            <button type="apply()" class="btn btn-primary">Apply</button>
+            <button (click)="apply()" class="btn btn-primary">Apply</button>
         </div>
     </div>
 </div>

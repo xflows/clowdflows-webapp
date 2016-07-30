@@ -1,5 +1,7 @@
 import {Component, Output, EventEmitter, Input} from '@angular/core';
 import {Widget} from "../models/widget";
+import {ClowdFlowsDataService} from "../services/clowdflows-data.service";
+import {Input as WidgetInput} from "../models/input";
 
 @Component({
     selector: 'widget-dialog',
@@ -10,12 +12,21 @@ import {Widget} from "../models/widget";
 export class WidgetDialogComponent {
     @Input() widget:Widget;
 
+    constructor(private clowdflowsDataService:ClowdFlowsDataService) {}
+
     closeDialog() {
         this.widget.showDialog = false;
     }
 
     apply() {
-        // TODO: Save parameters here
+        for (let parameter of this.widget.parameters) {
+            this.clowdflowsDataService.saveParameter(parameter);
+        }
         this.widget.showDialog = false;
+    }
+
+    onCheckboxChange(parameter:WidgetInput, event) {
+        var isChecked = event.currentTarget.checked;
+        parameter.deserialized_value = isChecked ? 'true' : 'false';
     }
 }

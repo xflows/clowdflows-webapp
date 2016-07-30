@@ -1,6 +1,6 @@
 "use strict";
 var Input = (function () {
-    function Input(url, deserialized_value, name, short_name, description, variable, required, parameter, multi_id, parameter_type, order, inner_output, outer_output) {
+    function Input(url, deserialized_value, name, short_name, description, variable, required, parameter, multi_id, parameter_type, order, inner_output, outer_output, options) {
         this.url = url;
         this.deserialized_value = deserialized_value;
         this.name = name;
@@ -14,6 +14,7 @@ var Input = (function () {
         this.order = order;
         this.inner_output = inner_output;
         this.outer_output = outer_output;
+        this.options = options;
     }
     Object.defineProperty(Input.prototype, "x", {
         get: function () {

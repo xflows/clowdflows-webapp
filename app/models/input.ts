@@ -1,3 +1,4 @@
+import {Option} from "./option";
 export class Input {
     constructor(
         public url:string,
@@ -12,7 +13,8 @@ export class Input {
         public parameter_type:string,
         public order:number,
         public inner_output:string,
-        public outer_output:string
+        public outer_output:string,
+        public options:Option[]
     ) {
 
     }
