@@ -68,8 +68,8 @@ var Draggable = (function () {
             selector: '[draggable]',
             host: {
                 '(mousedown)': 'onMouseDown($event)',
-                '(mouseup)': 'onMouseUp($event)',
-                '(mousemove)': 'onMouseMove($event)'
+                '(window:mouseup)': 'onMouseUp($event)',
+                '(window:mousemove)': 'onMouseMove($event)'
             }
         }), 
         __metadata('design:paramtypes', [core_1.ElementRef])

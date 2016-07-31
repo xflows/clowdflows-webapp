@@ -4,8 +4,8 @@ import {Directive, ElementRef, EventEmitter, OnInit, Output} from '@angular/core
     selector: '[draggable]',
     host: {
         '(mousedown)': 'onMouseDown($event)',
-        '(mouseup)': 'onMouseUp($event)',
-        '(mousemove)': 'onMouseMove($event)'
+        '(window:mouseup)': 'onMouseUp($event)',
+        '(window:mousemove)': 'onMouseMove($event)'
     }
 })
 export class Draggable {

@@ -74,10 +74,6 @@ export class ClowdFlowsDataService {
         return workflow;
     }
 
-    static runWorkflow(response) {
-
-    }
-
     saveWidget(widget:Widget) {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
@@ -88,10 +84,27 @@ export class ClowdFlowsDataService {
             .catch(this.handleError);
     }
 
-    saveParameter(parameter:Input) {
+    saveWidgetPosition(widget:Widget) {
         let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .put(parameter.url, JSON.stringify({value: parameter.deserialized_value}), {headers})
+            .patch(widget.url, JSON.stringify({url: widget.url, x:widget.x, y:widget.y}), {headers})
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
+    saveParameters(widget:Widget) {
+        let headers = this.getAuthTokenHeaders();
+        let parameters = [];
+        for (var param of widget.parameters) {
+            parameters.push({
+                'id': param.id,
+                'value': param.deserialized_value
+            });
+        }
+        return this.http
+            .patch(`${widget.url}save-parameters/`, JSON.stringify(parameters), {headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);

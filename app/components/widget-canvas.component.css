@@ -52,6 +52,9 @@
   stroke-dasharray: none;
   cursor: pointer;
 }
+#widget-canvas .widget .widget-box.selected {
+  fill: #ffe45c;
+}
 #widget-canvas .widget .input,
 #widget-canvas .widget .output {
   fill: #d7eef4;

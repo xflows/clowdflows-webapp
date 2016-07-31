@@ -25,7 +25,22 @@ export class WidgetCanvasComponent {
         this.clowdflowsDataService.saveWidget(widget);
     }
 
+    endMove(widget) {
+        this.clowdflowsDataService.saveWidgetPosition(widget);
+    }
+
     showDialog(widget) {
         widget.showDialog = true;
+    }
+
+    select(event, widget) {
+        widget.selected = true;
+        event.stopPropagation();
+    }
+
+    unselectWidgets() {
+        for (let widget of this.workflow.widgets) {
+            widget.selected = false;
+        }
     }
 }

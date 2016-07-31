@@ -25,8 +25,21 @@ var WidgetCanvasComponent = (function () {
     WidgetCanvasComponent.prototype.saveWidget = function (widget) {
         this.clowdflowsDataService.saveWidget(widget);
     };
+    WidgetCanvasComponent.prototype.endMove = function (widget) {
+        this.clowdflowsDataService.saveWidgetPosition(widget);
+    };
     WidgetCanvasComponent.prototype.showDialog = function (widget) {
         widget.showDialog = true;
+    };
+    WidgetCanvasComponent.prototype.select = function (event, widget) {
+        widget.selected = true;
+        event.stopPropagation();
+    };
+    WidgetCanvasComponent.prototype.unselectWidgets = function () {
+        for (var _i = 0, _a = this.workflow.widgets; _i < _a.length; _i++) {
+            var widget = _a[_i];
+            widget.selected = false;
+        }
     };
     __decorate([
         core_1.Input(), 

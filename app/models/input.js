@@ -1,6 +1,7 @@
 "use strict";
 var Input = (function () {
-    function Input(url, deserialized_value, name, short_name, description, variable, required, parameter, multi_id, parameter_type, order, inner_output, outer_output, options) {
+    function Input(id, url, deserialized_value, name, short_name, description, variable, required, parameter, multi_id, parameter_type, order, inner_output, outer_output, options) {
+        this.id = id;
         this.url = url;
         this.deserialized_value = deserialized_value;
         this.name = name;

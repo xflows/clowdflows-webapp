@@ -8,6 +8,7 @@ export class Widget {
     parameters:Input[];
     outputs:Output[];
     showDialog:boolean = false;
+    selected:boolean = false;
 
     constructor(
         public url:string,
@@ -26,7 +27,7 @@ export class Widget {
     ){
         this.inputs = new Array<Input>();
         for (let input of inputs) {
-            let input_obj:Input = new Input(input.url, input.deserialized_value, input.name, input.short_name,
+            let input_obj:Input = new Input(input.id, input.url, input.deserialized_value, input.name, input.short_name,
                                             input.description, input.variable, input.required, input.parameter,
                                             input.multi_id, input.parameter_type, input.order, input.inner_output,
                                             input.outer_output, input.options);
@@ -34,7 +35,7 @@ export class Widget {
         }
         this.parameters = new Array<Input>();
         for (let input of parameters) {
-            let input_obj:Input = new Input(input.url, input.deserialized_value, input.name, input.short_name,
+            let input_obj:Input = new Input(input.id, input.url, input.deserialized_value, input.name, input.short_name,
                 input.description, input.variable, input.required, input.parameter,
                 input.multi_id, input.parameter_type, input.order, input.inner_output,
                 input.outer_output, input.options);

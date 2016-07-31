@@ -1,9 +1,9 @@
 <div id="widget-canvas">
-    <svg id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg">
+    <svg id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" (click)="unselectWidgets()">
         <g class="widget noselect" *ngFor="let widget of workflow.widgets"
            draggable
            (positionChangeRequest)="move($event, widget)"
-           (endMoveRequest)="saveWidget(widget)"
+           (endMoveRequest)="endMove(widget)"
            [attr.width]="ui_constants.widgetWidth"
            [attr.transform]="'translate('+ widget.x + ',' + widget.y + ')'">
             <g *ngFor="let input of widget.inputs; let i = index">
@@ -17,9 +17,11 @@
                       [attr.height]="ui_constants.signalHeight"/>
             </g>
             <rect class="widget-box" [attr.x]="ui_constants.signalWidth" rx="2" ry="2"
+                  (click)="select($event, widget)"
                   (dblclick)="showDialog(widget)"
                   [attr.width]="ui_constants.widgetBoxWidth"
-                  [attr.height]="widget.boxHeight" />
+                  [attr.height]="widget.boxHeight"
+                  [class.selected]="widget.selected" />
             <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle">
                 <tspan>{{widget.name}}</tspan>
             </text>

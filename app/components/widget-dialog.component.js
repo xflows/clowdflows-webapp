@@ -19,10 +19,7 @@ var WidgetDialogComponent = (function () {
         this.widget.showDialog = false;
     };
     WidgetDialogComponent.prototype.apply = function () {
-        for (var _i = 0, _a = this.widget.parameters; _i < _a.length; _i++) {
-            var parameter = _a[_i];
-            this.clowdflowsDataService.saveParameter(parameter);
-        }
+        this.clowdflowsDataService.saveParameters(this.widget);
         this.widget.showDialog = false;
     };
     WidgetDialogComponent.prototype.onCheckboxChange = function (parameter, event) {

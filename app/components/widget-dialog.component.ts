@@ -19,9 +19,7 @@ export class WidgetDialogComponent {
     }
 
     apply() {
-        for (let parameter of this.widget.parameters) {
-            this.clowdflowsDataService.saveParameter(parameter);
-        }
+        this.clowdflowsDataService.saveParameters(this.widget);
         this.widget.showDialog = false;
     }
 

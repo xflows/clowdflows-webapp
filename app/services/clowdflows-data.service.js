@@ -71,8 +71,6 @@ var ClowdFlowsDataService = (function () {
         var workflow = new workflow_1.Workflow(data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
         return workflow;
     };
-    ClowdFlowsDataService.runWorkflow = function (response) {
-    };
     ClowdFlowsDataService.prototype.saveWidget = function (widget) {
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
@@ -82,10 +80,27 @@ var ClowdFlowsDataService = (function () {
             .then(function (response) { return response.json(); })
             .catch(this.handleError);
     };
-    ClowdFlowsDataService.prototype.saveParameter = function (parameter) {
+    ClowdFlowsDataService.prototype.saveWidgetPosition = function (widget) {
         var headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .put(parameter.url, JSON.stringify({ value: parameter.deserialized_value }), { headers: headers })
+            .patch(widget.url, JSON.stringify({ url: widget.url, x: widget.x, y: widget.y }), { headers: headers })
+            .toPromise()
+            .then(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
+    ClowdFlowsDataService.prototype.saveParameters = function (widget) {
+        var headers = this.getAuthTokenHeaders();
+        var parameters = [];
+        for (var _i = 0, _a = widget.parameters; _i < _a.length; _i++) {
+            var param = _a[_i];
+            parameters.push({
+                'id': param.id,
+                'value': param.deserialized_value
+            });
+        }
+        return this.http
+            .patch(widget.url + "save-parameters/", JSON.stringify(parameters), { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(this.handleError);

@@ -1,6 +1,7 @@
 import {Option} from "./option";
 export class Input {
     constructor(
+        public id:number,
         public url:string,
         public deserialized_value:any,
         public name:string,
