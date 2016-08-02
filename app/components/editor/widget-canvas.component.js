@@ -41,6 +41,34 @@ var WidgetCanvasComponent = (function () {
             widget.selected = false;
         }
     };
+    WidgetCanvasComponent.prototype.deleteSelectedWidgets = function () {
+        var _this = this;
+        var _loop_1 = function(widget) {
+            if (widget.selected) {
+                this_1.clowdflowsDataService
+                    .deleteWidget(widget)
+                    .then(function (result) {
+                    console.log(result);
+                    var idx = _this.workflow.widgets.indexOf(widget);
+                    _this.workflow.widgets.splice(idx, 1);
+                });
+            }
+        };
+        var this_1 = this;
+        for (var _i = 0, _a = this.workflow.widgets; _i < _a.length; _i++) {
+            var widget = _a[_i];
+            _loop_1(widget);
+        }
+    };
+    WidgetCanvasComponent.prototype.handleShortcuts = function (event) {
+        console.log(event);
+        if (event.keyCode == 46) {
+            // Check that it doesn't come from an input field
+            if (event.srcElement.localName != "input") {
+                this.deleteSelectedWidgets();
+            }
+        }
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Object)

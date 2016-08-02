@@ -1,4 +1,4 @@
-<div id="widget-canvas">
+<div id="widget-canvas" (body:keyup)="handleShortcuts($event)">
     <svg id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" (click)="unselectWidgets()">
         <g class="widget noselect" *ngFor="let widget of workflow.widgets"
            draggable

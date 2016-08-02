@@ -81,6 +81,15 @@ var ClowdFlowsDataService = (function () {
             .then(function (response) { return response.json(); })
             .catch(this.handleError);
     };
+    ClowdFlowsDataService.prototype.deleteWidget = function (widget) {
+        var headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .delete(widget.url, { headers: headers })
+            .toPromise()
+            .then(function (result) { return result; })
+            .catch(this.handleError);
+    };
     ClowdFlowsDataService.prototype.saveWidgetPosition = function (widget) {
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction

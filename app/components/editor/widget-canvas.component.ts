@@ -14,7 +14,8 @@ export class WidgetCanvasComponent {
     @Input() workflow:any;
     ui_constants = UI;
 
-    constructor(private clowdflowsDataService:ClowdFlowsDataService) { }
+    constructor(private clowdflowsDataService:ClowdFlowsDataService) {
+    }
 
     move(position, widget) {
         widget.x = position.x;
@@ -41,6 +42,32 @@ export class WidgetCanvasComponent {
     unselectWidgets() {
         for (let widget of this.workflow.widgets) {
             widget.selected = false;
+        }
+    }
+
+    deleteSelectedWidgets() {
+        for (let widget of this.workflow.widgets) {
+            if (widget.selected) {
+                this.clowdflowsDataService
+                    .deleteWidget(widget)
+                    .then(
+                        (result) => {
+                            console.log(result);
+                            let idx = this.workflow.widgets.indexOf(widget);
+                            this.workflow.widgets.splice(idx, 1);
+                        }
+                    )
+            }
+        }
+    }
+
+    handleShortcuts(event) {
+        console.log(event);
+        if (event.keyCode == 46) {  // Delete
+            // Check that it doesn't come from an input field
+            if (event.srcElement.localName != "input") {
+                this.deleteSelectedWidgets();
+            }
         }
     }
 }
