@@ -10,11 +10,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var editor_component_1 = require("./editor.component");
+var editor_component_1 = require("./editor/editor.component");
 var clowdflows_data_service_1 = require('../services/clowdflows-data.service');
+var user_service_1 = require("../services/user.service");
 var AppComponent = (function () {
-    function AppComponent(viewContainerRef) {
+    function AppComponent(viewContainerRef, userService, router) {
         this.viewContainerRef = viewContainerRef;
+        this.userService = userService;
+        this.router = router;
     }
     AppComponent = __decorate([
         core_1.Component({
@@ -24,7 +27,7 @@ var AppComponent = (function () {
             providers: [clowdflows_data_service_1.ClowdFlowsDataService],
             precompile: [editor_component_1.EditorComponent]
         }), 
-        __metadata('design:paramtypes', [core_1.ViewContainerRef])
+        __metadata('design:paramtypes', [core_1.ViewContainerRef, user_service_1.UserService, router_1.Router])
     ], AppComponent);
     return AppComponent;
 }());

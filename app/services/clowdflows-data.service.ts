@@ -5,7 +5,6 @@ import {API_ENDPOINT, TEST_TOKEN} from "../config";
 import {Category} from "../models/category";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
-import {Input} from "../models/input";
 
 @Injectable()
 export class ClowdFlowsDataService {
@@ -19,8 +18,9 @@ export class ClowdFlowsDataService {
 
     getAuthTokenHeaders():Headers {
         let headers = new Headers();
+        let auth_token = localStorage.getItem('auth_token');
         headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', `Token ${TEST_TOKEN}`);
+        headers.append('Authorization', `Token ${auth_token}`);
         return headers;
     }
 

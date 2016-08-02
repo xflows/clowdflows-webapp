@@ -23,8 +23,9 @@ var ClowdFlowsDataService = (function () {
     }
     ClowdFlowsDataService.prototype.getAuthTokenHeaders = function () {
         var headers = new http_1.Headers();
+        var auth_token = localStorage.getItem('auth_token');
         headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', "Token " + config_1.TEST_TOKEN);
+        headers.append('Authorization', "Token " + auth_token);
         return headers;
     };
     ClowdFlowsDataService.prototype.getWidgetLibrary = function () {
