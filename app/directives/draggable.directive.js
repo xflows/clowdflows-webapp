@@ -39,8 +39,10 @@ var Draggable = (function () {
         this.mouseOffsetY = mousePosition.y - widgetCorner.y;
     };
     Draggable.prototype.onMouseUp = function (event) {
-        this.mouseDown = false;
-        this.endMoveRequest.emit("");
+        if (this.mouseDown) {
+            this.mouseDown = false;
+            this.endMoveRequest.emit("");
+        }
     };
     Draggable.prototype.onMouseMove = function (event) {
         if (!this.mouseDown)

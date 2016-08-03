@@ -5,6 +5,7 @@ import {API_ENDPOINT, TEST_TOKEN} from "../config";
 import {Category} from "../models/category";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
+import {Connection} from "../models/connection";
 
 @Injectable()
 export class ClowdFlowsDataService {
@@ -117,6 +118,16 @@ export class ClowdFlowsDataService {
             .patch(`${widget.url}save-parameters/`, JSON.stringify(parameters), {headers})
             .toPromise()
             .then(response => response.json())
+            .catch(this.handleError);
+    }
+
+    deleteConnection(conn:Connection) {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .delete(conn.url, {headers})
+            .toPromise()
+            .then(result => result)
             .catch(this.handleError);
     }
 }

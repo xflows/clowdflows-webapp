@@ -45,23 +45,37 @@ var WidgetCanvasComponent = (function () {
         var _this = this;
         var _loop_1 = function(widget) {
             if (widget.selected) {
+                // Delete the connections
+                var _loop_2 = function(conn) {
+                    if (conn.input_widget == widget || conn.output_widget == widget) {
+                        this_1.clowdflowsDataService
+                            .deleteConnection(conn)
+                            .then(function (result) {
+                            var idx = _this.workflow.connections.indexOf(conn);
+                            _this.workflow.connections.splice(idx, 1);
+                        });
+                    }
+                };
+                for (var _i = 0, _a = this_1.workflow.connections; _i < _a.length; _i++) {
+                    var conn = _a[_i];
+                    _loop_2(conn);
+                }
+                // Delete the widget
                 this_1.clowdflowsDataService
                     .deleteWidget(widget)
                     .then(function (result) {
-                    console.log(result);
                     var idx = _this.workflow.widgets.indexOf(widget);
                     _this.workflow.widgets.splice(idx, 1);
                 });
             }
         };
         var this_1 = this;
-        for (var _i = 0, _a = this.workflow.widgets; _i < _a.length; _i++) {
-            var widget = _a[_i];
+        for (var _b = 0, _c = this.workflow.widgets; _b < _c.length; _b++) {
+            var widget = _c[_b];
             _loop_1(widget);
         }
     };
     WidgetCanvasComponent.prototype.handleShortcuts = function (event) {
-        console.log(event);
         if (event.keyCode == 46) {
             // Check that it doesn't come from an input field
             if (event.srcElement.localName != "input") {

@@ -115,6 +115,15 @@ var ClowdFlowsDataService = (function () {
             .then(function (response) { return response.json(); })
             .catch(this.handleError);
     };
+    ClowdFlowsDataService.prototype.deleteConnection = function (conn) {
+        var headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .delete(conn.url, { headers: headers })
+            .toPromise()
+            .then(function (result) { return result; })
+            .catch(this.handleError);
+    };
     ClowdFlowsDataService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

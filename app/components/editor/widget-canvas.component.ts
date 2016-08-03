@@ -48,21 +48,33 @@ export class WidgetCanvasComponent {
     deleteSelectedWidgets() {
         for (let widget of this.workflow.widgets) {
             if (widget.selected) {
+                // Delete the connections
+                for(let conn of this.workflow.connections) {
+                    if (conn.input_widget == widget || conn.output_widget == widget) {
+                        this.clowdflowsDataService
+                            .deleteConnection(conn)
+                            .then(
+                                (result) => {
+                                    let idx = this.workflow.connections.indexOf(conn);
+                                    this.workflow.connections.splice(idx, 1);
+                                }
+                            );
+                    }
+                }
+                // Delete the widget
                 this.clowdflowsDataService
                     .deleteWidget(widget)
                     .then(
                         (result) => {
-                            console.log(result);
                             let idx = this.workflow.widgets.indexOf(widget);
                             this.workflow.widgets.splice(idx, 1);
                         }
-                    )
+                    );
             }
         }
     }
 
     handleShortcuts(event) {
-        console.log(event);
         if (event.keyCode == 46) {  // Delete
             // Check that it doesn't come from an input field
             if (event.srcElement.localName != "input") {

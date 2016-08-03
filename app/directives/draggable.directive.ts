@@ -47,8 +47,10 @@ export class Draggable {
     }
 
     onMouseUp(event) {
-        this.mouseDown = false;
-        this.endMoveRequest.emit("");
+        if (this.mouseDown) {
+            this.mouseDown = false;
+            this.endMoveRequest.emit("");
+        }
     }
 
     onMouseMove(event) {
