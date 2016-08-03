@@ -8,6 +8,7 @@ export class Connection {
 
     output:Output;
     input:Input;
+    selected:boolean = false;
 
     constructor(public url:string,
                 public output_widget:Widget,

@@ -31,17 +31,21 @@ var WidgetCanvasComponent = (function () {
     WidgetCanvasComponent.prototype.showDialog = function (widget) {
         widget.showDialog = true;
     };
-    WidgetCanvasComponent.prototype.select = function (event, widget) {
-        widget.selected = true;
+    WidgetCanvasComponent.prototype.select = function (event, object) {
+        object.selected = true;
         event.stopPropagation();
     };
-    WidgetCanvasComponent.prototype.unselectWidgets = function () {
+    WidgetCanvasComponent.prototype.unselectObjects = function () {
         for (var _i = 0, _a = this.workflow.widgets; _i < _a.length; _i++) {
             var widget = _a[_i];
             widget.selected = false;
         }
+        for (var _b = 0, _c = this.workflow.connections; _b < _c.length; _b++) {
+            var conn = _c[_b];
+            conn.selected = false;
+        }
     };
-    WidgetCanvasComponent.prototype.deleteSelectedWidgets = function () {
+    WidgetCanvasComponent.prototype.deleteSelectedObjects = function () {
         var _this = this;
         var _loop_1 = function(widget) {
             if (widget.selected) {
@@ -74,12 +78,27 @@ var WidgetCanvasComponent = (function () {
             var widget = _c[_b];
             _loop_1(widget);
         }
+        var _loop_3 = function(conn) {
+            if (conn.selected) {
+                this_2.clowdflowsDataService
+                    .deleteConnection(conn)
+                    .then(function (result) {
+                    var idx = _this.workflow.connections.indexOf(conn);
+                    _this.workflow.connections.splice(idx, 1);
+                });
+            }
+        };
+        var this_2 = this;
+        for (var _d = 0, _e = this.workflow.connections; _d < _e.length; _d++) {
+            var conn = _e[_d];
+            _loop_3(conn);
+        }
     };
     WidgetCanvasComponent.prototype.handleShortcuts = function (event) {
         if (event.keyCode == 46) {
             // Check that it doesn't come from an input field
             if (event.srcElement.localName != "input") {
-                this.deleteSelectedWidgets();
+                this.deleteSelectedObjects();
             }
         }
     };

@@ -6,6 +6,7 @@ var Connection = (function () {
         this.output_widget = output_widget;
         this.input_widget = input_widget;
         this.workflow = workflow;
+        this.selected = false;
         this.output = output_widget.outputs.find(function (outputObj) { return outputObj.url == output; });
         this.input = input_widget.inputs.find(function (inputObj) { return inputObj.url == input; });
     }

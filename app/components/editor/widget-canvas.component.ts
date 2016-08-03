@@ -34,18 +34,21 @@ export class WidgetCanvasComponent {
         widget.showDialog = true;
     }
 
-    select(event, widget) {
-        widget.selected = true;
+    select(event, object) {
+        object.selected = true;
         event.stopPropagation();
     }
 
-    unselectWidgets() {
+    unselectObjects() {
         for (let widget of this.workflow.widgets) {
             widget.selected = false;
         }
+        for (let conn of this.workflow.connections) {
+            conn.selected = false;
+        }
     }
 
-    deleteSelectedWidgets() {
+    deleteSelectedObjects() {
         for (let widget of this.workflow.widgets) {
             if (widget.selected) {
                 // Delete the connections
@@ -72,13 +75,26 @@ export class WidgetCanvasComponent {
                     );
             }
         }
+
+        for(let conn of this.workflow.connections) {
+            if (conn.selected) {
+                this.clowdflowsDataService
+                    .deleteConnection(conn)
+                    .then(
+                        (result) => {
+                            let idx = this.workflow.connections.indexOf(conn);
+                            this.workflow.connections.splice(idx, 1);
+                        }
+                    );
+            }
+        }
     }
 
     handleShortcuts(event) {
         if (event.keyCode == 46) {  // Delete
             // Check that it doesn't come from an input field
             if (event.srcElement.localName != "input") {
-                this.deleteSelectedWidgets();
+                this.deleteSelectedObjects();
             }
         }
     }

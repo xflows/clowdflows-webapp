@@ -73,3 +73,6 @@
 #widget-canvas .connection path {
   stroke: #a3a3a3;
 }
+#widget-canvas .connection.selected path {
+  stroke: #ffe45c;
+}
