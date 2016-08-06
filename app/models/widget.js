@@ -3,7 +3,8 @@ var output_1 = require("./output");
 var input_1 = require("./input");
 var ui_constants_1 = require("../services/ui-constants");
 var Widget = (function () {
-    function Widget(url, x, y, name, finished, error, running, interaction_waiting, type, progress, inputs, parameters, outputs) {
+    function Widget(id, url, x, y, name, finished, error, running, interaction_waiting, type, progress, inputs, parameters, outputs) {
+        this.id = id;
         this.url = url;
         this.x = x;
         this.y = y;

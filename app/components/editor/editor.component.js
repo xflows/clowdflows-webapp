@@ -28,12 +28,25 @@ var EditorComponent = (function () {
     EditorComponent.prototype.runWorkflow = function () {
         this.clowdflowsDataService.runWorkflow(this.workflow);
     };
+    EditorComponent.prototype.receiveWorkflowUpdate = function (data) {
+        var widget = this.workflow.widgets.find(function (widgetObj) { return widgetObj.id == data.widget_pk; });
+        console.log(widget, data.widget_pk, data);
+        widget.finished = data.status.finished;
+        widget.error = data.status.error;
+        widget.running = data.status.running;
+        widget.interaction_waiting = data.status.interaction_waiting;
+    };
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.sub = this.route.params.subscribe(function (params) {
             var id = +params['id'];
             _this.clowdflowsDataService.getWorkflow(id)
-                .then(function (workflow) { return _this.workflow = workflow; });
+                .then(function (workflow) {
+                _this.workflow = workflow;
+                _this.clowdflowsDataService.workflowUpdates(function (data) {
+                    _this.receiveWorkflowUpdate(data);
+                }, workflow);
+            });
         });
     };
     EditorComponent.prototype.ngOnDestroy = function () {

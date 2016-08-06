@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
-import {API_ENDPOINT, TEST_TOKEN} from "../config";
+import {API_ENDPOINT, TEST_TOKEN, DOMAIN} from "../config";
 import {Category} from "../models/category";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
@@ -70,7 +70,7 @@ export class ClowdFlowsDataService {
 
     static parseWorkflow(response):Workflow {
         let data = response.json();
-        let workflow = new Workflow(data.url, data.widgets, data.connections, data.is_subprocess, data.name,
+        let workflow = new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
                                     data.public, data.description, data.widget, data.template_parent);
         return workflow;
     }
@@ -129,5 +129,12 @@ export class ClowdFlowsDataService {
             .toPromise()
             .then(result => result)
             .catch(this.handleError);
+    }
+
+    workflowUpdates(onUpdateCallback, workflow:Workflow) {
+        let socket = new WebSocket(`ws://${DOMAIN}/workflow-updates/?workflow_pk=`+workflow.id);
+        socket.onmessage = function(e) {
+            onUpdateCallback(JSON.parse(e.data));
+        }
     }
 }

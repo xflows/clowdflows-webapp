@@ -2,7 +2,8 @@
 var widget_1 = require("./widget");
 var connection_1 = require("./connection");
 var Workflow = (function () {
-    function Workflow(url, widgets, connections, is_subprocess, name, is_public, description, widget, template_parent) {
+    function Workflow(id, url, widgets, connections, is_subprocess, name, is_public, description, widget, template_parent) {
+        this.id = id;
         this.url = url;
         this.is_subprocess = is_subprocess;
         this.name = name;
@@ -13,7 +14,7 @@ var Workflow = (function () {
         this.widgets = new Array();
         for (var _i = 0, widgets_1 = widgets; _i < widgets_1.length; _i++) {
             var widget_2 = widgets_1[_i];
-            this.widgets.push(new widget_1.Widget(widget_2.url, widget_2.x, widget_2.y, widget_2.name, widget_2.finished, widget_2.error, widget_2.runing, widget_2.interaction_waiting, widget_2.type, widget_2.progress, widget_2.inputs, widget_2.parameters, widget_2.outputs));
+            this.widgets.push(new widget_1.Widget(widget_2.id, widget_2.url, widget_2.x, widget_2.y, widget_2.name, widget_2.finished, widget_2.error, widget_2.runing, widget_2.interaction_waiting, widget_2.type, widget_2.progress, widget_2.inputs, widget_2.parameters, widget_2.outputs));
         }
         this.connections = new Array();
         var _loop_1 = function(connection) {

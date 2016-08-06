@@ -69,7 +69,7 @@ var ClowdFlowsDataService = (function () {
     };
     ClowdFlowsDataService.parseWorkflow = function (response) {
         var data = response.json();
-        var workflow = new workflow_1.Workflow(data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
+        var workflow = new workflow_1.Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
         return workflow;
     };
     ClowdFlowsDataService.prototype.saveWidget = function (widget) {
@@ -123,6 +123,12 @@ var ClowdFlowsDataService = (function () {
             .toPromise()
             .then(function (result) { return result; })
             .catch(this.handleError);
+    };
+    ClowdFlowsDataService.prototype.workflowUpdates = function (onUpdateCallback, workflow) {
+        var socket = new WebSocket(("ws://" + config_1.DOMAIN + "/workflow-updates/?workflow_pk=") + workflow.id);
+        socket.onmessage = function (e) {
+            onUpdateCallback(JSON.parse(e.data));
+        };
     };
     ClowdFlowsDataService = __decorate([
         core_1.Injectable(), 

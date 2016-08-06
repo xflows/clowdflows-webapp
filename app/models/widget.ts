@@ -11,6 +11,7 @@ export class Widget {
     selected:boolean = false;
 
     constructor(
+        public id:number,
         public url:string,
         public x:number,
         public y:number,

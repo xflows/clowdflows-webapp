@@ -2,10 +2,11 @@ import {Widget} from "./widget";
 import {Connection} from "./connection";
 export class Workflow {
 
-    widgets:Widget[];
-    connections:Connection[];
+    public widgets:Widget[];
+    public connections:Connection[];
 
     constructor(
+        public id:number,
         public url:string,
         widgets:any[],
         connections:any[],
@@ -18,7 +19,7 @@ export class Workflow {
     ) {
         this.widgets = new Array<Widget>();
         for (let widget of widgets) {
-            this.widgets.push(new Widget(widget.url, widget.x, widget.y, widget.name, widget.finished, widget.error,
+            this.widgets.push(new Widget(widget.id, widget.url, widget.x, widget.y, widget.name, widget.finished, widget.error,
                                          widget.runing, widget.interaction_waiting, widget.type, widget.progress,
                                          widget.inputs, widget.parameters, widget.outputs));
         }

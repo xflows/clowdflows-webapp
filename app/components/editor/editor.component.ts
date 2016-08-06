@@ -6,6 +6,7 @@ import {WidgetCanvasComponent} from "./widget-canvas.component";
 import {LoggingComponent} from "./logging.component";
 import {AbstractWidget} from "../../models/abstract-widget";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
+import {Workflow} from "../../models/workflow";
 
 @Component({
     selector: 'editor',
@@ -13,11 +14,11 @@ import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
     directives: [ToolbarComponent, WidgetTreeComponent, WidgetCanvasComponent, LoggingComponent]
 })
 export class EditorComponent implements OnInit, OnDestroy {
-    workflow = {};
-    sub: any;
+    workflow:any = {};
+    sub:any;
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
-                private route: ActivatedRoute) {
+                private route:ActivatedRoute) {
     }
 
     addWidgetToCanvas(abstractWidget:AbstractWidget) {
@@ -29,11 +30,24 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService.runWorkflow(this.workflow);
     }
 
+    receiveWorkflowUpdate(data) {
+        let widget = this.workflow.widgets.find(widgetObj => widgetObj.id == data.widget_pk);
+        widget.finished = data.status.finished;
+        widget.error = data.status.error;
+        widget.running = data.status.running;
+        widget.interaction_waiting = data.status.interaction_waiting;
+    }
+
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             let id = +params['id'];
             this.clowdflowsDataService.getWorkflow(id)
-                .then(workflow => this.workflow = workflow);
+                .then(workflow => {
+                    this.workflow = workflow;
+                    this.clowdflowsDataService.workflowUpdates((data) => {
+                        this.receiveWorkflowUpdate(data);
+                    }, workflow);
+                });
         });
     }
 
