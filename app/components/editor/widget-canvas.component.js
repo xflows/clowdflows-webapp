@@ -13,10 +13,15 @@ var ui_constants_1 = require("../../services/ui-constants");
 var draggable_directive_1 = require("../../directives/draggable.directive");
 var clowdflows_data_service_1 = require("../../services/clowdflows-data.service");
 var widget_dialog_component_1 = require("./widget-dialog.component");
+var output_1 = require("../../models/output");
+var input_1 = require("../../models/input");
+var connection_1 = require("../../models/connection");
 var WidgetCanvasComponent = (function () {
     function WidgetCanvasComponent(clowdflowsDataService) {
         this.clowdflowsDataService = clowdflowsDataService;
         this.ui_constants = ui_constants_1.UI;
+        this.selectedInput = null;
+        this.selectedOutput = null;
     }
     WidgetCanvasComponent.prototype.move = function (position, widget) {
         widget.x = position.x;
@@ -34,6 +39,28 @@ var WidgetCanvasComponent = (function () {
     WidgetCanvasComponent.prototype.select = function (event, object) {
         object.selected = true;
         event.stopPropagation();
+        if (object instanceof input_1.Input) {
+            if (this.selectedInput != null) {
+                this.selectedInput.selected = false;
+            }
+            this.selectedInput = object;
+        }
+        else if (object instanceof output_1.Output) {
+            if (this.selectedOutput != null) {
+                this.selectedOutput.selected = false;
+            }
+            this.selectedOutput = object;
+        }
+        if (object instanceof input_1.Input || object instanceof output_1.Output) {
+            if (this.selectedOutput != null && this.selectedInput != null) {
+                this.newConnection();
+            }
+        }
+    };
+    WidgetCanvasComponent.prototype.newConnection = function () {
+        var conn = new connection_1.Connection('', this.selectedOutput.widget, this.selectedInput.widget, this.selectedOutput.url, this.selectedInput.url, this.workflow);
+        this.clowdflowsDataService.addConnection(conn);
+        this.workflow.connections.push(conn);
     };
     WidgetCanvasComponent.prototype.unselectObjects = function () {
         for (var _i = 0, _a = this.workflow.widgets; _i < _a.length; _i++) {
@@ -43,6 +70,14 @@ var WidgetCanvasComponent = (function () {
         for (var _b = 0, _c = this.workflow.connections; _b < _c.length; _b++) {
             var conn = _c[_b];
             conn.selected = false;
+        }
+        if (this.selectedInput != null) {
+            this.selectedInput.selected = false;
+            this.selectedInput = null;
+        }
+        if (this.selectedOutput != null) {
+            this.selectedOutput.selected = false;
+            this.selectedOutput = null;
         }
     };
     WidgetCanvasComponent.prototype.deleteSelectedObjects = function () {

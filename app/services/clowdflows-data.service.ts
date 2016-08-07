@@ -13,6 +13,7 @@ export class ClowdFlowsDataService {
     widgetLibraryUrl = 'widget-library/';
     workflowsUrl = 'workflows/';
     inputsUrl = 'inputs/';
+    connectionsUrl = 'connections/';
 
     constructor(private http:Http) {
     }
@@ -71,7 +72,7 @@ export class ClowdFlowsDataService {
     static parseWorkflow(response):Workflow {
         let data = response.json();
         let workflow = new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
-                                    data.public, data.description, data.widget, data.template_parent);
+            data.public, data.description, data.widget, data.template_parent);
         return workflow;
     }
 
@@ -99,7 +100,7 @@ export class ClowdFlowsDataService {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .patch(widget.url, JSON.stringify({url: widget.url, x:widget.x, y:widget.y}), {headers})
+            .patch(widget.url, JSON.stringify({url: widget.url, x: widget.x, y: widget.y}), {headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -121,6 +122,21 @@ export class ClowdFlowsDataService {
             .catch(this.handleError);
     }
 
+    addConnection(conn:Connection) {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        let serializedConn = {
+            input: conn.input.url,
+            output: conn.output.url,
+            workflow: conn.workflow.url
+        };
+        return this.http
+            .post(`${API_ENDPOINT}${this.connectionsUrl}`, JSON.stringify(serializedConn), {headers})
+            .toPromise()
+            .then(result => conn.url = result.json().url)
+            .catch(this.handleError);
+    }
+
     deleteConnection(conn:Connection) {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
@@ -132,8 +148,8 @@ export class ClowdFlowsDataService {
     }
 
     workflowUpdates(onUpdateCallback, workflow:Workflow) {
-        let socket = new WebSocket(`ws://${DOMAIN}/workflow-updates/?workflow_pk=`+workflow.id);
-        socket.onmessage = function(e) {
+        let socket = new WebSocket(`ws://${DOMAIN}/workflow-updates/?workflow_pk=` + workflow.id);
+        socket.onmessage = function (e) {
             onUpdateCallback(JSON.parse(e.data));
         }
     }

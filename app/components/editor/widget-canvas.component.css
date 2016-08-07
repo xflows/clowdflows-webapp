@@ -64,6 +64,10 @@
   stroke-miterlimit: 4;
   stroke-dasharray: none;
 }
+#widget-canvas .widget .input.selected,
+#widget-canvas .widget .output.selected {
+  fill: #87ccde;
+}
 #widget-canvas .widget .widget-error-icon {
   fill: #ff572b;
 }

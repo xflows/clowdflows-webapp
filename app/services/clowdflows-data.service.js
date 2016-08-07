@@ -20,6 +20,7 @@ var ClowdFlowsDataService = (function () {
         this.widgetLibraryUrl = 'widget-library/';
         this.workflowsUrl = 'workflows/';
         this.inputsUrl = 'inputs/';
+        this.connectionsUrl = 'connections/';
     }
     ClowdFlowsDataService.prototype.getAuthTokenHeaders = function () {
         var headers = new http_1.Headers();
@@ -113,6 +114,20 @@ var ClowdFlowsDataService = (function () {
             .patch(widget.url + "save-parameters/", JSON.stringify(parameters), { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
+    ClowdFlowsDataService.prototype.addConnection = function (conn) {
+        var headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        var serializedConn = {
+            input: conn.input.url,
+            output: conn.output.url,
+            workflow: conn.workflow.url
+        };
+        return this.http
+            .post("" + config_1.API_ENDPOINT + this.connectionsUrl, JSON.stringify(serializedConn), { headers: headers })
+            .toPromise()
+            .then(function (result) { return conn.url = result.json().url; })
             .catch(this.handleError);
     };
     ClowdFlowsDataService.prototype.deleteConnection = function (conn) {

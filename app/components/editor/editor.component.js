@@ -30,7 +30,6 @@ var EditorComponent = (function () {
     };
     EditorComponent.prototype.receiveWorkflowUpdate = function (data) {
         var widget = this.workflow.widgets.find(function (widgetObj) { return widgetObj.id == data.widget_pk; });
-        console.log(widget, data.widget_pk, data);
         widget.finished = data.status.finished;
         widget.error = data.status.error;
         widget.running = data.status.running;

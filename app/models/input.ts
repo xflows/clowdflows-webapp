@@ -1,5 +1,9 @@
 import {Option} from "./option";
+import {Widget} from "./widget";
 export class Input {
+
+    public selected:boolean = false;
+
     constructor(
         public id:number,
         public url:string,
@@ -15,7 +19,8 @@ export class Input {
         public order:number,
         public inner_output:string,
         public outer_output:string,
-        public options:Option[]
+        public options:Option[],
+        public widget:Widget
     ) {
 
     }
