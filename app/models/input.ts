@@ -1,8 +1,10 @@
 import {Option} from "./option";
 import {Widget} from "./widget";
+import {Connection} from "./connection";
 export class Input {
 
     public selected:boolean = false;
+    public connection:Connection = null;
 
     constructor(
         public id:number,

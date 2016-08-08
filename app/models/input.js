@@ -18,6 +18,7 @@ var Input = (function () {
         this.options = options;
         this.widget = widget;
         this.selected = false;
+        this.connection = null;
     }
     Object.defineProperty(Input.prototype, "x", {
         get: function () {

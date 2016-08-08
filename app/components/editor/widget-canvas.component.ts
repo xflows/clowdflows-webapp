@@ -56,7 +56,8 @@ export class WidgetCanvasComponent {
         }
 
         if (object instanceof WorkflowInput || object instanceof WorkflowOutput) {
-            if (this.selectedOutput != null && this.selectedInput != null) {
+            if (this.selectedOutput != null && this.selectedInput != null &&
+                this.selectedInput.connection == null) {
                 this.newConnection();
             }
         }
@@ -67,10 +68,8 @@ export class WidgetCanvasComponent {
             this.selectedOutput.url, this.selectedInput.url, this.workflow);
         this.clowdflowsDataService.addConnection(conn);
         this.workflow.connections.push(conn);
-        this.selectedOutput.selected = false;
-        this.selectedOutput = null;
-        this.selectedInput.selected = false;
-        this.selectedInput = null;
+        this.selectedInput.connection = conn;
+        this.unselectSignals();
     }
 
     unselectObjects() {
@@ -80,6 +79,10 @@ export class WidgetCanvasComponent {
         for (let conn of this.workflow.connections) {
             conn.selected = false;
         }
+        this.unselectSignals();
+    }
+
+    unselectSignals() {
         if (this.selectedInput != null) {
             this.selectedInput.selected = false;
             this.selectedInput = null;

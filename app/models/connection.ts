@@ -18,6 +18,7 @@ export class Connection {
                 public workflow:Workflow) {
         this.output = output_widget.outputs.find(outputObj => outputObj.url == output);
         this.input = input_widget.inputs.find(inputObj => inputObj.url == input);
+        this.input.connection = this;
     }
 
     get bezierPoints():string {

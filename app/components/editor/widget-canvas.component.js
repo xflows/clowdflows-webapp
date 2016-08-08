@@ -52,7 +52,8 @@ var WidgetCanvasComponent = (function () {
             this.selectedOutput = object;
         }
         if (object instanceof input_1.Input || object instanceof output_1.Output) {
-            if (this.selectedOutput != null && this.selectedInput != null) {
+            if (this.selectedOutput != null && this.selectedInput != null &&
+                this.selectedInput.connection == null) {
                 this.newConnection();
             }
         }
@@ -61,6 +62,8 @@ var WidgetCanvasComponent = (function () {
         var conn = new connection_1.Connection('', this.selectedOutput.widget, this.selectedInput.widget, this.selectedOutput.url, this.selectedInput.url, this.workflow);
         this.clowdflowsDataService.addConnection(conn);
         this.workflow.connections.push(conn);
+        this.selectedInput.connection = conn;
+        this.unselectSignals();
     };
     WidgetCanvasComponent.prototype.unselectObjects = function () {
         for (var _i = 0, _a = this.workflow.widgets; _i < _a.length; _i++) {
@@ -71,6 +74,9 @@ var WidgetCanvasComponent = (function () {
             var conn = _c[_b];
             conn.selected = false;
         }
+        this.unselectSignals();
+    };
+    WidgetCanvasComponent.prototype.unselectSignals = function () {
         if (this.selectedInput != null) {
             this.selectedInput.selected = false;
             this.selectedInput = null;
