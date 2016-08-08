@@ -8,6 +8,9 @@ import {AbstractWidget} from "../../models/abstract-widget";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {Workflow} from "../../models/workflow";
 import {Connection} from "../../models/connection";
+import {Widget} from "../../models/widget";
+import {Input as WorkflowInput} from "../../models/input";
+import {Output as WorkflowOutput} from "../../models/output";
 
 @Component({
     selector: 'editor',
@@ -15,7 +18,7 @@ import {Connection} from "../../models/connection";
     directives: [ToolbarComponent, WidgetTreeComponent, WidgetCanvasComponent, LoggingComponent]
 })
 export class EditorComponent implements OnInit, OnDestroy {
-    @ViewChild(WidgetCanvasComponent) canvasComponent: WidgetCanvasComponent
+    @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent
     workflow:any = {};
     sub:any;
 
@@ -24,8 +27,39 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     addWidget(abstractWidget:AbstractWidget) {
-        // TODO: construct actual Widget from AbstractWidget here and call data service to save.
         console.log(abstractWidget.name);
+        let x = 50,
+            y = 50;
+        let inputs = new Array<WorkflowInput>();
+        let parameters = new Array<WorkflowInput>();
+        let outputs = new Array<WorkflowOutput>();
+        let widget = new Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0,
+            inputs, parameters, outputs);
+        let inputOrder = 1,
+            parameterOrder = 1;
+        for (let input of abstractWidget.inputs) {
+            let order = input.parameter ? parameterOrder : inputOrder;
+            let inputObj = new WorkflowInput(-1, '', null, input.name, input.short_name, input.description,
+                input.variable, input.required, input.parameter, -1, input.parameter_type, order,
+                null, null, input.options, widget);
+            if (input.parameter) {
+                parameters.push(inputObj);
+                inputOrder++;
+            } else {
+                inputs.push(inputObj);
+                parameterOrder++;
+            }
+        }
+        for (let output of abstractWidget.outputs) {
+            outputs.push(new WorkflowOutput('', null, output.name, output.short_name, output.description,
+                output.variable, output.order, null, null, widget));
+        }
+        widget.inputs = inputs;
+        widget.parameters = parameters;
+        widget.outputs = outputs;
+        this.workflow.widgets.push(widget);
+
+        // TODO save to db
     }
 
     addConnection() {

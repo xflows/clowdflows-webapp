@@ -16,6 +16,9 @@ var widget_canvas_component_1 = require("./widget-canvas.component");
 var logging_component_1 = require("./logging.component");
 var clowdflows_data_service_1 = require("../../services/clowdflows-data.service");
 var connection_1 = require("../../models/connection");
+var widget_1 = require("../../models/widget");
+var input_1 = require("../../models/input");
+var output_1 = require("../../models/output");
 var EditorComponent = (function () {
     function EditorComponent(clowdflowsDataService, route) {
         this.clowdflowsDataService = clowdflowsDataService;
@@ -23,8 +26,35 @@ var EditorComponent = (function () {
         this.workflow = {};
     }
     EditorComponent.prototype.addWidget = function (abstractWidget) {
-        // TODO: construct actual Widget from AbstractWidget here and call data service to save.
         console.log(abstractWidget.name);
+        var x = 50, y = 50;
+        var inputs = new Array();
+        var parameters = new Array();
+        var outputs = new Array();
+        var widget = new widget_1.Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0, inputs, parameters, outputs);
+        var inputOrder = 1, parameterOrder = 1;
+        for (var _i = 0, _a = abstractWidget.inputs; _i < _a.length; _i++) {
+            var input = _a[_i];
+            var order = input.parameter ? parameterOrder : inputOrder;
+            var inputObj = new input_1.Input(-1, '', null, input.name, input.short_name, input.description, input.variable, input.required, input.parameter, -1, input.parameter_type, order, null, null, input.options, widget);
+            if (input.parameter) {
+                parameters.push(inputObj);
+                inputOrder++;
+            }
+            else {
+                inputs.push(inputObj);
+                parameterOrder++;
+            }
+        }
+        for (var _b = 0, _c = abstractWidget.outputs; _b < _c.length; _b++) {
+            var output = _c[_b];
+            outputs.push(new output_1.Output('', null, output.name, output.short_name, output.description, output.variable, output.order, null, null, widget));
+        }
+        widget.inputs = inputs;
+        widget.parameters = parameters;
+        widget.outputs = outputs;
+        this.workflow.widgets.push(widget);
+        // TODO save to db
     };
     EditorComponent.prototype.addConnection = function () {
         var selectedInput = this.canvasComponent.selectedInput;
