@@ -15,15 +15,24 @@ var widget_tree_component_1 = require("./widget-tree.component");
 var widget_canvas_component_1 = require("./widget-canvas.component");
 var logging_component_1 = require("./logging.component");
 var clowdflows_data_service_1 = require("../../services/clowdflows-data.service");
+var connection_1 = require("../../models/connection");
 var EditorComponent = (function () {
     function EditorComponent(clowdflowsDataService, route) {
         this.clowdflowsDataService = clowdflowsDataService;
         this.route = route;
         this.workflow = {};
     }
-    EditorComponent.prototype.addWidgetToCanvas = function (abstractWidget) {
+    EditorComponent.prototype.addWidget = function (abstractWidget) {
         // TODO: construct actual Widget from AbstractWidget here and call data service to save.
         console.log(abstractWidget.name);
+    };
+    EditorComponent.prototype.addConnection = function () {
+        var selectedInput = this.canvasComponent.selectedInput;
+        var selectedOutput = this.canvasComponent.selectedOutput;
+        var conn = new connection_1.Connection('', selectedOutput.widget, selectedInput.widget, selectedOutput.url, selectedInput.url, this.workflow);
+        this.clowdflowsDataService.addConnection(conn);
+        this.workflow.connections.push(conn);
+        selectedInput.connection = conn;
     };
     EditorComponent.prototype.runWorkflow = function () {
         this.clowdflowsDataService.runWorkflow(this.workflow);
@@ -51,6 +60,10 @@ var EditorComponent = (function () {
     EditorComponent.prototype.ngOnDestroy = function () {
         this.sub.unsubscribe();
     };
+    __decorate([
+        core_1.ViewChild(widget_canvas_component_1.WidgetCanvasComponent), 
+        __metadata('design:type', widget_canvas_component_1.WidgetCanvasComponent)
+    ], EditorComponent.prototype, "canvasComponent", void 0);
     EditorComponent = __decorate([
         core_1.Component({
             selector: 'editor',

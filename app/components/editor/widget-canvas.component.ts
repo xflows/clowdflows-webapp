@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {UI} from "../../services/ui-constants";
 import {Draggable} from "../../directives/draggable.directive";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
@@ -15,6 +15,7 @@ import {Connection} from "../../models/connection";
 })
 export class WidgetCanvasComponent {
     @Input() workflow:any;
+    @Output() addConnectionRequest = new EventEmitter();
     ui_constants = UI;
     selectedInput:WorkflowInput = null;
     selectedOutput:WorkflowOutput = null;
@@ -64,11 +65,7 @@ export class WidgetCanvasComponent {
     }
 
     newConnection() {
-        let conn = new Connection('', this.selectedOutput.widget, this.selectedInput.widget,
-            this.selectedOutput.url, this.selectedInput.url, this.workflow);
-        this.clowdflowsDataService.addConnection(conn);
-        this.workflow.connections.push(conn);
-        this.selectedInput.connection = conn;
+        this.addConnectionRequest.emit("");
         this.unselectSignals();
     }
 

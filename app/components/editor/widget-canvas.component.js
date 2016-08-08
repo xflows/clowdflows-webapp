@@ -15,10 +15,10 @@ var clowdflows_data_service_1 = require("../../services/clowdflows-data.service"
 var widget_dialog_component_1 = require("./widget-dialog.component");
 var output_1 = require("../../models/output");
 var input_1 = require("../../models/input");
-var connection_1 = require("../../models/connection");
 var WidgetCanvasComponent = (function () {
     function WidgetCanvasComponent(clowdflowsDataService) {
         this.clowdflowsDataService = clowdflowsDataService;
+        this.addConnectionRequest = new core_1.EventEmitter();
         this.ui_constants = ui_constants_1.UI;
         this.selectedInput = null;
         this.selectedOutput = null;
@@ -59,10 +59,7 @@ var WidgetCanvasComponent = (function () {
         }
     };
     WidgetCanvasComponent.prototype.newConnection = function () {
-        var conn = new connection_1.Connection('', this.selectedOutput.widget, this.selectedInput.widget, this.selectedOutput.url, this.selectedInput.url, this.workflow);
-        this.clowdflowsDataService.addConnection(conn);
-        this.workflow.connections.push(conn);
-        this.selectedInput.connection = conn;
+        this.addConnectionRequest.emit("");
         this.unselectSignals();
     };
     WidgetCanvasComponent.prototype.unselectObjects = function () {
@@ -147,6 +144,10 @@ var WidgetCanvasComponent = (function () {
         core_1.Input(), 
         __metadata('design:type', Object)
     ], WidgetCanvasComponent.prototype, "workflow", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "addConnectionRequest", void 0);
     WidgetCanvasComponent = __decorate([
         core_1.Component({
             selector: 'widget-canvas',

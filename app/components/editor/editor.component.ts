@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ToolbarComponent} from "./toolbar.component";
 import {WidgetTreeComponent} from "./widget-tree.component";
@@ -7,6 +7,7 @@ import {LoggingComponent} from "./logging.component";
 import {AbstractWidget} from "../../models/abstract-widget";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {Workflow} from "../../models/workflow";
+import {Connection} from "../../models/connection";
 
 @Component({
     selector: 'editor',
@@ -14,6 +15,7 @@ import {Workflow} from "../../models/workflow";
     directives: [ToolbarComponent, WidgetTreeComponent, WidgetCanvasComponent, LoggingComponent]
 })
 export class EditorComponent implements OnInit, OnDestroy {
+    @ViewChild(WidgetCanvasComponent) canvasComponent: WidgetCanvasComponent
     workflow:any = {};
     sub:any;
 
@@ -21,9 +23,19 @@ export class EditorComponent implements OnInit, OnDestroy {
                 private route:ActivatedRoute) {
     }
 
-    addWidgetToCanvas(abstractWidget:AbstractWidget) {
+    addWidget(abstractWidget:AbstractWidget) {
         // TODO: construct actual Widget from AbstractWidget here and call data service to save.
         console.log(abstractWidget.name);
+    }
+
+    addConnection() {
+        let selectedInput = this.canvasComponent.selectedInput;
+        let selectedOutput = this.canvasComponent.selectedOutput;
+        let conn = new Connection('', selectedOutput.widget, selectedInput.widget,
+            selectedOutput.url, selectedInput.url, this.workflow);
+        this.clowdflowsDataService.addConnection(conn);
+        this.workflow.connections.push(conn);
+        selectedInput.connection = conn;
     }
 
     runWorkflow() {

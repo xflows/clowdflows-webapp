@@ -1,4 +1,4 @@
 <toolbar (runWorkflowRequest)="runWorkflow()"></toolbar>
-<widget-tree (addWidgetRequest)="addWidgetToCanvas($event)"></widget-tree>
-<widget-canvas [workflow]="workflow"></widget-canvas>
+<widget-tree (addWidgetRequest)="addWidget($event)"></widget-tree>
+<widget-canvas [workflow]="workflow" (addConnectionRequest)="addConnection($event)"></widget-canvas>
 <logging></logging>
