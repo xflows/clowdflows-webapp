@@ -31,7 +31,7 @@ var EditorComponent = (function () {
         var inputs = new Array();
         var parameters = new Array();
         var outputs = new Array();
-        var widget = new widget_1.Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0, inputs, parameters, outputs);
+        var widget = new widget_1.Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0, abstractWidget.id, inputs, parameters, outputs, this.workflow);
         var inputOrder = 1, parameterOrder = 1;
         for (var _i = 0, _a = abstractWidget.inputs; _i < _a.length; _i++) {
             var input = _a[_i];
@@ -54,7 +54,8 @@ var EditorComponent = (function () {
         widget.parameters = parameters;
         widget.outputs = outputs;
         this.workflow.widgets.push(widget);
-        // TODO save to db
+        // Sync with server
+        this.clowdflowsDataService.addWidget(widget);
     };
     EditorComponent.prototype.addConnection = function () {
         var selectedInput = this.canvasComponent.selectedInput;

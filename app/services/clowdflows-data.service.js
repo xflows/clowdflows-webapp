@@ -20,6 +20,8 @@ var ClowdFlowsDataService = (function () {
         this.widgetLibraryUrl = 'widget-library/';
         this.workflowsUrl = 'workflows/';
         this.inputsUrl = 'inputs/';
+        this.outputsUrl = 'outputs/';
+        this.widgetsUrl = 'widgets/';
         this.connectionsUrl = 'connections/';
     }
     ClowdFlowsDataService.prototype.getAuthTokenHeaders = function () {
@@ -77,7 +79,7 @@ var ClowdFlowsDataService = (function () {
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .patch(widget.url, JSON.stringify(widget), { headers: headers })
+            .patch(widget.url, widget.toJSON(), { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(this.handleError);
@@ -119,16 +121,53 @@ var ClowdFlowsDataService = (function () {
     ClowdFlowsDataService.prototype.addConnection = function (conn) {
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
-        var serializedConn = {
-            input: conn.input.url,
-            output: conn.output.url,
-            workflow: conn.workflow.url
-        };
         return this.http
-            .post("" + config_1.API_ENDPOINT + this.connectionsUrl, JSON.stringify(serializedConn), { headers: headers })
+            .post("" + config_1.API_ENDPOINT + this.connectionsUrl, conn.toJSON(), { headers: headers })
             .toPromise()
             .then(function (result) { return conn.url = result.json().url; })
             .catch(this.handleError);
+    };
+    ClowdFlowsDataService.prototype.addWidget = function (widget) {
+        var _this = this;
+        var headers = this.getAuthTokenHeaders();
+        return this.http
+            .post("" + config_1.API_ENDPOINT + this.widgetsUrl, widget.toJSON(false), { headers: headers })
+            .toPromise()
+            .then(function (result) {
+            var data = result.json();
+            widget.url = data.url;
+            widget.id = data.id;
+            for (var _i = 0, _a = widget.inputs; _i < _a.length; _i++) {
+                var input = _a[_i];
+                _this.addInput(input);
+            }
+            for (var _b = 0, _c = widget.outputs; _b < _c.length; _b++) {
+                var output = _c[_b];
+                _this.addOutput(output);
+            }
+        });
+    };
+    ClowdFlowsDataService.prototype.addInput = function (input) {
+        var headers = this.getAuthTokenHeaders();
+        return this.http
+            .post("" + config_1.API_ENDPOINT + this.inputsUrl, input.toJSON(false), { headers: headers })
+            .toPromise()
+            .then(function (result) {
+            var data = result.json();
+            input.url = data.url;
+            input.id = data.id;
+        });
+    };
+    ClowdFlowsDataService.prototype.addOutput = function (output) {
+        var headers = this.getAuthTokenHeaders();
+        return this.http
+            .post("" + config_1.API_ENDPOINT + this.outputsUrl, output.toJSON(false), { headers: headers })
+            .toPromise()
+            .then(function (result) {
+            var data = result.json();
+            output.url = data.url;
+            // output.id = data.id;
+        });
     };
     ClowdFlowsDataService.prototype.deleteConnection = function (conn) {
         var headers = this.getAuthTokenHeaders();

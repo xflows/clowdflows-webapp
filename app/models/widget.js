@@ -3,7 +3,7 @@ var output_1 = require("./output");
 var input_1 = require("./input");
 var ui_constants_1 = require("../services/ui-constants");
 var Widget = (function () {
-    function Widget(id, url, x, y, name, finished, error, running, interaction_waiting, type, progress, inputs, parameters, outputs) {
+    function Widget(id, url, x, y, name, finished, error, running, interaction_waiting, type, progress, abstract_widget, inputs, parameters, outputs, workflow) {
         this.id = id;
         this.url = url;
         this.x = x;
@@ -15,6 +15,8 @@ var Widget = (function () {
         this.interaction_waiting = interaction_waiting;
         this.type = type;
         this.progress = progress;
+        this.abstract_widget = abstract_widget;
+        this.workflow = workflow;
         this.showDialog = false;
         this.selected = false;
         this.inputs = new Array();
@@ -49,6 +51,26 @@ var Widget = (function () {
         enumerable: true,
         configurable: true
     });
+    Widget.prototype.toJSON = function (withIds) {
+        if (withIds === void 0) { withIds = true; }
+        var serialized = {
+            workflow: this.workflow.url,
+            x: this.x,
+            y: this.y,
+            name: this.name,
+            abstract_widget: this.abstract_widget,
+            finished: this.finished,
+            error: this.error,
+            running: this.running,
+            interaction_waiting: this.interaction_waiting,
+            type: this.type,
+            progress: this.progress
+        };
+        if (withIds) {
+            serialized['id'] = this.id;
+        }
+        return JSON.stringify(serialized);
+    };
     return Widget;
 }());
 exports.Widget = Widget;

@@ -1,6 +1,7 @@
 import {Output} from "./output";
 import {Input} from "./input";
 import {UI} from "../services/ui-constants"
+import {Workflow} from "./workflow";
 
 export class Widget {
 
@@ -22,9 +23,11 @@ export class Widget {
         public interaction_waiting:boolean,
         public type:string,
         public progress:number,
+        public abstract_widget:number,
         inputs:any[],
         parameters:any[],
-        outputs:any[]
+        outputs:any[],
+        public workflow:Workflow
     ){
         this.inputs = new Array<Input>();
         for (let input of inputs) {
@@ -56,5 +59,25 @@ export class Widget {
 
     get labelY() {
         return this.boxHeight + 20;
+    }
+
+    toJSON(withIds:boolean = true) {
+        let serialized = {
+            workflow: this.workflow.url,
+            x: this.x,
+            y: this.y,
+            name: this.name,
+            abstract_widget: this.abstract_widget,
+            finished: this.finished,
+            error: this.error,
+            running: this.running,
+            interaction_waiting: this.interaction_waiting,
+            type: this.type,
+            progress: this.progress
+        };
+        if (withIds) {
+            serialized['id'] = this.id;
+        }
+        return JSON.stringify(serialized);
     }
 }

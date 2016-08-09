@@ -6,6 +6,8 @@ import {Category} from "../models/category";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
 import {Connection} from "../models/connection";
+import {Input as WorkflowInput} from "../models/input";
+import {Output as WorkflowOutput} from "../models/output";
 
 @Injectable()
 export class ClowdFlowsDataService {
@@ -13,6 +15,8 @@ export class ClowdFlowsDataService {
     widgetLibraryUrl = 'widget-library/';
     workflowsUrl = 'workflows/';
     inputsUrl = 'inputs/';
+    outputsUrl = 'outputs/';
+    widgetsUrl = 'widgets/';
     connectionsUrl = 'connections/';
 
     constructor(private http:Http) {
@@ -80,7 +84,7 @@ export class ClowdFlowsDataService {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .patch(widget.url, JSON.stringify(widget), {headers})
+            .patch(widget.url, widget.toJSON(), {headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -125,16 +129,53 @@ export class ClowdFlowsDataService {
     addConnection(conn:Connection) {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
-        let serializedConn = {
-            input: conn.input.url,
-            output: conn.output.url,
-            workflow: conn.workflow.url
-        };
         return this.http
-            .post(`${API_ENDPOINT}${this.connectionsUrl}`, JSON.stringify(serializedConn), {headers})
+            .post(`${API_ENDPOINT}${this.connectionsUrl}`, conn.toJSON(), {headers})
             .toPromise()
             .then(result => conn.url = result.json().url)
             .catch(this.handleError);
+    }
+
+    addWidget(widget:Widget) {
+        let headers = this.getAuthTokenHeaders();
+        return this.http
+            .post(`${API_ENDPOINT}${this.widgetsUrl}`, widget.toJSON(false), {headers})
+            .toPromise()
+            .then(result => {
+                let data = result.json();
+                widget.url = data.url;
+                widget.id = data.id;
+                for (let input of widget.inputs) {
+                    this.addInput(input);
+                }
+                for (let output of widget.outputs) {
+                    this.addOutput(output);
+                }
+            });
+    }
+
+    addInput(input:WorkflowInput) {
+        let headers = this.getAuthTokenHeaders();
+        return this.http
+            .post(`${API_ENDPOINT}${this.inputsUrl}`, input.toJSON(false), {headers})
+            .toPromise()
+            .then(result => {
+                let data = result.json();
+                input.url = data.url;
+                input.id = data.id;
+            });
+    }
+
+    addOutput(output:WorkflowOutput) {
+            let headers = this.getAuthTokenHeaders();
+            return this.http
+                .post(`${API_ENDPOINT}${this.outputsUrl}`, output.toJSON(false), {headers})
+                .toPromise()
+                .then(result => {
+                    let data = result.json();
+                    output.url = data.url;
+                    // output.id = data.id;
+                });
     }
 
     deleteConnection(conn:Connection) {

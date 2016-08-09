@@ -34,7 +34,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         let parameters = new Array<WorkflowInput>();
         let outputs = new Array<WorkflowOutput>();
         let widget = new Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0,
-            inputs, parameters, outputs);
+            abstractWidget.id, inputs, parameters, outputs, this.workflow);
         let inputOrder = 1,
             parameterOrder = 1;
         for (let input of abstractWidget.inputs) {
@@ -59,7 +59,8 @@ export class EditorComponent implements OnInit, OnDestroy {
         widget.outputs = outputs;
         this.workflow.widgets.push(widget);
 
-        // TODO save to db
+        // Sync with server
+        this.clowdflowsDataService.addWidget(widget);
     }
 
     addConnection() {
@@ -78,10 +79,12 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     receiveWorkflowUpdate(data) {
         let widget = this.workflow.widgets.find(widgetObj => widgetObj.id == data.widget_pk);
-        widget.finished = data.status.finished;
-        widget.error = data.status.error;
-        widget.running = data.status.running;
-        widget.interaction_waiting = data.status.interaction_waiting;
+        if (widget != undefined) {
+            widget.finished = data.status.finished;
+            widget.error = data.status.error;
+            widget.running = data.status.running;
+            widget.interaction_waiting = data.status.interaction_waiting;
+        }
     }
 
     ngOnInit() {

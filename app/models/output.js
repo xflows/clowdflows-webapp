@@ -27,6 +27,23 @@ var Output = (function () {
         enumerable: true,
         configurable: true
     });
+    Output.prototype.toJSON = function (withIds) {
+        if (withIds === void 0) { withIds = true; }
+        var serialized = {
+            url: this.url,
+            // deserialized_value: this.deserialized_value,
+            name: this.name,
+            short_name: this.short_name,
+            description: this.description,
+            variable: this.variable,
+            order: this.order,
+            widget: this.widget.url
+        };
+        if (withIds) {
+            serialized['url'] = this.url;
+        }
+        return JSON.stringify(serialized);
+    };
     return Output;
 }());
 exports.Output = Output;
