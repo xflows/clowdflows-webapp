@@ -26,12 +26,12 @@ var EditorComponent = (function () {
         this.workflow = {};
     }
     EditorComponent.prototype.addWidget = function (abstractWidget) {
-        console.log(abstractWidget.name);
+        var _this = this;
         var x = 50, y = 50;
         var inputs = new Array();
         var parameters = new Array();
         var outputs = new Array();
-        var widget = new widget_1.Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0, abstractWidget.id, inputs, parameters, outputs, this.workflow);
+        var widget = new widget_1.Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0, abstractWidget.id, inputs, outputs, this.workflow);
         var inputOrder = 1, parameterOrder = 1;
         for (var _i = 0, _a = abstractWidget.inputs; _i < _a.length; _i++) {
             var input = _a[_i];
@@ -48,14 +48,14 @@ var EditorComponent = (function () {
         }
         for (var _b = 0, _c = abstractWidget.outputs; _b < _c.length; _b++) {
             var output = _c[_b];
-            outputs.push(new output_1.Output('', null, output.name, output.short_name, output.description, output.variable, output.order, null, null, widget));
+            outputs.push(new output_1.Output('', output.name, output.short_name, output.description, output.variable, output.order, null, null, widget));
         }
         widget.inputs = inputs;
         widget.parameters = parameters;
         widget.outputs = outputs;
-        this.workflow.widgets.push(widget);
         // Sync with server
-        this.clowdflowsDataService.addWidget(widget);
+        this.clowdflowsDataService.addWidget(widget)
+            .then(function () { return _this.workflow.widgets.push(widget); });
     };
     EditorComponent.prototype.addConnection = function () {
         var selectedInput = this.canvasComponent.selectedInput;
@@ -70,10 +70,12 @@ var EditorComponent = (function () {
     };
     EditorComponent.prototype.receiveWorkflowUpdate = function (data) {
         var widget = this.workflow.widgets.find(function (widgetObj) { return widgetObj.id == data.widget_pk; });
-        widget.finished = data.status.finished;
-        widget.error = data.status.error;
-        widget.running = data.status.running;
-        widget.interaction_waiting = data.status.interaction_waiting;
+        if (widget != undefined) {
+            widget.finished = data.status.finished;
+            widget.error = data.status.error;
+            widget.running = data.status.running;
+            widget.interaction_waiting = data.status.interaction_waiting;
+        }
     };
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;

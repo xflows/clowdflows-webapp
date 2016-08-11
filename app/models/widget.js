@@ -3,7 +3,9 @@ var output_1 = require("./output");
 var input_1 = require("./input");
 var ui_constants_1 = require("../services/ui-constants");
 var Widget = (function () {
-    function Widget(id, url, x, y, name, finished, error, running, interaction_waiting, type, progress, abstract_widget, inputs, parameters, outputs, workflow) {
+    function Widget(id, url, x, y, name, finished, error, running, interaction_waiting, type, progress, abstract_widget, inputs, 
+        //parameters:any[],
+        outputs, workflow) {
         this.id = id;
         this.url = url;
         this.x = x;
@@ -19,22 +21,30 @@ var Widget = (function () {
         this.workflow = workflow;
         this.showDialog = false;
         this.selected = false;
+        // Keep proper inputs and parameters separately
         this.inputs = new Array();
+        this.parameters = new Array();
         for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
             var input = inputs_1[_i];
             var input_obj = new input_1.Input(input.id, input.url, input.deserialized_value, input.name, input.short_name, input.description, input.variable, input.required, input.parameter, input.multi_id, input.parameter_type, input.order, input.inner_output, input.outer_output, input.options, this);
-            this.inputs.push(input_obj);
+            if (input.parameter) {
+                this.parameters.push(input_obj);
+            }
+            else {
+                this.inputs.push(input_obj);
+            }
         }
-        this.parameters = new Array();
-        for (var _a = 0, parameters_1 = parameters; _a < parameters_1.length; _a++) {
-            var input = parameters_1[_a];
-            var input_obj = new input_1.Input(input.id, input.url, input.deserialized_value, input.name, input.short_name, input.description, input.variable, input.required, input.parameter, input.multi_id, input.parameter_type, input.order, input.inner_output, input.outer_output, input.options, this);
-            this.parameters.push(input_obj);
-        }
+        // for (let input of parameters) {
+        //     let input_obj:Input = new Input(input.id, input.url, input.deserialized_value, input.name, input.short_name,
+        //         input.description, input.variable, input.required, input.parameter,
+        //         input.multi_id, input.parameter_type, input.order, input.inner_output,
+        //         input.outer_output, input.options, this);
+        //     this.parameters.push(input_obj);
+        // }
         this.outputs = new Array();
-        for (var _b = 0, outputs_1 = outputs; _b < outputs_1.length; _b++) {
-            var output = outputs_1[_b];
-            this.outputs.push(new output_1.Output(output.url, output.deserialized_value, output.name, output.short_name, output.description, output.variable, output.order, output.inner_output, output.outer_output, this));
+        for (var _a = 0, outputs_1 = outputs; _a < outputs_1.length; _a++) {
+            var output = outputs_1[_a];
+            this.outputs.push(new output_1.Output(output.url, output.name, output.short_name, output.description, output.variable, output.order, output.inner_output, output.outer_output, this));
         }
     }
     Object.defineProperty(Widget.prototype, "boxHeight", {
@@ -51,8 +61,22 @@ var Widget = (function () {
         enumerable: true,
         configurable: true
     });
-    Widget.prototype.toJSON = function (withIds) {
+    Widget.prototype.toDict = function (withIds) {
         if (withIds === void 0) { withIds = true; }
+        var serializedInputs = [];
+        var serializedOutputs = [];
+        for (var _i = 0, _a = this.inputs; _i < _a.length; _i++) {
+            var input = _a[_i];
+            serializedInputs.push(input.toDict());
+        }
+        for (var _b = 0, _c = this.parameters; _b < _c.length; _b++) {
+            var parameter = _c[_b];
+            serializedInputs.push(parameter.toDict());
+        }
+        for (var _d = 0, _e = this.outputs; _d < _e.length; _d++) {
+            var output = _e[_d];
+            serializedOutputs.push(output.toDict());
+        }
         var serialized = {
             workflow: this.workflow.url,
             x: this.x,
@@ -64,12 +88,14 @@ var Widget = (function () {
             running: this.running,
             interaction_waiting: this.interaction_waiting,
             type: this.type,
-            progress: this.progress
+            progress: this.progress,
+            inputs: serializedInputs,
+            outputs: serializedOutputs
         };
         if (withIds) {
             serialized['id'] = this.id;
         }
-        return JSON.stringify(serialized);
+        return serialized;
     };
     return Widget;
 }());

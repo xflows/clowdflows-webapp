@@ -75,11 +75,22 @@ var ClowdFlowsDataService = (function () {
         var workflow = new workflow_1.Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
         return workflow;
     };
+    ClowdFlowsDataService.prototype.addWidget = function (widget) {
+        var headers = this.getAuthTokenHeaders();
+        return this.http
+            .post("" + config_1.API_ENDPOINT + this.widgetsUrl, JSON.stringify(widget.toDict(false)), { headers: headers })
+            .toPromise()
+            .then(function (result) {
+            var data = result.json();
+            widget.url = data.url;
+            widget.id = data.id;
+        });
+    };
     ClowdFlowsDataService.prototype.saveWidget = function (widget) {
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .patch(widget.url, widget.toJSON(), { headers: headers })
+            .patch(widget.url, JSON.stringify(widget.toDict()), { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(this.handleError);
@@ -122,35 +133,15 @@ var ClowdFlowsDataService = (function () {
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .post("" + config_1.API_ENDPOINT + this.connectionsUrl, conn.toJSON(), { headers: headers })
+            .post("" + config_1.API_ENDPOINT + this.connectionsUrl, JSON.stringify(conn.toDict()), { headers: headers })
             .toPromise()
             .then(function (result) { return conn.url = result.json().url; })
             .catch(this.handleError);
     };
-    ClowdFlowsDataService.prototype.addWidget = function (widget) {
-        var _this = this;
-        var headers = this.getAuthTokenHeaders();
-        return this.http
-            .post("" + config_1.API_ENDPOINT + this.widgetsUrl, widget.toJSON(false), { headers: headers })
-            .toPromise()
-            .then(function (result) {
-            var data = result.json();
-            widget.url = data.url;
-            widget.id = data.id;
-            for (var _i = 0, _a = widget.inputs; _i < _a.length; _i++) {
-                var input = _a[_i];
-                _this.addInput(input);
-            }
-            for (var _b = 0, _c = widget.outputs; _b < _c.length; _b++) {
-                var output = _c[_b];
-                _this.addOutput(output);
-            }
-        });
-    };
     ClowdFlowsDataService.prototype.addInput = function (input) {
         var headers = this.getAuthTokenHeaders();
         return this.http
-            .post("" + config_1.API_ENDPOINT + this.inputsUrl, input.toJSON(false), { headers: headers })
+            .post("" + config_1.API_ENDPOINT + this.inputsUrl, JSON.stringify(input.toDict(false)), { headers: headers })
             .toPromise()
             .then(function (result) {
             var data = result.json();
@@ -161,12 +152,21 @@ var ClowdFlowsDataService = (function () {
     ClowdFlowsDataService.prototype.addOutput = function (output) {
         var headers = this.getAuthTokenHeaders();
         return this.http
-            .post("" + config_1.API_ENDPOINT + this.outputsUrl, output.toJSON(false), { headers: headers })
+            .post("" + config_1.API_ENDPOINT + this.outputsUrl, JSON.stringify(output.toDict(false)), { headers: headers })
             .toPromise()
             .then(function (result) {
             var data = result.json();
             output.url = data.url;
-            // output.id = data.id;
+        });
+    };
+    ClowdFlowsDataService.prototype.fetchOutputValue = function (output) {
+        var headers = this.getAuthTokenHeaders();
+        return this.http
+            .get(output.url + "value/", { headers: headers })
+            .toPromise()
+            .then(function (result) {
+            var data = result.json();
+            output.value = data.value;
         });
     };
     ClowdFlowsDataService.prototype.deleteConnection = function (conn) {

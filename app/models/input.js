@@ -34,7 +34,7 @@ var Input = (function () {
         enumerable: true,
         configurable: true
     });
-    Input.prototype.toJSON = function (withIds) {
+    Input.prototype.toDict = function (withIds) {
         if (withIds === void 0) { withIds = true; }
         var serialized = {
             // deserialized_value: this.deserialized_value,
@@ -53,7 +53,7 @@ var Input = (function () {
             serialized['id'] = this.id;
             serialized['url'] = this.url;
         }
-        return JSON.stringify(serialized);
+        return serialized;
     };
     return Input;
 }());

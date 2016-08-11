@@ -6,7 +6,6 @@ import {WidgetCanvasComponent} from "./widget-canvas.component";
 import {LoggingComponent} from "./logging.component";
 import {AbstractWidget} from "../../models/abstract-widget";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
-import {Workflow} from "../../models/workflow";
 import {Connection} from "../../models/connection";
 import {Widget} from "../../models/widget";
 import {Input as WorkflowInput} from "../../models/input";
@@ -27,14 +26,13 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     addWidget(abstractWidget:AbstractWidget) {
-        console.log(abstractWidget.name);
         let x = 50,
             y = 50;
         let inputs = new Array<WorkflowInput>();
         let parameters = new Array<WorkflowInput>();
         let outputs = new Array<WorkflowOutput>();
         let widget = new Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0,
-            abstractWidget.id, inputs, parameters, outputs, this.workflow);
+            abstractWidget.id, inputs, outputs, this.workflow);
         let inputOrder = 1,
             parameterOrder = 1;
         for (let input of abstractWidget.inputs) {
@@ -51,16 +49,16 @@ export class EditorComponent implements OnInit, OnDestroy {
             }
         }
         for (let output of abstractWidget.outputs) {
-            outputs.push(new WorkflowOutput('', null, output.name, output.short_name, output.description,
+            outputs.push(new WorkflowOutput('', output.name, output.short_name, output.description,
                 output.variable, output.order, null, null, widget));
         }
         widget.inputs = inputs;
         widget.parameters = parameters;
         widget.outputs = outputs;
-        this.workflow.widgets.push(widget);
 
         // Sync with server
-        this.clowdflowsDataService.addWidget(widget);
+        this.clowdflowsDataService.addWidget(widget)
+            .then(() => this.workflow.widgets.push(widget));
     }
 
     addConnection() {

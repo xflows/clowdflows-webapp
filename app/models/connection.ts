@@ -76,11 +76,11 @@ export class Connection {
         return "M"+bezierPoints[0][0]+","+bezierPoints[0][1]+" C"+bezierPoints[1][0]+","+bezierPoints[1][1]+" "+bezierPoints[2][0]+","+bezierPoints[2][1]+" "+bezierPoints[3][0]+","+bezierPoints[3][1];
     }
 
-    toJSON() {
-        return JSON.stringify({
+    toDict() {
+        return {
             input: this.input.url,
             output: this.output.url,
             workflow: this.workflow.url
-        });
+        };
     }
 }

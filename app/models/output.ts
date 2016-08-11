@@ -1,11 +1,12 @@
 import {Widget} from "./widget";
 export class Output {
 
+    public value:any = null;
     public selected:boolean = false;
 
     constructor(
         public url:string,
-        public deserialized_value:any,
+        // public deserialized_value:any,
         public name:string,
         public short_name:string,
         public description:string,
@@ -26,7 +27,7 @@ export class Output {
         return (this.order - 1)*(10+16) + 10
     }
 
-    toJSON(withIds:boolean = true) {
+    toDict(withIds:boolean = true) {
         let serialized = {
             url: this.url,
             // deserialized_value: this.deserialized_value,
@@ -40,6 +41,6 @@ export class Output {
         if (withIds) {
             serialized['url'] = this.url;
         }
-        return JSON.stringify(serialized);
+        return serialized;
     }
 }

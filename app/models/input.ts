@@ -35,7 +35,7 @@ export class Input {
         return (this.order - 1)*(10+16) + 10
     }
 
-    toJSON(withIds:boolean = true) {
+    toDict(withIds:boolean = true) {
         let serialized = {
             // deserialized_value: this.deserialized_value,
             name: this.name,
@@ -53,6 +53,6 @@ export class Input {
             serialized['id'] = this.id;
             serialized['url'] = this.url;
         }
-        return JSON.stringify(serialized);
+        return serialized;
     }
 }

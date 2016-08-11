@@ -62,12 +62,12 @@ var Connection = (function () {
         enumerable: true,
         configurable: true
     });
-    Connection.prototype.toJSON = function () {
-        return JSON.stringify({
+    Connection.prototype.toDict = function () {
+        return {
             input: this.input.url,
             output: this.output.url,
             workflow: this.workflow.url
-        });
+        };
     };
     return Connection;
 }());

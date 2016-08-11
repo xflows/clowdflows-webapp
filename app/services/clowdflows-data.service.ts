@@ -80,11 +80,23 @@ export class ClowdFlowsDataService {
         return workflow;
     }
 
+    addWidget(widget:Widget) {
+        let headers = this.getAuthTokenHeaders();
+        return this.http
+            .post(`${API_ENDPOINT}${this.widgetsUrl}`, JSON.stringify(widget.toDict(false)), {headers})
+            .toPromise()
+            .then(result => {
+                let data = result.json();
+                widget.url = data.url;
+                widget.id = data.id;
+            });
+    }
+
     saveWidget(widget:Widget) {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .patch(widget.url, widget.toJSON(), {headers})
+            .patch(widget.url, JSON.stringify(widget.toDict()), {headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -130,34 +142,16 @@ export class ClowdFlowsDataService {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .post(`${API_ENDPOINT}${this.connectionsUrl}`, conn.toJSON(), {headers})
+            .post(`${API_ENDPOINT}${this.connectionsUrl}`, JSON.stringify(conn.toDict()), {headers})
             .toPromise()
             .then(result => conn.url = result.json().url)
             .catch(this.handleError);
     }
 
-    addWidget(widget:Widget) {
-        let headers = this.getAuthTokenHeaders();
-        return this.http
-            .post(`${API_ENDPOINT}${this.widgetsUrl}`, widget.toJSON(false), {headers})
-            .toPromise()
-            .then(result => {
-                let data = result.json();
-                widget.url = data.url;
-                widget.id = data.id;
-                for (let input of widget.inputs) {
-                    this.addInput(input);
-                }
-                for (let output of widget.outputs) {
-                    this.addOutput(output);
-                }
-            });
-    }
-
     addInput(input:WorkflowInput) {
         let headers = this.getAuthTokenHeaders();
         return this.http
-            .post(`${API_ENDPOINT}${this.inputsUrl}`, input.toJSON(false), {headers})
+            .post(`${API_ENDPOINT}${this.inputsUrl}`, JSON.stringify(input.toDict(false)), {headers})
             .toPromise()
             .then(result => {
                 let data = result.json();
@@ -169,13 +163,23 @@ export class ClowdFlowsDataService {
     addOutput(output:WorkflowOutput) {
             let headers = this.getAuthTokenHeaders();
             return this.http
-                .post(`${API_ENDPOINT}${this.outputsUrl}`, output.toJSON(false), {headers})
+                .post(`${API_ENDPOINT}${this.outputsUrl}`, JSON.stringify(output.toDict(false)), {headers})
                 .toPromise()
                 .then(result => {
                     let data = result.json();
                     output.url = data.url;
-                    // output.id = data.id;
                 });
+    }
+
+    fetchOutputValue(output:WorkflowOutput) {
+        let headers = this.getAuthTokenHeaders();
+        return this.http
+            .get(`${output.url}value/`, {headers})
+            .toPromise()
+            .then(result => {
+                let data = result.json();
+                output.value = data.value;
+            });
     }
 
     deleteConnection(conn:Connection) {

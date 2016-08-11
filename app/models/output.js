@@ -1,8 +1,9 @@
 "use strict";
 var Output = (function () {
-    function Output(url, deserialized_value, name, short_name, description, variable, order, inner_output, outer_output, widget) {
+    function Output(url, 
+        // public deserialized_value:any,
+        name, short_name, description, variable, order, inner_output, outer_output, widget) {
         this.url = url;
-        this.deserialized_value = deserialized_value;
         this.name = name;
         this.short_name = short_name;
         this.description = description;
@@ -11,6 +12,7 @@ var Output = (function () {
         this.inner_output = inner_output;
         this.outer_output = outer_output;
         this.widget = widget;
+        this.value = null;
         this.selected = false;
     }
     Object.defineProperty(Output.prototype, "x", {
@@ -27,7 +29,7 @@ var Output = (function () {
         enumerable: true,
         configurable: true
     });
-    Output.prototype.toJSON = function (withIds) {
+    Output.prototype.toDict = function (withIds) {
         if (withIds === void 0) { withIds = true; }
         var serialized = {
             url: this.url,
@@ -42,7 +44,7 @@ var Output = (function () {
         if (withIds) {
             serialized['url'] = this.url;
         }
-        return JSON.stringify(serialized);
+        return serialized;
     };
     return Output;
 }());
