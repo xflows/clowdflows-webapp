@@ -3,9 +3,7 @@ var output_1 = require("./output");
 var input_1 = require("./input");
 var ui_constants_1 = require("../services/ui-constants");
 var Widget = (function () {
-    function Widget(id, url, x, y, name, finished, error, running, interaction_waiting, type, progress, abstract_widget, inputs, 
-        //parameters:any[],
-        outputs, workflow) {
+    function Widget(id, url, x, y, name, finished, error, running, interaction_waiting, type, progress, abstract_widget, inputs, outputs, workflow) {
         this.id = id;
         this.url = url;
         this.x = x;
@@ -34,13 +32,6 @@ var Widget = (function () {
                 this.inputs.push(input_obj);
             }
         }
-        // for (let input of parameters) {
-        //     let input_obj:Input = new Input(input.id, input.url, input.deserialized_value, input.name, input.short_name,
-        //         input.description, input.variable, input.required, input.parameter,
-        //         input.multi_id, input.parameter_type, input.order, input.inner_output,
-        //         input.outer_output, input.options, this);
-        //     this.parameters.push(input_obj);
-        // }
         this.outputs = new Array();
         for (var _a = 0, outputs_1 = outputs; _a < outputs_1.length; _a++) {
             var output = outputs_1[_a];

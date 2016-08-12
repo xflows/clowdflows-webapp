@@ -9,13 +9,15 @@
     '@angular':                   'node_modules/@angular',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs',
-    'ng2-bootstrap':              'node_modules/ng2-bootstrap'
+    'ng2-bootstrap':              'node_modules/ng2-bootstrap',
+    'angular2-contextmenu':       'node_modules/angular2-contextmenu'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':                        { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+    'angular2-contextmenu':       { main: 'angular2-contextmenu.js', defaultExtension: 'js' },
   };
   var ngPackageNames = [
     'common',

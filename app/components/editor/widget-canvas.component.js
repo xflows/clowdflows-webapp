@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var angular2_contextmenu_1 = require('angular2-contextmenu/angular2-contextmenu');
 var ui_constants_1 = require("../../services/ui-constants");
 var draggable_directive_1 = require("../../directives/draggable.directive");
 var clowdflows_data_service_1 = require("../../services/clowdflows-data.service");
@@ -16,12 +17,17 @@ var widget_dialog_component_1 = require("./widget-dialog.component");
 var output_1 = require("../../models/output");
 var input_1 = require("../../models/input");
 var WidgetCanvasComponent = (function () {
-    function WidgetCanvasComponent(clowdflowsDataService) {
+    function WidgetCanvasComponent(clowdflowsDataService, contextMenuService) {
         this.clowdflowsDataService = clowdflowsDataService;
+        this.contextMenuService = contextMenuService;
         this.addConnectionRequest = new core_1.EventEmitter();
         this.ui_constants = ui_constants_1.UI;
         this.selectedInput = null;
         this.selectedOutput = null;
+        this.items = [
+            { name: 'John', otherProperty: 'Foo' },
+            { name: 'Joe', otherProperty: 'Bar' }
+        ];
     }
     WidgetCanvasComponent.prototype.move = function (position, widget) {
         widget.x = position.x;
@@ -143,6 +149,47 @@ var WidgetCanvasComponent = (function () {
             }
         }
     };
+    WidgetCanvasComponent.prototype.onContextMenu = function ($event, item) {
+        $event.preventDefault();
+        this.contextMenuService.show.next({
+            actions: [
+                {
+                    html: function () { return '<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Run only this'; },
+                    click: function (item) { return console.log('Run', item.name); }
+                },
+                {
+                    html: function () { return '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Properties'; },
+                    click: function (item) { return console.log('Properties', item.name); }
+                },
+                {
+                    html: function () { return '<span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Results'; },
+                    click: function (item) { return console.log('Results', item.name); }
+                },
+                {
+                    html: function () { return '<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset'; },
+                    click: function (item) { return console.log('Reset', item.name); }
+                },
+                {
+                    html: function () { return '<span class="glyphicon glyphicon-console" aria-hidden="true"></span> Rename'; },
+                    click: function (item) { return console.log('Rename', item.name); }
+                },
+                {
+                    html: function () { return '<span class="glyphicon glyphicon-copy" aria-hidden="true"></span> Copy'; },
+                    click: function (item) { return console.log('Copy', item.name); }
+                },
+                {
+                    html: function () { return '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete'; },
+                    click: function (item) { return console.log('Delete', item.name); }
+                },
+                {
+                    html: function () { return '<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help'; },
+                    click: function (item) { return console.log('Help', item.name); }
+                },
+            ],
+            event: $event,
+            item: item,
+        });
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Object)
@@ -156,9 +203,10 @@ var WidgetCanvasComponent = (function () {
             selector: 'widget-canvas',
             templateUrl: 'app/components/editor/widget-canvas.component.html',
             styleUrls: ['app/components/editor/widget-canvas.component.css'],
-            directives: [widget_dialog_component_1.WidgetDialogComponent, draggable_directive_1.Draggable]
+            directives: [widget_dialog_component_1.WidgetDialogComponent, draggable_directive_1.Draggable, angular2_contextmenu_1.ContextMenuComponent],
+            providers: [angular2_contextmenu_1.ContextMenuService]
         }), 
-        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService])
+        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService, angular2_contextmenu_1.ContextMenuService])
     ], WidgetCanvasComponent);
     return WidgetCanvasComponent;
 }());

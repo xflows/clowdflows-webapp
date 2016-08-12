@@ -23,6 +23,7 @@
             <rect class="widget-box" [attr.x]="ui_constants.signalWidth" rx="2" ry="2"
                   (click)="select($event, widget)"
                   (dblclick)="showDialog(widget)"
+                  (contextmenu)="onContextMenu($event, widget)"
                   [attr.width]="ui_constants.widgetBoxWidth"
                   [attr.height]="widget.boxHeight"
                   [class.selected]="widget.selected"/>
@@ -43,5 +44,6 @@
     </svg>
     <widget-dialog *ngFor="let widget of workflow.widgets" [widget]="widget"
                    [hidden]="!widget.showDialog"></widget-dialog>
+    <context-menu></context-menu>
 </div>
 
