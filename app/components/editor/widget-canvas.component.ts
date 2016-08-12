@@ -5,7 +5,6 @@ import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {WidgetDialogComponent} from "./widget-dialog.component";
 import {Output as WorkflowOutput} from "../../models/output";
 import {Input as WorkflowInput} from "../../models/input";
-import {Connection} from "../../models/connection";
 
 @Component({
     selector: 'widget-canvas',
@@ -41,6 +40,10 @@ export class WidgetCanvasComponent {
     }
 
     select(event, object) {
+        if (!event.shiftKey && !event.ctrlKey) {
+            this.unselectObjects();
+        }
+
         object.selected = true;
         event.stopPropagation();
 

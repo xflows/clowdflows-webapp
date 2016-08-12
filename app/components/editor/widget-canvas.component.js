@@ -37,6 +37,9 @@ var WidgetCanvasComponent = (function () {
         widget.showDialog = true;
     };
     WidgetCanvasComponent.prototype.select = function (event, object) {
+        if (!event.shiftKey && !event.ctrlKey) {
+            this.unselectObjects();
+        }
         object.selected = true;
         event.stopPropagation();
         if (object instanceof input_1.Input) {
