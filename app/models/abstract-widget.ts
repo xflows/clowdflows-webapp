@@ -7,6 +7,7 @@ export class AbstractWidget {
     static_image:string;
     order:number;
     cfpackage:string;
+    description:string;
     outputs:AbstractOutput[];
     inputs:AbstractInput[];
     hidden:boolean = false;

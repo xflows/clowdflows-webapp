@@ -6,6 +6,8 @@ import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {WidgetDialogComponent} from "./widget-dialog.component";
 import {Output as WorkflowOutput} from "../../models/output";
 import {Input as WorkflowInput} from "../../models/input";
+import {Connection} from "../../models/connection";
+import {Widget} from "../../models/widget";
 
 @Component({
     selector: 'widget-canvas',
@@ -53,6 +55,14 @@ export class WidgetCanvasComponent {
             }
         }
         widget.showResults = true;
+    }
+
+    showHelp(widget) {
+        widget.showHelp = true;
+    }
+
+    showRenameDialog(widget) {
+        widget.showRenameDialog = true;
     }
 
     select(event, object) {
@@ -112,43 +122,57 @@ export class WidgetCanvasComponent {
     deleteSelectedObjects() {
         for (let widget of this.workflow.widgets) {
             if (widget.selected) {
-                // Delete the connections
-                for (let conn of this.workflow.connections) {
-                    if (conn.input_widget == widget || conn.output_widget == widget) {
-                        this.clowdflowsDataService
-                            .deleteConnection(conn)
-                            .then(
-                                (result) => {
-                                    let idx = this.workflow.connections.indexOf(conn);
-                                    this.workflow.connections.splice(idx, 1);
-                                }
-                            );
-                    }
-                }
-                // Delete the widget
-                this.clowdflowsDataService
-                    .deleteWidget(widget)
-                    .then(
-                        (result) => {
-                            let idx = this.workflow.widgets.indexOf(widget);
-                            this.workflow.widgets.splice(idx, 1);
-                        }
-                    );
+                this.deleteWidget(widget);
             }
         }
 
         for (let conn of this.workflow.connections) {
             if (conn.selected) {
-                this.clowdflowsDataService
-                    .deleteConnection(conn)
-                    .then(
-                        (result) => {
-                            let idx = this.workflow.connections.indexOf(conn);
-                            this.workflow.connections.splice(idx, 1);
-                        }
-                    );
+                this.deleteConnection(conn);
             }
         }
+    }
+
+    deleteWidget(widget:Widget) {
+        // Delete the connections
+        for (let conn of this.workflow.connections) {
+            if (conn.input_widget == widget || conn.output_widget == widget) {
+                this.deleteConnection(conn);
+            }
+        }
+        // Delete the widget
+        this.clowdflowsDataService
+            .deleteWidget(widget)
+            .then(
+                (result) => {
+                    let idx = this.workflow.widgets.indexOf(widget);
+                    this.workflow.widgets.splice(idx, 1);
+                }
+            );
+    }
+
+    deleteConnection(connection:Connection) {
+        this.clowdflowsDataService
+            .deleteConnection(connection)
+            .then(
+                (result) => {
+                    let idx = this.workflow.connections.indexOf(connection);
+                    this.workflow.connections.splice(idx, 1);
+                }
+            );
+    }
+
+    resetWidget(widget:Widget) {
+        this.clowdflowsDataService
+            .resetWidget(widget);
+    }
+
+    copyWidget(widget:Widget) {
+        // TODO
+    }
+
+    runWidget(widget:Widget) {
+        // TODO
     }
 
     handleShortcuts(event) {
@@ -166,35 +190,35 @@ export class WidgetCanvasComponent {
             actions: [
                 {
                     html: () => `<span class="glyphicon glyphicon-play"></span> Run only this`,
-                    click: (item) => console.log('Run', item.name)
+                    click: (widget) => this.runWidget(widget)
                 },
                 {
                     html: () => `<span class="glyphicon glyphicon-pencil"></span> Properties`,
-                    click: (item) => console.log('Properties', item.name)
+                    click: (widget) => this.showDialog(widget)
                 },
                 {
                     html: () => `<span class="glyphicon glyphicon-stats"></span> Results`,
-                    click: (item) => this.showResults(item)
+                    click: (widget) => this.showResults(widget)
                 },
                 {
                     html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset`,
-                    click: (item) => console.log('Reset', item.name)
+                    click: (widget) => this.resetWidget(widget)
                 },
                 {
                     html: () => `<span class="glyphicon glyphicon-console"></span> Rename`,
-                    click: (item) => console.log('Rename', item.name)
+                    click: (widget) => this.showRenameDialog(widget)
                 },
                 {
                     html: () => `<span class="glyphicon glyphicon-copy"></span> Copy`,
-                    click: (item) => console.log('Copy', item.name)
+                    click: (widget) => this.copyWidget(widget)
                 },
                 {
                     html: () => `<span class="glyphicon glyphicon-trash"></span> Delete`,
-                    click: (item) => console.log('Delete', item.name)
+                    click: (widget) => this.deleteWidget(widget)
                 },
                 {
                     html: () => `<span class="glyphicon glyphicon-question-sign"></span> Help`,
-                    click: (item) => console.log('Help', item.name)
+                    click: (widget) => this.showHelp(widget)
                 },
             ],
             event: $event,

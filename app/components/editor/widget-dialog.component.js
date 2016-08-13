@@ -18,12 +18,22 @@ var WidgetDialogComponent = (function () {
     WidgetDialogComponent.prototype.closeDialog = function () {
         this.widget.showDialog = false;
     };
+    WidgetDialogComponent.prototype.closeRenameDialog = function () {
+        this.widget.showRenameDialog = false;
+    };
     WidgetDialogComponent.prototype.closeResults = function () {
         this.widget.showResults = false;
     };
-    WidgetDialogComponent.prototype.apply = function () {
+    WidgetDialogComponent.prototype.closeHelp = function () {
+        this.widget.showHelp = false;
+    };
+    WidgetDialogComponent.prototype.applyParameters = function () {
         this.clowdflowsDataService.saveParameters(this.widget);
         this.widget.showDialog = false;
+    };
+    WidgetDialogComponent.prototype.saveName = function () {
+        this.clowdflowsDataService.saveWidget(this.widget);
+        this.widget.showRenameDialog = false;
     };
     WidgetDialogComponent.prototype.onCheckboxChange = function (parameter, event) {
         var isChecked = event.currentTarget.checked;

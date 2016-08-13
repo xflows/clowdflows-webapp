@@ -102,6 +102,16 @@ export class ClowdFlowsDataService {
             .catch(this.handleError);
     }
 
+    resetWidget(widget:Widget) {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .post(`${widget.url}reset/`, '', {headers})
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
     deleteWidget(widget:Widget) {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction

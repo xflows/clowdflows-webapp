@@ -10,6 +10,8 @@ export class Widget {
     outputs:Output[];
     showDialog:boolean = false;
     showResults:boolean = false;
+    showRenameDialog:boolean = false;
+    showHelp:boolean = false;
     selected:boolean = false;
 
     constructor(
@@ -25,6 +27,7 @@ export class Widget {
         public type:string,
         public progress:number,
         public abstract_widget:number,
+        public description:string,
         inputs:any[],
         outputs:any[],
         public workflow:Workflow

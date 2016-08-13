@@ -32,7 +32,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         let parameters = new Array<WorkflowInput>();
         let outputs = new Array<WorkflowOutput>();
         let widget = new Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0,
-            abstractWidget.id, inputs, outputs, this.workflow);
+            abstractWidget.id, abstractWidget.description, inputs, outputs, this.workflow);
         let inputOrder = 1,
             parameterOrder = 1;
         for (let input of abstractWidget.inputs) {

@@ -27,7 +27,8 @@
                   [attr.width]="ui_constants.widgetBoxWidth"
                   [attr.height]="widget.boxHeight"
                   [class.selected]="widget.selected"/>
-            <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle">
+            <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle"
+                  (dblclick)="showRenameDialog(widget)">
                 <tspan>{{widget.name}}</tspan>
             </text>
             <text class="widget-error-icon" text-anchor="middle" [attr.x]="ui_constants.widgetWidth/2"

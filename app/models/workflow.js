@@ -14,7 +14,7 @@ var Workflow = (function () {
         this.widgets = new Array();
         for (var _i = 0, widgets_1 = widgets; _i < widgets_1.length; _i++) {
             var widget_2 = widgets_1[_i];
-            this.widgets.push(new widget_1.Widget(widget_2.id, widget_2.url, widget_2.x, widget_2.y, widget_2.name, widget_2.finished, widget_2.error, widget_2.runing, widget_2.interaction_waiting, widget_2.type, widget_2.progress, widget_2.abstract_widget, widget_2.inputs, widget_2.outputs, this));
+            this.widgets.push(new widget_1.Widget(widget_2.id, widget_2.url, widget_2.x, widget_2.y, widget_2.name, widget_2.finished, widget_2.error, widget_2.runing, widget_2.interaction_waiting, widget_2.type, widget_2.progress, widget_2.abstract_widget, widget_2.description, widget_2.inputs, widget_2.outputs, this));
         }
         this.connections = new Array();
         var _loop_1 = function(connection) {

@@ -51,6 +51,12 @@ var WidgetCanvasComponent = (function () {
         }
         widget.showResults = true;
     };
+    WidgetCanvasComponent.prototype.showHelp = function (widget) {
+        widget.showHelp = true;
+    };
+    WidgetCanvasComponent.prototype.showRenameDialog = function (widget) {
+        widget.showRenameDialog = true;
+    };
     WidgetCanvasComponent.prototype.select = function (event, object) {
         if (!event.shiftKey && !event.ctrlKey) {
             this.unselectObjects();
@@ -102,53 +108,54 @@ var WidgetCanvasComponent = (function () {
         }
     };
     WidgetCanvasComponent.prototype.deleteSelectedObjects = function () {
-        var _this = this;
-        var _loop_1 = function(widget) {
+        for (var _i = 0, _a = this.workflow.widgets; _i < _a.length; _i++) {
+            var widget = _a[_i];
             if (widget.selected) {
-                // Delete the connections
-                var _loop_2 = function(conn) {
-                    if (conn.input_widget == widget || conn.output_widget == widget) {
-                        this_1.clowdflowsDataService
-                            .deleteConnection(conn)
-                            .then(function (result) {
-                            var idx = _this.workflow.connections.indexOf(conn);
-                            _this.workflow.connections.splice(idx, 1);
-                        });
-                    }
-                };
-                for (var _i = 0, _a = this_1.workflow.connections; _i < _a.length; _i++) {
-                    var conn = _a[_i];
-                    _loop_2(conn);
-                }
-                // Delete the widget
-                this_1.clowdflowsDataService
-                    .deleteWidget(widget)
-                    .then(function (result) {
-                    var idx = _this.workflow.widgets.indexOf(widget);
-                    _this.workflow.widgets.splice(idx, 1);
-                });
+                this.deleteWidget(widget);
             }
-        };
-        var this_1 = this;
-        for (var _b = 0, _c = this.workflow.widgets; _b < _c.length; _b++) {
-            var widget = _c[_b];
-            _loop_1(widget);
         }
-        var _loop_3 = function(conn) {
+        for (var _b = 0, _c = this.workflow.connections; _b < _c.length; _b++) {
+            var conn = _c[_b];
             if (conn.selected) {
-                this_2.clowdflowsDataService
-                    .deleteConnection(conn)
-                    .then(function (result) {
-                    var idx = _this.workflow.connections.indexOf(conn);
-                    _this.workflow.connections.splice(idx, 1);
-                });
+                this.deleteConnection(conn);
             }
-        };
-        var this_2 = this;
-        for (var _d = 0, _e = this.workflow.connections; _d < _e.length; _d++) {
-            var conn = _e[_d];
-            _loop_3(conn);
         }
+    };
+    WidgetCanvasComponent.prototype.deleteWidget = function (widget) {
+        var _this = this;
+        // Delete the connections
+        for (var _i = 0, _a = this.workflow.connections; _i < _a.length; _i++) {
+            var conn = _a[_i];
+            if (conn.input_widget == widget || conn.output_widget == widget) {
+                this.deleteConnection(conn);
+            }
+        }
+        // Delete the widget
+        this.clowdflowsDataService
+            .deleteWidget(widget)
+            .then(function (result) {
+            var idx = _this.workflow.widgets.indexOf(widget);
+            _this.workflow.widgets.splice(idx, 1);
+        });
+    };
+    WidgetCanvasComponent.prototype.deleteConnection = function (connection) {
+        var _this = this;
+        this.clowdflowsDataService
+            .deleteConnection(connection)
+            .then(function (result) {
+            var idx = _this.workflow.connections.indexOf(connection);
+            _this.workflow.connections.splice(idx, 1);
+        });
+    };
+    WidgetCanvasComponent.prototype.resetWidget = function (widget) {
+        this.clowdflowsDataService
+            .resetWidget(widget);
+    };
+    WidgetCanvasComponent.prototype.copyWidget = function (widget) {
+        // TODO
+    };
+    WidgetCanvasComponent.prototype.runWidget = function (widget) {
+        // TODO
     };
     WidgetCanvasComponent.prototype.handleShortcuts = function (event) {
         if (event.keyCode == 46) {
@@ -165,35 +172,35 @@ var WidgetCanvasComponent = (function () {
             actions: [
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-play\"></span> Run only this"; },
-                    click: function (item) { return console.log('Run', item.name); }
+                    click: function (widget) { return _this.runWidget(widget); }
                 },
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-pencil\"></span> Properties"; },
-                    click: function (item) { return console.log('Properties', item.name); }
+                    click: function (widget) { return _this.showDialog(widget); }
                 },
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-stats\"></span> Results"; },
-                    click: function (item) { return _this.showResults(item); }
+                    click: function (widget) { return _this.showResults(widget); }
                 },
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-repeat\"></span> Reset"; },
-                    click: function (item) { return console.log('Reset', item.name); }
+                    click: function (widget) { return _this.resetWidget(widget); }
                 },
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-console\"></span> Rename"; },
-                    click: function (item) { return console.log('Rename', item.name); }
+                    click: function (widget) { return _this.showRenameDialog(widget); }
                 },
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-copy\"></span> Copy"; },
-                    click: function (item) { return console.log('Copy', item.name); }
+                    click: function (widget) { return _this.copyWidget(widget); }
                 },
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-trash\"></span> Delete"; },
-                    click: function (item) { return console.log('Delete', item.name); }
+                    click: function (widget) { return _this.deleteWidget(widget); }
                 },
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-question-sign\"></span> Help"; },
-                    click: function (item) { return console.log('Help', item.name); }
+                    click: function (widget) { return _this.showHelp(widget); }
                 },
             ],
             event: $event,

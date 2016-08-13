@@ -3,11 +3,12 @@
         <h3 class="panel-title">{{widget.name}}</h3>
     </div>
     <div class="panel-body">
-        <form (onSubmit)="apply()">
+        <form (onSubmit)="applyParameters()" (keyup.enter)="applyParameters()">
             <div class="form-group form-group-sm" *ngFor="let p of widget.parameters">
                 <div class="checkbox" *ngIf="p.parameter_type == 'checkbox'">
                     <label>
-                        <input type="checkbox" (change)="onCheckboxChange(p, $event)" [checked]="p.deserialized_value == 'true'"/> {{p.name}}
+                        <input type="checkbox" (change)="onCheckboxChange(p, $event)"
+                               [checked]="p.deserialized_value == 'true'"/> {{p.name}}
                     </label>
                 </div>
                 <label [attr.for]="'input-' + p.name" *ngIf="p.parameter_type != 'checkbox'"
@@ -24,7 +25,8 @@
                 <select [attr.id]="'input-' + p.name" *ngIf="p.parameter_type == 'select'" [title]="p.description"
                         class="form-control" [(ngModel)]="p.deserialized_value">
                     <option *ngFor="let o of p.options" [value]="o.value"
-                            [selected]="o.value == p.deserialized_value">{{o.name}}</option>
+                            [selected]="o.value == p.deserialized_value">{{o.name}}
+                    </option>
                 </select>
                 <textarea [attr.id]="'input-' + p.name" *ngIf="p.parameter_type == 'textarea'"
                           [title]="p.description"
@@ -41,7 +43,7 @@
     <div class="panel-footer">
         <div class="form-group form-group-sm">
             <button (click)="closeDialog()" class="btn btn-default">Close</button>
-            <button (click)="apply()" class="btn btn-primary">Apply</button>
+            <button (click)="applyParameters()" class="btn btn-primary">Apply</button>
         </div>
     </div>
 </div>
@@ -59,6 +61,42 @@
     <div class="panel-footer">
         <div class="form-group form-group-sm">
             <button (click)="closeResults()" class="btn btn-default">Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="widget-dialog panel panel-primary" [hidden]="!widget.showHelp">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{widget.name}} help</h3>
+    </div>
+    <div class="panel-body">
+        {{widget.description}}
+    </div>
+    <div class="panel-footer">
+        <div class="form-group form-group-sm">
+            <button (click)="closeHelp()" class="btn btn-default">Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="widget-dialog panel panel-primary" [hidden]="!widget.showRenameDialog">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{widget.name}} rename</h3>
+    </div>
+    <div class="panel-body">
+        <form (onSubmit)="saveName()" (keyup.enter)="saveName()">
+            <div class="form-group form-group-sm">
+                <input type="text"
+                       [(ngModel)]="widget.name"
+                       [title]="widget.name"
+                       class="form-control"/>
+            </div>
+        </form>
+    </div>
+    <div class="panel-footer">
+        <div class="form-group form-group-sm">
+            <button (click)="closeRenameDialog()" class="btn btn-default">Close</button>
+            <button (click)="saveName()" class="btn btn-primary">Apply</button>
         </div>
     </div>
 </div>

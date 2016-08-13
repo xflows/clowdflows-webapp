@@ -18,13 +18,26 @@ export class WidgetDialogComponent {
         this.widget.showDialog = false;
     }
 
+    closeRenameDialog() {
+        this.widget.showRenameDialog = false;
+    }
+
     closeResults() {
         this.widget.showResults = false;
     }
 
-    apply() {
+    closeHelp() {
+        this.widget.showHelp = false;
+    }
+
+    applyParameters() {
         this.clowdflowsDataService.saveParameters(this.widget);
         this.widget.showDialog = false;
+    }
+
+    saveName() {
+        this.clowdflowsDataService.saveWidget(this.widget);
+        this.widget.showRenameDialog = false;
     }
 
     onCheckboxChange(parameter:WidgetInput, event) {

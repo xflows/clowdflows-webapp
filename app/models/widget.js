@@ -3,7 +3,7 @@ var output_1 = require("./output");
 var input_1 = require("./input");
 var ui_constants_1 = require("../services/ui-constants");
 var Widget = (function () {
-    function Widget(id, url, x, y, name, finished, error, running, interaction_waiting, type, progress, abstract_widget, inputs, outputs, workflow) {
+    function Widget(id, url, x, y, name, finished, error, running, interaction_waiting, type, progress, abstract_widget, description, inputs, outputs, workflow) {
         this.id = id;
         this.url = url;
         this.x = x;
@@ -16,9 +16,12 @@ var Widget = (function () {
         this.type = type;
         this.progress = progress;
         this.abstract_widget = abstract_widget;
+        this.description = description;
         this.workflow = workflow;
         this.showDialog = false;
         this.showResults = false;
+        this.showRenameDialog = false;
+        this.showHelp = false;
         this.selected = false;
         // Keep proper inputs and parameters separately
         this.inputs = new Array();
