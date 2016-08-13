@@ -9,6 +9,7 @@ export class Widget {
     parameters:Input[];
     outputs:Output[];
     showDialog:boolean = false;
+    showResults:boolean = false;
     selected:boolean = false;
 
     constructor(

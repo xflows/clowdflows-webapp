@@ -9,9 +9,9 @@
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.28);
-  -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.28);
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.28);
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 .widget-dialog .panel-footer .form-group {
   margin-bottom: 0px;

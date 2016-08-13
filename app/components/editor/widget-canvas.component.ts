@@ -46,6 +46,15 @@ export class WidgetCanvasComponent {
         widget.showDialog = true;
     }
 
+    showResults(widget) {
+        if (widget.value == null) {
+            for (let output of widget.outputs) {
+                this.clowdflowsDataService.fetchOutputValue(output);
+            }
+        }
+        widget.showResults = true;
+    }
+
     select(event, object) {
         if (!event.shiftKey && !event.ctrlKey) {
             this.unselectObjects();
@@ -156,35 +165,35 @@ export class WidgetCanvasComponent {
         this.contextMenuService.show.next({
             actions: [
                 {
-                    html: () => `<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Run only this`,
+                    html: () => `<span class="glyphicon glyphicon-play"></span> Run only this`,
                     click: (item) => console.log('Run', item.name)
                 },
                 {
-                    html: () => `<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Properties`,
+                    html: () => `<span class="glyphicon glyphicon-pencil"></span> Properties`,
                     click: (item) => console.log('Properties', item.name)
                 },
                 {
-                    html: () => `<span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Results`,
-                    click: (item) => console.log('Results', item.name)
+                    html: () => `<span class="glyphicon glyphicon-stats"></span> Results`,
+                    click: (item) => this.showResults(item)
                 },
                 {
-                    html: () => `<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset`,
+                    html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset`,
                     click: (item) => console.log('Reset', item.name)
                 },
                 {
-                    html: () => `<span class="glyphicon glyphicon-console" aria-hidden="true"></span> Rename`,
+                    html: () => `<span class="glyphicon glyphicon-console"></span> Rename`,
                     click: (item) => console.log('Rename', item.name)
                 },
                 {
-                    html: () => `<span class="glyphicon glyphicon-copy" aria-hidden="true"></span> Copy`,
+                    html: () => `<span class="glyphicon glyphicon-copy"></span> Copy`,
                     click: (item) => console.log('Copy', item.name)
                 },
                 {
-                    html: () => `<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete`,
+                    html: () => `<span class="glyphicon glyphicon-trash"></span> Delete`,
                     click: (item) => console.log('Delete', item.name)
                 },
                 {
-                    html: () => `<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help`,
+                    html: () => `<span class="glyphicon glyphicon-question-sign"></span> Help`,
                     click: (item) => console.log('Help', item.name)
                 },
             ],

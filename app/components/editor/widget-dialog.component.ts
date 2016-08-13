@@ -18,6 +18,10 @@ export class WidgetDialogComponent {
         this.widget.showDialog = false;
     }
 
+    closeResults() {
+        this.widget.showResults = false;
+    }
+
     apply() {
         this.clowdflowsDataService.saveParameters(this.widget);
         this.widget.showDialog = false;

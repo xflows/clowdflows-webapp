@@ -16,7 +16,6 @@ export class Output {
         public outer_output:string,
         public widget:Widget
     ) {
-
     }
 
     get x():number {

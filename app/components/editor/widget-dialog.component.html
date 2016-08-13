@@ -1,4 +1,4 @@
-<div class="widget-dialog panel panel-primary">
+<div class="widget-dialog panel panel-primary" [hidden]="!widget.showDialog">
     <div class="panel-heading">
         <h3 class="panel-title">{{widget.name}}</h3>
     </div>
@@ -42,6 +42,23 @@
         <div class="form-group form-group-sm">
             <button (click)="closeDialog()" class="btn btn-default">Close</button>
             <button (click)="apply()" class="btn btn-primary">Apply</button>
+        </div>
+    </div>
+</div>
+
+<div class="widget-dialog panel panel-primary" [hidden]="!widget.showResults">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{widget.name}} results</h3>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li *ngFor="let output of widget.outputs">{{ output.name }} = {{ output.value }}</li>
+        </ul>
+        <p *ngIf="widget.outputs.length == 0">This widget has no outputs.</p>
+    </div>
+    <div class="panel-footer">
+        <div class="form-group form-group-sm">
+            <button (click)="closeResults()" class="btn btn-default">Close</button>
         </div>
     </div>
 </div>

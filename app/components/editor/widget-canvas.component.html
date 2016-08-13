@@ -42,8 +42,7 @@
             </path>
         </g>
     </svg>
-    <widget-dialog *ngFor="let widget of workflow.widgets" [widget]="widget"
-                   [hidden]="!widget.showDialog"></widget-dialog>
+    <widget-dialog *ngFor="let widget of workflow.widgets" [widget]="widget"></widget-dialog>
     <context-menu></context-menu>
 </div>
 

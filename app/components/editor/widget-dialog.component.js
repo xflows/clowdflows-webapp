@@ -18,6 +18,9 @@ var WidgetDialogComponent = (function () {
     WidgetDialogComponent.prototype.closeDialog = function () {
         this.widget.showDialog = false;
     };
+    WidgetDialogComponent.prototype.closeResults = function () {
+        this.widget.showResults = false;
+    };
     WidgetDialogComponent.prototype.apply = function () {
         this.clowdflowsDataService.saveParameters(this.widget);
         this.widget.showDialog = false;

@@ -42,6 +42,15 @@ var WidgetCanvasComponent = (function () {
     WidgetCanvasComponent.prototype.showDialog = function (widget) {
         widget.showDialog = true;
     };
+    WidgetCanvasComponent.prototype.showResults = function (widget) {
+        if (widget.value == null) {
+            for (var _i = 0, _a = widget.outputs; _i < _a.length; _i++) {
+                var output = _a[_i];
+                this.clowdflowsDataService.fetchOutputValue(output);
+            }
+        }
+        widget.showResults = true;
+    };
     WidgetCanvasComponent.prototype.select = function (event, object) {
         if (!event.shiftKey && !event.ctrlKey) {
             this.unselectObjects();
@@ -150,39 +159,40 @@ var WidgetCanvasComponent = (function () {
         }
     };
     WidgetCanvasComponent.prototype.onContextMenu = function ($event, item) {
+        var _this = this;
         $event.preventDefault();
         this.contextMenuService.show.next({
             actions: [
                 {
-                    html: function () { return '<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Run only this'; },
+                    html: function () { return "<span class=\"glyphicon glyphicon-play\"></span> Run only this"; },
                     click: function (item) { return console.log('Run', item.name); }
                 },
                 {
-                    html: function () { return '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Properties'; },
+                    html: function () { return "<span class=\"glyphicon glyphicon-pencil\"></span> Properties"; },
                     click: function (item) { return console.log('Properties', item.name); }
                 },
                 {
-                    html: function () { return '<span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Results'; },
-                    click: function (item) { return console.log('Results', item.name); }
+                    html: function () { return "<span class=\"glyphicon glyphicon-stats\"></span> Results"; },
+                    click: function (item) { return _this.showResults(item); }
                 },
                 {
-                    html: function () { return '<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset'; },
+                    html: function () { return "<span class=\"glyphicon glyphicon-repeat\"></span> Reset"; },
                     click: function (item) { return console.log('Reset', item.name); }
                 },
                 {
-                    html: function () { return '<span class="glyphicon glyphicon-console" aria-hidden="true"></span> Rename'; },
+                    html: function () { return "<span class=\"glyphicon glyphicon-console\"></span> Rename"; },
                     click: function (item) { return console.log('Rename', item.name); }
                 },
                 {
-                    html: function () { return '<span class="glyphicon glyphicon-copy" aria-hidden="true"></span> Copy'; },
+                    html: function () { return "<span class=\"glyphicon glyphicon-copy\"></span> Copy"; },
                     click: function (item) { return console.log('Copy', item.name); }
                 },
                 {
-                    html: function () { return '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete'; },
+                    html: function () { return "<span class=\"glyphicon glyphicon-trash\"></span> Delete"; },
                     click: function (item) { return console.log('Delete', item.name); }
                 },
                 {
-                    html: function () { return '<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help'; },
+                    html: function () { return "<span class=\"glyphicon glyphicon-question-sign\"></span> Help"; },
                     click: function (item) { return console.log('Help', item.name); }
                 },
             ],

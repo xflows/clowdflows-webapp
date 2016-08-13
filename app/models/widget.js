@@ -18,6 +18,7 @@ var Widget = (function () {
         this.abstract_widget = abstract_widget;
         this.workflow = workflow;
         this.showDialog = false;
+        this.showResults = false;
         this.selected = false;
         // Keep proper inputs and parameters separately
         this.inputs = new Array();
