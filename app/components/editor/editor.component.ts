@@ -17,7 +17,7 @@ import {Output as WorkflowOutput} from "../../models/output";
     directives: [ToolbarComponent, WidgetTreeComponent, WidgetCanvasComponent, LoggingComponent]
 })
 export class EditorComponent implements OnInit, OnDestroy {
-    @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent
+    @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent;
     workflow:any = {};
     sub:any;
 
@@ -26,49 +26,42 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     addWidget(abstractWidget:AbstractWidget) {
-        let x = 50,
-            y = 50;
-        let inputs = new Array<WorkflowInput>();
-        let parameters = new Array<WorkflowInput>();
-        let outputs = new Array<WorkflowOutput>();
-        let widget = new Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0,
-            abstractWidget.id, abstractWidget.description, inputs, outputs, this.workflow);
-        let inputOrder = 1,
-            parameterOrder = 1;
-        for (let input of abstractWidget.inputs) {
-            let order = input.parameter ? parameterOrder : inputOrder;
-            let inputObj = new WorkflowInput(-1, '', null, input.name, input.short_name, input.description,
-                input.variable, input.required, input.parameter, -1, input.parameter_type, order,
-                null, null, input.options, widget);
-            if (input.parameter) {
-                parameters.push(inputObj);
-                inputOrder++;
-            } else {
-                inputs.push(inputObj);
-                parameterOrder++;
-            }
-        }
-        for (let output of abstractWidget.outputs) {
-            outputs.push(new WorkflowOutput('', output.name, output.short_name, output.description,
-                output.variable, output.order, null, null, widget));
-        }
-        widget.inputs = inputs;
-        widget.parameters = parameters;
-        widget.outputs = outputs;
+        let widgetData = {
+            workflow: this.workflow.url,
+            x: 50,
+            y: 50,
+            name: abstractWidget.name,
+            abstract_widget: abstractWidget.id,
+            finished: false,
+            error: false,
+            running: false,
+            interaction_waiting: false,
+            type: 'regular',
+            progress: 0
+        };
 
         // Sync with server
-        this.clowdflowsDataService.addWidget(widget)
-            .then(() => this.workflow.widgets.push(widget));
+        this.clowdflowsDataService.addWidget(widgetData, this.workflow)
+            .then((widget) => {
+                this.workflow.widgets.push(widget);
+            });
     }
 
     addConnection() {
-        let selectedInput = this.canvasComponent.selectedInput;
-        let selectedOutput = this.canvasComponent.selectedOutput;
-        let conn = new Connection('', selectedOutput.widget, selectedInput.widget,
-            selectedOutput.url, selectedInput.url, this.workflow);
-        this.clowdflowsDataService.addConnection(conn);
-        this.workflow.connections.push(conn);
-        selectedInput.connection = conn;
+        var selectedInput = this.canvasComponent.selectedInput;
+        var selectedOutput = this.canvasComponent.selectedOutput;
+        let connectionData = {
+            input: selectedInput.url,
+            output: selectedOutput.url,
+            workflow: this.workflow.url
+        };
+        this.clowdflowsDataService
+            .addConnection(connectionData, this.workflow)
+            .then((connection) => {
+                this.workflow.connections.push(connection);
+                selectedInput.connection = connection;
+                this.canvasComponent.unselectSignals();
+            });
     }
 
     runWorkflow() {

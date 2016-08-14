@@ -25,27 +25,4 @@ export class Output {
     get y():number {
         return (this.order - 1)*(10+16) + 10
     }
-
-    clone():Output {
-        let outputCopy:Output = Object.create(this);
-        outputCopy.url = '';
-        return outputCopy;
-    }
-
-    toDict(withIds:boolean = true) {
-        let serialized = {
-            url: this.url,
-            // deserialized_value: this.deserialized_value,
-            name: this.name,
-            short_name: this.short_name,
-            description: this.description,
-            variable: this.variable,
-            order: this.order,
-            widget: this.widget.url
-        };
-        if (withIds) {
-            serialized['url'] = this.url;
-        }
-        return serialized;
-    }
 }

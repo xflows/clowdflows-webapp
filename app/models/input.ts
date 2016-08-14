@@ -34,32 +34,4 @@ export class Input {
     get y():number {
         return (this.order - 1)*(10+16) + 10
     }
-
-    clone():Input {
-        let inputCopy:Input = Object.create(this);
-        inputCopy.id = -1;
-        inputCopy.url = '';
-        return inputCopy;
-    }
-
-    toDict(withIds:boolean = true) {
-        let serialized = {
-            // deserialized_value: this.deserialized_value,
-            name: this.name,
-            short_name: this.short_name,
-            description: this.description,
-            variable: this.variable,
-            required: this.required,
-            parameter: this.parameter,
-            multi_id: this.multi_id,
-            parameter_type: this.parameter_type,
-            order: this.order,
-            widget: this.widget.url
-        };
-        if (withIds) {
-            serialized['id'] = this.id;
-            serialized['url'] = this.url;
-        }
-        return serialized;
-    }
 }

@@ -9,6 +9,7 @@ var Connection = (function () {
         this.selected = false;
         this.output = output_widget.outputs.find(function (outputObj) { return outputObj.url == output; });
         this.input = input_widget.inputs.find(function (inputObj) { return inputObj.url == input; });
+        console.log(this.input, output_widget, input_widget);
         this.input.connection = this;
     }
     Object.defineProperty(Connection.prototype, "bezierPoints", {
@@ -62,13 +63,6 @@ var Connection = (function () {
         enumerable: true,
         configurable: true
     });
-    Connection.prototype.toDict = function () {
-        return {
-            input: this.input.url,
-            output: this.output.url,
-            workflow: this.workflow.url
-        };
-    };
     return Connection;
 }());
 exports.Connection = Connection;

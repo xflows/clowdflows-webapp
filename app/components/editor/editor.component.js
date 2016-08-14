@@ -15,10 +15,6 @@ var widget_tree_component_1 = require("./widget-tree.component");
 var widget_canvas_component_1 = require("./widget-canvas.component");
 var logging_component_1 = require("./logging.component");
 var clowdflows_data_service_1 = require("../../services/clowdflows-data.service");
-var connection_1 = require("../../models/connection");
-var widget_1 = require("../../models/widget");
-var input_1 = require("../../models/input");
-var output_1 = require("../../models/output");
 var EditorComponent = (function () {
     function EditorComponent(clowdflowsDataService, route) {
         this.clowdflowsDataService = clowdflowsDataService;
@@ -27,43 +23,42 @@ var EditorComponent = (function () {
     }
     EditorComponent.prototype.addWidget = function (abstractWidget) {
         var _this = this;
-        var x = 50, y = 50;
-        var inputs = new Array();
-        var parameters = new Array();
-        var outputs = new Array();
-        var widget = new widget_1.Widget(-1, '', x, y, abstractWidget.name, false, false, false, false, 'regular', 0, abstractWidget.id, abstractWidget.description, inputs, outputs, this.workflow);
-        var inputOrder = 1, parameterOrder = 1;
-        for (var _i = 0, _a = abstractWidget.inputs; _i < _a.length; _i++) {
-            var input = _a[_i];
-            var order = input.parameter ? parameterOrder : inputOrder;
-            var inputObj = new input_1.Input(-1, '', null, input.name, input.short_name, input.description, input.variable, input.required, input.parameter, -1, input.parameter_type, order, null, null, input.options, widget);
-            if (input.parameter) {
-                parameters.push(inputObj);
-                inputOrder++;
-            }
-            else {
-                inputs.push(inputObj);
-                parameterOrder++;
-            }
-        }
-        for (var _b = 0, _c = abstractWidget.outputs; _b < _c.length; _b++) {
-            var output = _c[_b];
-            outputs.push(new output_1.Output('', output.name, output.short_name, output.description, output.variable, output.order, null, null, widget));
-        }
-        widget.inputs = inputs;
-        widget.parameters = parameters;
-        widget.outputs = outputs;
+        var widgetData = {
+            workflow: this.workflow.url,
+            x: 50,
+            y: 50,
+            name: abstractWidget.name,
+            abstract_widget: abstractWidget.id,
+            finished: false,
+            error: false,
+            running: false,
+            interaction_waiting: false,
+            type: 'regular',
+            progress: 0
+        };
         // Sync with server
-        this.clowdflowsDataService.addWidget(widget)
-            .then(function () { return _this.workflow.widgets.push(widget); });
+        this.clowdflowsDataService.addWidget(widgetData, this.workflow)
+            .then(function (widget) {
+            _this.workflow.widgets.push(widget);
+        });
     };
     EditorComponent.prototype.addConnection = function () {
+        var _this = this;
         var selectedInput = this.canvasComponent.selectedInput;
         var selectedOutput = this.canvasComponent.selectedOutput;
-        var conn = new connection_1.Connection('', selectedOutput.widget, selectedInput.widget, selectedOutput.url, selectedInput.url, this.workflow);
-        this.clowdflowsDataService.addConnection(conn);
-        this.workflow.connections.push(conn);
-        selectedInput.connection = conn;
+        var connectionData = {
+            input: selectedInput.url,
+            output: selectedOutput.url,
+            workflow: this.workflow.url
+        };
+        this.clowdflowsDataService
+            .addConnection(connectionData, this.workflow)
+            .then(function (connection) {
+            _this.workflow.connections.push(connection);
+            selectedInput.connection = connection;
+            console.log('selectedInput', selectedInput);
+            _this.canvasComponent.unselectSignals();
+        });
     };
     EditorComponent.prototype.runWorkflow = function () {
         this.clowdflowsDataService.runWorkflow(this.workflow);

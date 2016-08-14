@@ -86,7 +86,6 @@ var WidgetCanvasComponent = (function () {
     };
     WidgetCanvasComponent.prototype.newConnection = function () {
         this.addConnectionRequest.emit("");
-        this.unselectSignals();
     };
     WidgetCanvasComponent.prototype.unselectObjects = function () {
         for (var _i = 0, _a = this.workflow.widgets; _i < _a.length; _i++) {
@@ -155,16 +154,28 @@ var WidgetCanvasComponent = (function () {
     };
     WidgetCanvasComponent.prototype.copyWidget = function (widget) {
         var _this = this;
-        var widgetCopy = widget.clone();
-        widgetCopy.name += ' (copy)';
-        widgetCopy.x += 40;
-        widgetCopy.y += 40;
-        this.clowdflowsDataService
-            .addWidget(widgetCopy)
-            .then(function () { return _this.workflow.widgets.push(widgetCopy); });
+        var widgetData = {
+            workflow: this.workflow.url,
+            x: widget.x + 50,
+            y: widget.y + 50,
+            name: widget.name + " (copy)",
+            abstract_widget: widget.abstract_widget,
+            finished: false,
+            error: false,
+            running: false,
+            interaction_waiting: false,
+            type: widget.type,
+            progress: 0
+        };
+        // Sync with server
+        this.clowdflowsDataService.addWidget(widgetData, this.workflow)
+            .then(function (widget) {
+            _this.workflow.widgets.push(widget);
+        });
     };
     WidgetCanvasComponent.prototype.runWidget = function (widget) {
-        // TODO
+        this.clowdflowsDataService
+            .runWidget(widget);
     };
     WidgetCanvasComponent.prototype.handleShortcuts = function (event) {
         if (event.keyCode == 46) {

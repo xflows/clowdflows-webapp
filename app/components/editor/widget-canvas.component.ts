@@ -69,6 +69,7 @@ export class WidgetCanvasComponent {
         let clickedOnInput = object instanceof WorkflowInput;
         let clickedOnOutput = object instanceof WorkflowOutput;
 
+
         if (!event.shiftKey && !event.ctrlKey && !(clickedOnInput || clickedOnOutput)) {
             this.unselectObjects();
         }
@@ -98,7 +99,6 @@ export class WidgetCanvasComponent {
 
     newConnection() {
         this.addConnectionRequest.emit("");
-        this.unselectSignals();
     }
 
     unselectObjects() {
@@ -171,17 +171,30 @@ export class WidgetCanvasComponent {
     }
 
     copyWidget(widget:Widget) {
-        let widgetCopy:Widget = widget.clone();
-        widgetCopy.name += ' (copy)';
-        widgetCopy.x += 40;
-        widgetCopy.y += 40;
-        this.clowdflowsDataService
-            .addWidget(widgetCopy)
-            .then(() => this.workflow.widgets.push(widgetCopy));
+        let widgetData = {
+            workflow: this.workflow.url,
+            x: widget.x + 50,
+            y: widget.y + 50,
+            name: `${widget.name} (copy)`,
+            abstract_widget: widget.abstract_widget,
+            finished: false,
+            error: false,
+            running: false,
+            interaction_waiting: false,
+            type: widget.type,
+            progress: 0
+        };
+
+        // Sync with server
+        this.clowdflowsDataService.addWidget(widgetData, this.workflow)
+            .then((widget) => {
+                this.workflow.widgets.push(widget);
+            });
     }
 
     runWidget(widget:Widget) {
-        // TODO
+        this.clowdflowsDataService
+            .runWidget(widget);
     }
 
     handleShortcuts(event) {

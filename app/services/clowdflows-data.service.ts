@@ -80,15 +80,17 @@ export class ClowdFlowsDataService {
         return workflow;
     }
 
-    addWidget(widget:Widget) {
+    addWidget(widgetData:any, workflow:Workflow):Promise<Widget> {
         let headers = this.getAuthTokenHeaders();
         return this.http
-            .post(`${API_ENDPOINT}${this.widgetsUrl}`, JSON.stringify(widget.toDict(false)), {headers})
+            .post(`${API_ENDPOINT}${this.widgetsUrl}`, JSON.stringify(widgetData), {headers})
             .toPromise()
             .then(result => {
                 let data = result.json();
-                widget.url = data.url;
-                widget.id = data.id;
+                let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
+                    data.runing, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
+                    data.description, data.inputs, data.outputs, workflow);
+                return widget;
             });
     }
 
@@ -96,7 +98,7 @@ export class ClowdFlowsDataService {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .patch(widget.url, JSON.stringify(widget.toDict()), {headers})
+            .patch(widget.url, JSON.stringify(widget), {headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -107,6 +109,16 @@ export class ClowdFlowsDataService {
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .post(`${widget.url}reset/`, '', {headers})
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
+    runWidget(widget:Widget) {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .post(`${widget.url}run/`, '', {headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -148,37 +160,19 @@ export class ClowdFlowsDataService {
             .catch(this.handleError);
     }
 
-    addConnection(conn:Connection) {
+    addConnection(connectionData:any, workflow:Workflow):Promise<Connection> {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
-            .post(`${API_ENDPOINT}${this.connectionsUrl}`, JSON.stringify(conn.toDict()), {headers})
-            .toPromise()
-            .then(result => conn.url = result.json().url)
-            .catch(this.handleError);
-    }
-
-    addInput(input:WorkflowInput) {
-        let headers = this.getAuthTokenHeaders();
-        return this.http
-            .post(`${API_ENDPOINT}${this.inputsUrl}`, JSON.stringify(input.toDict(false)), {headers})
+            .post(`${API_ENDPOINT}${this.connectionsUrl}`, JSON.stringify(connectionData), {headers})
             .toPromise()
             .then(result => {
                 let data = result.json();
-                input.url = data.url;
-                input.id = data.id;
-            });
-    }
-
-    addOutput(output:WorkflowOutput) {
-            let headers = this.getAuthTokenHeaders();
-            return this.http
-                .post(`${API_ENDPOINT}${this.outputsUrl}`, JSON.stringify(output.toDict(false)), {headers})
-                .toPromise()
-                .then(result => {
-                    let data = result.json();
-                    output.url = data.url;
-                });
+                let input_widget:Widget = workflow.widgets.find(widget => widget.url == data.input_widget);
+                let output_widget:Widget = workflow.widgets.find(widget => widget.url == data.output_widget);
+                return new Connection(data.url, output_widget, input_widget, data.output, data.input, workflow);
+            })
+            .catch(this.handleError);
     }
 
     fetchOutputValue(output:WorkflowOutput) {
