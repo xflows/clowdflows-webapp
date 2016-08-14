@@ -34,6 +34,12 @@ var Input = (function () {
         enumerable: true,
         configurable: true
     });
+    Input.prototype.clone = function () {
+        var inputCopy = Object.create(this);
+        inputCopy.id = -1;
+        inputCopy.url = '';
+        return inputCopy;
+    };
     Input.prototype.toDict = function (withIds) {
         if (withIds === void 0) { withIds = true; }
         var serialized = {

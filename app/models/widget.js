@@ -56,21 +56,49 @@ var Widget = (function () {
         enumerable: true,
         configurable: true
     });
+    Widget.prototype.clone = function () {
+        var widgetCopy = Object.create(this);
+        widgetCopy.id = -1;
+        widgetCopy.url = '';
+        widgetCopy.finished = false;
+        widgetCopy.inputs = new Array();
+        widgetCopy.parameters = new Array();
+        widgetCopy.outputs = new Array();
+        for (var _i = 0, _a = this.inputs; _i < _a.length; _i++) {
+            var input = _a[_i];
+            var inputCopy = input.clone();
+            inputCopy.widget = widgetCopy;
+            widgetCopy.inputs.push(inputCopy);
+        }
+        for (var _b = 0, _c = this.parameters; _b < _c.length; _b++) {
+            var parameter = _c[_b];
+            var parameterCopy = parameter.clone();
+            parameterCopy.widget = widgetCopy;
+            widgetCopy.parameters.push(parameterCopy);
+        }
+        for (var _d = 0, _e = this.outputs; _d < _e.length; _d++) {
+            var output = _e[_d];
+            var outputCopy = output.clone();
+            outputCopy.widget = widgetCopy;
+            widgetCopy.outputs.push(outputCopy);
+        }
+        return widgetCopy;
+    };
     Widget.prototype.toDict = function (withIds) {
         if (withIds === void 0) { withIds = true; }
         var serializedInputs = [];
         var serializedOutputs = [];
         for (var _i = 0, _a = this.inputs; _i < _a.length; _i++) {
             var input = _a[_i];
-            serializedInputs.push(input.toDict());
+            serializedInputs.push(input.toDict(false));
         }
         for (var _b = 0, _c = this.parameters; _b < _c.length; _b++) {
             var parameter = _c[_b];
-            serializedInputs.push(parameter.toDict());
+            serializedInputs.push(parameter.toDict(false));
         }
         for (var _d = 0, _e = this.outputs; _d < _e.length; _d++) {
             var output = _e[_d];
-            serializedOutputs.push(output.toDict());
+            serializedOutputs.push(output.toDict(false));
         }
         var serialized = {
             workflow: this.workflow.url,

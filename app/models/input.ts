@@ -35,6 +35,13 @@ export class Input {
         return (this.order - 1)*(10+16) + 10
     }
 
+    clone():Input {
+        let inputCopy:Input = Object.create(this);
+        inputCopy.id = -1;
+        inputCopy.url = '';
+        return inputCopy;
+    }
+
     toDict(withIds:boolean = true) {
         let serialized = {
             // deserialized_value: this.deserialized_value,

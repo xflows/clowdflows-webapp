@@ -26,6 +26,12 @@ export class Output {
         return (this.order - 1)*(10+16) + 10
     }
 
+    clone():Output {
+        let outputCopy:Output = Object.create(this);
+        outputCopy.url = '';
+        return outputCopy;
+    }
+
     toDict(withIds:boolean = true) {
         let serialized = {
             url: this.url,

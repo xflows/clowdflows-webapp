@@ -29,6 +29,11 @@ var Output = (function () {
         enumerable: true,
         configurable: true
     });
+    Output.prototype.clone = function () {
+        var outputCopy = Object.create(this);
+        outputCopy.url = '';
+        return outputCopy;
+    };
     Output.prototype.toDict = function (withIds) {
         if (withIds === void 0) { withIds = true; }
         var serialized = {

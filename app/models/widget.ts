@@ -62,17 +62,43 @@ export class Widget {
         return this.boxHeight + 20;
     }
 
+    clone():Widget {
+        let widgetCopy:Widget = Object.create(this);
+        widgetCopy.id = -1;
+        widgetCopy.url = '';
+        widgetCopy.finished = false;
+        widgetCopy.inputs = new Array<Input>();
+        widgetCopy.parameters = new Array<Input>();
+        widgetCopy.outputs = new Array<Output>();
+        for (let input of this.inputs) {
+            let inputCopy:Input = input.clone();
+            inputCopy.widget = widgetCopy;
+            widgetCopy.inputs.push(inputCopy);
+        }
+        for (let parameter of this.parameters) {
+            let parameterCopy:Input = parameter.clone();
+            parameterCopy.widget = widgetCopy;
+            widgetCopy.parameters.push(parameterCopy);
+        }
+        for (let output of this.outputs) {
+            let outputCopy:Output = output.clone();
+            outputCopy.widget = widgetCopy;
+            widgetCopy.outputs.push(outputCopy);
+        }
+        return widgetCopy;
+    }
+
     toDict(withIds:boolean = true) {
         var serializedInputs = [];
         var serializedOutputs = [];
         for (let input of this.inputs) {
-            serializedInputs.push(input.toDict());
+            serializedInputs.push(input.toDict(false));
         }
         for (let parameter of this.parameters) {
-            serializedInputs.push(parameter.toDict());
+            serializedInputs.push(parameter.toDict(false));
         }
         for (let output of this.outputs) {
-            serializedOutputs.push(output.toDict());
+            serializedOutputs.push(output.toDict(false));
         }
         let serialized = {
             workflow: this.workflow.url,

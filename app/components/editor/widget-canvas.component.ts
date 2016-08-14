@@ -66,26 +66,29 @@ export class WidgetCanvasComponent {
     }
 
     select(event, object) {
-        if (!event.shiftKey && !event.ctrlKey) {
+        let clickedOnInput = object instanceof WorkflowInput;
+        let clickedOnOutput = object instanceof WorkflowOutput;
+
+        if (!event.shiftKey && !event.ctrlKey && !(clickedOnInput || clickedOnOutput)) {
             this.unselectObjects();
         }
 
         object.selected = true;
         event.stopPropagation();
 
-        if (object instanceof WorkflowInput) {
+        if (clickedOnInput) {
             if (this.selectedInput != null) {
                 this.selectedInput.selected = false;
             }
             this.selectedInput = object;
-        } else if (object instanceof WorkflowOutput) {
+        } else if (clickedOnOutput) {
             if (this.selectedOutput != null) {
                 this.selectedOutput.selected = false;
             }
             this.selectedOutput = object;
         }
 
-        if (object instanceof WorkflowInput || object instanceof WorkflowOutput) {
+        if (clickedOnInput || clickedOnOutput) {
             if (this.selectedOutput != null && this.selectedInput != null &&
                 this.selectedInput.connection == null) {
                 this.newConnection();
@@ -168,7 +171,13 @@ export class WidgetCanvasComponent {
     }
 
     copyWidget(widget:Widget) {
-        // TODO
+        let widgetCopy:Widget = widget.clone();
+        widgetCopy.name += ' (copy)';
+        widgetCopy.x += 40;
+        widgetCopy.y += 40;
+        this.clowdflowsDataService
+            .addWidget(widgetCopy)
+            .then(() => this.workflow.widgets.push(widgetCopy));
     }
 
     runWidget(widget:Widget) {

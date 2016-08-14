@@ -58,24 +58,26 @@ var WidgetCanvasComponent = (function () {
         widget.showRenameDialog = true;
     };
     WidgetCanvasComponent.prototype.select = function (event, object) {
-        if (!event.shiftKey && !event.ctrlKey) {
+        var clickedOnInput = object instanceof input_1.Input;
+        var clickedOnOutput = object instanceof output_1.Output;
+        if (!event.shiftKey && !event.ctrlKey && !(clickedOnInput || clickedOnOutput)) {
             this.unselectObjects();
         }
         object.selected = true;
         event.stopPropagation();
-        if (object instanceof input_1.Input) {
+        if (clickedOnInput) {
             if (this.selectedInput != null) {
                 this.selectedInput.selected = false;
             }
             this.selectedInput = object;
         }
-        else if (object instanceof output_1.Output) {
+        else if (clickedOnOutput) {
             if (this.selectedOutput != null) {
                 this.selectedOutput.selected = false;
             }
             this.selectedOutput = object;
         }
-        if (object instanceof input_1.Input || object instanceof output_1.Output) {
+        if (clickedOnInput || clickedOnOutput) {
             if (this.selectedOutput != null && this.selectedInput != null &&
                 this.selectedInput.connection == null) {
                 this.newConnection();
@@ -152,7 +154,14 @@ var WidgetCanvasComponent = (function () {
             .resetWidget(widget);
     };
     WidgetCanvasComponent.prototype.copyWidget = function (widget) {
-        // TODO
+        var _this = this;
+        var widgetCopy = widget.clone();
+        widgetCopy.name += ' (copy)';
+        widgetCopy.x += 40;
+        widgetCopy.y += 40;
+        this.clowdflowsDataService
+            .addWidget(widgetCopy)
+            .then(function () { return _this.workflow.widgets.push(widgetCopy); });
     };
     WidgetCanvasComponent.prototype.runWidget = function (widget) {
         // TODO
