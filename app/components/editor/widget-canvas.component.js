@@ -12,42 +12,42 @@ var core_1 = require('@angular/core');
 var angular2_contextmenu_1 = require('angular2-contextmenu/angular2-contextmenu');
 var ui_constants_1 = require("../../services/ui-constants");
 var draggable_directive_1 = require("../../directives/draggable.directive");
-var clowdflows_data_service_1 = require("../../services/clowdflows-data.service");
 var widget_dialog_component_1 = require("./widget-dialog.component");
 var output_1 = require("../../models/output");
 var input_1 = require("../../models/input");
 var WidgetCanvasComponent = (function () {
-    function WidgetCanvasComponent(clowdflowsDataService, contextMenuService) {
-        this.clowdflowsDataService = clowdflowsDataService;
+    function WidgetCanvasComponent(contextMenuService) {
         this.contextMenuService = contextMenuService;
         this.addConnectionRequest = new core_1.EventEmitter();
+        this.deleteConnectionRequest = new core_1.EventEmitter();
+        this.saveWidgetRequest = new core_1.EventEmitter();
+        this.saveWidgetPositionRequest = new core_1.EventEmitter();
+        this.deleteWidgetRequest = new core_1.EventEmitter();
+        this.resetWidgetRequest = new core_1.EventEmitter();
+        this.copyWidgetRequest = new core_1.EventEmitter();
+        this.runWidgetRequest = new core_1.EventEmitter();
+        this.fetchOutputResultsRequest = new core_1.EventEmitter();
         this.ui_constants = ui_constants_1.UI;
         this.selectedInput = null;
         this.selectedOutput = null;
-        this.items = [
-            { name: 'John', otherProperty: 'Foo' },
-            { name: 'Joe', otherProperty: 'Bar' }
-        ];
     }
     WidgetCanvasComponent.prototype.move = function (position, widget) {
         widget.x = position.x;
         widget.y = position.y;
     };
     WidgetCanvasComponent.prototype.saveWidget = function (widget) {
-        this.clowdflowsDataService.saveWidget(widget);
+        this.saveWidgetRequest.emit(widget);
     };
     WidgetCanvasComponent.prototype.endMove = function (widget) {
-        this.clowdflowsDataService.saveWidgetPosition(widget);
+        this.saveWidgetPositionRequest.emit(widget);
     };
     WidgetCanvasComponent.prototype.showDialog = function (widget) {
         widget.showDialog = true;
     };
     WidgetCanvasComponent.prototype.showResults = function (widget) {
-        if (widget.value == null) {
-            for (var _i = 0, _a = widget.outputs; _i < _a.length; _i++) {
-                var output = _a[_i];
-                this.clowdflowsDataService.fetchOutputValue(output);
-            }
+        for (var _i = 0, _a = widget.outputs; _i < _a.length; _i++) {
+            var output = _a[_i];
+            this.fetchOutputResultsRequest.emit(output);
         }
         widget.showResults = true;
     };
@@ -123,59 +123,19 @@ var WidgetCanvasComponent = (function () {
         }
     };
     WidgetCanvasComponent.prototype.deleteWidget = function (widget) {
-        var _this = this;
-        // Delete the connections
-        for (var _i = 0, _a = this.workflow.connections; _i < _a.length; _i++) {
-            var conn = _a[_i];
-            if (conn.input_widget == widget || conn.output_widget == widget) {
-                this.deleteConnection(conn);
-            }
-        }
-        // Delete the widget
-        this.clowdflowsDataService
-            .deleteWidget(widget)
-            .then(function (result) {
-            var idx = _this.workflow.widgets.indexOf(widget);
-            _this.workflow.widgets.splice(idx, 1);
-        });
+        this.deleteWidgetRequest.emit(widget);
     };
     WidgetCanvasComponent.prototype.deleteConnection = function (connection) {
-        var _this = this;
-        this.clowdflowsDataService
-            .deleteConnection(connection)
-            .then(function (result) {
-            var idx = _this.workflow.connections.indexOf(connection);
-            _this.workflow.connections.splice(idx, 1);
-        });
+        this.deleteConnectionRequest.emit(connection);
     };
     WidgetCanvasComponent.prototype.resetWidget = function (widget) {
-        this.clowdflowsDataService
-            .resetWidget(widget);
+        this.resetWidgetRequest.emit(widget);
     };
     WidgetCanvasComponent.prototype.copyWidget = function (widget) {
-        var _this = this;
-        var widgetData = {
-            workflow: this.workflow.url,
-            x: widget.x + 50,
-            y: widget.y + 50,
-            name: widget.name + " (copy)",
-            abstract_widget: widget.abstract_widget,
-            finished: false,
-            error: false,
-            running: false,
-            interaction_waiting: false,
-            type: widget.type,
-            progress: 0
-        };
-        // Sync with server
-        this.clowdflowsDataService.addWidget(widgetData, this.workflow)
-            .then(function (widget) {
-            _this.workflow.widgets.push(widget);
-        });
+        this.copyWidgetRequest.emit(widget);
     };
     WidgetCanvasComponent.prototype.runWidget = function (widget) {
-        this.clowdflowsDataService
-            .runWidget(widget);
+        this.runWidgetRequest.emit(widget);
     };
     WidgetCanvasComponent.prototype.handleShortcuts = function (event) {
         if (event.keyCode == 46) {
@@ -235,6 +195,38 @@ var WidgetCanvasComponent = (function () {
         core_1.Output(), 
         __metadata('design:type', Object)
     ], WidgetCanvasComponent.prototype, "addConnectionRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "deleteConnectionRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "saveWidgetRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "saveWidgetPositionRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "deleteWidgetRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "resetWidgetRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "copyWidgetRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "runWidgetRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "fetchOutputResultsRequest", void 0);
     WidgetCanvasComponent = __decorate([
         core_1.Component({
             selector: 'widget-canvas',
@@ -243,7 +235,7 @@ var WidgetCanvasComponent = (function () {
             directives: [widget_dialog_component_1.WidgetDialogComponent, draggable_directive_1.Draggable, angular2_contextmenu_1.ContextMenuComponent],
             providers: [angular2_contextmenu_1.ContextMenuService]
         }), 
-        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService, angular2_contextmenu_1.ContextMenuService])
+        __metadata('design:paramtypes', [angular2_contextmenu_1.ContextMenuService])
     ], WidgetCanvasComponent);
     return WidgetCanvasComponent;
 }());

@@ -2,7 +2,6 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {ContextMenuComponent, ContextMenuService} from 'angular2-contextmenu/angular2-contextmenu';
 import {UI} from "../../services/ui-constants";
 import {Draggable} from "../../directives/draggable.directive";
-import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {WidgetDialogComponent} from "./widget-dialog.component";
 import {Output as WorkflowOutput} from "../../models/output";
 import {Input as WorkflowInput} from "../../models/input";
@@ -19,49 +18,50 @@ import {Widget} from "../../models/widget";
 export class WidgetCanvasComponent {
     @Input() workflow:any;
     @Output() addConnectionRequest = new EventEmitter();
+    @Output() deleteConnectionRequest = new EventEmitter<Connection>();
+    @Output() saveWidgetRequest = new EventEmitter<Widget>();
+    @Output() saveWidgetPositionRequest = new EventEmitter<Widget>();
+    @Output() deleteWidgetRequest = new EventEmitter<Widget>();
+    @Output() resetWidgetRequest = new EventEmitter<Widget>();
+    @Output() copyWidgetRequest = new EventEmitter<Widget>();
+    @Output() runWidgetRequest = new EventEmitter<Widget>();
+    @Output() fetchOutputResultsRequest = new EventEmitter<WorkflowOutput>();
     ui_constants = UI;
     selectedInput:WorkflowInput = null;
     selectedOutput:WorkflowOutput = null;
 
-    public items = [
-        {name: 'John', otherProperty: 'Foo'},
-        {name: 'Joe', otherProperty: 'Bar'}
-    ];
-
-    constructor(private clowdflowsDataService:ClowdFlowsDataService, private contextMenuService:ContextMenuService) {
+    constructor(private contextMenuService:ContextMenuService) {
     }
 
-    move(position, widget) {
+    move(position, widget:Widget) {
         widget.x = position.x;
         widget.y = position.y;
     }
 
-    saveWidget(widget) {
-        this.clowdflowsDataService.saveWidget(widget);
+    saveWidget(widget:Widget) {
+        this.saveWidgetRequest.emit(widget);
     }
 
-    endMove(widget) {
-        this.clowdflowsDataService.saveWidgetPosition(widget);
+    endMove(widget:Widget) {
+        this.saveWidgetPositionRequest.emit(widget);
     }
 
-    showDialog(widget) {
+    showDialog(widget:Widget) {
         widget.showDialog = true;
     }
 
-    showResults(widget) {
-        if (widget.value == null) {
-            for (let output of widget.outputs) {
-                this.clowdflowsDataService.fetchOutputValue(output);
-            }
+    showResults(widget:Widget) {
+        for (let output of widget.outputs) {
+            this.fetchOutputResultsRequest.emit(output);
         }
         widget.showResults = true;
     }
 
-    showHelp(widget) {
+    showHelp(widget:Widget) {
         widget.showHelp = true;
     }
 
-    showRenameDialog(widget) {
+    showRenameDialog(widget:Widget) {
         widget.showRenameDialog = true;
     }
 
@@ -137,64 +137,23 @@ export class WidgetCanvasComponent {
     }
 
     deleteWidget(widget:Widget) {
-        // Delete the connections
-        for (let conn of this.workflow.connections) {
-            if (conn.input_widget == widget || conn.output_widget == widget) {
-                this.deleteConnection(conn);
-            }
-        }
-        // Delete the widget
-        this.clowdflowsDataService
-            .deleteWidget(widget)
-            .then(
-                (result) => {
-                    let idx = this.workflow.widgets.indexOf(widget);
-                    this.workflow.widgets.splice(idx, 1);
-                }
-            );
+        this.deleteWidgetRequest.emit(widget);
     }
 
     deleteConnection(connection:Connection) {
-        this.clowdflowsDataService
-            .deleteConnection(connection)
-            .then(
-                (result) => {
-                    let idx = this.workflow.connections.indexOf(connection);
-                    this.workflow.connections.splice(idx, 1);
-                }
-            );
+        this.deleteConnectionRequest.emit(connection);
     }
 
     resetWidget(widget:Widget) {
-        this.clowdflowsDataService
-            .resetWidget(widget);
+        this.resetWidgetRequest.emit(widget);
     }
 
     copyWidget(widget:Widget) {
-        let widgetData = {
-            workflow: this.workflow.url,
-            x: widget.x + 50,
-            y: widget.y + 50,
-            name: `${widget.name} (copy)`,
-            abstract_widget: widget.abstract_widget,
-            finished: false,
-            error: false,
-            running: false,
-            interaction_waiting: false,
-            type: widget.type,
-            progress: 0
-        };
-
-        // Sync with server
-        this.clowdflowsDataService.addWidget(widgetData, this.workflow)
-            .then((widget) => {
-                this.workflow.widgets.push(widget);
-            });
+        this.copyWidgetRequest.emit(widget);
     }
 
     runWidget(widget:Widget) {
-        this.clowdflowsDataService
-            .runWidget(widget);
+        this.runWidgetRequest.emit(widget);
     }
 
     handleShortcuts(event) {

@@ -7,6 +7,9 @@ import {LoggingComponent} from "./logging.component";
 import {AbstractWidget} from "../../models/abstract-widget";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {LoggerService} from "../../services/logger.service";
+import {Widget} from "../../models/widget";
+import {Connection} from "../../models/connection";
+import {Output as WorkflowOutput} from "../../models/output";
 
 @Component({
     selector: 'editor',
@@ -39,10 +42,77 @@ export class EditorComponent implements OnInit, OnDestroy {
         };
 
         // Sync with server
-        this.clowdflowsDataService.addWidget(widgetData, this.workflow)
+        this.clowdflowsDataService
+            .addWidget(widgetData, this.workflow)
             .then((widget) => {
                 this.workflow.widgets.push(widget);
             });
+    }
+
+    saveWidget(widget:Widget) {
+        this.clowdflowsDataService
+            .saveWidget(widget);
+    }
+
+    saveWidgetPosition(widget:Widget) {
+        this.clowdflowsDataService
+            .saveWidgetPosition(widget);
+    }
+
+    deleteWidget(widget:Widget) {
+        // Delete the connections
+        for (let conn of this.workflow.connections) {
+            if (conn.input_widget == widget || conn.output_widget == widget) {
+                this.deleteConnection(conn);
+            }
+        }
+        // Delete the widget
+        this.clowdflowsDataService
+            .deleteWidget(widget)
+            .then(
+                (result) => {
+                    let idx = this.workflow.widgets.indexOf(widget);
+                    this.workflow.widgets.splice(idx, 1);
+                }
+            );
+    }
+
+    resetWidget(widget:Widget) {
+        this.clowdflowsDataService
+            .resetWidget(widget);
+    }
+
+    copyWidget(widget:Widget) {
+        let widgetData = {
+            workflow: this.workflow.url,
+            x: widget.x + 50,
+            y: widget.y + 50,
+            name: `${widget.name} (copy)`,
+            abstract_widget: widget.abstract_widget,
+            finished: false,
+            error: false,
+            running: false,
+            interaction_waiting: false,
+            type: widget.type,
+            progress: 0
+        };
+
+        // Sync with server
+        this.clowdflowsDataService
+            .addWidget(widgetData, this.workflow)
+            .then((widget) => {
+                this.workflow.widgets.push(widget);
+            });
+    }
+
+    runWidget(widget:Widget) {
+        this.clowdflowsDataService
+            .runWidget(widget);
+    }
+
+    fetchOutputValue(output:WorkflowOutput) {
+        this.clowdflowsDataService
+            .fetchOutputValue(output);
     }
 
     addConnection() {
@@ -60,6 +130,17 @@ export class EditorComponent implements OnInit, OnDestroy {
                 selectedInput.connection = connection;
                 this.canvasComponent.unselectSignals();
             });
+    }
+
+    deleteConnection(connection:Connection) {
+        this.clowdflowsDataService
+            .deleteConnection(connection)
+            .then(
+                (result) => {
+                    let idx = this.workflow.connections.indexOf(connection);
+                    this.workflow.connections.splice(idx, 1);
+                }
+            );
     }
 
     runWorkflow() {

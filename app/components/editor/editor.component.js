@@ -39,10 +39,70 @@ var EditorComponent = (function () {
             progress: 0
         };
         // Sync with server
-        this.clowdflowsDataService.addWidget(widgetData, this.workflow)
+        this.clowdflowsDataService
+            .addWidget(widgetData, this.workflow)
             .then(function (widget) {
             _this.workflow.widgets.push(widget);
         });
+    };
+    EditorComponent.prototype.saveWidget = function (widget) {
+        this.clowdflowsDataService
+            .saveWidget(widget);
+    };
+    EditorComponent.prototype.saveWidgetPosition = function (widget) {
+        this.clowdflowsDataService
+            .saveWidgetPosition(widget);
+    };
+    EditorComponent.prototype.deleteWidget = function (widget) {
+        var _this = this;
+        // Delete the connections
+        for (var _i = 0, _a = this.workflow.connections; _i < _a.length; _i++) {
+            var conn = _a[_i];
+            if (conn.input_widget == widget || conn.output_widget == widget) {
+                this.deleteConnection(conn);
+            }
+        }
+        // Delete the widget
+        this.clowdflowsDataService
+            .deleteWidget(widget)
+            .then(function (result) {
+            var idx = _this.workflow.widgets.indexOf(widget);
+            _this.workflow.widgets.splice(idx, 1);
+        });
+    };
+    EditorComponent.prototype.resetWidget = function (widget) {
+        this.clowdflowsDataService
+            .resetWidget(widget);
+    };
+    EditorComponent.prototype.copyWidget = function (widget) {
+        var _this = this;
+        var widgetData = {
+            workflow: this.workflow.url,
+            x: widget.x + 50,
+            y: widget.y + 50,
+            name: widget.name + " (copy)",
+            abstract_widget: widget.abstract_widget,
+            finished: false,
+            error: false,
+            running: false,
+            interaction_waiting: false,
+            type: widget.type,
+            progress: 0
+        };
+        // Sync with server
+        this.clowdflowsDataService
+            .addWidget(widgetData, this.workflow)
+            .then(function (widget) {
+            _this.workflow.widgets.push(widget);
+        });
+    };
+    EditorComponent.prototype.runWidget = function (widget) {
+        this.clowdflowsDataService
+            .runWidget(widget);
+    };
+    EditorComponent.prototype.fetchOutputValue = function (output) {
+        this.clowdflowsDataService
+            .fetchOutputValue(output);
     };
     EditorComponent.prototype.addConnection = function () {
         var _this = this;
@@ -59,6 +119,15 @@ var EditorComponent = (function () {
             _this.workflow.connections.push(connection);
             selectedInput.connection = connection;
             _this.canvasComponent.unselectSignals();
+        });
+    };
+    EditorComponent.prototype.deleteConnection = function (connection) {
+        var _this = this;
+        this.clowdflowsDataService
+            .deleteConnection(connection)
+            .then(function (result) {
+            var idx = _this.workflow.connections.indexOf(connection);
+            _this.workflow.connections.splice(idx, 1);
         });
     };
     EditorComponent.prototype.runWorkflow = function () {
@@ -83,7 +152,7 @@ var EditorComponent = (function () {
                 _this.clowdflowsDataService.workflowUpdates(function (data) {
                     _this.receiveWorkflowUpdate(data);
                 }, workflow);
-                _this.loggingService.success("Successfully loaded workflow " + workflow.url);
+                _this.loggingService.success("Successfully loaded workflow.");
             });
         });
     };
