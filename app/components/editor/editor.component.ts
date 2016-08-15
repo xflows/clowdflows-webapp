@@ -6,10 +6,7 @@ import {WidgetCanvasComponent} from "./widget-canvas.component";
 import {LoggingComponent} from "./logging.component";
 import {AbstractWidget} from "../../models/abstract-widget";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
-import {Connection} from "../../models/connection";
-import {Widget} from "../../models/widget";
-import {Input as WorkflowInput} from "../../models/input";
-import {Output as WorkflowOutput} from "../../models/output";
+import {LoggerService} from "../../services/logger.service";
 
 @Component({
     selector: 'editor',
@@ -22,7 +19,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     sub:any;
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
-                private route:ActivatedRoute) {
+                private route:ActivatedRoute,
+                private loggingService:LoggerService) {
     }
 
     addWidget(abstractWidget:AbstractWidget) {
@@ -87,6 +85,8 @@ export class EditorComponent implements OnInit, OnDestroy {
                     this.clowdflowsDataService.workflowUpdates((data) => {
                         this.receiveWorkflowUpdate(data);
                     }, workflow);
+
+                    this.loggingService.success("Successfully loaded workflow.");
                 });
         });
     }

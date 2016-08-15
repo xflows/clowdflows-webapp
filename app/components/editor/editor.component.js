@@ -15,10 +15,12 @@ var widget_tree_component_1 = require("./widget-tree.component");
 var widget_canvas_component_1 = require("./widget-canvas.component");
 var logging_component_1 = require("./logging.component");
 var clowdflows_data_service_1 = require("../../services/clowdflows-data.service");
+var logger_service_1 = require("../../services/logger.service");
 var EditorComponent = (function () {
-    function EditorComponent(clowdflowsDataService, route) {
+    function EditorComponent(clowdflowsDataService, route, loggingService) {
         this.clowdflowsDataService = clowdflowsDataService;
         this.route = route;
+        this.loggingService = loggingService;
         this.workflow = {};
     }
     EditorComponent.prototype.addWidget = function (abstractWidget) {
@@ -56,7 +58,6 @@ var EditorComponent = (function () {
             .then(function (connection) {
             _this.workflow.connections.push(connection);
             selectedInput.connection = connection;
-            console.log('selectedInput', selectedInput);
             _this.canvasComponent.unselectSignals();
         });
     };
@@ -82,6 +83,7 @@ var EditorComponent = (function () {
                 _this.clowdflowsDataService.workflowUpdates(function (data) {
                     _this.receiveWorkflowUpdate(data);
                 }, workflow);
+                _this.loggingService.success("Successfully loaded workflow " + workflow.url);
             });
         });
     };
@@ -98,7 +100,7 @@ var EditorComponent = (function () {
             templateUrl: 'app/components/editor/editor.component.html',
             directives: [toolbar_component_1.ToolbarComponent, widget_tree_component_1.WidgetTreeComponent, widget_canvas_component_1.WidgetCanvasComponent, logging_component_1.LoggingComponent]
         }), 
-        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService, router_1.ActivatedRoute])
+        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService, router_1.ActivatedRoute, logger_service_1.LoggerService])
     ], EditorComponent);
     return EditorComponent;
 }());

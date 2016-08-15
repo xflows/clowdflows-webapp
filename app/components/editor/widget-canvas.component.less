@@ -8,9 +8,10 @@
 #widget-canvas {
   position: absolute;
   top: 97px;
-  left: 300px;
+  left: @widget-tree-width;
   right: 0px;
-  bottom: 0px;
+  bottom: @log-height;
+  overflow: auto;
 
   & > svg {
     position: absolute;

@@ -3,7 +3,8 @@
   top: 97px;
   left: 300px;
   right: 0px;
-  bottom: 0px;
+  bottom: 100px;
+  overflow: auto;
 }
 #widget-canvas > svg {
   position: absolute;

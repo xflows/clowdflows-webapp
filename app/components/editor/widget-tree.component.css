@@ -5,8 +5,9 @@
   left: 0px;
   bottom: 0px;
   padding: 10px;
-  overflow: auto;
   border-right: 1px solid #231f20;
+  overflow: auto;
+  overflow-x: hidden;
 }
 #widgets #widget-tree {
   margin-left: -20px;

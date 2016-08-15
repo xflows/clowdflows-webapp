@@ -1,12 +1,15 @@
+@import "../../common";
+
 #widgets {
-  width: 300px;
+  width: @widget-tree-width;
   position: absolute;
   top: 97px;
   left: 0px;
   bottom: 0px;
   padding: 10px;
-  overflow: auto;
   border-right: 1px solid #231f20;
+  overflow: auto;
+  overflow-x: hidden;
 
   #widget-tree {
     margin-left: -20px;

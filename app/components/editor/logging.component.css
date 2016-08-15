@@ -1,0 +1,14 @@
+#log {
+  position: absolute;
+  height: 100px;
+  left: 300px;
+  bottom: 0px;
+  right: 0px;
+  overflow: auto;
+  border-top: 1px solid #222;
+  font-family: monospace;
+  font-size: 0.8em;
+}
+#log ul {
+  padding-left: 5px;
+}

@@ -1,0 +1,7 @@
+<div id="log">
+    <ul>
+        <li *ngFor="let msg of messages" [attr.class]="'bg-' + msg.type">
+            [{{msg.timestamp}}] {{msg.text}}
+        </li>
+    </ul>
+</div>

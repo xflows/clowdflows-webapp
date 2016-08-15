@@ -9,16 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var logger_service_1 = require("../../services/logger.service");
 var LoggingComponent = (function () {
-    function LoggingComponent() {
+    function LoggingComponent(loggingService) {
+        this.loggingService = loggingService;
+        this.messages = null;
+        this.messages = loggingService.messages;
+        // this.loggingService.info('test test info');
+        // this.loggingService.error('test test error');
+        // this.loggingService.warning('test test warning');
+        // this.loggingService.success('test test success');
     }
     LoggingComponent = __decorate([
         core_1.Component({
             selector: 'logging',
             templateUrl: 'app/components/editor/logging.component.html',
+            styleUrls: ['app/components/editor/logging.component.css',],
             directives: []
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [logger_service_1.LoggerService])
     ], LoggingComponent);
     return LoggingComponent;
 }());
