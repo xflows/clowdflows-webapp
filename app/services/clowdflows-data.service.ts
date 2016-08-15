@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
-import {API_ENDPOINT, TEST_TOKEN, DOMAIN} from "../config";
+import {API_ENDPOINT, DOMAIN} from "../config";
 import {Category} from "../models/category";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
 import {Connection} from "../models/connection";
-import {Input as WorkflowInput} from "../models/input";
 import {Output as WorkflowOutput} from "../models/output";
 
 @Injectable()

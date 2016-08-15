@@ -144,7 +144,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     runWorkflow() {
-        this.clowdflowsDataService.runWorkflow(this.workflow);
+        this.clowdflowsDataService
+            .runWorkflow(this.workflow);
     }
 
     receiveWorkflowUpdate(data) {
