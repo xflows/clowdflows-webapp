@@ -32,7 +32,7 @@
                 <tspan>{{widget.name}}</tspan>
             </text>
             <text class="widget-error-icon" text-anchor="middle" [attr.x]="ui_constants.widgetWidth/2"
-                  [attr.y]="widget.labelY + 22" *ngIf="widget.error"></text>
+                  [attr.y]="widget.labelY + 22" *ngIf="widget.error">&#10008;</text>
             <text class="widget-finished-icon" text-anchor="middle" [attr.x]="ui_constants.widgetWidth/2"
                   [attr.y]="widget.labelY + 22" *ngIf="widget.finished">&#10004;</text>
         </g>
