@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var clowdflows_data_service_1 = require('../../services/clowdflows-data.service');
+var category_1 = require("../../models/category");
 var tree_view_component_1 = require("./tree-view.component");
 var WidgetTreeComponent = (function () {
     function WidgetTreeComponent(clowdflowsService) {
@@ -21,7 +22,19 @@ var WidgetTreeComponent = (function () {
     };
     WidgetTreeComponent.prototype.getWidgetLibrary = function () {
         var _this = this;
-        this.clowdflowsService.getWidgetLibrary().then(function (library) { return _this.widgetTree = library; });
+        this.clowdflowsService.getWidgetLibrary()
+            .then(function (data) {
+            var library = _this.parseWidgetLibrary(data);
+            _this.widgetTree = library;
+        });
+    };
+    WidgetTreeComponent.prototype.parseWidgetLibrary = function (data) {
+        var widgetTree = [];
+        for (var _i = 0, _a = data; _i < _a.length; _i++) {
+            var cat = _a[_i];
+            widgetTree.push(new category_1.Category(cat.name, cat.user, cat.order, cat.children, cat.widgets));
+        }
+        return widgetTree;
     };
     WidgetTreeComponent.prototype.filterTree = function () {
         function applyFilter(category, filterString) {

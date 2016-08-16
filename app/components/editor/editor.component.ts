@@ -10,6 +10,7 @@ import {LoggerService} from "../../services/logger.service";
 import {Widget} from "../../models/widget";
 import {Connection} from "../../models/connection";
 import {Output as WorkflowOutput} from "../../models/output";
+import {Workflow} from "../../models/workflow";
 
 @Component({
     selector: 'editor',
@@ -23,7 +24,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
                 private route:ActivatedRoute,
-                private loggingService:LoggerService) {
+                private loggerService:LoggerService) {
     }
 
     addWidget(abstractWidget:AbstractWidget) {
@@ -43,20 +44,32 @@ export class EditorComponent implements OnInit, OnDestroy {
 
         // Sync with server
         this.clowdflowsDataService
-            .addWidget(widgetData, this.workflow)
-            .then((widget) => {
-                this.workflow.widgets.push(widget);
+            .addWidget(widgetData)
+            .then((data) => {
+                let error = this.reportMessage(data);
+                if (!error) {
+                    let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
+                        data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
+                        data.description, data.inputs, data.outputs, this.workflow);
+                    this.workflow.widgets.push(widget);
+                }
             });
     }
 
     saveWidget(widget:Widget) {
         this.clowdflowsDataService
-            .saveWidget(widget);
+            .saveWidget(widget)
+            .then((data) => {
+                this.reportMessage(data);
+            });
     }
 
     saveWidgetPosition(widget:Widget) {
         this.clowdflowsDataService
-            .saveWidgetPosition(widget);
+            .saveWidgetPosition(widget)
+            .then((data) => {
+                this.reportMessage(data);
+            });
     }
 
     deleteWidget(widget:Widget) {
@@ -70,16 +83,22 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .deleteWidget(widget)
             .then(
-                (result) => {
-                    let idx = this.workflow.widgets.indexOf(widget);
-                    this.workflow.widgets.splice(idx, 1);
+                (data) => {
+                    let error = this.reportMessage(data);
+                    if (!error) {
+                        let idx = this.workflow.widgets.indexOf(widget);
+                        this.workflow.widgets.splice(idx, 1);
+                    }
                 }
             );
     }
 
     resetWidget(widget:Widget) {
         this.clowdflowsDataService
-            .resetWidget(widget);
+            .resetWidget(widget)
+            .then((data) => {
+                this.reportMessage(data);
+            });
     }
 
     copyWidget(widget:Widget) {
@@ -99,20 +118,35 @@ export class EditorComponent implements OnInit, OnDestroy {
 
         // Sync with server
         this.clowdflowsDataService
-            .addWidget(widgetData, this.workflow)
-            .then((widget) => {
-                this.workflow.widgets.push(widget);
+            .addWidget(widgetData)
+            .then((data) => {
+                let error = this.reportMessage(data);
+                if (!error) {
+                    let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
+                        data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
+                        data.description, data.inputs, data.outputs, this.workflow);
+                    this.workflow.widgets.push(widget);
+                }
             });
     }
 
     runWidget(widget:Widget) {
         this.clowdflowsDataService
-            .runWidget(widget);
+            .runWidget(widget)
+            .then((data) => {
+                this.reportMessage(data);
+            });
     }
 
     fetchOutputValue(output:WorkflowOutput) {
         this.clowdflowsDataService
-            .fetchOutputValue(output);
+            .fetchOutputValue(output)
+            .then((data) => {
+                let error = this.reportMessage(data);
+                if (!error) {
+                    output.value = data.value;
+                }
+            });
     }
 
     addConnection() {
@@ -124,28 +158,38 @@ export class EditorComponent implements OnInit, OnDestroy {
             workflow: this.workflow.url
         };
         this.clowdflowsDataService
-            .addConnection(connectionData, this.workflow)
-            .then((connection) => {
-                this.workflow.connections.push(connection);
-                selectedInput.connection = connection;
-                this.canvasComponent.unselectSignals();
+            .addConnection(connectionData)
+            .then((data) => {
+                let error = this.reportMessage(data);
+                if (!error) {
+                    let input_widget:Widget = this.workflow.widgets.find(widget => widget.url == data.input_widget);
+                    let output_widget:Widget = this.workflow.widgets.find(widget => widget.url == data.output_widget);
+                    let connection = new Connection(data.url, output_widget, input_widget, data.output, data.input, this.workflow);
+                    this.workflow.connections.push(connection);
+                    selectedInput.connection = connection;
+                    this.canvasComponent.unselectSignals();
+                }
             });
     }
 
     deleteConnection(connection:Connection) {
         this.clowdflowsDataService
             .deleteConnection(connection)
-            .then(
-                (result) => {
+            .then((data) => {
+                let error = this.reportMessage(data);
+                if (!error) {
                     let idx = this.workflow.connections.indexOf(connection);
                     this.workflow.connections.splice(idx, 1);
                 }
-            );
+            });
     }
 
     runWorkflow() {
         this.clowdflowsDataService
-            .runWorkflow(this.workflow);
+            .runWorkflow(this.workflow)
+            .then((data) => {
+                this.reportMessage(data);
+            });
     }
 
     receiveWorkflowUpdate(data) {
@@ -158,17 +202,36 @@ export class EditorComponent implements OnInit, OnDestroy {
         }
     }
 
+    private parseWorkflow(data):Workflow {
+        let workflow = new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
+            data.public, data.description, data.widget, data.template_parent);
+        return workflow;
+    }
+
+    private reportMessage(data):boolean {
+        let error:boolean = false;
+        if ('status' in data) {
+            if (data.status == 'error') {
+                this.loggerService.error(data.message || 'Problem executing action');
+                error = true;
+            } else if (data.status == 'ok' && 'message' in data) {
+                this.loggerService.info(data.message);
+            }
+        }
+        return error;
+    }
+
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             let id = +params['id'];
             this.clowdflowsDataService.getWorkflow(id)
-                .then(workflow => {
-                    this.workflow = workflow;
+                .then(data => {
+                    this.workflow = this.parseWorkflow(data);
                     this.clowdflowsDataService.workflowUpdates((data) => {
                         this.receiveWorkflowUpdate(data);
-                    }, workflow);
+                    }, this.workflow);
 
-                    this.loggingService.success("Successfully loaded workflow.");
+                    this.loggerService.success("Successfully loaded workflow.");
                 });
         });
     }

@@ -12,13 +12,11 @@ var core_1 = require('@angular/core');
 var http_1 = require("@angular/http");
 require('rxjs/add/operator/toPromise');
 var config_1 = require("../config");
-var category_1 = require("../models/category");
-var workflow_1 = require("../models/workflow");
-var widget_1 = require("../models/widget");
-var connection_1 = require("../models/connection");
+var logger_service_1 = require("./logger.service");
 var ClowdFlowsDataService = (function () {
-    function ClowdFlowsDataService(http) {
+    function ClowdFlowsDataService(http, loggerService) {
         this.http = http;
+        this.loggerService = loggerService;
         this.widgetLibraryUrl = 'widget-library/';
         this.workflowsUrl = 'workflows/';
         this.inputsUrl = 'inputs/';
@@ -34,106 +32,101 @@ var ClowdFlowsDataService = (function () {
         return headers;
     };
     ClowdFlowsDataService.prototype.getWidgetLibrary = function () {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .get("" + config_1.API_ENDPOINT + this.widgetLibraryUrl, { headers: headers })
             .toPromise()
-            .then(function (response) { return ClowdFlowsDataService.parseWidgetLibrary(response); })
-            .catch(this.handleError);
-    };
-    ClowdFlowsDataService.parseWidgetLibrary = function (response) {
-        var widgetTree = [];
-        for (var _i = 0, _a = response.json(); _i < _a.length; _i++) {
-            var cat = _a[_i];
-            widgetTree.push(new category_1.Category(cat.name, cat.user, cat.order, cat.children, cat.widgets));
-        }
-        return widgetTree;
+            .then(function (response) { return response.json(); })
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.handleError = function (error) {
         console.error('An error occurred', error);
-        return Promise.reject(error.message || error);
+        var message = error.message || error;
+        this.loggerService.error("HTTP error: " + error);
     };
     ClowdFlowsDataService.prototype.getWorkflow = function (id) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .get("" + config_1.API_ENDPOINT + this.workflowsUrl + id + "/", { headers: headers })
             .toPromise()
-            .then(function (response) { return ClowdFlowsDataService.parseWorkflow(response); })
-            .catch(this.handleError);
+            .then(function (response) { return response.json(); })
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.runWorkflow = function (workflow) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .post(workflow.url + "run/", {}, { headers: headers })
             .toPromise()
-            .then()
-            .catch(this.handleError);
+            .then(function (response) { return response.json(); })
+            .catch(function (error) { return _this.handleError(error); });
     };
-    ClowdFlowsDataService.parseWorkflow = function (response) {
-        var data = response.json();
-        var workflow = new workflow_1.Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
-        return workflow;
-    };
-    ClowdFlowsDataService.prototype.addWidget = function (widgetData, workflow) {
+    ClowdFlowsDataService.prototype.addWidget = function (widgetData) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         return this.http
             .post("" + config_1.API_ENDPOINT + this.widgetsUrl, JSON.stringify(widgetData), { headers: headers })
             .toPromise()
-            .then(function (result) {
-            var data = result.json();
-            var widget = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.runing, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.inputs, data.outputs, workflow);
-            return widget;
-        });
+            .then(function (response) { return response.json(); })
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.saveWidget = function (widget) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .patch(widget.url, JSON.stringify(widget), { headers: headers })
             .toPromise()
-            .then(function (response) { return response.json(); })
-            .catch(this.handleError);
+            .then(function (response) { return response; })
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.resetWidget = function (widget) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .post(widget.url + "reset/", '', { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
-            .catch(this.handleError);
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.runWidget = function (widget) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .post(widget.url + "run/", '', { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
-            .catch(this.handleError);
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.deleteWidget = function (widget) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .delete(widget.url, { headers: headers })
             .toPromise()
-            .then(function (result) { return result; })
-            .catch(this.handleError);
+            .then(function (response) { return response; })
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.saveWidgetPosition = function (widget) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .patch(widget.url, JSON.stringify({ url: widget.url, x: widget.x, y: widget.y }), { headers: headers })
             .toPromise()
-            .then(function (response) { return response.json(); })
-            .catch(this.handleError);
+            .then(function (response) { return response; })
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.saveParameters = function (widget) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         var parameters = [];
         for (var _i = 0, _a = widget.parameters; _i < _a.length; _i++) {
@@ -146,51 +139,45 @@ var ClowdFlowsDataService = (function () {
         return this.http
             .patch(widget.url + "save-parameters/", JSON.stringify(parameters), { headers: headers })
             .toPromise()
-            .then(function (response) { return response.json(); })
-            .catch(this.handleError);
+            .then(function (response) { return response; })
+            .catch(function (error) { return _this.handleError(error); });
     };
-    ClowdFlowsDataService.prototype.addConnection = function (connectionData, workflow) {
+    ClowdFlowsDataService.prototype.addConnection = function (connectionData) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .post("" + config_1.API_ENDPOINT + this.connectionsUrl, JSON.stringify(connectionData), { headers: headers })
             .toPromise()
-            .then(function (result) {
-            var data = result.json();
-            var input_widget = workflow.widgets.find(function (widget) { return widget.url == data.input_widget; });
-            var output_widget = workflow.widgets.find(function (widget) { return widget.url == data.output_widget; });
-            return new connection_1.Connection(data.url, output_widget, input_widget, data.output, data.input, workflow);
-        })
-            .catch(this.handleError);
+            .then(function (response) { return response.json(); })
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.fetchOutputValue = function (output) {
         var headers = this.getAuthTokenHeaders();
         return this.http
             .get(output.url + "value/", { headers: headers })
             .toPromise()
-            .then(function (result) {
-            var data = result.json();
-            output.value = data.value;
-        });
+            .then(function (response) { return response.json(); });
     };
     ClowdFlowsDataService.prototype.deleteConnection = function (conn) {
+        var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .delete(conn.url, { headers: headers })
             .toPromise()
-            .then(function (result) { return result; })
-            .catch(this.handleError);
+            .then(function (response) { return response; })
+            .catch(function (error) { return _this.handleError(error); });
     };
     ClowdFlowsDataService.prototype.workflowUpdates = function (onUpdateCallback, workflow) {
-        var socket = new WebSocket(("ws://" + config_1.DOMAIN + "/workflow-updates/?workflow_pk=") + workflow.id);
+        var socket = new WebSocket("ws://" + config_1.DOMAIN + "/workflow-updates/?workflow_pk=" + workflow.id);
         socket.onmessage = function (e) {
             onUpdateCallback(JSON.parse(e.data));
         };
     };
     ClowdFlowsDataService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, logger_service_1.LoggerService])
     ], ClowdFlowsDataService);
     return ClowdFlowsDataService;
 }());

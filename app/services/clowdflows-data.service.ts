@@ -2,11 +2,11 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 import {API_ENDPOINT, DOMAIN} from "../config";
-import {Category} from "../models/category";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
 import {Connection} from "../models/connection";
 import {Output as WorkflowOutput} from "../models/output";
+import {LoggerService} from "./logger.service";
 
 @Injectable()
 export class ClowdFlowsDataService {
@@ -18,7 +18,7 @@ export class ClowdFlowsDataService {
     widgetsUrl = 'widgets/';
     connectionsUrl = 'connections/';
 
-    constructor(private http:Http) {
+    constructor(private http:Http, private loggerService:LoggerService) {
     }
 
     getAuthTokenHeaders():Headers {
@@ -29,27 +29,20 @@ export class ClowdFlowsDataService {
         return headers;
     }
 
-    getWidgetLibrary():Promise<Category[]> {
+    getWidgetLibrary() {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .get(`${API_ENDPOINT}${this.widgetLibraryUrl}`, {headers})
             .toPromise()
-            .then(response => ClowdFlowsDataService.parseWidgetLibrary(response))
-            .catch(this.handleError);
-    }
-
-    static parseWidgetLibrary(response):Category[] {
-        let widgetTree:Category[] = [];
-        for (let cat of <Category[]> response.json()) {
-            widgetTree.push(new Category(cat.name, cat.user, cat.order, cat.children, cat.widgets));
-        }
-        return widgetTree;
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
     }
 
     private handleError(error:any) {
         console.error('An error occurred', error);
-        return Promise.reject(error.message || error);
+        let message = error.message || error;
+        this.loggerService.error(`HTTP error: ${error}`);
     }
 
     getWorkflow(id:number):Promise<any> {
@@ -58,39 +51,27 @@ export class ClowdFlowsDataService {
         return this.http
             .get(`${API_ENDPOINT}${this.workflowsUrl}${id}/`, {headers})
             .toPromise()
-            .then(response => ClowdFlowsDataService.parseWorkflow(response))
-            .catch(this.handleError);
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
     }
 
-    runWorkflow(workflow):Promise<any> {
+    runWorkflow(workflow:Workflow):Promise<any> {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .post(`${workflow.url}run/`, {}, {headers})
             .toPromise()
-            .then()
-            .catch(this.handleError);
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
     }
 
-    static parseWorkflow(response):Workflow {
-        let data = response.json();
-        let workflow = new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
-            data.public, data.description, data.widget, data.template_parent);
-        return workflow;
-    }
-
-    addWidget(widgetData:any, workflow:Workflow):Promise<Widget> {
+    addWidget(widgetData:any):Promise<Widget> {
         let headers = this.getAuthTokenHeaders();
         return this.http
             .post(`${API_ENDPOINT}${this.widgetsUrl}`, JSON.stringify(widgetData), {headers})
             .toPromise()
-            .then(result => {
-                let data = result.json();
-                let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
-                    data.runing, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                    data.description, data.inputs, data.outputs, workflow);
-                return widget;
-            });
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
     }
 
     saveWidget(widget:Widget) {
@@ -99,8 +80,8 @@ export class ClowdFlowsDataService {
         return this.http
             .patch(widget.url, JSON.stringify(widget), {headers})
             .toPromise()
-            .then(response => response.json())
-            .catch(this.handleError);
+            .then(response => response)
+            .catch(error => this.handleError(error));
     }
 
     resetWidget(widget:Widget) {
@@ -110,7 +91,7 @@ export class ClowdFlowsDataService {
             .post(`${widget.url}reset/`, '', {headers})
             .toPromise()
             .then(response => response.json())
-            .catch(this.handleError);
+            .catch(error => this.handleError(error));
     }
 
     runWidget(widget:Widget) {
@@ -120,7 +101,7 @@ export class ClowdFlowsDataService {
             .post(`${widget.url}run/`, '', {headers})
             .toPromise()
             .then(response => response.json())
-            .catch(this.handleError);
+            .catch(error => this.handleError(error));
     }
 
     deleteWidget(widget:Widget) {
@@ -129,8 +110,8 @@ export class ClowdFlowsDataService {
         return this.http
             .delete(widget.url, {headers})
             .toPromise()
-            .then(result => result)
-            .catch(this.handleError);
+            .then(response => response)
+            .catch(error => this.handleError(error));
     }
 
     saveWidgetPosition(widget:Widget) {
@@ -139,8 +120,8 @@ export class ClowdFlowsDataService {
         return this.http
             .patch(widget.url, JSON.stringify({url: widget.url, x: widget.x, y: widget.y}), {headers})
             .toPromise()
-            .then(response => response.json())
-            .catch(this.handleError);
+            .then(response => response)
+            .catch(error => this.handleError(error));
     }
 
     saveParameters(widget:Widget) {
@@ -155,23 +136,18 @@ export class ClowdFlowsDataService {
         return this.http
             .patch(`${widget.url}save-parameters/`, JSON.stringify(parameters), {headers})
             .toPromise()
-            .then(response => response.json())
-            .catch(this.handleError);
+            .then(response => response)
+            .catch(error => this.handleError(error));
     }
 
-    addConnection(connectionData:any, workflow:Workflow):Promise<Connection> {
+    addConnection(connectionData:any) {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
         return this.http
             .post(`${API_ENDPOINT}${this.connectionsUrl}`, JSON.stringify(connectionData), {headers})
             .toPromise()
-            .then(result => {
-                let data = result.json();
-                let input_widget:Widget = workflow.widgets.find(widget => widget.url == data.input_widget);
-                let output_widget:Widget = workflow.widgets.find(widget => widget.url == data.output_widget);
-                return new Connection(data.url, output_widget, input_widget, data.output, data.input, workflow);
-            })
-            .catch(this.handleError);
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
     }
 
     fetchOutputValue(output:WorkflowOutput) {
@@ -179,10 +155,7 @@ export class ClowdFlowsDataService {
         return this.http
             .get(`${output.url}value/`, {headers})
             .toPromise()
-            .then(result => {
-                let data = result.json();
-                output.value = data.value;
-            });
+            .then(response => response.json());
     }
 
     deleteConnection(conn:Connection) {
@@ -191,12 +164,12 @@ export class ClowdFlowsDataService {
         return this.http
             .delete(conn.url, {headers})
             .toPromise()
-            .then(result => result)
-            .catch(this.handleError);
+            .then(response => response)
+            .catch(error => this.handleError(error));
     }
 
     workflowUpdates(onUpdateCallback, workflow:Workflow) {
-        let socket = new WebSocket(`ws://${DOMAIN}/workflow-updates/?workflow_pk=` + workflow.id);
+        let socket = new WebSocket(`ws://${DOMAIN}/workflow-updates/?workflow_pk=${workflow.id}`);
         socket.onmessage = function (e) {
             onUpdateCallback(JSON.parse(e.data));
         }

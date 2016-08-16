@@ -16,11 +16,14 @@ var widget_canvas_component_1 = require("./widget-canvas.component");
 var logging_component_1 = require("./logging.component");
 var clowdflows_data_service_1 = require("../../services/clowdflows-data.service");
 var logger_service_1 = require("../../services/logger.service");
+var widget_1 = require("../../models/widget");
+var connection_1 = require("../../models/connection");
+var workflow_1 = require("../../models/workflow");
 var EditorComponent = (function () {
-    function EditorComponent(clowdflowsDataService, route, loggingService) {
+    function EditorComponent(clowdflowsDataService, route, loggerService) {
         this.clowdflowsDataService = clowdflowsDataService;
         this.route = route;
-        this.loggingService = loggingService;
+        this.loggerService = loggerService;
         this.workflow = {};
     }
     EditorComponent.prototype.addWidget = function (abstractWidget) {
@@ -40,18 +43,30 @@ var EditorComponent = (function () {
         };
         // Sync with server
         this.clowdflowsDataService
-            .addWidget(widgetData, this.workflow)
-            .then(function (widget) {
-            _this.workflow.widgets.push(widget);
+            .addWidget(widgetData)
+            .then(function (data) {
+            var error = _this.reportMessage(data);
+            if (!error) {
+                var widget = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.inputs, data.outputs, _this.workflow);
+                _this.workflow.widgets.push(widget);
+            }
         });
     };
     EditorComponent.prototype.saveWidget = function (widget) {
+        var _this = this;
         this.clowdflowsDataService
-            .saveWidget(widget);
+            .saveWidget(widget)
+            .then(function (data) {
+            _this.reportMessage(data);
+        });
     };
     EditorComponent.prototype.saveWidgetPosition = function (widget) {
+        var _this = this;
         this.clowdflowsDataService
-            .saveWidgetPosition(widget);
+            .saveWidgetPosition(widget)
+            .then(function (data) {
+            _this.reportMessage(data);
+        });
     };
     EditorComponent.prototype.deleteWidget = function (widget) {
         var _this = this;
@@ -65,14 +80,21 @@ var EditorComponent = (function () {
         // Delete the widget
         this.clowdflowsDataService
             .deleteWidget(widget)
-            .then(function (result) {
-            var idx = _this.workflow.widgets.indexOf(widget);
-            _this.workflow.widgets.splice(idx, 1);
+            .then(function (data) {
+            var error = _this.reportMessage(data);
+            if (!error) {
+                var idx = _this.workflow.widgets.indexOf(widget);
+                _this.workflow.widgets.splice(idx, 1);
+            }
         });
     };
     EditorComponent.prototype.resetWidget = function (widget) {
+        var _this = this;
         this.clowdflowsDataService
-            .resetWidget(widget);
+            .resetWidget(widget)
+            .then(function (data) {
+            _this.reportMessage(data);
+        });
     };
     EditorComponent.prototype.copyWidget = function (widget) {
         var _this = this;
@@ -91,18 +113,33 @@ var EditorComponent = (function () {
         };
         // Sync with server
         this.clowdflowsDataService
-            .addWidget(widgetData, this.workflow)
-            .then(function (widget) {
-            _this.workflow.widgets.push(widget);
+            .addWidget(widgetData)
+            .then(function (data) {
+            var error = _this.reportMessage(data);
+            if (!error) {
+                var widget_2 = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.inputs, data.outputs, _this.workflow);
+                _this.workflow.widgets.push(widget_2);
+            }
         });
     };
     EditorComponent.prototype.runWidget = function (widget) {
+        var _this = this;
         this.clowdflowsDataService
-            .runWidget(widget);
+            .runWidget(widget)
+            .then(function (data) {
+            _this.reportMessage(data);
+        });
     };
     EditorComponent.prototype.fetchOutputValue = function (output) {
+        var _this = this;
         this.clowdflowsDataService
-            .fetchOutputValue(output);
+            .fetchOutputValue(output)
+            .then(function (data) {
+            var error = _this.reportMessage(data);
+            if (!error) {
+                output.value = data.value;
+            }
+        });
     };
     EditorComponent.prototype.addConnection = function () {
         var _this = this;
@@ -114,24 +151,38 @@ var EditorComponent = (function () {
             workflow: this.workflow.url
         };
         this.clowdflowsDataService
-            .addConnection(connectionData, this.workflow)
-            .then(function (connection) {
-            _this.workflow.connections.push(connection);
-            selectedInput.connection = connection;
-            _this.canvasComponent.unselectSignals();
+            .addConnection(connectionData)
+            .then(function (data) {
+            var error = _this.reportMessage(data);
+            if (!error) {
+                var input_widget = _this.workflow.widgets.find(function (widget) { return widget.url == data.input_widget; });
+                var output_widget = _this.workflow.widgets.find(function (widget) { return widget.url == data.output_widget; });
+                var connection = new connection_1.Connection(data.url, output_widget, input_widget, data.output, data.input, _this.workflow);
+                _this.workflow.connections.push(connection);
+                selectedInput.connection = connection;
+                _this.canvasComponent.unselectSignals();
+            }
         });
     };
     EditorComponent.prototype.deleteConnection = function (connection) {
         var _this = this;
         this.clowdflowsDataService
             .deleteConnection(connection)
-            .then(function (result) {
-            var idx = _this.workflow.connections.indexOf(connection);
-            _this.workflow.connections.splice(idx, 1);
+            .then(function (data) {
+            var error = _this.reportMessage(data);
+            if (!error) {
+                var idx = _this.workflow.connections.indexOf(connection);
+                _this.workflow.connections.splice(idx, 1);
+            }
         });
     };
     EditorComponent.prototype.runWorkflow = function () {
-        this.clowdflowsDataService.runWorkflow(this.workflow);
+        var _this = this;
+        this.clowdflowsDataService
+            .runWorkflow(this.workflow)
+            .then(function (data) {
+            _this.reportMessage(data);
+        });
     };
     EditorComponent.prototype.receiveWorkflowUpdate = function (data) {
         var widget = this.workflow.widgets.find(function (widgetObj) { return widgetObj.id == data.widget_pk; });
@@ -142,17 +193,37 @@ var EditorComponent = (function () {
             widget.interaction_waiting = data.status.interaction_waiting;
         }
     };
+    EditorComponent.prototype.parseWorkflow = function (data) {
+        var workflow = new workflow_1.Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
+        return workflow;
+    };
+    EditorComponent.prototype.reportMessage = function (data) {
+        var error = false;
+        if ('status' in data) {
+            if (data.status == 'error') {
+                this.loggerService.error(data.message || 'Problem executing action');
+                error = true;
+            }
+            else if (data.status == 'ok' && 'message' in data) {
+                this.loggerService.info(data.message);
+            }
+        }
+        return error;
+    };
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.sub = this.route.params.subscribe(function (params) {
             var id = +params['id'];
             _this.clowdflowsDataService.getWorkflow(id)
-                .then(function (workflow) {
-                _this.workflow = workflow;
+                .then(function (data) {
+                _this.workflow = _this.parseWorkflow(data);
                 _this.clowdflowsDataService.workflowUpdates(function (data) {
                     _this.receiveWorkflowUpdate(data);
-                }, workflow);
-                _this.loggingService.success("Successfully loaded workflow.");
+                }, _this.workflow);
+                _this.loggerService.success("Successfully loaded workflow.");
+            })
+                .catch(function (errorMessage) {
+                _this.loggerService.error(errorMessage);
             });
         });
     };

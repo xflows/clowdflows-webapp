@@ -23,7 +23,19 @@ export class WidgetTreeComponent implements OnInit {
     }
 
     getWidgetLibrary() {
-        this.clowdflowsService.getWidgetLibrary().then(library => this.widgetTree = library);
+        this.clowdflowsService.getWidgetLibrary()
+            .then(data => {
+                let library = this.parseWidgetLibrary(data)
+                this.widgetTree = library
+            });
+    }
+
+    private parseWidgetLibrary(data):Category[] {
+        let widgetTree:Category[] = [];
+        for (let cat of <Category[]> data) {
+            widgetTree.push(new Category(cat.name, cat.user, cat.order, cat.children, cat.widgets));
+        }
+        return widgetTree;
     }
 
     filterTree() {
