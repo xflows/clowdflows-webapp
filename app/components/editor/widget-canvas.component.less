@@ -81,6 +81,15 @@
     .widget-finished-icon {
       fill: #448019;
     }
+
+    .widget-running-icon {
+      fill: #222;
+      transform-origin: 50% 50%;
+      -moz-animation: spinnerRotate 1.5s linear infinite;
+      -ms-animation: spinnerRotate 1.5s linear infinite;
+      -webkit-animation: spinnerRotate 1.5s linear infinite;
+      animation: spinnerRotate 1.5s linear infinite;
+    }
   }
 
   .connection {
@@ -93,5 +102,41 @@
         stroke: @cf-yellow;
       }
     }
+  }
+}
+
+@keyframes spinnerRotate {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+@-webkit-keyframes spinnerRotate {
+  from {
+    -webkit-transform: rotateZ(0deg);
+  }
+  to {
+    -webkit-transform: rotateZ(360deg);
+  }
+}
+
+@-moz-keyframes spinnerRotate {
+  from {
+    -moz-transform: rotateZ(0deg);
+  }
+  to {
+    -moz-transform: rotateZ(360deg);
+  }
+}
+
+@-ms-keyframes spinnerRotate {
+  from {
+    -ms-transform: rotateZ(0deg);
+  }
+  to {
+    -ms-transform: rotateZ(360deg);
   }
 }

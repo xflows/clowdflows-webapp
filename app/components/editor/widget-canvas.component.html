@@ -31,10 +31,20 @@
                   (dblclick)="showRenameDialog(widget)">
                 <tspan>{{widget.name}}</tspan>
             </text>
-            <text class="widget-error-icon" text-anchor="middle" [attr.x]="ui_constants.widgetWidth/2"
-                  [attr.y]="widget.labelY + 22" *ngIf="widget.error">&#10008;</text>
-            <text class="widget-finished-icon" text-anchor="middle" [attr.x]="ui_constants.widgetWidth/2"
-                  [attr.y]="widget.labelY + 22" *ngIf="widget.finished">&#10004;</text>
+            <text class="widget-error-icon" text-anchor="middle"
+                  [attr.transform]="'translate('+ ui_constants.widgetWidth/2 + ',' + (widget.labelY + 22) + ')'"
+                  *ngIf="widget.error">
+                &#10008;
+            </text>
+            <text class="widget-finished-icon" text-anchor="middle"
+                  [attr.transform]="'translate('+ ui_constants.widgetWidth/2 + ',' + (widget.labelY + 22) + ')'"
+                  *ngIf="widget.finished">
+                &#10004;
+            </text>
+            <g [attr.transform]="'translate('+ (ui_constants.widgetWidth/2 - 10) + ',' + (widget.labelY + 5) + ')'"
+               *ngIf="widget.running">
+                <image class="widget-running-icon" width="20" height="20" xlink:href="/app/images/cog.svg" />
+            </g>
         </g>
         <g class="connection" *ngFor="let connection of workflow.connections" [class.selected]="connection.selected">
             <path [attr.stroke-width]="ui_constants.connectionWidth" stroke-linejoin="round" fill="none"
