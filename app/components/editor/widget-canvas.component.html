@@ -27,6 +27,12 @@
                   [attr.width]="ui_constants.widgetBoxWidth"
                   [attr.height]="widget.boxHeight"
                   [class.selected]="widget.selected"/>
+            <image class="widget-icon"
+                   [attr.width]="ui_constants.iconSide"
+                   [attr.height]="ui_constants.iconSide"
+                   y="7"
+                   [attr.x]="ui_constants.signalWidth + (ui_constants.widgetBoxWidth - ui_constants.iconSide)/2"
+                   [attr.href]="widget.icon"/>
             <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle"
                   (dblclick)="showRenameDialog(widget)">
                 <tspan>{{widget.name}}</tspan>

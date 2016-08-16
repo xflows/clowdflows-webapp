@@ -2,6 +2,7 @@ import {Output} from "./output";
 import {Input} from "./input";
 import {UI} from "../services/ui-constants"
 import {Workflow} from "./workflow";
+import {BASE_URL} from "../config";
 
 export class Widget {
 
@@ -28,6 +29,7 @@ export class Widget {
         public progress:number,
         public abstract_widget:number,
         public description:string,
+        public icon:string,
         inputs:any[],
         outputs:any[],
         public workflow:Workflow

@@ -21,7 +21,7 @@ export class Workflow {
         for (let widget of widgets) {
             this.widgets.push(new Widget(widget.id, widget.url, widget.x, widget.y, widget.name, widget.finished, widget.error,
                                          widget.runing, widget.interaction_waiting, widget.type, widget.progress, widget.abstract_widget,
-                                         widget.description, widget.inputs, widget.outputs, this));
+                                         widget.description, widget.icon, widget.inputs, widget.outputs, this));
         }
 
         this.connections  = new Array<Connection>();

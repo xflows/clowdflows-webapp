@@ -47,7 +47,7 @@ var EditorComponent = (function () {
             .then(function (data) {
             var error = _this.reportMessage(data);
             if (!error) {
-                var widget = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.inputs, data.outputs, _this.workflow);
+                var widget = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.icon, data.inputs, data.outputs, _this.workflow);
                 _this.workflow.widgets.push(widget);
             }
         });
@@ -117,7 +117,7 @@ var EditorComponent = (function () {
             .then(function (data) {
             var error = _this.reportMessage(data);
             if (!error) {
-                var widget_2 = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.inputs, data.outputs, _this.workflow);
+                var widget_2 = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.icon, data.inputs, data.outputs, _this.workflow);
                 _this.workflow.widgets.push(widget_2);
             }
         });
@@ -221,9 +221,6 @@ var EditorComponent = (function () {
                     _this.receiveWorkflowUpdate(data);
                 }, _this.workflow);
                 _this.loggerService.success("Successfully loaded workflow.");
-            })
-                .catch(function (errorMessage) {
-                _this.loggerService.error(errorMessage);
             });
         });
     };

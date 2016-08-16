@@ -50,7 +50,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                 if (!error) {
                     let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
                         data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                        data.description, data.inputs, data.outputs, this.workflow);
+                        data.description, data.icon, data.inputs, data.outputs, this.workflow);
                     this.workflow.widgets.push(widget);
                 }
             });
@@ -124,7 +124,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                 if (!error) {
                     let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
                         data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                        data.description, data.inputs, data.outputs, this.workflow);
+                        data.description, data.icon, data.inputs, data.outputs, this.workflow);
                     this.workflow.widgets.push(widget);
                 }
             });
