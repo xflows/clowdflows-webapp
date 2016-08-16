@@ -210,7 +210,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     private reportMessage(data):boolean {
         let error:boolean = false;
-        if ('status' in data) {
+        if (data && 'status' in data) {
             if (data.status == 'error') {
                 this.loggerService.error(data.message || 'Problem executing action');
                 error = true;

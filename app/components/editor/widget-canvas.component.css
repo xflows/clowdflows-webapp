@@ -56,6 +56,9 @@
 #widget-canvas .widget .widget-box.selected {
   fill: #ffe45c;
 }
+#widget-canvas .widget image {
+  pointer-events: none;
+}
 #widget-canvas .widget .input,
 #widget-canvas .widget .output {
   fill: #d7eef4;

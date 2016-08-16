@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {LoggerService} from "../../services/logger.service";
+import {Component, ElementRef, ViewChild, Input, DoCheck, OnInit} from '@angular/core';
 
 @Component({
     selector: 'logging',
@@ -7,16 +6,26 @@ import {LoggerService} from "../../services/logger.service";
     styleUrls: ['app/components/editor/logging.component.css',],
     directives: []
 })
-export class LoggingComponent {
+export class LoggingComponent implements DoCheck, OnInit {
 
-    messages = null;
+    @ViewChild('log') private logContainer:ElementRef;
+    @Input() messages:Array<any>;
+    numberOfMessages:number = 0;
 
-    constructor(private loggingService:LoggerService) {
-        this.messages = loggingService.messages;
+    constructor() {}
 
-        // this.loggingService.info('test test info');
-        // this.loggingService.error('test test error');
-        // this.loggingService.warning('test test warning');
-        // this.loggingService.success('test test success');
+    ngOnInit() {
+        this.numberOfMessages = this.messages.length;
+    }
+
+    ngDoCheck() {
+        if (this.numberOfMessages < this.messages.length) {
+            this.scrollToBottom();
+            this.numberOfMessages = this.messages.length;
+        }
+    }
+
+    scrollToBottom():void {
+        this.logContainer.nativeElement.scrollTop = this.logContainer.nativeElement.scrollHeight;
     }
 }

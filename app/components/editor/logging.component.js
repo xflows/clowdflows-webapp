@@ -9,17 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var logger_service_1 = require("../../services/logger.service");
 var LoggingComponent = (function () {
-    function LoggingComponent(loggingService) {
-        this.loggingService = loggingService;
-        this.messages = null;
-        this.messages = loggingService.messages;
-        // this.loggingService.info('test test info');
-        // this.loggingService.error('test test error');
-        // this.loggingService.warning('test test warning');
-        // this.loggingService.success('test test success');
+    function LoggingComponent() {
+        this.numberOfMessages = 0;
     }
+    LoggingComponent.prototype.ngOnInit = function () {
+        this.numberOfMessages = this.messages.length;
+    };
+    LoggingComponent.prototype.ngDoCheck = function () {
+        if (this.numberOfMessages < this.messages.length) {
+            this.scrollToBottom();
+            this.numberOfMessages = this.messages.length;
+        }
+    };
+    LoggingComponent.prototype.scrollToBottom = function () {
+        console.log('yo', this.logContainer.nativeElement.scrollTop, this.logContainer.nativeElement.scrollHeight);
+        this.logContainer.nativeElement.scrollTop = this.logContainer.nativeElement.scrollHeight;
+        console.log(this.logContainer.nativeElement.scrollTop);
+    };
+    __decorate([
+        core_1.ViewChild('log'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], LoggingComponent.prototype, "logContainer", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Array)
+    ], LoggingComponent.prototype, "messages", void 0);
     LoggingComponent = __decorate([
         core_1.Component({
             selector: 'logging',
@@ -27,7 +42,7 @@ var LoggingComponent = (function () {
             styleUrls: ['app/components/editor/logging.component.css',],
             directives: []
         }), 
-        __metadata('design:paramtypes', [logger_service_1.LoggerService])
+        __metadata('design:paramtypes', [])
     ], LoggingComponent);
     return LoggingComponent;
 }());

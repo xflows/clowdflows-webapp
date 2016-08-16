@@ -199,7 +199,7 @@ var EditorComponent = (function () {
     };
     EditorComponent.prototype.reportMessage = function (data) {
         var error = false;
-        if ('status' in data) {
+        if (data && 'status' in data) {
             if (data.status == 'error') {
                 this.loggerService.error(data.message || 'Problem executing action');
                 error = true;
