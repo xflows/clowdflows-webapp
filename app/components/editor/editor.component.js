@@ -19,8 +19,10 @@ var logger_service_1 = require("../../services/logger.service");
 var widget_1 = require("../../models/widget");
 var connection_1 = require("../../models/connection");
 var workflow_1 = require("../../models/workflow");
+var platform_browser_1 = require("@angular/platform-browser");
 var EditorComponent = (function () {
-    function EditorComponent(clowdflowsDataService, route, loggerService) {
+    function EditorComponent(domSanitizer, clowdflowsDataService, route, loggerService) {
+        this.domSanitizer = domSanitizer;
         this.clowdflowsDataService = clowdflowsDataService;
         this.route = route;
         this.loggerService = loggerService;
@@ -187,11 +189,26 @@ var EditorComponent = (function () {
     EditorComponent.prototype.receiveWorkflowUpdate = function (data) {
         var widget = this.workflow.widgets.find(function (widgetObj) { return widgetObj.id == data.widget_pk; });
         if (widget != undefined) {
+            if (data.status.finished && !widget.finished) {
+                if (data.status.is_visualization) {
+                    // console.log(`should visualize ${widget.name}`);
+                    this.visualizeWidget(widget);
+                }
+            }
             widget.finished = data.status.finished;
             widget.error = data.status.error;
             widget.running = data.status.running;
             widget.interaction_waiting = data.status.interaction_waiting;
         }
+    };
+    EditorComponent.prototype.visualizeWidget = function (widget) {
+        var _this = this;
+        this.clowdflowsDataService
+            .visualizeWidget(widget)
+            .then(function (response) {
+            widget.visualizationHtml = _this.domSanitizer.bypassSecurityTrustHtml(response.text());
+            widget.showVisualizationDialog = true;
+        });
     };
     EditorComponent.prototype.parseWorkflow = function (data) {
         var workflow = new workflow_1.Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name, data.public, data.description, data.widget, data.template_parent);
@@ -237,7 +254,7 @@ var EditorComponent = (function () {
             templateUrl: 'app/components/editor/editor.component.html',
             directives: [toolbar_component_1.ToolbarComponent, widget_tree_component_1.WidgetTreeComponent, widget_canvas_component_1.WidgetCanvasComponent, logging_component_1.LoggingComponent]
         }), 
-        __metadata('design:paramtypes', [clowdflows_data_service_1.ClowdFlowsDataService, router_1.ActivatedRoute, logger_service_1.LoggerService])
+        __metadata('design:paramtypes', [platform_browser_1.DomSanitizationService, clowdflows_data_service_1.ClowdFlowsDataService, router_1.ActivatedRoute, logger_service_1.LoggerService])
     ], EditorComponent);
     return EditorComponent;
 }());

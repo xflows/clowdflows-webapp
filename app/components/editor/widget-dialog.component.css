@@ -1,6 +1,6 @@
 .widget-dialog {
   position: absolute;
-  width: 400px;
+  width: auto;
   height: auto;
   top: 50%;
   left: 50%;

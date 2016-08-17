@@ -11,6 +11,7 @@ import {Widget} from "../../models/widget";
 import {Connection} from "../../models/connection";
 import {Output as WorkflowOutput} from "../../models/output";
 import {Workflow} from "../../models/workflow";
+import {DomSanitizationService} from "@angular/platform-browser";
 
 @Component({
     selector: 'editor',
@@ -22,7 +23,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     workflow:any = {};
     sub:any;
 
-    constructor(private clowdflowsDataService:ClowdFlowsDataService,
+    constructor(private domSanitizer:DomSanitizationService,
+                private clowdflowsDataService:ClowdFlowsDataService,
                 private route:ActivatedRoute,
                 private loggerService:LoggerService) {
     }
@@ -195,11 +197,29 @@ export class EditorComponent implements OnInit, OnDestroy {
     receiveWorkflowUpdate(data) {
         let widget = this.workflow.widgets.find(widgetObj => widgetObj.id == data.widget_pk);
         if (widget != undefined) {
+            if (data.status.finished && !widget.finished) {
+                if (data.status.is_visualization) {
+                    // console.log(`should visualize ${widget.name}`);
+                    this.visualizeWidget(widget);
+                }
+            }
+
             widget.finished = data.status.finished;
             widget.error = data.status.error;
             widget.running = data.status.running;
             widget.interaction_waiting = data.status.interaction_waiting;
+
+            // console.log(data.status.is_visualization, data.status.is_interaction);
         }
+    }
+
+    visualizeWidget(widget:Widget) {
+        this.clowdflowsDataService
+            .visualizeWidget(widget)
+            .then(response => {
+                widget.visualizationHtml = this.domSanitizer.bypassSecurityTrustHtml(response.text());
+                widget.showVisualizationDialog = true;
+            });
     }
 
     private parseWorkflow(data):Workflow {

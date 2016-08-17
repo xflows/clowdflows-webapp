@@ -7,6 +7,7 @@ import {Widget} from "../models/widget";
 import {Connection} from "../models/connection";
 import {Output as WorkflowOutput} from "../models/output";
 import {LoggerService} from "./logger.service";
+import {BASE_URL} from "../_config";
 
 @Injectable()
 export class ClowdFlowsDataService {
@@ -62,6 +63,16 @@ export class ClowdFlowsDataService {
             .post(`${workflow.url}run/`, {}, {headers})
             .toPromise()
             .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    visualizeWidget(widget:Widget) {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .get(`${widget.url}visualize/`, {headers})
+            .toPromise()
+            .then(html => html)
             .catch(error => this.handleError(error));
     }
 

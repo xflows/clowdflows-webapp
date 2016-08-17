@@ -21,6 +21,9 @@ var WidgetDialogComponent = (function () {
     WidgetDialogComponent.prototype.closeRenameDialog = function () {
         this.widget.showRenameDialog = false;
     };
+    WidgetDialogComponent.prototype.closeVisualizationDialog = function () {
+        this.widget.showVisualizationDialog = false;
+    };
     WidgetDialogComponent.prototype.closeResults = function () {
         this.widget.showResults = false;
     };

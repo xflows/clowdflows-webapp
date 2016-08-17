@@ -22,6 +22,10 @@ export class WidgetDialogComponent {
         this.widget.showRenameDialog = false;
     }
 
+    closeVisualizationDialog() {
+        this.widget.showVisualizationDialog = false;
+    }
+
     closeResults() {
         this.widget.showResults = false;
     }

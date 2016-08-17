@@ -22,8 +22,10 @@ var Widget = (function () {
         this.showDialog = false;
         this.showResults = false;
         this.showRenameDialog = false;
+        this.showVisualizationDialog = false;
         this.showHelp = false;
         this.selected = false;
+        this.visualizationHtml = '';
         // Keep proper inputs and parameters separately
         this.inputs = new Array();
         this.parameters = new Array();

@@ -23,9 +23,7 @@ var LoggingComponent = (function () {
         }
     };
     LoggingComponent.prototype.scrollToBottom = function () {
-        console.log('yo', this.logContainer.nativeElement.scrollTop, this.logContainer.nativeElement.scrollHeight);
         this.logContainer.nativeElement.scrollTop = this.logContainer.nativeElement.scrollHeight;
-        console.log(this.logContainer.nativeElement.scrollTop);
     };
     __decorate([
         core_1.ViewChild('log'), 

@@ -3,6 +3,7 @@ import {Input} from "./input";
 import {UI} from "../services/ui-constants"
 import {Workflow} from "./workflow";
 import {BASE_URL} from "../config";
+import {SafeHtml} from "@angular/platform-browser";
 
 export class Widget {
 
@@ -12,8 +13,11 @@ export class Widget {
     showDialog:boolean = false;
     showResults:boolean = false;
     showRenameDialog:boolean = false;
+    showVisualizationDialog:boolean = false;
     showHelp:boolean = false;
     selected:boolean = false;
+
+    visualizationHtml:SafeHtml = '';
 
     constructor(
         public id:number,
