@@ -23,6 +23,7 @@ export class WidgetCanvasComponent {
     @Output() saveWidgetPositionRequest = new EventEmitter<Widget>();
     @Output() deleteWidgetRequest = new EventEmitter<Widget>();
     @Output() resetWidgetRequest = new EventEmitter<Widget>();
+    @Output() resetWorkflowRequest = new EventEmitter();
     @Output() copyWidgetRequest = new EventEmitter<Widget>();
     @Output() runWidgetRequest = new EventEmitter<Widget>();
     @Output() fetchOutputResultsRequest = new EventEmitter<WorkflowOutput>();
@@ -148,6 +149,10 @@ export class WidgetCanvasComponent {
         this.resetWidgetRequest.emit(widget);
     }
 
+    resetWorkflow() {
+        this.resetWorkflowRequest.emit("");
+    }
+
     copyWidget(widget:Widget) {
         this.copyWidgetRequest.emit(widget);
     }
@@ -184,6 +189,10 @@ export class WidgetCanvasComponent {
                 {
                     html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset`,
                     click: (widget) => this.resetWidget(widget)
+                },
+                {
+                    html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset workflow`,
+                    click: (_) => this.resetWorkflow()
                 },
                 {
                     html: () => `<span class="glyphicon glyphicon-console"></span> Rename`,

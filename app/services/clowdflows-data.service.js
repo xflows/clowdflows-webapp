@@ -66,6 +66,16 @@ var ClowdFlowsDataService = (function () {
             .then(function (response) { return response.json(); })
             .catch(function (error) { return _this.handleError(error); });
     };
+    ClowdFlowsDataService.prototype.resetWorkflow = function (workflow) {
+        var _this = this;
+        var headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .post(workflow.url + "reset/", {}, { headers: headers })
+            .toPromise()
+            .then(function (response) { return response; })
+            .catch(function (error) { return _this.handleError(error); });
+    };
     ClowdFlowsDataService.prototype.visualizeWidget = function (widget) {
         var _this = this;
         var headers = this.getAuthTokenHeaders();

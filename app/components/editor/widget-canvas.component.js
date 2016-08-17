@@ -24,6 +24,7 @@ var WidgetCanvasComponent = (function () {
         this.saveWidgetPositionRequest = new core_1.EventEmitter();
         this.deleteWidgetRequest = new core_1.EventEmitter();
         this.resetWidgetRequest = new core_1.EventEmitter();
+        this.resetWorkflowRequest = new core_1.EventEmitter();
         this.copyWidgetRequest = new core_1.EventEmitter();
         this.runWidgetRequest = new core_1.EventEmitter();
         this.fetchOutputResultsRequest = new core_1.EventEmitter();
@@ -131,6 +132,9 @@ var WidgetCanvasComponent = (function () {
     WidgetCanvasComponent.prototype.resetWidget = function (widget) {
         this.resetWidgetRequest.emit(widget);
     };
+    WidgetCanvasComponent.prototype.resetWorkflow = function () {
+        this.resetWorkflowRequest.emit("");
+    };
     WidgetCanvasComponent.prototype.copyWidget = function (widget) {
         this.copyWidgetRequest.emit(widget);
     };
@@ -165,6 +169,10 @@ var WidgetCanvasComponent = (function () {
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-repeat\"></span> Reset"; },
                     click: function (widget) { return _this.resetWidget(widget); }
+                },
+                {
+                    html: function () { return "<span class=\"glyphicon glyphicon-repeat\"></span> Reset workflow"; },
+                    click: function (_) { return _this.resetWorkflow(); }
                 },
                 {
                     html: function () { return "<span class=\"glyphicon glyphicon-console\"></span> Rename"; },
@@ -215,6 +223,10 @@ var WidgetCanvasComponent = (function () {
         core_1.Output(), 
         __metadata('design:type', Object)
     ], WidgetCanvasComponent.prototype, "resetWidgetRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], WidgetCanvasComponent.prototype, "resetWorkflowRequest", void 0);
     __decorate([
         core_1.Output(), 
         __metadata('design:type', Object)

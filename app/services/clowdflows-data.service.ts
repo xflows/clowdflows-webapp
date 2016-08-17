@@ -66,6 +66,16 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    resetWorkflow(workflow:Workflow):Promise<any> {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .post(`${workflow.url}reset/`, {}, {headers})
+            .toPromise()
+            .then(response => response)
+            .catch(error => this.handleError(error));
+    }
+
     visualizeWidget(widget:Widget) {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction

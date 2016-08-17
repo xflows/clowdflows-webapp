@@ -186,6 +186,14 @@ var EditorComponent = (function () {
             _this.reportMessage(data);
         });
     };
+    EditorComponent.prototype.resetWorkflow = function () {
+        var _this = this;
+        this.clowdflowsDataService
+            .resetWorkflow(this.workflow)
+            .then(function (data) {
+            _this.reportMessage(data);
+        });
+    };
     EditorComponent.prototype.receiveWorkflowUpdate = function (data) {
         var widget = this.workflow.widgets.find(function (widgetObj) { return widgetObj.id == data.widget_pk; });
         if (widget != undefined) {

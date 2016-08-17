@@ -194,6 +194,14 @@ export class EditorComponent implements OnInit, OnDestroy {
             });
     }
 
+    resetWorkflow() {
+        this.clowdflowsDataService
+            .resetWorkflow(this.workflow)
+            .then((data) => {
+                this.reportMessage(data);
+            });
+    }
+
     receiveWorkflowUpdate(data) {
         let widget = this.workflow.widgets.find(widgetObj => widgetObj.id == data.widget_pk);
         if (widget != undefined) {
