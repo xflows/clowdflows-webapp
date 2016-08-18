@@ -203,6 +203,12 @@ var EditorComponent = (function () {
                     this.visualizeWidget(widget);
                 }
             }
+            console.log(data.status);
+            if (!data.status.finished && data.status.interaction_waiting) {
+                if (!widget.showInteractionDialog) {
+                    this.interactWidget(widget);
+                }
+            }
             widget.finished = data.status.finished;
             widget.error = data.status.error;
             widget.running = data.status.running;
@@ -216,6 +222,15 @@ var EditorComponent = (function () {
             .then(function (response) {
             widget.visualizationHtml = _this.domSanitizer.bypassSecurityTrustHtml(response.text());
             widget.showVisualizationDialog = true;
+        });
+    };
+    EditorComponent.prototype.interactWidget = function (widget) {
+        var _this = this;
+        this.clowdflowsDataService
+            .interactWidget(widget)
+            .then(function (response) {
+            widget.interactionHtml = _this.domSanitizer.bypassSecurityTrustHtml(response.text());
+            widget.showInteractionDialog = true;
         });
     };
     EditorComponent.prototype.parseWorkflow = function (data) {

@@ -86,6 +86,26 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    interactWidget(widget:Widget) {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .get(`${widget.url}interact/`, {headers})
+            .toPromise()
+            .then(html => html)
+            .catch(error => this.handleError(error));
+    }
+
+    finishInteractionWidget(widget:Widget, data:any) {
+        let headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .post(`${widget.url}interact/`, JSON.stringify(data), {headers})
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
     addWidget(widgetData:any):Promise<Widget> {
         let headers = this.getAuthTokenHeaders();
         return this.http

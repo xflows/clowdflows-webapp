@@ -23,9 +23,11 @@ var Widget = (function () {
         this.showResults = false;
         this.showRenameDialog = false;
         this.showVisualizationDialog = false;
+        this.showInteractionDialog = false;
         this.showHelp = false;
         this.selected = false;
         this.visualizationHtml = '';
+        this.interactionHtml = '';
         // Keep proper inputs and parameters separately
         this.inputs = new Array();
         this.parameters = new Array();

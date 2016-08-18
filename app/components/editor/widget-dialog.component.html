@@ -113,3 +113,17 @@
         </div>
     </div>
 </div>
+
+<div class="widget-dialog panel panel-primary" [hidden]="!widget.showInteractionDialog">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{widget.name}} interaction</h3>
+    </div>
+    <div #formContainer class="panel-body" [innerHTML]="widget.interactionHtml">
+    </div>
+    <div class="panel-footer">
+        <div class="form-group form-group-sm">
+            <button (click)="closeInteractionDialog()" class="btn btn-default">Close</button>
+            <button (click)="applyInteraction()" class="btn btn-primary">Apply</button>
+        </div>
+    </div>
+</div>

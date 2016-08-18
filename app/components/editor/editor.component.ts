@@ -212,12 +212,17 @@ export class EditorComponent implements OnInit, OnDestroy {
                 }
             }
 
+            console.log(data.status);
+            if (!data.status.finished && data.status.interaction_waiting) {
+                if (!widget.showInteractionDialog) {
+                    this.interactWidget(widget);
+                }
+            }
+
             widget.finished = data.status.finished;
             widget.error = data.status.error;
             widget.running = data.status.running;
             widget.interaction_waiting = data.status.interaction_waiting;
-
-            // console.log(data.status.is_visualization, data.status.is_interaction);
         }
     }
 
@@ -227,6 +232,15 @@ export class EditorComponent implements OnInit, OnDestroy {
             .then(response => {
                 widget.visualizationHtml = this.domSanitizer.bypassSecurityTrustHtml(response.text());
                 widget.showVisualizationDialog = true;
+            });
+    }
+
+    interactWidget(widget:Widget) {
+        this.clowdflowsDataService
+            .interactWidget(widget)
+            .then(response => {
+                widget.interactionHtml = this.domSanitizer.bypassSecurityTrustHtml(response.text());
+                widget.showInteractionDialog = true;
             });
     }
 

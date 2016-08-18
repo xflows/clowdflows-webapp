@@ -14,10 +14,12 @@ export class Widget {
     showResults:boolean = false;
     showRenameDialog:boolean = false;
     showVisualizationDialog:boolean = false;
+    showInteractionDialog:boolean = false;
     showHelp:boolean = false;
     selected:boolean = false;
 
     visualizationHtml:SafeHtml = '';
+    interactionHtml:SafeHtml = '';
 
     constructor(
         public id:number,

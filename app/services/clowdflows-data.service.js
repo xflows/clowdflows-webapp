@@ -86,6 +86,26 @@ var ClowdFlowsDataService = (function () {
             .then(function (html) { return html; })
             .catch(function (error) { return _this.handleError(error); });
     };
+    ClowdFlowsDataService.prototype.interactWidget = function (widget) {
+        var _this = this;
+        var headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .get(widget.url + "interact/", { headers: headers })
+            .toPromise()
+            .then(function (html) { return html; })
+            .catch(function (error) { return _this.handleError(error); });
+    };
+    ClowdFlowsDataService.prototype.finishInteractionWidget = function (widget, data) {
+        var _this = this;
+        var headers = this.getAuthTokenHeaders();
+        //noinspection TypeScriptUnresolvedFunction
+        return this.http
+            .post(widget.url + "interact/", JSON.stringify(data), { headers: headers })
+            .toPromise()
+            .then(function (response) { return response.json(); })
+            .catch(function (error) { return _this.handleError(error); });
+    };
     ClowdFlowsDataService.prototype.addWidget = function (widgetData) {
         var _this = this;
         var headers = this.getAuthTokenHeaders();
