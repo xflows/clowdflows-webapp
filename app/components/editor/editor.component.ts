@@ -58,6 +58,35 @@ export class EditorComponent implements OnInit, OnDestroy {
             });
     }
 
+    copyWidget(widget:Widget) {
+        let widgetData = {
+            workflow: this.workflow.url,
+            x: widget.x + 50,
+            y: widget.y + 50,
+            name: `${widget.name} (copy)`,
+            abstract_widget: widget.abstract_widget,
+            finished: false,
+            error: false,
+            running: false,
+            interaction_waiting: false,
+            type: widget.type,
+            progress: 0
+        };
+
+        // Sync with server
+        this.clowdflowsDataService
+            .addWidget(widgetData)
+            .then((data) => {
+                let error = this.reportMessage(data);
+                if (!error) {
+                    let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
+                        data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
+                        data.description, data.icon, data.inputs, data.outputs, this.workflow);
+                    this.workflow.widgets.push(widget);
+                }
+            });
+    }
+
     saveWidget(widget:Widget) {
         this.clowdflowsDataService
             .saveWidget(widget)
@@ -103,40 +132,26 @@ export class EditorComponent implements OnInit, OnDestroy {
             });
     }
 
-    copyWidget(widget:Widget) {
-        let widgetData = {
-            workflow: this.workflow.url,
-            x: widget.x + 50,
-            y: widget.y + 50,
-            name: `${widget.name} (copy)`,
-            abstract_widget: widget.abstract_widget,
-            finished: false,
-            error: false,
-            running: false,
-            interaction_waiting: false,
-            type: widget.type,
-            progress: 0
-        };
-
-        // Sync with server
-        this.clowdflowsDataService
-            .addWidget(widgetData)
-            .then((data) => {
-                let error = this.reportMessage(data);
-                if (!error) {
-                    let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
-                        data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                        data.description, data.icon, data.inputs, data.outputs, this.workflow);
-                    this.workflow.widgets.push(widget);
-                }
-            });
-    }
-
     runWidget(widget:Widget) {
         this.clowdflowsDataService
             .runWidget(widget)
             .then((data) => {
                 this.reportMessage(data);
+            });
+    }
+
+    updateWidget(widget:Widget) {
+        this.clowdflowsDataService
+            .getWidget(widget.id)
+            .then((data) => {
+                let newWidget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
+                    data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
+                    data.description, data.icon, data.inputs, data.outputs, this.workflow);
+                // Remove old version
+                let idx = this.workflow.widgets.indexOf(widget);
+                this.workflow.widgets.splice(idx, 1);
+                this.workflow.widgets.push(newWidget);
+                return newWidget;
             });
     }
 
@@ -159,6 +174,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             output: selectedOutput.url,
             workflow: this.workflow.url
         };
+        var updateInputs = selectedInput.multi_id != 0;
         this.clowdflowsDataService
             .addConnection(connectionData)
             .then((data) => {
@@ -170,11 +186,15 @@ export class EditorComponent implements OnInit, OnDestroy {
                     this.workflow.connections.push(connection);
                     selectedInput.connection = connection;
                     this.canvasComponent.unselectSignals();
+                    if (updateInputs) {
+                        this.updateWidget(input_widget);
+                    }
                 }
             });
     }
 
     deleteConnection(connection:Connection) {
+        var updateInputs = connection.input.multi_id != 0;
         this.clowdflowsDataService
             .deleteConnection(connection)
             .then((data) => {
@@ -182,6 +202,9 @@ export class EditorComponent implements OnInit, OnDestroy {
                 if (!error) {
                     let idx = this.workflow.connections.indexOf(connection);
                     this.workflow.connections.splice(idx, 1);
+                    if (updateInputs) {
+                        this.updateWidget(connection.input_widget);
+                    }
                 }
             });
     }
@@ -212,7 +235,6 @@ export class EditorComponent implements OnInit, OnDestroy {
                 }
             }
 
-            console.log(data.status);
             if (!data.status.finished && data.status.interaction_waiting) {
                 if (!widget.showInteractionDialog) {
                     this.interactWidget(widget);

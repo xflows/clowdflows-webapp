@@ -54,6 +54,32 @@ var EditorComponent = (function () {
             }
         });
     };
+    EditorComponent.prototype.copyWidget = function (widget) {
+        var _this = this;
+        var widgetData = {
+            workflow: this.workflow.url,
+            x: widget.x + 50,
+            y: widget.y + 50,
+            name: widget.name + " (copy)",
+            abstract_widget: widget.abstract_widget,
+            finished: false,
+            error: false,
+            running: false,
+            interaction_waiting: false,
+            type: widget.type,
+            progress: 0
+        };
+        // Sync with server
+        this.clowdflowsDataService
+            .addWidget(widgetData)
+            .then(function (data) {
+            var error = _this.reportMessage(data);
+            if (!error) {
+                var widget_2 = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.icon, data.inputs, data.outputs, _this.workflow);
+                _this.workflow.widgets.push(widget_2);
+            }
+        });
+    };
     EditorComponent.prototype.saveWidget = function (widget) {
         var _this = this;
         this.clowdflowsDataService
@@ -98,38 +124,25 @@ var EditorComponent = (function () {
             _this.reportMessage(data);
         });
     };
-    EditorComponent.prototype.copyWidget = function (widget) {
-        var _this = this;
-        var widgetData = {
-            workflow: this.workflow.url,
-            x: widget.x + 50,
-            y: widget.y + 50,
-            name: widget.name + " (copy)",
-            abstract_widget: widget.abstract_widget,
-            finished: false,
-            error: false,
-            running: false,
-            interaction_waiting: false,
-            type: widget.type,
-            progress: 0
-        };
-        // Sync with server
-        this.clowdflowsDataService
-            .addWidget(widgetData)
-            .then(function (data) {
-            var error = _this.reportMessage(data);
-            if (!error) {
-                var widget_2 = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.icon, data.inputs, data.outputs, _this.workflow);
-                _this.workflow.widgets.push(widget_2);
-            }
-        });
-    };
     EditorComponent.prototype.runWidget = function (widget) {
         var _this = this;
         this.clowdflowsDataService
             .runWidget(widget)
             .then(function (data) {
             _this.reportMessage(data);
+        });
+    };
+    EditorComponent.prototype.updateWidget = function (widget) {
+        var _this = this;
+        this.clowdflowsDataService
+            .getWidget(widget.id)
+            .then(function (data) {
+            var newWidget = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.icon, data.inputs, data.outputs, _this.workflow);
+            // Remove old version
+            var idx = _this.workflow.widgets.indexOf(widget);
+            _this.workflow.widgets.splice(idx, 1);
+            _this.workflow.widgets.push(newWidget);
+            return newWidget;
         });
     };
     EditorComponent.prototype.fetchOutputValue = function (output) {
@@ -152,6 +165,7 @@ var EditorComponent = (function () {
             output: selectedOutput.url,
             workflow: this.workflow.url
         };
+        var updateInputs = selectedInput.multi_id != 0;
         this.clowdflowsDataService
             .addConnection(connectionData)
             .then(function (data) {
@@ -163,6 +177,9 @@ var EditorComponent = (function () {
                 _this.workflow.connections.push(connection);
                 selectedInput.connection = connection;
                 _this.canvasComponent.unselectSignals();
+                if (updateInputs) {
+                    _this.updateWidget(input_widget);
+                }
             }
         });
     };
@@ -203,7 +220,6 @@ var EditorComponent = (function () {
                     this.visualizeWidget(widget);
                 }
             }
-            console.log(data.status);
             if (!data.status.finished && data.status.interaction_waiting) {
                 if (!widget.showInteractionDialog) {
                     this.interactWidget(widget);
