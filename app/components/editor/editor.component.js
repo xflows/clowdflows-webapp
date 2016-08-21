@@ -134,10 +134,19 @@ var EditorComponent = (function () {
     };
     EditorComponent.prototype.updateWidget = function (widget) {
         var _this = this;
-        this.clowdflowsDataService
+        return this.clowdflowsDataService
             .getWidget(widget.id)
             .then(function (data) {
             var newWidget = new widget_1.Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget, data.description, data.icon, data.inputs, data.outputs, _this.workflow);
+            // Update connection references
+            for (var _i = 0, _a = _this.workflow.connections.filter(function (c) { return c.input_widget.url == newWidget.url; }); _i < _a.length; _i++) {
+                var conn = _a[_i];
+                conn.input_widget = newWidget;
+            }
+            for (var _b = 0, _c = _this.workflow.connections.filter(function (c) { return c.output_widget.url == newWidget.url; }); _b < _c.length; _b++) {
+                var conn = _c[_b];
+                conn.output_widget = newWidget;
+            }
             // Remove old version
             var idx = _this.workflow.widgets.indexOf(widget);
             _this.workflow.widgets.splice(idx, 1);
@@ -185,6 +194,7 @@ var EditorComponent = (function () {
     };
     EditorComponent.prototype.deleteConnection = function (connection) {
         var _this = this;
+        var updateInputs = connection.input.multi_id != 0;
         this.clowdflowsDataService
             .deleteConnection(connection)
             .then(function (data) {
@@ -192,6 +202,9 @@ var EditorComponent = (function () {
             if (!error) {
                 var idx = _this.workflow.connections.indexOf(connection);
                 _this.workflow.connections.splice(idx, 1);
+                if (updateInputs) {
+                    _this.updateWidget(connection.input_widget);
+                }
             }
         });
     };

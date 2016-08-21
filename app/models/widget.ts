@@ -4,6 +4,7 @@ import {UI} from "../services/ui-constants"
 import {Workflow} from "./workflow";
 import {BASE_URL} from "../config";
 import {SafeHtml} from "@angular/platform-browser";
+import {Connection} from "./connection";
 
 export class Widget {
 

@@ -110,8 +110,9 @@ var ClowdFlowsDataService = (function () {
         var _this = this;
         var headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
+        var date = new Date().toTimeString(); // FIX: better way to prevent GET caching
         return this.http
-            .get("" + config_1.API_ENDPOINT + this.widgetsUrl + id + "/", { headers: headers })
+            .get("" + config_1.API_ENDPOINT + this.widgetsUrl + id + "/?" + date, { headers: headers })
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(function (error) { return _this.handleError(error); });

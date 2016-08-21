@@ -20,7 +20,8 @@ var Workflow = (function () {
         var _loop_1 = function(connection) {
             var input_widget = this_1.widgets.find(function (widget) { return widget.url == connection.input_widget; });
             var output_widget = this_1.widgets.find(function (widget) { return widget.url == connection.output_widget; });
-            this_1.connections.push(new connection_1.Connection(connection.url, output_widget, input_widget, connection.output, connection.input, this_1));
+            var conn = new connection_1.Connection(connection.url, output_widget, input_widget, connection.output, connection.input, this_1);
+            this_1.connections.push(conn);
         };
         var this_1 = this;
         for (var _a = 0, connections_1 = connections; _a < connections_1.length; _a++) {

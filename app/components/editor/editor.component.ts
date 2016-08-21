@@ -141,12 +141,19 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     updateWidget(widget:Widget) {
-        this.clowdflowsDataService
+        return this.clowdflowsDataService
             .getWidget(widget.id)
             .then((data) => {
                 let newWidget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
                     data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
                     data.description, data.icon, data.inputs, data.outputs, this.workflow);
+                // Update connection references
+                for (let conn of this.workflow.connections.filter((c) => c.input_widget.url == newWidget.url)) {
+                    conn.input_widget = newWidget;
+                }
+                for (let conn of this.workflow.connections.filter((c) => c.output_widget.url == newWidget.url)) {
+                    conn.output_widget = newWidget;
+                }
                 // Remove old version
                 let idx = this.workflow.widgets.indexOf(widget);
                 this.workflow.widgets.splice(idx, 1);

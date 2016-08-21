@@ -109,8 +109,9 @@ export class ClowdFlowsDataService {
     getWidget(id:number):Promise<any> {
         let headers = this.getAuthTokenHeaders();
         //noinspection TypeScriptUnresolvedFunction
+        let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
         return this.http
-            .get(`${API_ENDPOINT}${this.widgetsUrl}${id}/`, {headers})
+            .get(`${API_ENDPOINT}${this.widgetsUrl}${id}/?${date}`, {headers})
             .toPromise()
             .then(response => response.json())
             .catch(error => this.handleError(error));
