@@ -249,6 +249,7 @@ var EditorComponent = (function () {
         this.clowdflowsDataService
             .visualizeWidget(widget)
             .then(function (response) {
+            //noinspection TypeScriptValidateTypes
             widget.visualizationHtml = _this.domSanitizer.bypassSecurityTrustHtml(response.text());
             widget.showVisualizationDialog = true;
         });
@@ -258,6 +259,7 @@ var EditorComponent = (function () {
         this.clowdflowsDataService
             .interactWidget(widget)
             .then(function (response) {
+            //noinspection TypeScriptValidateTypes
             widget.interactionHtml = _this.domSanitizer.bypassSecurityTrustHtml(response.text());
             widget.showInteractionDialog = true;
         });

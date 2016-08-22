@@ -259,6 +259,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .visualizeWidget(widget)
             .then(response => {
+                //noinspection TypeScriptValidateTypes
                 widget.visualizationHtml = this.domSanitizer.bypassSecurityTrustHtml(response.text());
                 widget.showVisualizationDialog = true;
             });
@@ -268,6 +269,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .interactWidget(widget)
             .then(response => {
+                //noinspection TypeScriptValidateTypes
                 widget.interactionHtml = this.domSanitizer.bypassSecurityTrustHtml(response.text());
                 widget.showInteractionDialog = true;
             });

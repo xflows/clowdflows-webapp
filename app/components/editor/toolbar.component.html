@@ -1,12 +1,12 @@
 <div id="toolbar">
     <div id="toolbar-buttons" class="btn-group">
-        <button class="btn btn-default">
+        <button class="btn btn-default" (click)="showNewWorkflowModal()">
             <i class="fa fa-file-o" title="New workflow"></i>
         </button>
-        <button class="btn btn-default">
+        <button class="btn btn-default" (click)="showOpenWorkflowModal()">
             <i class="fa fa-folder-open-o" title="Open a workflow"></i>
         </button>
-        <button class="btn btn-default">
+        <button class="btn btn-default" (click)="showSaveWorkflowModal()">
             <i class="fa fa-floppy-o" title="Save workflow"></i>
         </button>
         <button class="btn btn-default" (click)="runWorkflow()">
@@ -19,5 +19,101 @@
                 <i class="fa fa-info" title="Info"></i>
                 <strong>Hello!</strong> Welcome to ClowdFlows. Start by clicking on widgets in the treeview on the left side!
             </div>
+    </div>
+</div>
+
+<div bsModal #newWorkflow="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="newWorkflow.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">New workflow</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to create a new workflow?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="newWorkflow.hide()">Close</button>
+                <button type="button" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #openWorkflow="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="openWorkflow.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Open workflow</h4>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>
+                        <a href="">Workflow 1</a>
+                    </li>
+                    <li>
+                        <a href="">Workflow 3</a>
+                    </li>
+                    <li>
+                        <a href="">Workflow 4</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="openWorkflow.hide()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #saveWorkflow="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="saveWorkflow.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Save workflow properties</h4>
+            </div>
+            <div class="modal-body">
+                <form (onSubmit)="todo()" (keyup.enter)="todo()">
+                    <div class="form-group form-group-sm">
+                        <label for="workflow-name" class="control-label">Name</label>
+                        <input id="workflow-name" type="text"
+                               [(ngModel)]="workflow.name"
+                               title="Workflow name"
+                               class="form-control"/>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="workflow-description" class="control-label">Description</label>
+                        <textarea id="workflow-description"
+                                  [title]="workflow.description"
+                                  [(ngModel)]="workflow.description"
+                                  class="form-control"
+                                  placeholder="Describe what this workflow does"
+                                  rows="8">
+                            {{workflow.description}}
+                        </textarea>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" (change)="togglePublicWorkflow($event)"
+                                       [checked]="workflow.is_public"/> Public workflow
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="saveWorkflow.hide()">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="todo()">Apply</button>
+            </div>
+        </div>
     </div>
 </div>
