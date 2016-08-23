@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
+var api = require('./api.dev');
 
 module.exports = {
     styleLoader: require('extract-text-webpack-plugin').extract('style-loader', 'css-loader!less-loader'),
@@ -58,6 +59,12 @@ module.exports = {
 
         new HtmlWebpackPlugin({
             template: 'src/index.html'
+        }),
+
+        new webpack.DefinePlugin({
+            'process.env': {
+                'API': JSON.stringify(api)
+            }
         })
     ]
 };

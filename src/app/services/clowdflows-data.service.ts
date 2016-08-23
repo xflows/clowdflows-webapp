@@ -1,13 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
-import {API_ENDPOINT, DOMAIN} from "../config";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
 import {Connection} from "../models/connection";
 import {Output as WorkflowOutput} from "../models/output";
 import {LoggerService} from "./logger.service";
-
+import {API_ENDPOINT, DOMAIN} from "../config";
 
 @Injectable()
 export class ClowdFlowsDataService {
