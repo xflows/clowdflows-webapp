@@ -1,0 +1,65 @@
+<div id="widget-canvas" (body:keyup)="handleShortcuts($event)">
+    <svg id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" (click)="unselectObjects()">
+        <g class="widget noselect" *ngFor="let widget of workflow.widgets"
+           draggable
+           (positionChangeRequest)="move($event, widget)"
+           (endMoveRequest)="endMove(widget)"
+           [attr.width]="ui_constants.widgetWidth"
+           [attr.transform]="'translate('+ widget.x + ',' + widget.y + ')'">
+            <g *ngFor="let input of widget.inputs; let i = index">
+                <rect class="input" [attr.x]="input.x" [attr.y]="input.y"
+                      [attr.width]="ui_constants.signalWidth"
+                      [attr.height]="ui_constants.signalHeight"
+                      [class.selected]="input.selected"
+                      (click)="select($event, input)"/>
+            </g>
+            <g *ngFor="let output of widget.outputs; let i = index">
+                <rect class="output" [attr.x]="output.x" [attr.y]="output.y"
+                      [attr.width]="ui_constants.signalWidth"
+                      [attr.height]="ui_constants.signalHeight"
+                      [class.selected]="output.selected"
+                      (click)="select($event, output)"/>
+            </g>
+            <rect class="widget-box" [attr.x]="ui_constants.signalWidth" rx="2" ry="2"
+                  (click)="select($event, widget)"
+                  (dblclick)="showDialog(widget)"
+                  (contextmenu)="onContextMenu($event, widget)"
+                  [attr.width]="ui_constants.widgetBoxWidth"
+                  [attr.height]="widget.boxHeight"
+                  [class.selected]="widget.selected"/>
+            <image class="widget-icon"
+                   [attr.width]="ui_constants.iconSide"
+                   [attr.height]="ui_constants.iconSide"
+                   y="7"
+                   [attr.x]="ui_constants.signalWidth + (ui_constants.widgetBoxWidth - ui_constants.iconSide)/2"
+                   [attr.href]="widget.icon"/>
+            <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle"
+                  (dblclick)="showRenameDialog(widget)">
+                <tspan>{{widget.name}}</tspan>
+            </text>
+            <text class="widget-error-icon" text-anchor="middle"
+                  [attr.transform]="'translate('+ ui_constants.widgetWidth/2 + ',' + (widget.labelY + 22) + ')'"
+                  *ngIf="widget.error">
+                &#10008;
+            </text>
+            <text class="widget-finished-icon" text-anchor="middle"
+                  [attr.transform]="'translate('+ ui_constants.widgetWidth/2 + ',' + (widget.labelY + 22) + ')'"
+                  *ngIf="widget.finished">
+                &#10004;
+            </text>
+            <g [attr.transform]="'translate('+ (ui_constants.widgetWidth/2 - 10) + ',' + (widget.labelY + 5) + ')'"
+               *ngIf="widget.running">
+                <image class="widget-running-icon" width="20" height="20" xlink:href="/public/images/cog.svg" />
+            </g>
+        </g>
+        <g class="connection" *ngFor="let connection of workflow.connections" [class.selected]="connection.selected">
+            <path [attr.stroke-width]="ui_constants.connectionWidth" stroke-linejoin="round" fill="none"
+                  [attr.d]="connection.bezierPoints"
+                  (click)="select($event, connection)">
+            </path>
+        </g>
+    </svg>
+    <widget-dialog *ngFor="let widget of workflow.widgets" [widget]="widget"></widget-dialog>
+    <context-menu></context-menu>
+</div>
+

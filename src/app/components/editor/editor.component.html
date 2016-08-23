@@ -1,0 +1,17 @@
+<toolbar [workflow]="workflow"
+         (runWorkflowRequest)="runWorkflow()">
+</toolbar>
+<widget-tree (addWidgetRequest)="addWidget($event)"></widget-tree>
+<widget-canvas [workflow]="workflow"
+               (addConnectionRequest)="addConnection($event)"
+               (deleteConnectionRequest)="deleteConnection($event)"
+               (saveWidgetRequest) = "saveWidget($event)"
+               (saveWidgetPositionRequest) = "saveWidgetPosition($event)"
+               (deleteWidgetRequest) = "deleteWidget($event)"
+               (resetWidgetRequest) = "resetWidget($event)"
+               (resetWorkflowRequest) = "resetWorkflow($event)"
+               (copyWidgetRequest) = "copyWidget($event)"
+               (runWidgetRequest) = "runWidget($event)"
+               (fetchOutputResultsRequest)="fetchOutputValue($event)">
+</widget-canvas>
+<logging [messages]="loggerService.messages"></logging>

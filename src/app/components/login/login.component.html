@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h1>Create an account</h1>
+            <p>
+                Don't have an account yet? Create one! It takes like two seconds.
+            </p>
+            <form>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Username</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Repeat password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign up</button>
+            </form>
+        </div>
+        <div class="col-lg-6">
+            <h1>Log in</h1>
+            <p>
+                Already a member? Well then, go ahead and log in, partner!
+            </p>
+            <form (ngSubmit)="attemptLogin(loginForm.value)" #loginForm="ngForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" class="form-control" required name="username" placeholder="Username" ngModel>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" class="form-control" required name="password" placeholder="Password" ngModel>
+                    <a href="">Forgot your password?</a>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="remember-me" ngModel> Remember me
+                    </label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" [class.disabled]="!loginForm.form.valid">Log in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
