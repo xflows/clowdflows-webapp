@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Router, Params} from '@angular/router';
 import {ToolbarComponent} from "./toolbar.component";
 import {WidgetTreeComponent} from "./widget-tree.component";
 import {WidgetCanvasComponent} from "./widget-canvas.component";
@@ -26,6 +26,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     constructor(private domSanitizer:DomSanitizationService,
                 private clowdflowsDataService:ClowdFlowsDataService,
                 private route:ActivatedRoute,
+                private router: Router,
                 private loggerService:LoggerService) {
     }
 
@@ -46,7 +47,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
         // Sync with server
         this.clowdflowsDataService
-            .addWidget(widgetData)
+            .createWidget(widgetData)
             .then((data) => {
                 let error = this.reportMessage(data);
                 if (!error) {
@@ -75,7 +76,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
         // Sync with server
         this.clowdflowsDataService
-            .addWidget(widgetData)
+            .createWidget(widgetData)
             .then((data) => {
                 let error = this.reportMessage(data);
                 if (!error) {
@@ -183,7 +184,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         };
         var updateInputs = selectedInput.multi_id != 0;
         this.clowdflowsDataService
-            .addConnection(connectionData)
+            .createConnection(connectionData)
             .then((data) => {
                 let error = this.reportMessage(data);
                 if (!error) {
@@ -229,6 +230,24 @@ export class EditorComponent implements OnInit, OnDestroy {
             .resetWorkflow(this.workflow)
             .then((data) => {
                 this.reportMessage(data);
+            });
+    }
+
+    createWorkflow() {
+        let workflowData:any = {
+            name: 'Untitled workflow',
+            'public': false,
+            description: '',
+            widget: null,
+            template_parent: null
+        };
+        this.clowdflowsDataService
+            .createWorkflow(workflowData)
+            .then((data:any) => {
+                let error = this.reportMessage(data);
+                if (!error) {
+                    this.router.navigate(['/editor', data.id]);
+                }
             });
     }
 

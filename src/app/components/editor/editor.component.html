@@ -1,5 +1,6 @@
 <toolbar [workflow]="workflow"
-         (runWorkflowRequest)="runWorkflow()">
+         (runWorkflowRequest)="runWorkflow()"
+         (createWorkflowRequest)="createWorkflow()">
 </toolbar>
 <widget-tree (addWidgetRequest)="addWidget($event)"></widget-tree>
 <widget-canvas [workflow]="workflow"

@@ -1,6 +1,6 @@
 <div id="toolbar">
     <div id="toolbar-buttons" class="btn-group">
-        <button class="btn btn-default" (click)="showNewWorkflowModal()">
+        <button class="btn btn-default" (click)="showCreateWorkflowModal()">
             <i class="fa fa-file-o" title="New workflow"></i>
         </button>
         <button class="btn btn-default" (click)="showOpenWorkflowModal()">
@@ -22,11 +22,11 @@
     </div>
 </div>
 
-<div bsModal #newWorkflow="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div bsModal #createWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" (click)="newWorkflow.hide()">
+                <button type="button" class="close" aria-label="Close" (click)="createWorkflowModal.hide()">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title">New workflow</h4>
@@ -35,8 +35,8 @@
                 Are you sure you want to create a new workflow?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="newWorkflow.hide()">Close</button>
-                <button type="button" class="btn btn-primary">Create</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="createWorkflowModal.hide()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="createWorkflow()">Create</button>
             </div>
         </div>
     </div>

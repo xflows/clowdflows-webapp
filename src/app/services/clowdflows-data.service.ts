@@ -46,6 +46,15 @@ export class ClowdFlowsDataService {
         this.loggerService.error(`HTTP error: ${error}`);
     }
 
+    createWorkflow(workflowData:any) {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${API_ENDPOINT}${this.workflowsUrl}`, JSON.stringify(workflowData), options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
     getWorkflow(id:number):Promise<any> {
         let options = this.getRequestOptions();
         options.body = '';
@@ -114,7 +123,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    addWidget(widgetData:any):Promise<Widget> {
+    createWidget(widgetData:any):Promise<Widget> {
         let options = this.getRequestOptions();
         return this.http
             .post(`${API_ENDPOINT}${this.widgetsUrl}`, JSON.stringify(widgetData), options)
@@ -185,7 +194,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    addConnection(connectionData:any) {
+    createConnection(connectionData:any) {
         let options = this.getRequestOptions();
         return this.http
             .post(`${API_ENDPOINT}${this.connectionsUrl}`, JSON.stringify(connectionData), options)

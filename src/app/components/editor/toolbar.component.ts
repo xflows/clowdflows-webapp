@@ -12,14 +12,14 @@ export class ToolbarComponent {
     @Input() workflow:any;
     @Output() runWorkflowRequest = new EventEmitter();
     @Output() saveWorkflowRequest = new EventEmitter();
-    @Output() newWorkflowRequest = new EventEmitter();
+    @Output() createWorkflowRequest = new EventEmitter();
 
-    @ViewChild('newWorkflow') public newWorkflowModal: ModalDirective;
-    @ViewChild('openWorkflow') public openWorkflowModal: ModalDirective;
-    @ViewChild('saveWorkflow') public saveWorkflowModal: ModalDirective;
+    @ViewChild('createWorkflowModal') public createWorkflowModal: ModalDirective;
+    @ViewChild('openWorkflowModal') public openWorkflowModal: ModalDirective;
+    @ViewChild('saveWorkflowModal') public saveWorkflowModal: ModalDirective;
 
-    showNewWorkflowModal():void {
-        this.newWorkflowModal.show();
+    showCreateWorkflowModal():void {
+        this.createWorkflowModal.show();
     }
 
     showOpenWorkflowModal():void {
@@ -47,7 +47,8 @@ export class ToolbarComponent {
         this.saveWorkflowRequest.emit("");
     }
 
-    newWorkflow() {
-        this.newWorkflowRequest.emit("");
+    createWorkflow() {
+        this.createWorkflowRequest.emit("");
+        this.createWorkflowModal.hide();
     }
 }
