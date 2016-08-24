@@ -35,26 +35,13 @@ export class ToolbarComponent {
         this.saveWorkflowModal.show();
     }
 
-    todo() {
-
-    }
-
-    togglePublicWorkflow(event:any) {
-        var isChecked = event.currentTarget.checked;
-        this.workflow.is_public = isChecked;
-    }
-
     runWorkflow() {
         this.runWorkflowRequest.emit("");
     }
 
     saveWorkflow() {
         this.saveWorkflowRequest.emit("");
-    }
-
-    openWorkflow(id:number) {
-        this.router.navigate(['/editor', id]);
-        this.openWorkflowModal.hide();
+        this.saveWorkflowModal.hide();
     }
 
     createWorkflow() {

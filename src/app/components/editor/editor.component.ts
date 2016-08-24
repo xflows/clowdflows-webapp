@@ -237,7 +237,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     createWorkflow() {
         let workflowData:any = {
             name: 'Untitled workflow',
-            'public': false,
+            is_public: false,
             description: '',
             widget: null,
             template_parent: null
@@ -249,6 +249,14 @@ export class EditorComponent implements OnInit, OnDestroy {
                 if (!error) {
                     this.router.navigate(['/editor', data.id]);
                 }
+            });
+    }
+
+    saveWorkflow() {
+        this.clowdflowsDataService
+            .saveWorkflowInfo(this.workflow)
+            .then((data:any) => {
+                this.reportMessage(data);
             });
     }
 
@@ -296,7 +304,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     private parseWorkflow(data:any):Workflow {
         let workflow = new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
-            data.public, data.description, data.widget, data.template_parent);
+            data.is_public, data.description, data.widget, data.template_parent);
         return workflow;
     }
 

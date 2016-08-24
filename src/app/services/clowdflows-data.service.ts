@@ -55,6 +55,21 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    saveWorkflowInfo(workflow:Workflow) {
+        let options = this.getRequestOptions();
+        let workflowData:any = {
+            url: workflow.url,
+            name: workflow.name,
+            description: workflow.description,
+            is_public: workflow.is_public
+        };
+        return this.http
+            .patch(workflow.url, JSON.stringify(workflowData), options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
     getWorkflow(id:number):Promise<any> {
         let options = this.getRequestOptions();
         options.body = '';
