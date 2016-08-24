@@ -21,6 +21,7 @@ import {DomSanitizationService} from "@angular/platform-browser";
 export class EditorComponent implements OnInit, OnDestroy {
     @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent;
     workflow:any = {};
+    userWorkflows:Workflow[] = [];
     sub:any;
 
     constructor(private domSanitizer:DomSanitizationService,
@@ -256,7 +257,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         if (widget != undefined) {
             if (data.status.finished && !widget.finished) {
                 if (data.status.is_visualization) {
-                    // console.log(`should visualize ${widget.name}`);
                     this.visualizeWidget(widget);
                 }
             }
@@ -315,6 +315,8 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.sub = this.route.params.subscribe((params: Params) => {
+
+            // Fetch the current workflow
             let id = +params['id'];
             this.clowdflowsDataService.getWorkflow(id)
                 .then(data => {
@@ -324,6 +326,12 @@ export class EditorComponent implements OnInit, OnDestroy {
                     }, this.workflow);
 
                     this.loggerService.success("Successfully loaded workflow.");
+                });
+
+            // Fetch all of the user's workflows
+            this.clowdflowsDataService.getUserWorkflows()
+                .then(userWorkflows => {
+                   this.userWorkflows = <Workflow[]> userWorkflows;
                 });
         });
     }

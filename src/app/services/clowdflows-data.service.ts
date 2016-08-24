@@ -65,6 +65,16 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    getUserWorkflows():Promise<any> {
+        let options = this.getRequestOptions();
+        options.body = '';
+        return this.http
+            .get(`${API_ENDPOINT}${this.workflowsUrl}`, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
     runWorkflow(workflow:Workflow):Promise<any> {
         let options = this.getRequestOptions();
         return this.http

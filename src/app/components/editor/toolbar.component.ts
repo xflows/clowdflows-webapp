@@ -1,5 +1,7 @@
 import {Component, Output, EventEmitter, Input, ViewChild} from '@angular/core';
 import {MODAL_DIRECTIVES, BS_VIEW_PROVIDERS, ModalDirective} from 'ng2-bootstrap/ng2-bootstrap';
+import {Workflow} from "../../models/workflow";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'toolbar',
@@ -9,7 +11,8 @@ import {MODAL_DIRECTIVES, BS_VIEW_PROVIDERS, ModalDirective} from 'ng2-bootstrap
     viewProviders: [BS_VIEW_PROVIDERS],
 })
 export class ToolbarComponent {
-    @Input() workflow:any;
+    @Input() workflow:Workflow;
+    @Input() userWorkflows:Workflow[];
     @Output() runWorkflowRequest = new EventEmitter();
     @Output() saveWorkflowRequest = new EventEmitter();
     @Output() createWorkflowRequest = new EventEmitter();
@@ -17,6 +20,8 @@ export class ToolbarComponent {
     @ViewChild('createWorkflowModal') public createWorkflowModal: ModalDirective;
     @ViewChild('openWorkflowModal') public openWorkflowModal: ModalDirective;
     @ViewChild('saveWorkflowModal') public saveWorkflowModal: ModalDirective;
+
+    constructor(private router:Router) {}
 
     showCreateWorkflowModal():void {
         this.createWorkflowModal.show();
@@ -36,7 +41,7 @@ export class ToolbarComponent {
 
     togglePublicWorkflow(event:any) {
         var isChecked = event.currentTarget.checked;
-        this.workflow.is_public = isChecked ? 'true' : 'false';
+        this.workflow.is_public = isChecked;
     }
 
     runWorkflow() {
@@ -45,6 +50,11 @@ export class ToolbarComponent {
 
     saveWorkflow() {
         this.saveWorkflowRequest.emit("");
+    }
+
+    openWorkflow(id:number) {
+        this.router.navigate(['/editor', id]);
+        this.openWorkflowModal.hide();
     }
 
     createWorkflow() {

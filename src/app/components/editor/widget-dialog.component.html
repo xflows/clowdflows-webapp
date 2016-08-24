@@ -9,7 +9,7 @@
                     <label>
                         <input type="checkbox" (change)="onCheckboxChange(p, $event)"
                                [checked]="p.deserialized_value == 'true'"
-                               [attr.name]="'input-' + p.name"
+                               [name]="'input-' + p.name"
                                ngModel/> {{p.name}}
                     </label>
                 </div>

@@ -42,40 +42,34 @@
     </div>
 </div>
 
-<div bsModal #openWorkflow="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div bsModal #openWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" (click)="openWorkflow.hide()">
+                <button type="button" class="close" aria-label="Close" (click)="openWorkflowModal.hide()">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title">Open workflow</h4>
             </div>
             <div class="modal-body">
                 <ul>
-                    <li>
-                        <a href="">Workflow 1</a>
-                    </li>
-                    <li>
-                        <a href="">Workflow 3</a>
-                    </li>
-                    <li>
-                        <a href="">Workflow 4</a>
+                    <li *ngFor="let workflow of userWorkflows">
+                        <a [routerLink]="['/editor/', workflow.id]" (click)="openWorkflowModal.hide()">{{workflow.name}}</a>
                     </li>
                 </ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="openWorkflow.hide()">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="openWorkflowModal.hide()">Close</button>
             </div>
         </div>
     </div>
 </div>
 
-<div bsModal #saveWorkflow="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div bsModal #saveWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" (click)="saveWorkflow.hide()">
+                <button type="button" class="close" aria-label="Close" (click)="saveWorkflowModal.hide()">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title">Save workflow properties</h4>
@@ -117,7 +111,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="saveWorkflow.hide()">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="saveWorkflowModal.hide()">Close</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" (click)="todo()">Apply</button>
             </div>
         </div>
