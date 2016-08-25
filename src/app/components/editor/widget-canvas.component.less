@@ -68,14 +68,21 @@
       stroke-width: 1.70787406;
       stroke-miterlimit: 4;
       stroke-dasharray: none;
+      cursor: pointer;
 
       &.selected {
         fill: darken(#d7eef4, 20%);
       }
     }
 
-    text {
-      // empty
+    text.signal-text {
+      pointer-events: none;
+      fill: #a3a3a3;
+    }
+
+    .input.selected + text.signal-text,
+    .output.selected + text.signal-text {
+      fill: white;
     }
 
     .widget-error-icon {
@@ -99,6 +106,7 @@
   .connection {
     path {
       stroke: #a3a3a3;
+      cursor: pointer;
     }
 
     &.selected {

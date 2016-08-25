@@ -67,10 +67,19 @@
   stroke-width: 1.70787406;
   stroke-miterlimit: 4;
   stroke-dasharray: none;
+  cursor: pointer;
 }
 #widget-canvas .widget .input.selected,
 #widget-canvas .widget .output.selected {
   fill: #87ccde;
+}
+#widget-canvas .widget text.signal-text {
+  pointer-events: none;
+  fill: #a3a3a3;
+}
+#widget-canvas .widget .input.selected + text.signal-text,
+#widget-canvas .widget .output.selected + text.signal-text {
+  fill: white;
 }
 #widget-canvas .widget .widget-error-icon {
   fill: #ff572b;
@@ -88,6 +97,7 @@
 }
 #widget-canvas .connection path {
   stroke: #a3a3a3;
+  cursor: pointer;
 }
 #widget-canvas .connection.selected path {
   stroke: #ffe45c;

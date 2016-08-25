@@ -3,39 +3,45 @@
         <h3 class="panel-title">{{widget.name}}</h3>
     </div>
     <div class="panel-body">
-        <form #widgetParametersForm="ngForm" (onSubmit)="applyParameters()" (keyup.enter)="applyParameters()">
+        <form #widgetParametersForm="ngForm"
+              (onSubmit)="applyParameters()"
+              (keyup.enter)="applyParameters()">
             <div class="form-group form-group-sm" *ngFor="let p of widget.parameters">
-                <div class="checkbox" *ngIf="p.parameter_type == 'checkbox'">
+                <div class="checkbox"
+                     *ngIf="p.parameter_type == 'checkbox'">
                     <label>
-                        <input type="checkbox" (change)="onCheckboxChange(p, $event)"
+                        <input type="checkbox"
+                               (change)="onCheckboxChange(p, $event)"
                                [checked]="p.deserialized_value == 'true'"
-                               [name]="'input-' + p.name"
-                               ngModel/> {{p.name}}
+                               [name]="'input-' + p.name"/> {{p.name}}
                     </label>
                 </div>
-                <label [attr.for]="'input-' + p.name" *ngIf="p.parameter_type != 'checkbox'"
-                       class="control-label">{{p.name}}</label>
-
+                <label [attr.for]="'input-' + p.name"
+                       *ngIf="p.parameter_type != 'checkbox'"
+                       class="control-label">{{p.name}>
+                </label>
                 <input [attr.id]="'input-' + p.name"
                        [name]="'input-' + p.name"
-                       *ngIf="p.parameter_type == 'text'" type="text"
+                       *ngIf="p.parameter_type == 'text'"
+                       type="text"
                        [(ngModel)]="p.deserialized_value"
                        [title]="p.description"
-                       class="form-control"
-                       ngModel/>
+                       class="form-control"/>
                 <input [attr.id]="'input-' + p.name"
                        [name]="'input-' + p.name"
-                       *ngIf="p.parameter_type == 'password'" type="password"
+                       *ngIf="p.parameter_type == 'password'"
+                       type="password"
                        [(ngModel)]="p.deserialized_value"
                        [title]="p.description"
-                       class="form-control"
-                       ngModel/>
+                       class="form-control"/>
                 <select [attr.id]="'input-' + p.name"
                         [name]="'input-' + p.name"
-                        *ngIf="p.parameter_type == 'select'" [title]="p.description"
-                        class="form-control" [(ngModel)]="p.deserialized_value"
-                        ngModel>
-                    <option *ngFor="let o of p.options" [value]="o.value"
+                        *ngIf="p.parameter_type == 'select'"
+                        [title]="p.description"
+                        class="form-control"
+                        [(ngModel)]="p.deserialized_value">
+                    <option *ngFor="let o of p.options"
+                            [value]="o.value"
                             [selected]="o.value == p.deserialized_value">{{o.name}}
                     </option>
                 </select>
@@ -43,15 +49,15 @@
                           [name]="'input-' + p.name"
                           *ngIf="p.parameter_type == 'textarea'"
                           [title]="p.description"
-                          class="form-control" [(ngModel)]="p.deserialized_value"
-                          ngModel>
+                          class="form-control"
+                          [(ngModel)]="p.deserialized_value">
                     {{p.deserialized_value}}
                 </textarea>
                 <input [attr.id]="'input-' + p.name"
                        [name]="'input-' + p.name"
-                       *ngIf="p.parameter_type == 'file'" [title]="p.description"
-                       type="file" class="form-control"
-                       ngModel/>
+                       *ngIf="p.parameter_type == 'file'"
+                       [title]="p.description"
+                       type="file" class="form-control"/>
                 <p class="help-block">{{p.description}}</p>
             </div>
             <p *ngIf="widget.parameters.length == 0">This widget has no parameters</p>
@@ -65,13 +71,16 @@
     </div>
 </div>
 
-<div class="widget-dialog panel panel-primary" [hidden]="!widget.showResults">
+<div class="widget-dialog panel panel-primary"
+     [hidden]="!widget.showResults">
     <div class="panel-heading">
         <h3 class="panel-title">{{widget.name}} results</h3>
     </div>
     <div class="panel-body">
         <ul>
-            <li *ngFor="let output of widget.outputs">{{ output.name }} = {{ output.value }}</li>
+            <li *ngFor="let output of widget.outputs">
+                {{ output.name }} = {{ output.value }}
+            </li>
         </ul>
         <p *ngIf="widget.outputs.length == 0">This widget has no outputs.</p>
     </div>
@@ -101,14 +110,15 @@
         <h3 class="panel-title">{{widget.name}} rename</h3>
     </div>
     <div class="panel-body">
-        <form #widgetNameForm="ngForm" (onSubmit)="saveName()" (keyup.enter)="saveName()">
+        <form #widgetNameForm="ngForm"
+              (onSubmit)="saveName()"
+              (keyup.enter)="saveName()">
             <div class="form-group form-group-sm">
                 <input type="text"
                        [(ngModel)]="widget.name"
                        [title]="widget.name"
                        name="widget-name"
-                       class="form-control"
-                       ngModel/>
+                       class="form-control"/>
             </div>
         </form>
     </div>
@@ -120,7 +130,8 @@
     </div>
 </div>
 
-<div class="widget-dialog panel panel-primary" [hidden]="!widget.showVisualizationDialog">
+<div class="widget-dialog panel panel-primary"
+     [hidden]="!widget.showVisualizationDialog">
     <div class="panel-heading">
         <h3 class="panel-title">{{widget.name}} visualization</h3>
     </div>
@@ -133,11 +144,13 @@
     </div>
 </div>
 
-<div class="widget-dialog panel panel-primary" [hidden]="!widget.showInteractionDialog">
+<div class="widget-dialog panel panel-primary"
+     [hidden]="!widget.showInteractionDialog">
     <div class="panel-heading">
         <h3 class="panel-title">{{widget.name}} interaction</h3>
     </div>
-    <div #formContainer class="panel-body" [innerHTML]="widget.interactionHtml">
+    <div #formContainer class="panel-body"
+         [innerHTML]="widget.interactionHtml">
     </div>
     <div class="panel-footer">
         <div class="form-group form-group-sm">

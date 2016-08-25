@@ -12,6 +12,13 @@
                       [attr.height]="ui_constants.signalHeight"
                       [class.selected]="input.selected"
                       (click)="select($event, input)"/>
+                <text class="signal-text"
+                      [attr.x]="input.x + 9"
+                      [attr.y]="input.y + ui_constants.signalHeight - 3"
+                      [attr.height]="ui_constants.signalHeight"
+                      [attr.width]="ui_constants.signalWidth">
+                    <tspan>{{input.short_name}}</tspan>
+                </text>
             </g>
             <g *ngFor="let output of widget.outputs; let i = index">
                 <rect class="output" [attr.x]="output.x" [attr.y]="output.y"
@@ -19,6 +26,13 @@
                       [attr.height]="ui_constants.signalHeight"
                       [class.selected]="output.selected"
                       (click)="select($event, output)"/>
+                <text class="signal-text"
+                      [attr.x]="output.x + 9"
+                      [attr.y]="output.y + ui_constants.signalHeight - 3"
+                      [attr.height]="ui_constants.signalHeight"
+                      [attr.width]="ui_constants.signalWidth">
+                    <tspan>{{output.short_name}}</tspan>
+                </text>
             </g>
             <rect class="widget-box" [attr.x]="ui_constants.signalWidth" rx="2" ry="2"
                   (click)="select($event, widget)"
