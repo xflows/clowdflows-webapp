@@ -27,6 +27,7 @@ export class WidgetCanvasComponent {
     @Output() copyWidgetRequest = new EventEmitter<Widget>();
     @Output() runWidgetRequest = new EventEmitter<Widget>();
     @Output() fetchOutputResultsRequest = new EventEmitter<WorkflowOutput>();
+    @Output() openSubprocessRequest = new EventEmitter<Widget>();
     ui_constants = UI;
     selectedInput:WorkflowInput = null;
     selectedOutput:WorkflowOutput = null;
@@ -45,6 +46,14 @@ export class WidgetCanvasComponent {
 
     endMove(widget:Widget) {
         this.saveWidgetPositionRequest.emit(widget);
+    }
+
+    handleDoubleClick(widget:Widget) {
+        if (widget.type == 'subprocess') {
+            this.openSubprocessRequest.emit(widget);
+        } else {
+            this.showDialog(widget);
+        }
     }
 
     showDialog(widget:Widget) {

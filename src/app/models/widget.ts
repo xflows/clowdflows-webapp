@@ -39,7 +39,8 @@ export class Widget {
         public icon:string,
         inputs:any[],
         outputs:any[],
-        public workflow:Workflow
+        public workflow:Workflow,
+        public workflow_link:string
     ){
         // Keep proper inputs and parameters separately
         this.inputs = new Array<Input>();

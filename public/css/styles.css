@@ -169,3 +169,7 @@ header h1 {
     height:500px;
     font-family:monospace;
 }
+
+tabset > ul {
+    padding-left: 5px !important;
+}

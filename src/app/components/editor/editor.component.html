@@ -5,16 +5,24 @@
          (saveWorkflowRequest)="saveWorkflow()">
 </toolbar>
 <widget-tree (addWidgetRequest)="addWidget($event)"></widget-tree>
-<widget-canvas [workflow]="workflow"
-               (addConnectionRequest)="addConnection($event)"
-               (deleteConnectionRequest)="deleteConnection($event)"
-               (saveWidgetRequest) = "saveWidget($event)"
-               (saveWidgetPositionRequest) = "saveWidgetPosition($event)"
-               (deleteWidgetRequest) = "deleteWidget($event)"
-               (resetWidgetRequest) = "resetWidget($event)"
-               (resetWorkflowRequest) = "resetWorkflow($event)"
-               (copyWidgetRequest) = "copyWidget($event)"
-               (runWidgetRequest) = "runWidget($event)"
-               (fetchOutputResultsRequest)="fetchOutputValue($event)">
-</widget-canvas>
+<tabset id="editor-tabs">
+    <tab *ngFor="let workflow of workflows"
+            [heading]="workflow.name"
+            [active]="workflow.active"
+            (select)="switchToWorkflowTab(workflow)">
+        <widget-canvas [workflow]="workflow"
+                       (addConnectionRequest)="addConnection($event)"
+                       (deleteConnectionRequest)="deleteConnection($event)"
+                       (saveWidgetRequest) = "saveWidget($event)"
+                       (saveWidgetPositionRequest) = "saveWidgetPosition($event)"
+                       (deleteWidgetRequest) = "deleteWidget($event)"
+                       (resetWidgetRequest) = "resetWidget($event)"
+                       (resetWorkflowRequest) = "resetWorkflow($event)"
+                       (copyWidgetRequest) = "copyWidget($event)"
+                       (runWidgetRequest) = "runWidget($event)"
+                       (fetchOutputResultsRequest)="fetchOutputValue($event)"
+                       (openSubprocessRequest)="openSubprocess($event)">
+        </widget-canvas>
+    </tab>
+</tabset>
 <logging [messages]="loggerService.messages"></logging>

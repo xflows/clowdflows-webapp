@@ -12,17 +12,23 @@ import {Connection} from "../../models/connection";
 import {Output as WorkflowOutput} from "../../models/output";
 import {Workflow} from "../../models/workflow";
 import {DomSanitizationService} from "@angular/platform-browser";
+import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
 @Component({
     selector: 'editor',
     template: require('./editor.component.html'),
-    directives: [ToolbarComponent, WidgetTreeComponent, WidgetCanvasComponent, LoggingComponent]
+    styles: [require('./editor.component.css')],
+    directives: [ToolbarComponent, WidgetTreeComponent, WidgetCanvasComponent, LoggingComponent, TAB_DIRECTIVES]
 })
 export class EditorComponent implements OnInit, OnDestroy {
     @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent;
     workflow:any = {};
+    workflows:Workflow[] = [];
     userWorkflows:Workflow[] = [];
     sub:any;
+
+    loadedSubprocesses:any = {};
+    activeWorkflow:Workflow = null;
 
     constructor(private domSanitizer:DomSanitizationService,
                 private clowdflowsDataService:ClowdFlowsDataService,
@@ -54,7 +60,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                 if (!error) {
                     let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
                         data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                        data.description, data.icon, data.inputs, data.outputs, this.workflow);
+                        data.description, data.icon, data.inputs, data.outputs, this.workflow, data.workflow_link);
                     this.workflow.widgets.push(widget);
                 }
             });
@@ -83,7 +89,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                 if (!error) {
                     let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
                         data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                        data.description, data.icon, data.inputs, data.outputs, this.workflow);
+                        data.description, data.icon, data.inputs, data.outputs, this.workflow, data.workflow_link);
                     this.workflow.widgets.push(widget);
                 }
             });
@@ -148,7 +154,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             .then((data) => {
                 let newWidget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
                     data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                    data.description, data.icon, data.inputs, data.outputs, this.workflow);
+                    data.description, data.icon, data.inputs, data.outputs, this.workflow, data.workflow_link);
                 // Update connection references
                 for (let conn of this.workflow.connections.filter((c:Connection) => c.input_widget.url == newWidget.url)) {
                     conn.input_widget = newWidget;
@@ -282,6 +288,30 @@ export class EditorComponent implements OnInit, OnDestroy {
         }
     }
 
+    openSubprocess(widget:Widget) {
+        let workflowUrl = widget.workflow_link;
+        if (!(workflowUrl in this.loadedSubprocesses)) {
+            this.clowdflowsDataService.getWorkflow(workflowUrl)
+                .then(data => {
+                    let subprocessWorkflow = this.parseWorkflow(data);
+                    this.workflows.push(subprocessWorkflow);
+                    this.loadedSubprocesses[workflowUrl] = subprocessWorkflow;
+                    this.switchToWorkflowTab(subprocessWorkflow);
+                });
+        } else {
+            let subprocessWorkflow = this.loadedSubprocesses[workflowUrl];
+            this.switchToWorkflowTab(subprocessWorkflow);
+        }
+    }
+
+    switchToWorkflowTab(workflowToActivate:Workflow) {
+        for (let workflow of this.workflows) {
+            workflow.active = false;
+        }
+        workflowToActivate.active = true;
+        this.activeWorkflow = workflowToActivate;
+    }
+
     visualizeWidget(widget:Widget) {
         this.clowdflowsDataService
             .visualizeWidget(widget)
@@ -329,6 +359,8 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService.getWorkflow(id)
                 .then(data => {
                     this.workflow = this.parseWorkflow(data);
+                    this.workflows.push(this.workflow);
+                    this.switchToWorkflowTab(this.workflow);
                     this.clowdflowsDataService.workflowUpdates((data:any) => {
                         this.receiveWorkflowUpdate(data);
                     }, this.workflow);

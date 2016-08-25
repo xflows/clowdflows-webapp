@@ -1,0 +1,8 @@
+#editor-tabs {
+  position: absolute;
+  top: 102px;
+  left: 300px;
+  right: 0px;
+  bottom: 100px;
+  overflow: auto;
+}

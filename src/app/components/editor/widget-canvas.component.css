@@ -1,9 +1,9 @@
 #widget-canvas {
   position: absolute;
-  top: 97px;
-  left: 300px;
+  top: 50px;
+  left: 0;
   right: 0px;
-  bottom: 100px;
+  bottom: 0;
   overflow: auto;
 }
 #widget-canvas > svg {

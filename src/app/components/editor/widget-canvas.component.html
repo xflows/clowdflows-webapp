@@ -36,7 +36,7 @@
             </g>
             <rect class="widget-box" [attr.x]="ui_constants.signalWidth" rx="2" ry="2"
                   (click)="select($event, widget)"
-                  (dblclick)="showDialog(widget)"
+                  (dblclick)="handleDoubleClick(widget)"
                   (contextmenu)="onContextMenu($event, widget)"
                   [attr.width]="ui_constants.widgetBoxWidth"
                   [attr.height]="widget.boxHeight"
