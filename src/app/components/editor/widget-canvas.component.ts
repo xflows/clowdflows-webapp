@@ -7,6 +7,7 @@ import {Output as WorkflowOutput} from "../../models/output";
 import {Input as WorkflowInput} from "../../models/input";
 import {Connection} from "../../models/connection";
 import {Widget} from "../../models/widget";
+import {Workflow} from "../../models/workflow";
 
 @Component({
     selector: 'widget-canvas',
@@ -16,7 +17,7 @@ import {Widget} from "../../models/widget";
     providers: [ContextMenuService]
 })
 export class WidgetCanvasComponent {
-    @Input() workflow:any;
+    @Input() workflow:Workflow;
     @Output() addConnectionRequest = new EventEmitter();
     @Output() deleteConnectionRequest = new EventEmitter<Connection>();
     @Output() saveWidgetRequest = new EventEmitter<Widget>();
@@ -108,7 +109,12 @@ export class WidgetCanvasComponent {
     }
 
     newConnection() {
-        this.addConnectionRequest.emit("");
+        this.addConnectionRequest.emit({
+            workflow: this.workflow,
+            selectedInput: this.selectedInput,
+            selectedOutput: this.selectedOutput,
+            canvasTab: this
+        });
     }
 
     unselectObjects() {
