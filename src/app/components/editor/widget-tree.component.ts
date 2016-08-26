@@ -79,6 +79,7 @@ export class WidgetTreeComponent implements OnInit {
             [],
             specialWidgets
         );
+        subprocessCategory.collapsed = false;
         library.push(subprocessCategory);
         return library;
     }

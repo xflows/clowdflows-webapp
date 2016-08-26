@@ -7,6 +7,7 @@ export class Workflow {
     public connections:Connection[];
 
     public active = false;
+    public subprocessWidget:Widget = null;
 
     constructor(public id:number,
                 public url:string,

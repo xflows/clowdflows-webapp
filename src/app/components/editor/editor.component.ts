@@ -335,6 +335,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService.getWorkflow(workflowUrl)
                 .then(data => {
                     let subprocessWorkflow = this.parseWorkflow(data);
+                    subprocessWorkflow.subprocessWidget = widget;
                     this.workflows.push(subprocessWorkflow);
                     this.loadedSubprocesses[workflowUrl] = subprocessWorkflow;
                     this.switchToWorkflowTab(subprocessWorkflow);
