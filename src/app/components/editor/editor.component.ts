@@ -88,13 +88,65 @@ export class EditorComponent implements OnInit, OnDestroy {
                     }
                 });
         } else if (abstractWidget.name == specialWidgetNames.inputWidget) {
-            console.log('adding input');
+            // Adding a new input
+            this.clowdflowsDataService
+                .addInputToSubprocess(activeWorkflow)
+                .then((data) => {
+                    let error = this.reportMessage(data);
+                    if (!error) {
+                        let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
+                        activeWorkflow.widgets.push(widget);
+                        if (activeWorkflow.subprocessWidget) {
+                            this.updateWidget(activeWorkflow.subprocessWidget);
+                        }
+                    }
+                });
         } else if (abstractWidget.name == specialWidgetNames.outputWidget) {
-            console.log('adding output');
+            // Adding a new output
+            this.clowdflowsDataService
+                .addOutputToSubprocess(activeWorkflow)
+                .then((data) => {
+                    let error = this.reportMessage(data);
+                    if (!error) {
+                        let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
+                        activeWorkflow.widgets.push(widget);
+                        if (activeWorkflow.subprocessWidget) {
+                            this.updateWidget(activeWorkflow.subprocessWidget);
+                        }
+                    }
+                });
         } else if (abstractWidget.name == specialWidgetNames.forLoopWidgets) {
-            console.log('adding for loop');
+            // Adding for loop widgets
+            this.clowdflowsDataService
+                .addForLoopToSubprocess(activeWorkflow)
+                .then((data) => {
+                    let error = this.reportMessage(data);
+                    if (!error) {
+                        for (let widgetData of <Array<Widget>> data) {
+                            let widget:Widget = Widget.createFromJSON(widgetData, activeWorkflow);
+                            activeWorkflow.widgets.push(widget);
+                        }
+                        if (activeWorkflow.subprocessWidget) {
+                            this.updateWidget(activeWorkflow.subprocessWidget);
+                        }
+                    }
+                });
         } else if (abstractWidget.name == specialWidgetNames.xValidationWidgets) {
-            console.log('adding cv');
+            // Adding CV widgets
+            this.clowdflowsDataService
+                .addXValidationToSubprocess(activeWorkflow)
+                .then((data) => {
+                    let error = this.reportMessage(data);
+                    if (!error) {
+                        for (let widgetData of <Array<Widget>> data) {
+                            let widget:Widget = Widget.createFromJSON(widgetData, activeWorkflow);
+                            activeWorkflow.widgets.push(widget);
+                        }
+                        if (activeWorkflow.subprocessWidget) {
+                            this.updateWidget(activeWorkflow.subprocessWidget);
+                        }
+                    }
+                });
         }
     }
 
@@ -143,8 +195,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     deleteWidget(widget:Widget) {
+        let workflow = widget.workflow;
         // Delete the connections
-        for (let conn of this.workflow.connections) {
+        for (let conn of workflow.connections) {
             if (conn.input_widget == widget || conn.output_widget == widget) {
                 this.deleteConnection(conn, true);
             }
@@ -156,8 +209,12 @@ export class EditorComponent implements OnInit, OnDestroy {
                 (data) => {
                     let error = this.reportMessage(data);
                     if (!error) {
-                        let idx = this.workflow.widgets.indexOf(widget);
-                        this.workflow.widgets.splice(idx, 1);
+                        let idx = workflow.widgets.indexOf(widget);
+                        workflow.widgets.splice(idx, 1);
+
+                        if (widget.isSpecialWidget) {
+                            this.updateWidget(widget.workflow.subprocessWidget);
+                        }
                     }
                 }
             );
@@ -344,6 +401,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             let subprocessWorkflow = this.loadedSubprocesses[workflowUrl];
             this.switchToWorkflowTab(subprocessWorkflow);
         }
+        widget.selected = false;
     }
 
     switchToWorkflowTab(workflowToActivate:Workflow) {

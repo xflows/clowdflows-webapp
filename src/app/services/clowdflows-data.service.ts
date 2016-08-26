@@ -122,6 +122,42 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    addInputToSubprocess(workflow:Workflow):Promise<any> {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${workflow.url}subprocess-input/`, {}, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    addForLoopToSubprocess(workflow:Workflow):Promise<any> {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${workflow.url}subprocess-forloop/`, {}, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    addXValidationToSubprocess(workflow:Workflow):Promise<any> {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${workflow.url}subprocess-xvalidation/`, {}, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    addOutputToSubprocess(workflow:Workflow):Promise<any> {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${workflow.url}subprocess-output/`, {}, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
     visualizeWidget(widget:Widget) {
         let options = this.getRequestOptions();
         options.body = '';

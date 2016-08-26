@@ -20,6 +20,9 @@ export class Widget {
     visualizationHtml:SafeHtml = '';
     interactionHtml:SafeHtml = '';
 
+    static SPECIAL_TYPES:Array<string> = ['input', 'output', 'for_input', 'for_output',
+                                          'cv_input', 'cv_output', 'cv_input2', 'cv_input3'];
+
     constructor(
         public id:number,
         public url:string,
@@ -79,12 +82,17 @@ export class Widget {
         return this.boxHeight + 20;
     }
 
+    get isSpecialWidget() {
+        return Widget.SPECIAL_TYPES.indexOf(this.type) != -1;
+    }
+
     static omitKeys(key:string, value:any) {
-        if (key in ['inputs', 'parameters', 'outputs', 'visualizationHtml', 'interactionHtml', 'showDialog', 'showResults',
-                    'showRenameDialog', 'showVisualizationDialog', 'showInteractionDialog', 'showHelp', 'selected',
-                    'abstract_widget'])
+        let omitAttributes = ['inputs', 'parameters', 'outputs', 'visualizationHtml', 'interactionHtml', 'showDialog',
+                              'showResults', 'showRenameDialog', 'showVisualizationDialog', 'showInteractionDialog',
+                              'showHelp', 'selected', 'abstract_widget'];
+        if (omitAttributes.indexOf(key) != -1) {
             return undefined;
-        else if (key == 'workflow') {
+        } else if (key == 'workflow') {
             return value.url;
         }
         return value;
