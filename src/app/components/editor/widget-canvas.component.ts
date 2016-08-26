@@ -182,6 +182,11 @@ export class WidgetCanvasComponent {
             if (event.srcElement.localName != "input") {
                 this.deleteSelectedObjects();
             }
+        } else if (event.keyCode == 113) {  // F2 - rename
+            for (let widget of this.workflow.widgets) {
+                if (widget.selected)
+                    this.showRenameDialog(widget);
+            }
         }
     }
 

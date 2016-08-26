@@ -53,9 +53,14 @@
             </div>
             <div class="modal-body">
                 <ul>
-                    <li *ngFor="let workflow of userWorkflows">
-                        <a [routerLink]="['/editor/', workflow.id]" (click)="openWorkflowModal.hide()">{{workflow.name}}</a>
-                    </li>
+                    <template ngFor let-workflow [ngForOf]="userWorkflows">
+                        <li *ngIf="!workflow.is_subprocess">
+                            <a [routerLink]="['/editor/', workflow.id]"
+                               (click)="openWorkflowModal.hide()">
+                                {{workflow.name}}
+                            </a>
+                        </li>
+                    </template>
                 </ul>
             </div>
             <div class="modal-footer">

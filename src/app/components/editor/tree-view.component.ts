@@ -15,8 +15,10 @@ export class TreeViewComponent {
 
     iconUrl(widget:AbstractWidget):string {
         let url = '/public/images/question-mark.png';
-        if (widget.static_image) {
+        if (widget.static_image && !widget.special) {
             url = `${BASE_URL}/static/${widget.cfpackage}/icons/treeview/${widget.static_image}`;
+        } else if (widget.special) {  // We provide full paths for special widget icons
+            url = widget.static_image;
         }
         return url;
     }

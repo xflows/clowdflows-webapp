@@ -15,14 +15,13 @@ export class Workflow {
                 public is_subprocess:boolean,
                 public name:string,
                 public is_public:boolean,
+                public owner:boolean,
                 public description:string,
                 public widget:string,
                 public template_parent:string) {
         this.widgets = new Array<Widget>();
         for (let widget of widgets) {
-            this.widgets.push(new Widget(widget.id, widget.url, widget.x, widget.y, widget.name, widget.finished, widget.error,
-                widget.runing, widget.interaction_waiting, widget.type, widget.progress, widget.abstract_widget,
-                widget.description, widget.icon, widget.inputs, widget.outputs, this, widget.workflow_link));
+            this.widgets.push(Widget.createFromJSON(widget, this));
         }
 
         this.connections = new Array<Connection>();

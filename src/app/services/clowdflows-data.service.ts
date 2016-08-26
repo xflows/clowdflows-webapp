@@ -89,7 +89,7 @@ export class ClowdFlowsDataService {
         let options = this.getRequestOptions();
         options.body = '';
         return this.http
-            .get(`${API_ENDPOINT}${this.workflowsUrl}`, options)
+            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1`, options)
             .toPromise()
             .then(response => response.json())
             .catch(error => this.handleError(error));
@@ -110,6 +110,15 @@ export class ClowdFlowsDataService {
             .post(`${workflow.url}reset/`, {}, options)
             .toPromise()
             .then(response => response)
+            .catch(error => this.handleError(error));
+    }
+
+    addSubprocessToWorkflow(workflow:Workflow):Promise<any> {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${workflow.url}subprocess/`, {}, options)
+            .toPromise()
+            .then(response => response.json())
             .catch(error => this.handleError(error));
     }
 
@@ -165,7 +174,7 @@ export class ClowdFlowsDataService {
     saveWidget(widget:Widget) {
         let options = this.getRequestOptions();
         return this.http
-            .patch(widget.url, JSON.stringify(widget), options)
+            .patch(widget.url, JSON.stringify(widget, Widget.omitKeys), options)
             .toPromise()
             .then(response => response)
             .catch(error => this.handleError(error));

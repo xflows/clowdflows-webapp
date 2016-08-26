@@ -11,4 +11,6 @@ export class AbstractWidget {
     outputs:AbstractOutput[];
     inputs:AbstractInput[];
     hidden:boolean = false;
+
+    special = false;
 }

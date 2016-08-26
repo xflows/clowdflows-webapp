@@ -2,9 +2,7 @@ import {Output} from "./output";
 import {Input} from "./input";
 import {UI} from "../services/ui-constants"
 import {Workflow} from "./workflow";
-import {BASE_URL} from "../config";
 import {SafeHtml} from "@angular/platform-browser";
-import {Connection} from "./connection";
 
 export class Widget {
 
@@ -64,11 +62,31 @@ export class Widget {
         }
     }
 
+    public static createFromJSON(data:any, workflow:Workflow):Widget {
+        return new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
+            data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
+            data.description, data.icon, data.inputs, data.outputs, workflow, data.workflow_link)
+    }
+
     get boxHeight() {
-        return 50 + (UI.signalHeight + 10)*(this.inputs.length > this.outputs.length ? this.inputs.length - 1 : this.outputs.length - 1);
+        let nInputs = this.inputs ? this.inputs.length - 1 : 1;
+        let nOutputs = this.outputs ? this.outputs.length - 1 : 1;
+        let nSignals = Math.max(0, nInputs, nOutputs);
+        return 50 + (UI.signalHeight + 10)*nSignals;
     }
 
     get labelY() {
         return this.boxHeight + 20;
+    }
+
+    static omitKeys(key:string, value:any) {
+        if (key in ['inputs', 'parameters', 'outputs', 'visualizationHtml', 'interactionHtml', 'showDialog', 'showResults',
+                    'showRenameDialog', 'showVisualizationDialog', 'showInteractionDialog', 'showHelp', 'selected',
+                    'abstract_widget'])
+            return undefined;
+        else if (key == 'workflow') {
+            return value.url;
+        }
+        return value;
     }
 }

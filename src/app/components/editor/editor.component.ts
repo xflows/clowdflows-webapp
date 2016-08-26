@@ -13,6 +13,7 @@ import {Output as WorkflowOutput} from "../../models/output";
 import {Workflow} from "../../models/workflow";
 import {DomSanitizationService} from "@angular/platform-browser";
 import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {specialWidgetNames} from '../../services/special-widgets';
 
 @Component({
     selector: 'editor',
@@ -38,36 +39,67 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     addWidget(abstractWidget:AbstractWidget) {
-        let activeWorkflow = this.activeWorkflow;
-        let widgetData = {
-            workflow: activeWorkflow.url,
-            x: 50,
-            y: 50,
-            name: abstractWidget.name,
-            abstract_widget: abstractWidget.id,
-            finished: false,
-            error: false,
-            running: false,
-            interaction_waiting: false,
-            type: 'regular',
-            progress: 0
-        };
 
-        // Sync with server
-        this.clowdflowsDataService
-            .createWidget(widgetData)
-            .then((data) => {
-                let error = this.reportMessage(data);
-                if (!error) {
-                    let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
-                        data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                        data.description, data.icon, data.inputs, data.outputs, activeWorkflow, data.workflow_link);
-                    activeWorkflow.widgets.push(widget);
-                }
-            });
+        if (abstractWidget.special) {
+            // Handle subprocesses, for loop inputs, etc
+            this.addSpecialWidget(abstractWidget);
+        } else {
+            // Regular widgets
+            let activeWorkflow = this.activeWorkflow;
+            let widgetData = {
+                workflow: activeWorkflow.url,
+                x: 50,
+                y: 50,
+                name: abstractWidget.name,
+                abstract_widget: abstractWidget.id,
+                finished: false,
+                error: false,
+                running: false,
+                interaction_waiting: false,
+                type: 'regular',
+                progress: 0
+            };
+
+            // Sync with server
+            this.clowdflowsDataService
+                .createWidget(widgetData)
+                .then((data) => {
+                    let error = this.reportMessage(data);
+                    if (!error) {
+                        let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
+                        activeWorkflow.widgets.push(widget);
+                    }
+                });
+        }
+    }
+
+    addSpecialWidget(abstractWidget:AbstractWidget) {
+        let activeWorkflow = this.activeWorkflow;
+
+        if (abstractWidget.name == specialWidgetNames.subprocessWidget) {
+            // Adding a new subprocess
+            this.clowdflowsDataService
+                .addSubprocessToWorkflow(activeWorkflow)
+                .then((data) => {
+                    let error = this.reportMessage(data);
+                    if (!error) {
+                        let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
+                        activeWorkflow.widgets.push(widget);
+                    }
+                });
+        } else if (abstractWidget.name == specialWidgetNames.inputWidget) {
+            console.log('adding input');
+        } else if (abstractWidget.name == specialWidgetNames.outputWidget) {
+            console.log('adding output');
+        } else if (abstractWidget.name == specialWidgetNames.forLoopWidgets) {
+            console.log('adding for loop');
+        } else if (abstractWidget.name == specialWidgetNames.xValidationWidgets) {
+            console.log('adding cv');
+        }
     }
 
     copyWidget(widget:Widget) {
+        let activeWorkflow = this.activeWorkflow;
         let widgetData = {
             workflow: this.workflow.url,
             x: widget.x + 50,
@@ -88,9 +120,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             .then((data) => {
                 let error = this.reportMessage(data);
                 if (!error) {
-                    let widget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
-                        data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                        data.description, data.icon, data.inputs, data.outputs, this.workflow, data.workflow_link);
+                    let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
                     this.workflow.widgets.push(widget);
                 }
             });
@@ -162,9 +192,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         return this.clowdflowsDataService
             .getWidget(widget.id)
             .then((data) => {
-                let newWidget:Widget = new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
-                    data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-                    data.description, data.icon, data.inputs, data.outputs, workflow, data.workflow_link);
+                let newWidget:Widget = Widget.createFromJSON(data, workflow);
                 // Update connection references
                 for (let conn of this.workflow.connections.filter((c:Connection) => c.input_widget.url == newWidget.url)) {
                     conn.input_widget = newWidget;
@@ -347,7 +375,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     private parseWorkflow(data:any):Workflow {
         let workflow = new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
-            data.is_public, data.description, data.widget, data.template_parent);
+            data.is_public, data.owner, data.description, data.widget, data.template_parent);
         return workflow;
     }
 
@@ -372,6 +400,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService.getWorkflow(id)
                 .then(data => {
                     this.workflow = this.parseWorkflow(data);
+                    this.workflows = [];  // Clear workflow tabs on load
                     this.workflows.push(this.workflow);
                     this.switchToWorkflowTab(this.workflow);
                     this.clowdflowsDataService.workflowUpdates((data:any) => {
