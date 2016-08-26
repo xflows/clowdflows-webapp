@@ -52,9 +52,17 @@
   stroke-miterlimit: 4;
   stroke-dasharray: none;
   cursor: pointer;
+  -webkit-transition: fill 200ms ease-in-out;
+  -moz-transition: fill 200ms ease-in-out;
+  -o-transition: fill 200ms ease-in-out;
+  transition: fill 200ms ease-in-out;
+}
+#widget-canvas .widget .widget-box:hover {
+  fill: #fff5c2;
 }
 #widget-canvas .widget .widget-box.selected {
   fill: #ffe45c;
+  stroke: #333333;
 }
 #widget-canvas .widget image {
   pointer-events: none;
@@ -68,18 +76,38 @@
   stroke-miterlimit: 4;
   stroke-dasharray: none;
   cursor: pointer;
+  -webkit-transition: fill 200ms ease-in-out;
+  -moz-transition: fill 200ms ease-in-out;
+  -o-transition: fill 200ms ease-in-out;
+  transition: fill 200ms ease-in-out;
+}
+#widget-canvas .widget .input:hover,
+#widget-canvas .widget .output:hover {
+  fill: #afdde9;
+}
+#widget-canvas .widget .input:hover + text.signal-text,
+#widget-canvas .widget .output:hover + text.signal-text,
+#widget-canvas .widget .input:hover + text.signal-text,
+#widget-canvas .widget .output:hover + text.signal-text {
+  fill: white;
 }
 #widget-canvas .widget .input.selected,
 #widget-canvas .widget .output.selected {
   fill: #87ccde;
 }
-#widget-canvas .widget text.signal-text {
-  pointer-events: none;
-  fill: #a3a3a3;
-}
+#widget-canvas .widget .input.selected + text.signal-text,
+#widget-canvas .widget .output.selected + text.signal-text,
 #widget-canvas .widget .input.selected + text.signal-text,
 #widget-canvas .widget .output.selected + text.signal-text {
   fill: white;
+}
+#widget-canvas .widget text.signal-text {
+  pointer-events: none;
+  fill: #a3a3a3;
+  -webkit-transition: fill 200ms ease-in-out;
+  -moz-transition: fill 200ms ease-in-out;
+  -o-transition: fill 200ms ease-in-out;
+  transition: fill 200ms ease-in-out;
 }
 #widget-canvas .widget .widget-error-icon {
   fill: #ff572b;
@@ -98,6 +126,13 @@
 #widget-canvas .connection path {
   stroke: #a3a3a3;
   cursor: pointer;
+  -webkit-transition: stroke 200ms ease-in-out;
+  -moz-transition: stroke 200ms ease-in-out;
+  -o-transition: stroke 200ms ease-in-out;
+  transition: stroke 200ms ease-in-out;
+}
+#widget-canvas .connection path:hover {
+  stroke: #ffe45c;
 }
 #widget-canvas .connection.selected path {
   stroke: #ffe45c;

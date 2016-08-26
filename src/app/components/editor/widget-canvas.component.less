@@ -51,8 +51,18 @@
       stroke-dasharray: none;
       cursor: pointer;
 
+      -webkit-transition: fill 200ms ease-in-out;
+      -moz-transition: fill 200ms ease-in-out;
+      -o-transition: fill 200ms ease-in-out;
+      transition: fill 200ms ease-in-out;
+
+      &:hover {
+        fill: lighten(@cf-yellow, 20%);
+      }
+
       &.selected {
         fill: @cf-yellow;
+        stroke: darken(#b3b3b3, 50%);
       }
     }
 
@@ -70,19 +80,37 @@
       stroke-dasharray: none;
       cursor: pointer;
 
+      -webkit-transition: fill 200ms ease-in-out;
+      -moz-transition: fill 200ms ease-in-out;
+      -o-transition: fill 200ms ease-in-out;
+      transition: fill 200ms ease-in-out;
+
+      &:hover {
+        fill: darken(#d7eef4, 10%);
+
+        & + text.signal-text,
+        & + text.signal-text {
+          fill: white;
+        }
+      }
+
       &.selected {
         fill: darken(#d7eef4, 20%);
+
+        & + text.signal-text,
+        & + text.signal-text {
+          fill: white;
+        }
       }
     }
 
     text.signal-text {
       pointer-events: none;
       fill: #a3a3a3;
-    }
-
-    .input.selected + text.signal-text,
-    .output.selected + text.signal-text {
-      fill: white;
+      -webkit-transition: fill 200ms ease-in-out;
+      -moz-transition: fill 200ms ease-in-out;
+      -o-transition: fill 200ms ease-in-out;
+      transition: fill 200ms ease-in-out;
     }
 
     .widget-error-icon {
@@ -107,6 +135,14 @@
     path {
       stroke: #a3a3a3;
       cursor: pointer;
+      -webkit-transition: stroke 200ms ease-in-out;
+      -moz-transition: stroke 200ms ease-in-out;
+      -o-transition: stroke 200ms ease-in-out;
+      transition: stroke 200ms ease-in-out;
+    }
+
+    path:hover {
+      stroke: @cf-yellow;
     }
 
     &.selected {
