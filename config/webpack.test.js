@@ -1,4 +1,6 @@
+var webpack = require('webpack');
 var helpers = require('./helpers');
+var api = require('./api.dev');
 
 module.exports = {
     devtool: 'inline-source-map',
@@ -33,5 +35,13 @@ module.exports = {
                 loader: 'raw'
             }
         ]
-    }
+    },
+
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                'API': JSON.stringify(api)
+            }
+        })
+    ]
 }

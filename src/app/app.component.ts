@@ -9,7 +9,7 @@ import '../../public/css/styles.css';
 @Component({
     selector: 'clowdflows-app',
     template: require('./app.component.html'),
-    directives: [],
+    directives: [EditorComponent],
     providers: [],
     entryComponents: [EditorComponent]
 })
