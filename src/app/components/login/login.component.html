@@ -30,23 +30,23 @@
             <p>
                 Already a member? Well then, go ahead and log in, partner!
             </p>
-            <form (ngSubmit)="attemptLogin(loginForm.value)" #loginForm="ngForm">
+            <form id="login-form" (ngSubmit)="attemptLogin()" (keyup.enter)="attemptLogin()" #loginForm="ngForm">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input id="username" type="text" class="form-control" required name="username" placeholder="Username" ngModel>
+                    <input id="username" type="text" class="form-control" required name="username" placeholder="Username" [(ngModel)]="loginCredentials.username">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input id="password" type="password" class="form-control" required name="password" placeholder="Password" ngModel>
+                    <input id="password" type="password" class="form-control" required name="password" placeholder="Password" [(ngModel)]="loginCredentials.password">
                     <a href="">Forgot your password?</a>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="remember-me" ngModel> Remember me
+                        <input type="checkbox" name="remember-me" [(ngModel)]="loginCredentials.rememberMe"> Remember me
                     </label>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary" [class.disabled]="!loginForm.form.valid">Log in</button>
+                    <button type="submit" (click)="attemptLogin()" class="btn btn-primary" [class.disabled]="!loginForm.form.valid">Log in</button>
                 </div>
             </form>
         </div>

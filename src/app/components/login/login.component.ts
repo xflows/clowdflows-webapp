@@ -7,16 +7,23 @@ import {UserService} from "../../services/user.service";
     template: require('./login.component.html')
 })
 export class LoginComponent {
+
+    loginCredentials:any = {
+        username: '',
+        password: '',
+        rememberMe: false
+    };
+
     constructor(private userService: UserService, private router: Router) {}
 
-    attemptLogin(loginData:any) {
-        console.log(loginData, loginData.username, loginData.password);
+    attemptLogin() {
         this.userService
-            .login(loginData.username, loginData.password)
+            .login(this.loginCredentials.username, this.loginCredentials.password)
             .subscribe(
                 (result) => {
                     if (result) {
                         this.router.navigate(['']);
+
                     }
             });
     }
