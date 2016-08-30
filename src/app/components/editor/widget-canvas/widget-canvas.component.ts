@@ -1,13 +1,13 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {ContextMenuComponent, ContextMenuService} from 'angular2-contextmenu/angular2-contextmenu';
-import {UI} from "../../services/ui-constants";
-import {Draggable} from "../../directives/draggable.directive";
-import {WidgetDialogComponent} from "./widget-dialog.component";
-import {Output as WorkflowOutput} from "../../models/output";
-import {Input as WorkflowInput} from "../../models/input";
-import {Connection} from "../../models/connection";
-import {Widget} from "../../models/widget";
-import {Workflow} from "../../models/workflow";
+import {UI} from "../../../services/ui-constants";
+import {Draggable} from "../../../directives/draggable.directive";
+import {WidgetDialogComponent} from "../widget-dialogs/widget-dialog.component";
+import {Output as WorkflowOutput} from "../../../models/output";
+import {Input as WorkflowInput} from "../../../models/input";
+import {Connection} from "../../../models/connection";
+import {Widget} from "../../../models/widget";
+import {Workflow} from "../../../models/workflow";
 
 @Component({
     selector: 'widget-canvas',

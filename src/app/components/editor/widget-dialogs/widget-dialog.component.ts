@@ -1,7 +1,7 @@
 import {Component, Output, EventEmitter, Input, ViewChild, ElementRef} from '@angular/core';
-import {Widget} from "../../models/widget";
-import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
-import {Input as WidgetInput} from "../../models/input";
+import {Widget} from "../../../models/widget";
+import {ClowdFlowsDataService} from "../../../services/clowdflows-data.service";
+import {Input as WidgetInput} from "../../../models/input";
 
 @Component({
     selector: 'widget-dialog',

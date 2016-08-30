@@ -1,9 +1,9 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router, Params} from '@angular/router';
-import {ToolbarComponent} from "./toolbar.component";
-import {WidgetTreeComponent} from "./widget-tree.component";
-import {WidgetCanvasComponent} from "./widget-canvas.component";
-import {LoggingComponent} from "./logging.component";
+import {ToolbarComponent} from "./toolbar/toolbar.component";
+import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
+import {WidgetCanvasComponent} from "./widget-canvas/widget-canvas.component";
+import {LoggingComponent} from "./logging/logging.component";
 import {AbstractWidget} from "../../models/abstract-widget";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {LoggerService} from "../../services/logger.service";

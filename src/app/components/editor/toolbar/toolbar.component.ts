@@ -1,6 +1,6 @@
 import {Component, Output, EventEmitter, Input, ViewChild} from '@angular/core';
 import {MODAL_DIRECTIVES, BS_VIEW_PROVIDERS, ModalDirective} from 'ng2-bootstrap/ng2-bootstrap';
-import {Workflow} from "../../models/workflow";
+import {Workflow} from "../../../models/workflow";
 import {Router} from "@angular/router";
 
 @Component({

@@ -1,9 +1,9 @@
 import {Component, Output, OnInit, EventEmitter} from '@angular/core';
-import {ClowdFlowsDataService} from '../../services/clowdflows-data.service';
-import {Category} from "../../models/category";
+import {ClowdFlowsDataService} from '../../../services/clowdflows-data.service';
+import {Category} from "../../../models/category";
 import {TreeViewComponent} from "./tree-view.component";
-import {AbstractWidget} from "../../models/abstract-widget";
-import {specialCategoryName, specialWidgetNames} from '../../services/special-widgets';
+import {AbstractWidget} from "../../../models/abstract-widget";
+import {specialCategoryName, specialWidgetNames} from '../../../services/special-widgets';
 
 @Component({
     selector: 'widget-tree',
