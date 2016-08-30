@@ -1,15 +1,15 @@
 <div id="toolbar">
     <div id="toolbar-buttons" class="btn-group">
-        <button class="btn btn-default" (click)="showCreateWorkflowModal()">
+        <button id="new-workflow-btn" class="btn btn-default" (click)="showCreateWorkflowModal()">
             <i class="fa fa-file-o" title="New workflow"></i>
         </button>
-        <button class="btn btn-default" (click)="showOpenWorkflowModal()">
+        <button id="open-workflow-btn" class="btn btn-default" (click)="showOpenWorkflowModal()">
             <i class="fa fa-folder-open-o" title="Open a workflow"></i>
         </button>
-        <button class="btn btn-default" (click)="showSaveWorkflowModal()">
+        <button id="save-workflow-btn" class="btn btn-default" (click)="showSaveWorkflowModal()">
             <i class="fa fa-floppy-o" title="Save workflow"></i>
         </button>
-        <button class="btn btn-default" (click)="runWorkflow()">
+        <button id="run-workflow" class="btn btn-default" (click)="runWorkflow()">
             <i class="fa fa-play" title="Run"></i>
         </button>
     </div>

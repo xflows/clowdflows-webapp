@@ -1,15 +1,12 @@
 import {
-    async,
     inject,
-    TestBed, fakeAsync, tick
+    TestBed, fakeAsync
 } from '@angular/core/testing';
-import {dispatchEvent} from '@angular/platform-browser/testing/browser_util';
 import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
 import {LoginComponent} from "./login.component";
 import {FormsModule} from "@angular/forms";
 import {Observable} from "rxjs/Rx";
-import {By} from "@angular/platform-browser";
 
 let TEST_CREDENTIALS = {
     username: 'testuser',
@@ -23,7 +20,6 @@ class MockUserService {
         if (username == TEST_CREDENTIALS.username &&
             password == TEST_CREDENTIALS.password) {
             this.loggedIn = true;
-            console.log(this.loggedIn);
             return Observable.of(true);
         }
         return Observable.of(false);
@@ -52,7 +48,7 @@ describe('LoginComponent', () => {
                     FormsModule
                 ],
                 declarations: [
-                  LoginComponent
+                    LoginComponent
                 ],
                 providers: [
                     { provide: UserService, useClass: MockUserService },
