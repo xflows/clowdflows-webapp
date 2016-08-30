@@ -13,8 +13,6 @@ export class ClowdFlowsDataService {
 
     widgetLibraryUrl = 'widget-library/';
     workflowsUrl = 'workflows/';
-    inputsUrl = 'inputs/';
-    outputsUrl = 'outputs/';
     widgetsUrl = 'widgets/';
     connectionsUrl = 'connections/';
 
