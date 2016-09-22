@@ -6,8 +6,7 @@ import {AbstractWidget} from "../../../models/abstract-widget";
 @Component({
     selector: 'tree-view',
     template: require('./tree-view.component.html'),
-    styles: [require('./tree-view.component.css'),],
-    directives:[TreeViewComponent]
+    styles: [require('./tree-view.component.css'),]
 })
 export class TreeViewComponent {
     @Input() categories:Category[];

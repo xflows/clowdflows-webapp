@@ -6,8 +6,7 @@ import {Input as WidgetInput} from "../../../models/input";
 @Component({
     selector: 'widget-dialog',
     template: require('./widget-dialog.component.html'),
-    styles: [require('./widget-dialog.component.css'),],
-    directives: []
+    styles: [require('./widget-dialog.component.css'),]
 })
 export class WidgetDialogComponent {
     @Input() widget:Widget;

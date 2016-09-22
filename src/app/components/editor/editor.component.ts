@@ -1,9 +1,6 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router, Params} from '@angular/router';
-import {ToolbarComponent} from "./toolbar/toolbar.component";
-import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {WidgetCanvasComponent} from "./widget-canvas/widget-canvas.component";
-import {LoggingComponent} from "./logging/logging.component";
 import {AbstractWidget} from "../../models/abstract-widget";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {LoggerService} from "../../services/logger.service";
@@ -11,15 +8,13 @@ import {Widget} from "../../models/widget";
 import {Connection} from "../../models/connection";
 import {Output as WorkflowOutput} from "../../models/output";
 import {Workflow} from "../../models/workflow";
-import {DomSanitizationService} from "@angular/platform-browser";
-import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {DomSanitizer} from "@angular/platform-browser";
 import {specialWidgetNames} from '../../services/special-widgets';
 
 @Component({
     selector: 'editor',
     template: require('./editor.component.html'),
-    styles: [require('./editor.component.css')],
-    directives: [ToolbarComponent, WidgetTreeComponent, WidgetCanvasComponent, LoggingComponent, TAB_DIRECTIVES]
+    styles: [require('./editor.component.css')]
 })
 export class EditorComponent implements OnInit, OnDestroy {
     @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent;
@@ -31,7 +26,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     loadedSubprocesses:any = {};
     activeWorkflow:Workflow = null;
 
-    constructor(private domSanitizer:DomSanitizationService,
+    constructor(private domSanitizer:DomSanitizer,
                 private clowdflowsDataService:ClowdFlowsDataService,
                 private route:ActivatedRoute,
                 private router: Router,

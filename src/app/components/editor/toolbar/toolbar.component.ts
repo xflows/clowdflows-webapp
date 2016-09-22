@@ -1,13 +1,11 @@
 import {Component, Output, EventEmitter, Input, ViewChild} from '@angular/core';
-import {MODAL_DIRECTIVES, BS_VIEW_PROVIDERS, ModalDirective} from 'ng2-bootstrap/ng2-bootstrap';
+import {ModalDirective} from 'ng2-bootstrap/ng2-bootstrap';
 import {Workflow} from "../../../models/workflow";
 
 @Component({
     selector: 'toolbar',
     template: require('./toolbar.component.html'),
-    styles: [require('./toolbar.component.css'),],
-    directives: [MODAL_DIRECTIVES],
-    viewProviders: [BS_VIEW_PROVIDERS],
+    styles: [require('./toolbar.component.css'),]
 })
 export class ToolbarComponent {
     @Input() workflow:Workflow;

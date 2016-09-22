@@ -9,8 +9,8 @@ import {FormsModule} from "@angular/forms";
 import {routing} from './app.routing';
 import {LoginComponent} from "./components/login/login.component";
 import {HomeComponent} from "./components/home/home.component";
-import {EditorComponent} from "./components/editor/editor.component";
 import {ClowdFlowsDataService} from './services/clowdflows-data.service';
+import {EditorModule} from "./components/editor/editor.module";
 
 @NgModule({
     imports: [
@@ -18,12 +18,12 @@ import {ClowdFlowsDataService} from './services/clowdflows-data.service';
         routing,
         FormsModule,
         HttpModule,
+        EditorModule
     ],
     declarations: [
         AppComponent,
         HomeComponent,
-        LoginComponent,
-        EditorComponent
+        LoginComponent
     ],
     providers: [
         ClowdFlowsDataService,

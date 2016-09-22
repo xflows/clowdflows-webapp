@@ -8,8 +8,7 @@ import {specialCategoryName, specialWidgetNames} from '../../../services/special
 @Component({
     selector: 'widget-tree',
     template: require('./widget-tree.component.html'),
-    styles: [require('./widget-tree.component.css'),],
-    directives: [TreeViewComponent]
+    styles: [require('./widget-tree.component.css'),]
 })
 export class WidgetTreeComponent implements OnInit {
 

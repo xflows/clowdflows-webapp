@@ -1,8 +1,6 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {ContextMenuComponent, ContextMenuService} from 'angular2-contextmenu/angular2-contextmenu';
+import {ContextMenuService} from 'angular2-contextmenu/angular2-contextmenu';
 import {UI} from "../../../services/ui-constants";
-import {Draggable} from "../../../directives/draggable.directive";
-import {WidgetDialogComponent} from "../widget-dialogs/widget-dialog.component";
 import {Output as WorkflowOutput} from "../../../models/output";
 import {Input as WorkflowInput} from "../../../models/input";
 import {Connection} from "../../../models/connection";
@@ -12,9 +10,7 @@ import {Workflow} from "../../../models/workflow";
 @Component({
     selector: 'widget-canvas',
     template: require('./widget-canvas.component.html'),
-    styles: [require('./widget-canvas.component.css'),],
-    directives: [WidgetDialogComponent, Draggable, ContextMenuComponent],
-    providers: [ContextMenuService]
+    styles: [require('./widget-canvas.component.css'),]
 })
 export class WidgetCanvasComponent {
     @Input() workflow:Workflow;

@@ -3,8 +3,7 @@ import {Component, ElementRef, ViewChild, Input, DoCheck, OnInit} from '@angular
 @Component({
     selector: 'logging',
     template: require('./logging.component.html'),
-    styles: [require('./logging.component.css'),],
-    directives: []
+    styles: [require('./logging.component.css'),]
 })
 export class LoggingComponent implements DoCheck, OnInit {
 

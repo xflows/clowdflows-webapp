@@ -9,8 +9,6 @@ import '../../public/css/styles.css';
 @Component({
     selector: 'clowdflows-app',
     template: require('./app.component.html'),
-    directives: [EditorComponent],
-    providers: [],
     entryComponents: [EditorComponent]
 })
 export class AppComponent {
