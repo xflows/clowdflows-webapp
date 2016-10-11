@@ -23,6 +23,7 @@ export class WidgetCanvasComponent {
     @Output() resetWorkflowRequest = new EventEmitter();
     @Output() copyWidgetRequest = new EventEmitter<Widget>();
     @Output() runWidgetRequest = new EventEmitter<Widget>();
+    @Output() continueRunWorkflowRequest = new EventEmitter<String>();
     @Output() fetchOutputResultsRequest = new EventEmitter<WorkflowOutput>();
     @Output() openSubprocessRequest = new EventEmitter<Widget>();
     ui_constants = UI;
@@ -170,6 +171,10 @@ export class WidgetCanvasComponent {
 
     runWidget(widget:Widget) {
         this.runWidgetRequest.emit(widget);
+    }
+
+    continueRunWorkflow(event:any) {
+        this.continueRunWorkflowRequest.emit(event);
     }
 
     handleShortcuts(event:any) {

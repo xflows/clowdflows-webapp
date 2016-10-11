@@ -325,6 +325,10 @@ export class EditorComponent implements OnInit, OnDestroy {
             });
     }
 
+    continueRunWorkflow() {
+        this.runWorkflow();
+    }
+
     resetWorkflow() {
         this.clowdflowsDataService
             .resetWorkflow(this.workflow)

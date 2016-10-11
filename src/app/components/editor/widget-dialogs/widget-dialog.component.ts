@@ -10,6 +10,7 @@ import {Input as WidgetInput} from "../../../models/input";
 })
 export class WidgetDialogComponent {
     @Input() widget:Widget;
+    @Output() continueRunWorkflowRequest = new EventEmitter<String>();
     @ViewChild('formContainer') private formContainer:ElementRef;
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService) {}
@@ -32,7 +33,10 @@ export class WidgetDialogComponent {
 
     applyInteraction() {
         let data = getFormResults(this.formContainer.nativeElement.getElementsByTagName('form')[0]);
-        this.clowdflowsDataService.finishInteractionWidget(this.widget, data);
+        this.clowdflowsDataService.finishInteractionWidget(this.widget, data)
+            .then(response => {
+                this.continueRunWorkflowRequest.emit("");
+            });
         this.widget.showInteractionDialog = false;
     }
 
