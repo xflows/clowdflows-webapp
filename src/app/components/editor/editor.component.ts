@@ -29,7 +29,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     constructor(private domSanitizer:DomSanitizer,
                 private clowdflowsDataService:ClowdFlowsDataService,
                 private route:ActivatedRoute,
-                private router: Router,
+                private router:Router,
                 private loggerService:LoggerService) {
     }
 
@@ -209,6 +209,8 @@ export class EditorComponent implements OnInit, OnDestroy {
 
                         if (widget.isSpecialWidget) {
                             this.updateWidget(widget.workflow.subprocessWidget);
+
+                            // TODO: delete outer connections
                         }
                     }
                 }
@@ -276,34 +278,47 @@ export class EditorComponent implements OnInit, OnDestroy {
         var selectedOutput = event.selectedOutput;
         let workflow = event.workflow;
         let canvasTab = event.canvasTab;
+
+        // Check for existing connection and delete it if it exists
+        var deleteExisting = new Promise<any>(function (resolve, reject) {
+            resolve(true); // Immediately resolve if nothing is to delete
+        });
+        if (selectedInput.connection != null) {
+            var connectionToDelete = selectedInput.connection;
+            selectedInput.connection = null;
+            deleteExisting = this.deleteConnection(connectionToDelete);
+        }
+
         let connectionData = {
             input: selectedInput.url,
             output: selectedOutput.url,
             workflow: workflow.url,
         };
         var updateInputs = selectedInput.multi_id != 0;
-        this.clowdflowsDataService
-            .createConnection(connectionData)
-            .then((data) => {
-                let error = this.reportMessage(data);
-                if (!error) {
-                    let input_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.input_widget);
-                    let output_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.output_widget);
-                    let connection = new Connection(data.url, output_widget, input_widget, data.output, data.input, workflow);
-                    workflow.connections.push(connection);
-                    selectedInput.connection = connection;
-                    canvasTab.unselectSignals();
-                    if (updateInputs) {
-                        this.updateWidget(input_widget);
+        deleteExisting.then(() => {
+            this.clowdflowsDataService
+                .createConnection(connectionData)
+                .then((data:any) => {
+                    let error = this.reportMessage(data);
+                    if (!error) {
+                        let input_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.input_widget);
+                        let output_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.output_widget);
+                        let connection = new Connection(data.url, output_widget, input_widget, data.output, data.input, workflow);
+                        workflow.connections.push(connection);
+                        selectedInput.connection = connection;
+                        canvasTab.unselectSignals();
+                        if (updateInputs) {
+                            this.updateWidget(input_widget);
+                        }
                     }
-                }
-            });
+                });
+        });
     }
 
-    deleteConnection(connection:Connection, widgetDelete=false) {
+    deleteConnection(connection:Connection, widgetDelete = false) {
         let workflow = connection.workflow;
         var updateInputs = connection.input.multi_id != 0 && !widgetDelete;
-        this.clowdflowsDataService
+        return this.clowdflowsDataService
             .deleteConnection(connection)
             .then((data) => {
                 let error = this.reportMessage(data);
@@ -311,7 +326,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                     let idx = workflow.connections.indexOf(connection);
                     workflow.connections.splice(idx, 1);
                     if (updateInputs) {
-                       this.updateWidget(connection.input_widget);
+                        this.updateWidget(connection.input_widget);
                     }
                 }
             });
@@ -451,7 +466,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.sub = this.route.params.subscribe((params: Params) => {
+        this.sub = this.route.params.subscribe((params:Params) => {
 
             // Fetch the current workflow
             let id = +params['id'];
@@ -471,7 +486,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             // Fetch all of the user's workflows
             this.clowdflowsDataService.getUserWorkflows()
                 .then(userWorkflows => {
-                   this.userWorkflows = <Workflow[]> userWorkflows;
+                    this.userWorkflows = <Workflow[]> userWorkflows;
                 });
         });
     }

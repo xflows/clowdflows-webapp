@@ -98,8 +98,7 @@ export class WidgetCanvasComponent {
         }
 
         if (clickedOnInput || clickedOnOutput) {
-            if (this.selectedOutput != null && this.selectedInput != null &&
-                this.selectedInput.connection == null) {
+            if (this.selectedOutput != null && this.selectedInput != null) {
                 this.newConnection();
             }
         }
