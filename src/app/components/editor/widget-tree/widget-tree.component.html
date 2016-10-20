@@ -7,5 +7,31 @@
     <div id="widget-tree">
         <tree-view [categories]="widgetTree" (addWidgetRequest)="addWidgetToCanvas($event)"></tree-view>
     </div>
-    <a class="btn btn-info btn-sm">Import webservice</a>
+    <a class="btn btn-info btn-sm" (click)="openImportWebserviceDialog()">Import webservice</a>
+</div>
+
+<div class="import-webservice-dialog panel panel-primary" [hidden]="!showImportWebserviceDialog">
+    <div class="panel-heading">
+        <h3 class="panel-title">Import webservice</h3>
+    </div>
+    <div class="panel-body">
+        <form #importWebserviceForm="ngForm"
+              (onSubmit)="importWebservice(wsdl.value)"
+              (keyup.enter)="importWebservice(wsdl.value)">
+            <div class="form-group form-group-sm">
+                <input #wsdl type="text"
+                       required
+                       title="WSDL address"
+                       placeholder="WSDL address"
+                       name="wsdl-address"
+                       class="form-control"/>
+            </div>
+        </form>
+    </div>
+    <div class="panel-footer">
+        <div class="form-group form-group-sm">
+            <button (click)="closeImportWebserviceDialog()" class="btn btn-default">Close</button>
+            <button (click)="importWebservice(wsdl.value)" class="btn btn-primary" [class.disabled]="!importWebserviceForm.form.valid">Import</button>
+        </div>
+    </div>
 </div>

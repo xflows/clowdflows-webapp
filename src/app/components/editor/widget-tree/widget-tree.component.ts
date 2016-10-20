@@ -14,6 +14,7 @@ export class WidgetTreeComponent implements OnInit {
 
     widgetTree:Category[];
     filterString:string;
+    showImportWebserviceDialog = false;
     @Output() addWidgetRequest = new EventEmitter<AbstractWidget>();
 
     constructor(private clowdflowsService:ClowdFlowsDataService) { }
@@ -141,5 +142,22 @@ export class WidgetTreeComponent implements OnInit {
 
     addWidgetToCanvas(abstractWidget:AbstractWidget) {
         this.addWidgetRequest.emit(abstractWidget);
+    }
+
+    importWebservice(wsdl:string) {
+        this.closeImportWebserviceDialog();
+        // TODO
+        this.clowdflowsService.importWebservice(wsdl)
+            .then((data)=>{
+               console.log(data);
+            });
+    }
+
+    openImportWebserviceDialog() {
+        this.showImportWebserviceDialog = true;
+    }
+
+    closeImportWebserviceDialog() {
+        this.showImportWebserviceDialog = false;
     }
 }

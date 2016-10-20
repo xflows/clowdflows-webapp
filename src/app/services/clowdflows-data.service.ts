@@ -15,6 +15,7 @@ export class ClowdFlowsDataService {
     workflowsUrl = 'workflows/';
     widgetsUrl = 'widgets/';
     connectionsUrl = 'connections/';
+    importWebserviceUrl = this.widgetLibraryUrl + 'import-ws/';
 
     constructor(private http:Http, private loggerService:LoggerService) {
     }
@@ -292,6 +293,17 @@ export class ClowdFlowsDataService {
             .delete(conn.url, options)
             .toPromise()
             .then(response => response)
+            .catch(error => this.handleError(error));
+    }
+
+    importWebservice(wsdlAddr:string) {
+        let options = this.getRequestOptions();
+        var data = {wsdl: wsdlAddr};
+        console.log(data);
+        return this.http
+            .post(`${API_ENDPOINT}${this.importWebserviceUrl}`, JSON.stringify(data), options)
+            .toPromise()
+            .then(response => response.json())
             .catch(error => this.handleError(error));
     }
 
