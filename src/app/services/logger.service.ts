@@ -31,4 +31,17 @@ export class LoggerService {
     public clear() {
         this.messages.splice(0, this.messages.length);
     }
+
+    public reportMessage(data:any):boolean {
+        let error:boolean = false;
+        if (data && 'status' in data) {
+            if (data.status == 'error') {
+                this.error(data.message || 'Problem executing action');
+                error = true;
+            } else if (data.status == 'ok' && 'message' in data) {
+                this.info(data.message);
+            }
+        }
+        return error;
+    }
 }

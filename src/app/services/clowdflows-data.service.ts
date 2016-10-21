@@ -299,7 +299,6 @@ export class ClowdFlowsDataService {
     importWebservice(wsdlAddr:string) {
         let options = this.getRequestOptions();
         var data = {wsdl: wsdlAddr};
-        console.log(data);
         return this.http
             .post(`${API_ENDPOINT}${this.importWebserviceUrl}`, JSON.stringify(data), options)
             .toPromise()

@@ -59,7 +59,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService
                 .createWidget(widgetData)
                 .then((data) => {
-                    let error = this.reportMessage(data);
+                    let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
                         activeWorkflow.widgets.push(widget);
@@ -76,7 +76,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService
                 .addSubprocessToWorkflow(activeWorkflow)
                 .then((data) => {
-                    let error = this.reportMessage(data);
+                    let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
                         activeWorkflow.widgets.push(widget);
@@ -87,7 +87,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService
                 .addInputToSubprocess(activeWorkflow)
                 .then((data) => {
-                    let error = this.reportMessage(data);
+                    let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
                         activeWorkflow.widgets.push(widget);
@@ -101,7 +101,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService
                 .addOutputToSubprocess(activeWorkflow)
                 .then((data) => {
-                    let error = this.reportMessage(data);
+                    let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
                         activeWorkflow.widgets.push(widget);
@@ -115,7 +115,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService
                 .addForLoopToSubprocess(activeWorkflow)
                 .then((data) => {
-                    let error = this.reportMessage(data);
+                    let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         for (let widgetData of <Array<Widget>> data) {
                             let widget:Widget = Widget.createFromJSON(widgetData, activeWorkflow);
@@ -131,7 +131,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService
                 .addXValidationToSubprocess(activeWorkflow)
                 .then((data) => {
-                    let error = this.reportMessage(data);
+                    let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         for (let widgetData of <Array<Widget>> data) {
                             let widget:Widget = Widget.createFromJSON(widgetData, activeWorkflow);
@@ -165,7 +165,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .createWidget(widgetData)
             .then((data) => {
-                let error = this.reportMessage(data);
+                let error = this.loggerService.reportMessage(data);
                 if (!error) {
                     let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
                     this.workflow.widgets.push(widget);
@@ -177,7 +177,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .saveWidget(widget)
             .then((data) => {
-                this.reportMessage(data);
+                this.loggerService.reportMessage(data);
             });
     }
 
@@ -185,7 +185,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .saveWidgetPosition(widget)
             .then((data) => {
-                this.reportMessage(data);
+                this.loggerService.reportMessage(data);
             });
     }
 
@@ -202,7 +202,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             .deleteWidget(widget)
             .then(
                 (data) => {
-                    let error = this.reportMessage(data);
+                    let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         let idx = workflow.widgets.indexOf(widget);
                         workflow.widgets.splice(idx, 1);
@@ -229,7 +229,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .resetWidget(widget)
             .then((data) => {
-                this.reportMessage(data);
+                this.loggerService.reportMessage(data);
             });
     }
 
@@ -237,7 +237,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .runWidget(widget)
             .then((data) => {
-                this.reportMessage(data);
+                this.loggerService.reportMessage(data);
             });
     }
 
@@ -266,7 +266,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .fetchOutputValue(output)
             .then((data) => {
-                let error = this.reportMessage(data);
+                let error = this.loggerService.reportMessage(data);
                 if (!error) {
                     output.value = data.value;
                 }
@@ -299,7 +299,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             this.clowdflowsDataService
                 .createConnection(connectionData)
                 .then((data:any) => {
-                    let error = this.reportMessage(data);
+                    let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         let input_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.input_widget);
                         let output_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.output_widget);
@@ -321,7 +321,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         return this.clowdflowsDataService
             .deleteConnection(connection)
             .then((data) => {
-                let error = this.reportMessage(data);
+                let error = this.loggerService.reportMessage(data);
                 if (!error) {
                     let idx = workflow.connections.indexOf(connection);
                     workflow.connections.splice(idx, 1);
@@ -336,7 +336,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .runWorkflow(this.activeWorkflow)
             .then((data) => {
-                this.reportMessage(data);
+                this.loggerService.reportMessage(data);
             });
     }
 
@@ -348,7 +348,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .resetWorkflow(this.workflow)
             .then((data) => {
-                this.reportMessage(data);
+                this.loggerService.reportMessage(data);
             });
     }
 
@@ -363,7 +363,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .createWorkflow(workflowData)
             .then((data:any) => {
-                let error = this.reportMessage(data);
+                let error = this.loggerService.reportMessage(data);
                 if (!error) {
                     this.router.navigate(['/editor', data.id]);
                 }
@@ -374,7 +374,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .saveWorkflowInfo(this.workflow)
             .then((data:any) => {
-                this.reportMessage(data);
+                this.loggerService.reportMessage(data);
             });
     }
 
@@ -450,19 +450,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         let workflow = new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
             data.is_public, data.owner, data.description, data.widget, data.template_parent);
         return workflow;
-    }
-
-    private reportMessage(data:any):boolean {
-        let error:boolean = false;
-        if (data && 'status' in data) {
-            if (data.status == 'error') {
-                this.loggerService.error(data.message || 'Problem executing action');
-                error = true;
-            } else if (data.status == 'ok' && 'message' in data) {
-                this.loggerService.info(data.message);
-            }
-        }
-        return error;
     }
 
     ngOnInit() {

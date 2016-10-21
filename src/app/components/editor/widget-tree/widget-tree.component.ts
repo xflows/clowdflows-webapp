@@ -1,9 +1,9 @@
 import {Component, Output, OnInit, EventEmitter} from '@angular/core';
 import {ClowdFlowsDataService} from '../../../services/clowdflows-data.service';
 import {Category} from "../../../models/category";
-import {TreeViewComponent} from "./tree-view.component";
 import {AbstractWidget} from "../../../models/abstract-widget";
 import {specialCategoryName, specialWidgetNames} from '../../../services/special-widgets';
+import {LoggerService} from "../../../services/logger.service";
 
 @Component({
     selector: 'widget-tree',
@@ -17,7 +17,9 @@ export class WidgetTreeComponent implements OnInit {
     showImportWebserviceDialog = false;
     @Output() addWidgetRequest = new EventEmitter<AbstractWidget>();
 
-    constructor(private clowdflowsService:ClowdFlowsDataService) { }
+    constructor(private clowdflowsService:ClowdFlowsDataService,
+                private loggerService:LoggerService) {
+    }
 
     ngOnInit() {
         this.getWidgetLibrary();
@@ -75,7 +77,7 @@ export class WidgetTreeComponent implements OnInit {
         let subprocessCategory = new Category(
             specialCategoryName,
             null,
-            library[library.length-1].order + 1,
+            library[library.length - 1].order + 1,
             [],
             specialWidgets
         );
@@ -146,10 +148,14 @@ export class WidgetTreeComponent implements OnInit {
 
     importWebservice(wsdl:string) {
         this.closeImportWebserviceDialog();
-        // TODO
         this.clowdflowsService.importWebservice(wsdl)
-            .then((data)=>{
-               console.log(data);
+            .then((data) => {
+                let error = this.loggerService.reportMessage(data);
+                if (!error) {
+                    // Reload library
+                    this.getWidgetLibrary();
+                    this.loggerService.success(`Successfully imported webservice from: ${wsdl}`);
+                }
             });
     }
 
