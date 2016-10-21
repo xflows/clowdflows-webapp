@@ -178,6 +178,14 @@ export class EditorComponent implements OnInit, OnDestroy {
             .saveWidget(widget)
             .then((data) => {
                 this.loggerService.reportMessage(data);
+
+                if (widget.type == 'subprocess') {
+                    if (widget.workflow_link in this.loadedSubprocesses) {
+                        let workflow = this.loadedSubprocesses[widget.workflow_link];
+                        workflow.name = widget.name;
+                        this.saveWorkflow(workflow);
+                    }
+                }
             });
     }
 
@@ -370,9 +378,9 @@ export class EditorComponent implements OnInit, OnDestroy {
             });
     }
 
-    saveWorkflow() {
+    saveWorkflow(workflow:Workflow) {
         this.clowdflowsDataService
-            .saveWorkflowInfo(this.workflow)
+            .saveWorkflowInfo(workflow)
             .then((data:any) => {
                 this.loggerService.reportMessage(data);
             });

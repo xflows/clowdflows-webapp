@@ -11,7 +11,7 @@ export class ToolbarComponent {
     @Input() workflow:Workflow;
     @Input() userWorkflows:Workflow[];
     @Output() runWorkflowRequest = new EventEmitter();
-    @Output() saveWorkflowRequest = new EventEmitter();
+    @Output() saveWorkflowRequest = new EventEmitter<Workflow>();
     @Output() createWorkflowRequest = new EventEmitter();
 
     @ViewChild('createWorkflowModal') public createWorkflowModal: ModalDirective;
@@ -37,7 +37,7 @@ export class ToolbarComponent {
     }
 
     saveWorkflow() {
-        this.saveWorkflowRequest.emit("");
+        this.saveWorkflowRequest.emit(this.workflow);
         this.saveWorkflowModal.hide();
     }
 

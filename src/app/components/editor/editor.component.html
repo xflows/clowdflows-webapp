@@ -2,7 +2,7 @@
          [userWorkflows]="userWorkflows"
          (runWorkflowRequest)="runWorkflow()"
          (createWorkflowRequest)="createWorkflow()"
-         (saveWorkflowRequest)="saveWorkflow()">
+         (saveWorkflowRequest)="saveWorkflow($event)">
 </toolbar>
 <widget-tree (addWidgetRequest)="addWidget($event)"></widget-tree>
 <tabset id="editor-tabs">

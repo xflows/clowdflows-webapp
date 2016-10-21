@@ -11,6 +11,7 @@ import {Input as WidgetInput} from "../../../models/input";
 export class WidgetDialogComponent {
     @Input() widget:Widget;
     @Output() continueRunWorkflowRequest = new EventEmitter<String>();
+    @Output() saveWidgetRequest = new EventEmitter<Widget>();
     @ViewChild('formContainer') private formContainer:ElementRef;
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService) {}
@@ -54,7 +55,8 @@ export class WidgetDialogComponent {
     }
 
     saveName() {
-        this.clowdflowsDataService.saveWidget(this.widget);
+        // this.clowdflowsDataService.saveWidget(this.widget);
+        this.saveWidgetRequest.emit(this.widget);
         this.widget.showRenameDialog = false;
     }
 

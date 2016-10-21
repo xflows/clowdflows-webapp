@@ -89,7 +89,7 @@ export class Widget {
     static omitKeys(key:string, value:any) {
         let omitAttributes = ['inputs', 'parameters', 'outputs', 'visualizationHtml', 'interactionHtml', 'showDialog',
                               'showResults', 'showRenameDialog', 'showVisualizationDialog', 'showInteractionDialog',
-                              'showHelp', 'selected', 'abstract_widget'];
+                              'showHelp', 'selected'];
         if (omitAttributes.indexOf(key) != -1) {
             return undefined;
         } else if (key == 'workflow') {

@@ -75,7 +75,8 @@
     </svg>
     <widget-dialog *ngFor="let widget of workflow.widgets"
                    [widget]="widget"
-                   (continueRunWorkflowRequest)="continueRunWorkflow($event)">
+                   (continueRunWorkflowRequest)="continueRunWorkflow($event)"
+                   (saveWidgetRequest)="saveWidget($event)">
     </widget-dialog>
     <context-menu></context-menu>
 </div>
