@@ -1,7 +1,9 @@
 <ul>
     <li *ngFor="let category of categories">
         <span class="category" (click)="toggleCollapsed(category)" [class.hidden]="category.hidden">
-            <i class="fa fa-folder-open-o"></i> {{category.name}}
+            <i class="fa"
+               [class.fa-folder-o]="category.collapsed"
+               [class.fa-folder-open-o]="!category.collapsed"></i> {{category.name}}
         </span>
         <div [class.hidden]="category.collapsed">
             <tree-view [categories]="category.children" (addWidgetRequest)="addWidgetToCanvas($event)"></tree-view>
