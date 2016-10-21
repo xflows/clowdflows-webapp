@@ -183,7 +183,6 @@ export class EditorComponent implements OnInit, OnDestroy {
                     if (widget.workflow_link in this.loadedSubprocesses) {
                         let workflow = this.loadedSubprocesses[widget.workflow_link];
                         workflow.name = widget.name;
-                        this.saveWorkflow(workflow);
                     }
                 }
             });

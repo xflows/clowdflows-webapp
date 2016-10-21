@@ -17,6 +17,9 @@ export class Widget {
     showHelp:boolean = false;
     selected:boolean = false;
 
+    start_x:number = 0;
+    start_y:number = 0;
+
     visualizationHtml:SafeHtml = '';
     interactionHtml:SafeHtml = '';
 
@@ -63,6 +66,8 @@ export class Widget {
                                          output.description, output.variable, output.order,
                                          output.inner_output, output.outer_output, this));
         }
+        this.start_x = x;
+        this.start_y = y;
     }
 
     public static createFromJSON(data:any, workflow:Workflow):Widget {

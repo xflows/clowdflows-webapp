@@ -43,7 +43,11 @@ export class WidgetCanvasComponent {
     }
 
     endMove(widget:Widget) {
-        this.saveWidgetPositionRequest.emit(widget);
+        if (widget.x != widget.start_x || widget.y != widget.start_y) {
+            this.saveWidgetPositionRequest.emit(widget);
+            widget.start_x = widget.x;
+            widget.start_y = widget.y;
+        }
     }
 
     handleDoubleClick(widget:Widget) {
