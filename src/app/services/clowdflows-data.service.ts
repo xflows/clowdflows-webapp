@@ -215,6 +215,15 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    copyWidget(widget:Widget) {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${widget.url}copy/`, JSON.stringify(widget, Widget.omitKeys), options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
     resetWidget(widget:Widget) {
         let options = this.getRequestOptions();
         return this.http

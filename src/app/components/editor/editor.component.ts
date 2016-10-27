@@ -147,28 +147,13 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     copyWidget(widget:Widget) {
         let activeWorkflow = this.activeWorkflow;
-        let widgetData = {
-            workflow: this.workflow.url,
-            x: widget.x + 50,
-            y: widget.y + 50,
-            name: `${widget.name} (copy)`,
-            abstract_widget: widget.abstract_widget,
-            finished: false,
-            error: false,
-            running: false,
-            interaction_waiting: false,
-            type: widget.type,
-            progress: 0
-        };
-
-        // Sync with server
         this.clowdflowsDataService
-            .createWidget(widgetData)
+            .copyWidget(widget)
             .then((data) => {
                 let error = this.loggerService.reportMessage(data);
                 if (!error) {
                     let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
-                    this.workflow.widgets.push(widget);
+                    activeWorkflow.widgets.push(widget);
                 }
             });
     }
@@ -404,6 +389,8 @@ export class EditorComponent implements OnInit, OnDestroy {
             widget.error = data.status.error;
             widget.running = data.status.running;
             widget.interaction_waiting = data.status.interaction_waiting;
+            widget.x = data.position.x;
+            widget.y = data.position.y;
         }
     }
 
