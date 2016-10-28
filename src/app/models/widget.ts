@@ -91,6 +91,15 @@ export class Widget {
         return Widget.SPECIAL_TYPES.indexOf(this.type) != -1;
     }
 
+    get bounds() {
+        return {
+            x1: this.x,
+            y1: this.y,
+            x2: this.x + UI.widgetWidth + 40,
+            y2: this.y + this.boxHeight + 40
+        }
+    }
+
     static omitKeys(key:string, value:any) {
         let omitAttributes = ['inputs', 'parameters', 'outputs', 'visualizationHtml', 'interactionHtml', 'showDialog',
                               'showResults', 'showRenameDialog', 'showVisualizationDialog', 'showInteractionDialog',

@@ -1,5 +1,5 @@
-<div id="widget-canvas" (body:keyup)="handleShortcuts($event)">
-    <svg id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" (click)="unselectObjects()">
+<div #widgetCanvas id="widget-canvas" (body:keyup)="handleShortcuts($event)">
+    <svg #svgElement id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" (click)="unselectObjects()" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
         <g class="widget noselect" *ngFor="let widget of workflow.widgets"
            draggable
            (positionChangeRequest)="move($event, widget)"
@@ -63,7 +63,7 @@
             </text>
             <g [attr.transform]="'translate('+ (ui_constants.widgetWidth/2 - 10) + ',' + (widget.labelY + 5) + ')'"
                *ngIf="widget.running">
-                <image class="widget-running-icon" width="20" height="20" xlink:href="/public/images/cog.svg" />
+                <image class="widget-running-icon" width="20" height="20" xlink:href="/public/images/cog.svg"/>
             </g>
         </g>
         <g class="connection" *ngFor="let connection of workflow.connections" [class.selected]="connection.selected">
