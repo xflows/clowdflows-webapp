@@ -6,10 +6,11 @@ import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {LoggerService} from "../../services/logger.service";
 import {Widget} from "../../models/widget";
 import {Connection} from "../../models/connection";
-import {Output as WorkflowOutput} from "../../models/output";
+import {Output as WorkflowOutput, Output} from "../../models/output";
 import {Workflow} from "../../models/workflow";
 import {DomSanitizer} from "@angular/platform-browser";
 import {specialWidgetNames} from '../../services/special-widgets';
+import {Input} from "../../models/input";
 
 @Component({
     selector: 'editor',
@@ -163,7 +164,6 @@ export class EditorComponent implements OnInit, OnDestroy {
             .saveWidget(widget)
             .then((data) => {
                 this.loggerService.reportMessage(data);
-
                 if (widget.type == 'subprocess') {
                     if (widget.workflow_link in this.loadedSubprocesses) {
                         let workflow = this.loadedSubprocesses[widget.workflow_link];
@@ -201,8 +201,6 @@ export class EditorComponent implements OnInit, OnDestroy {
 
                         if (widget.isSpecialWidget) {
                             this.updateWidget(widget.workflow.subprocessWidget);
-
-                            // TODO: delete outer connections
                         }
                     }
                 }
@@ -239,6 +237,28 @@ export class EditorComponent implements OnInit, OnDestroy {
             .getWidget(widget.id)
             .then((data) => {
                 let newWidget:Widget = Widget.createFromJSON(data, workflow);
+                // Detect which inputs and outputs have been removed
+                let removedInputs:Input[] = [];
+                let removedOutputs:Output[] = [];
+                for (let inp of widget.inputs) {
+                    if (!newWidget.inputs.find((i:Input) => inp.url == i.url)) {
+                        removedInputs.push(inp);
+                    }
+                }
+                for (let outp of widget.outputs) {
+                    if (!newWidget.outputs.find((o:Output) => outp.url == o.url)) {
+                        removedOutputs.push(outp);
+                    }
+                }
+                // Remove connections of removed inputs/outputs
+                for (let inp of removedInputs) {
+                    this.deleteConnectionReference(inp.connection);
+                    this.updateWidget(inp.connection.output_widget);
+                }
+                for (let outp of removedOutputs) {
+                    this.deleteConnectionReference(outp.connection);
+                    this.updateWidget(outp.connection.input_widget);
+                }
                 // Update connection references
                 for (let conn of this.workflow.connections.filter((c:Connection) => c.input_widget.url == newWidget.url)) {
                     conn.input_widget = newWidget;
@@ -315,13 +335,18 @@ export class EditorComponent implements OnInit, OnDestroy {
             .then((data) => {
                 let error = this.loggerService.reportMessage(data);
                 if (!error) {
-                    let idx = workflow.connections.indexOf(connection);
-                    workflow.connections.splice(idx, 1);
+                    this.deleteConnectionReference(connection);
                     if (updateInputs) {
                         this.updateWidget(connection.input_widget);
                     }
                 }
             });
+    }
+
+    private deleteConnectionReference(connection:Connection) {
+        let workflow = connection.workflow;
+        let idx = workflow.connections.indexOf(connection);
+        workflow.connections.splice(idx, 1);
     }
 
     runWorkflow() {

@@ -1,8 +1,10 @@
 import {Widget} from "./widget";
+import {Connection} from "./connection";
 export class Output {
 
     public value:any = null;
     public selected:boolean = false;
+    public connection:Connection = null;
 
     constructor(
         public url:string,

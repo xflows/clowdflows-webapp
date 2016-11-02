@@ -17,6 +17,7 @@ export class Connection {
                 input:string,
                 public workflow:Workflow) {
         this.output = output_widget.outputs.find(outputObj => outputObj.url == output);
+        this.output.connection = this;
         this.input = input_widget.inputs.find(inputObj => inputObj.url == input);
         this.input.connection = this;
     }
