@@ -13,6 +13,7 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
 import {ModalModule, TabsModule} from "ng2-bootstrap/ng2-bootstrap";
 import {HttpModule} from "@angular/http";
 import {routing} from "../../app.routing";
+import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import {routing} from "../../app.routing";
         ToolbarComponent,
         WidgetTreeComponent,
         WidgetCanvasComponent,
-        LoggingComponent
+        LoggingComponent,
+        UPLOAD_DIRECTIVES
     ],
     providers: [
         ContextMenuService

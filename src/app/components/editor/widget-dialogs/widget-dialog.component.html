@@ -57,6 +57,9 @@
                        [name]="'input-' + p.name"
                        *ngIf="p.parameter_type == 'file'"
                        [title]="p.description"
+                       ngFileSelect
+                       [options]="fileUploadOptions(p)"
+                       (onUpload)="handleUpload($event)"
                        type="file" class="form-control"/>
                 <p class="help-block">{{p.description}}</p>
             </div>

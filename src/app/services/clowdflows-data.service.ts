@@ -4,7 +4,8 @@ import 'rxjs/add/operator/toPromise';
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
 import {Connection} from "../models/connection";
-import {Output as WorkflowOutput} from "../models/output";
+import {Output as WidgetOutput} from "../models/output";
+import {Input as WidgetInput} from "../models/input";
 import {LoggerService} from "./logger.service";
 import {API_ENDPOINT, DOMAIN} from "../config";
 
@@ -27,6 +28,16 @@ export class ClowdFlowsDataService {
         headers.append('Authorization', `Token ${auth_token}`);
         let options = new RequestOptions({headers: headers});
         return options;
+    }
+
+    getFileUploadOption(input:WidgetInput) {
+        return {
+            url: `${input.url}upload/`,
+            filterExtensions: false,
+            calculateSpeed: true,
+            authToken: localStorage.getItem('auth_token'),
+            authTokenPrefix: 'Token'
+        }
     }
 
     getWidgetLibrary() {
@@ -265,6 +276,9 @@ export class ClowdFlowsDataService {
         let options = this.getRequestOptions();
         let parameters:any[] = [];
         for (var param of widget.parameters) {
+            if (param.parameter_type == 'file') {
+                continue;
+            }
             parameters.push({
                 'id': param.id,
                 'value': param.deserialized_value
@@ -286,7 +300,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    fetchOutputValue(output:WorkflowOutput) {
+    fetchOutputValue(output:WidgetOutput) {
         let options = this.getRequestOptions();
         options.body = '';
         return this.http

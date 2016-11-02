@@ -2,11 +2,12 @@ import {Component, Output, EventEmitter, Input, ViewChild, ElementRef} from '@an
 import {Widget} from "../../../models/widget";
 import {ClowdFlowsDataService} from "../../../services/clowdflows-data.service";
 import {Input as WidgetInput} from "../../../models/input";
+import {LoggerService} from "../../../services/logger.service";
 
 @Component({
     selector: 'widget-dialog',
     template: require('./widget-dialog.component.html'),
-    styles: [require('./widget-dialog.component.css'),]
+    styles: [require('./widget-dialog.component.css'),],
 })
 export class WidgetDialogComponent {
     @Input() widget:Widget;
@@ -14,7 +15,10 @@ export class WidgetDialogComponent {
     @Output() saveWidgetRequest = new EventEmitter<Widget>();
     @ViewChild('formContainer') private formContainer:ElementRef;
 
-    constructor(private clowdflowsDataService:ClowdFlowsDataService) {}
+    uploadFile:any;
+
+    constructor(private clowdflowsDataService:ClowdFlowsDataService,
+                private loggerService:LoggerService) {}
 
     closeDialog() {
         this.widget.showDialog = false;
@@ -55,7 +59,6 @@ export class WidgetDialogComponent {
     }
 
     saveName() {
-        // this.clowdflowsDataService.saveWidget(this.widget);
         this.saveWidgetRequest.emit(this.widget);
         this.widget.showRenameDialog = false;
     }
@@ -63,6 +66,20 @@ export class WidgetDialogComponent {
     onCheckboxChange(parameter:WidgetInput, event:any) {
         var isChecked = event.currentTarget.checked;
         parameter.deserialized_value = isChecked ? 'true' : 'false';
+    }
+
+    fileUploadOptions(input:WidgetInput):any {
+        return this.clowdflowsDataService.getFileUploadOption(input);
+    }
+
+    handleUpload(data:any): void {
+        if (data && data.response) {
+            data = JSON.parse(data.response);
+            let error = this.loggerService.reportMessage(data);
+            if (!error) {
+                this.uploadFile = data;
+            }
+        }
     }
 }
 
