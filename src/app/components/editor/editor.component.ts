@@ -237,35 +237,17 @@ export class EditorComponent implements OnInit, OnDestroy {
             .getWidget(widget.id)
             .then((data) => {
                 let newWidget:Widget = Widget.createFromJSON(data, workflow);
-                // Detect which inputs and outputs have been removed
-                let removedInputs:Input[] = [];
-                let removedOutputs:Output[] = [];
-                for (let inp of widget.inputs) {
-                    if (!newWidget.inputs.find((i:Input) => inp.url == i.url)) {
-                        removedInputs.push(inp);
-                    }
-                }
-                for (let outp of widget.outputs) {
-                    if (!newWidget.outputs.find((o:Output) => outp.url == o.url)) {
-                        removedOutputs.push(outp);
-                    }
-                }
-                // Remove connections of removed inputs/outputs
-                for (let inp of removedInputs) {
-                    this.deleteConnectionReference(inp.connection);
-                    this.updateWidget(inp.connection.output_widget);
-                }
-                for (let outp of removedOutputs) {
-                    this.deleteConnectionReference(outp.connection);
-                    this.updateWidget(outp.connection.input_widget);
-                }
-                // Update connection references
                 for (let conn of this.workflow.connections.filter((c:Connection) => c.input_widget.url == newWidget.url)) {
-                    conn.input_widget = newWidget;
+                    if (!newWidget.inputs.find((i:Input) => conn.input.url == i.url)) {
+                        this.deleteConnectionReference(conn);
+                    }
                 }
                 for (let conn of this.workflow.connections.filter((c:Connection) => c.output_widget.url == newWidget.url)) {
-                    conn.output_widget = newWidget;
+                    if (!newWidget.outputs.find((o:Output) => conn.output.url == o.url)) {
+                        this.deleteConnectionReference(conn);
+                    }
                 }
+
                 // Remove old version
                 let idx = workflow.widgets.indexOf(widget);
                 workflow.widgets.splice(idx, 1);

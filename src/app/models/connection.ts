@@ -11,8 +11,8 @@ export class Connection {
     selected:boolean = false;
 
     constructor(public url:string,
-                public output_widget:Widget,
-                public input_widget:Widget,
+                public output_widget:Widget,  // Widget containing the output signal (connection start)
+                public input_widget:Widget,   // Widget containing the input signal (connection end)
                 output:string,
                 input:string,
                 public workflow:Workflow) {
