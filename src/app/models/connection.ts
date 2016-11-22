@@ -16,10 +16,20 @@ export class Connection {
                 output:string,
                 input:string,
                 public workflow:Workflow) {
-        this.output = output_widget.outputs.find(outputObj => outputObj.url == output);
-        this.output.connection = this;
-        this.input = input_widget.inputs.find(inputObj => inputObj.url == input);
+        this.updateInputWidgetRef(input_widget, input);
+        this.updateOutputWidgetRef(output_widget, output);
+    }
+
+    updateInputWidgetRef(inputWidget:Widget, inputUrl:string) {
+        this.input_widget = inputWidget;
+        this.input = inputWidget.inputs.find(inputObj => inputObj.url == inputUrl);
         this.input.connection = this;
+    }
+
+    updateOutputWidgetRef(outputWidget:Widget, outputUrl:string) {
+        this.output_widget = outputWidget;
+        this.output = outputWidget.outputs.find(outputObj => outputObj.url == outputUrl);
+        this.output.connection = this;
     }
 
     get bezierPoints():string {

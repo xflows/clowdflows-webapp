@@ -181,6 +181,18 @@ export class EditorComponent implements OnInit, OnDestroy {
             });
     }
 
+    saveWidgetConfiguration(event:any) {
+        var widget = event.widget;
+        var configuration = event.configuration;
+        this.clowdflowsDataService.saveWidgetConfiguration(widget, configuration)
+            .then((response:any) => {
+                this.updateWidget(widget)
+                    .then(()=>{
+                        widget.showInputDesignation = false;
+                    });
+            });
+    }
+
     deleteWidget(widget:Widget) {
         let workflow = widget.workflow;
         // Delete the connections
@@ -238,13 +250,19 @@ export class EditorComponent implements OnInit, OnDestroy {
             .then((data) => {
                 let newWidget:Widget = Widget.createFromJSON(data, workflow);
                 for (let conn of this.workflow.connections.filter((c:Connection) => c.input_widget.url == newWidget.url)) {
-                    if (!newWidget.inputs.find((i:Input) => conn.input.url == i.url)) {
+                    var input = newWidget.inputs.find((i:Input) => conn.input.url == i.url);
+                    if (!input) {
                         this.deleteConnectionReference(conn);
+                    } else {
+                        conn.updateInputWidgetRef(newWidget, input.url);
                     }
                 }
                 for (let conn of this.workflow.connections.filter((c:Connection) => c.output_widget.url == newWidget.url)) {
-                    if (!newWidget.outputs.find((o:Output) => conn.output.url == o.url)) {
+                    var output = newWidget.outputs.find((o:Output) => conn.output.url == o.url)
+                    if (!output) {
                         this.deleteConnectionReference(conn);
+                    } else {
+                        conn.updateOutputWidgetRef(newWidget, output.url);
                     }
                 }
 

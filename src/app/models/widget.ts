@@ -14,8 +14,11 @@ export class Widget {
     showRenameDialog:boolean = false;
     showVisualizationDialog:boolean = false;
     showInteractionDialog:boolean = false;
+    showInputDesignation:boolean = false;
     showHelp:boolean = false;
     selected:boolean = false;
+
+    hasBenchmark:boolean = false;
 
     start_x:number = 0;
     start_y:number = 0;
@@ -62,9 +65,13 @@ export class Widget {
         }
         this.outputs = new Array<Output>();
         for (let output of outputs) {
-            this.outputs.push(new Output(output.url, output.name, output.short_name,
+            this.outputs.push(new Output(output.id, output.url, output.name, output.short_name,
                                          output.description, output.variable, output.order,
                                          output.inner_output, output.outer_output, this));
+
+            if (output.variable == 'clowdflows_elapsed') {
+                this.hasBenchmark = true;
+            }
         }
         this.start_x = x;
         this.start_y = y;

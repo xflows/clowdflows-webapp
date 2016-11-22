@@ -7,6 +7,7 @@ export class Output {
     public connection:Connection = null;
 
     constructor(
+        public id:number,
         public url:string,
         // public deserialized_value:any,
         public name:string,

@@ -2,6 +2,7 @@ import {Component, Output, EventEmitter, Input, ViewChild, ElementRef} from '@an
 import {Widget} from "../../../models/widget";
 import {ClowdFlowsDataService} from "../../../services/clowdflows-data.service";
 import {Input as WidgetInput} from "../../../models/input";
+import {Output as WidgetOutput} from "../../../models/output";
 import {LoggerService} from "../../../services/logger.service";
 
 @Component({
@@ -13,9 +14,17 @@ export class WidgetDialogComponent {
     @Input() widget:Widget;
     @Output() continueRunWorkflowRequest = new EventEmitter<String>();
     @Output() saveWidgetRequest = new EventEmitter<Widget>();
+    @Output() saveWidgetConfigurationRequest = new EventEmitter<any>();
     @ViewChild('formContainer') private formContainer:ElementRef;
 
     uploadFile:any;
+
+    // Configuration variables
+    listInputs:Array<WidgetInput> = [];
+    listParameters:Array<WidgetInput> = [];
+    listOutputs:Array<WidgetOutput> = [];
+    benchmark:boolean = false;
+
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
                 private loggerService:LoggerService) {}
@@ -34,6 +43,36 @@ export class WidgetDialogComponent {
 
     closeInteractionDialog() {
         this.widget.showInteractionDialog = false;
+    }
+
+    showInputDesignation() {
+        this.listInputs = this.widget.inputs.slice();
+        this.listParameters = this.widget.parameters.slice();
+        this.listOutputs = this.widget.outputs.slice();
+        this.benchmark = this.widget.hasBenchmark;
+        this.widget.showInputDesignation = true;
+        return false;
+    }
+
+    closeInputDesignation() {
+        this.widget.showInputDesignation = false;
+    }
+
+    applyInputDesignation() {
+        var configuration = {
+            'inputs': this.listInputs.slice(),
+            'parameters': this.listParameters.slice(),
+            'outputs': this.listOutputs.slice(),
+            'benchmark': this.benchmark
+        };
+        this.saveWidgetConfigurationRequest.emit({
+           widget: this.widget,
+           configuration: configuration
+        });
+    }
+
+    toggleBenchmarkOutput(widget:Widget, event:any) {
+        this.benchmark = event.currentTarget.checked;
     }
 
     applyInteraction() {

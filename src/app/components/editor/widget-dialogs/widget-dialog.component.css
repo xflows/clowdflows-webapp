@@ -16,3 +16,20 @@
 .widget-dialog .panel-footer .form-group {
   margin-bottom: 0px;
 }
+.input-designation .drag-between-arrows {
+  position: absolute;
+  left: -8px;
+  top: 48px;
+}
+.input-designation .panel-body .panel-heading {
+  padding: 2px 10px;
+}
+.input-designation .panel-body .panel-body {
+  padding: 10px;
+}
+.input-designation .panel-body .list-group-item {
+  padding: 2px 10px;
+}
+.input-designation .panel-body .list-group-item i {
+  color: #ef8c08;
+}

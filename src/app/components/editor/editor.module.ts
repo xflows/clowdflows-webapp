@@ -14,6 +14,7 @@ import {ModalModule, TabsModule} from "ng2-bootstrap/ng2-bootstrap";
 import {HttpModule} from "@angular/http";
 import {routing} from "../../app.routing";
 import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
+import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd/';
 
 @NgModule({
     imports: [
@@ -35,10 +36,12 @@ import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
         WidgetTreeComponent,
         WidgetCanvasComponent,
         LoggingComponent,
-        UPLOAD_DIRECTIVES
+        UPLOAD_DIRECTIVES,
+        DND_DIRECTIVES
     ],
     providers: [
-        ContextMenuService
+        ContextMenuService,
+        DND_PROVIDERS
     ],
     exports: [
         EditorComponent

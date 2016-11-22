@@ -26,6 +26,7 @@ export class WidgetCanvasComponent implements OnInit {
     @Output() continueRunWorkflowRequest = new EventEmitter<String>();
     @Output() fetchOutputResultsRequest = new EventEmitter<WorkflowOutput>();
     @Output() openSubprocessRequest = new EventEmitter<Widget>();
+    @Output() saveWidgetConfigurationRequest = new EventEmitter<any>();
     ui_constants = UI;
     selectedInput:WorkflowInput = null;
     selectedOutput:WorkflowOutput = null;
@@ -224,6 +225,10 @@ export class WidgetCanvasComponent implements OnInit {
 
     continueRunWorkflow(event:any) {
         this.continueRunWorkflowRequest.emit(event);
+    }
+
+    saveWidgetConfiguration(event:any) {
+        this.saveWidgetConfigurationRequest.emit(event);
     }
 
     handleShortcuts(event:any) {

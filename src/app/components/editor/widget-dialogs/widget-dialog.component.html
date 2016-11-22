@@ -65,11 +65,109 @@
             </div>
             <p *ngIf="widget.parameters.length == 0">This widget has no parameters</p>
         </form>
+        <a href="#" class="toggle-input-designation" (click)="showInputDesignation()">Advanced widget's input/output
+            configuration</a>
     </div>
     <div class="panel-footer">
         <div class="form-group form-group-sm">
             <button (click)="closeDialog()" class="btn btn-default">Close</button>
             <button (click)="applyParameters()" class="btn btn-primary">Apply</button>
+        </div>
+    </div>
+</div>
+
+<div class="widget-dialog panel panel-primary input-designation"
+     [hidden]="!widget.showInputDesignation">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{widget.name}} input/output advanced settings</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <p>
+                    Drag and drop to change the order of the widget's inputs. You can also pick an input and move it to
+                    the parameters or vice-versa.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        Inputs
+                    </div>
+                    <div class="panel-body" dnd-sortable-container [dropZones]="['inputs-zone']"
+                         [sortableData]="listInputs">
+                        <ul class="list-group">
+                            <li *ngFor="let input of listInputs; let i = index" class="list-group-item" dnd-sortable
+                                [sortableIndex]="i"><i class="fa fa-arrows-v" aria-hidden="true"></i> ({{input.short_name}}) {{input.name}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="drag-between-arrows"><i class="fa fa-arrows-h" aria-hidden="true"></i></div>
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        Parameters
+                    </div>
+                    <div class="panel-body" dnd-sortable-container [dropZones]="['inputs-zone']"
+                         [sortableData]="listParameters">
+                        <ul class="list-group">
+                            <li *ngFor="let param of listParameters; let i = index" class="list-group-item" dnd-sortable
+                                [sortableIndex]="i"><i class="fa fa-arrows-v" aria-hidden="true"></i> ({{param.short_name}}) {{param.name}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p>Drag and drop to change the order of the widget's outputs.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Outputs
+                    </div>
+                    <div class="panel-body" dnd-sortable-container [dropZones]="['outputs-zone']"
+                         [sortableData]="listOutputs">
+                        <ul class="list-group">
+                            <li *ngFor="let output of listOutputs; let i = index" class="list-group-item" dnd-sortable
+                                [sortableIndex]="i"><i class="fa fa-arrows-v" aria-hidden="true"></i> ({{output.short_name}}) {{output.name}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p>You can also measure the time needed to execute this widget and have the elapsed time be an output of
+                    the widget itself: </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"
+                               (change)="toggleBenchmarkOutput(widget, $event)"
+                               [checked]="widget.hasBenchmark"
+                               [name]="time-output"/> Include an output that returns the elapsed execution time
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="form-group form-group-sm">
+            <button (click)="closeInputDesignation()" class="btn btn-default">Close</button>
+            <button (click)="applyInputDesignation()" class="btn btn-primary">Apply</button>
         </div>
     </div>
 </div>
@@ -152,7 +250,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">{{widget.name}} interaction</h3>
     </div>
-    <div #formContainer class="panel-body"[innerHTML]="widget.interactionHtml">
+    <div #formContainer class="panel-body" [innerHTML]="widget.interactionHtml">
     </div>
     <div class="panel-footer">
         <div class="form-group form-group-sm">

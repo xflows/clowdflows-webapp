@@ -291,6 +291,30 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    saveWidgetConfiguration(widget:Widget, data:any) {
+        let options = this.getRequestOptions();
+        var configData = {
+            inputs: Array<any>(),
+            parameters: Array<any>(),
+            outputs: Array<any>(),
+            benchmark: data.benchmark
+        };
+        data.inputs.forEach((input:WidgetInput, order:number) => {
+            configData.inputs.push(input.id);
+        });
+        data.parameters.forEach((input:WidgetInput, order:number) => {
+            configData.parameters.push(input.id);
+        });
+        data.outputs.forEach((output:WidgetOutput, order:number) => {
+            configData.outputs.push(output.id);
+        });
+        return this.http
+            .patch(`${widget.url}save-configuration/`, JSON.stringify(configData), options)
+            .toPromise()
+            .then(response => response)
+            .catch(error => this.handleError(error));
+    }
+
     createConnection(connectionData:any) {
         let options = this.getRequestOptions();
         return this.http
