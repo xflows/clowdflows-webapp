@@ -1,7 +1,7 @@
 <div #widgetCanvas id="widget-canvas" (body:keyup)="handleShortcuts($event)">
     <svg #svgElement id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" (click)="unselectObjects()" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
         <g class="widget noselect" *ngFor="let widget of workflow.widgets"
-           draggable
+           draggable-widget
            (positionChangeRequest)="move($event, widget)"
            (endMoveRequest)="endMove(widget)"
            [attr.width]="ui_constants.widgetWidth"

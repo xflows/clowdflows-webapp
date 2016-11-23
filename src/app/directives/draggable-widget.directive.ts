@@ -1,25 +1,33 @@
-import {Directive, ElementRef, EventEmitter, OnInit, Output} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, OnInit, Output, Renderer, OnDestroy} from '@angular/core';
 
 @Directive({
-    selector: '[draggable]',
+    selector: '[draggable-widget]',
     host: {
         '(mousedown)': 'onMouseDown($event)',
         '(window:mouseup)': 'onMouseUp($event)',
         '(window:mousemove)': 'onMouseMove($event)'
     }
 })
-export class Draggable {
+export class DraggableWidget implements OnInit, OnDestroy {
 
     element:any = null;
     mouseDown = false;
     mouseOffsetX = 0;
     mouseOffsetY = 0;
+    mousePosition:SVGPoint = null;
+    screenCTM:any = null;
 
     @Output() positionChangeRequest = new EventEmitter();
     @Output() endMoveRequest = new EventEmitter();
 
-    constructor(private _elementRef: ElementRef) {
+    constructor(private _elementRef: ElementRef, private renderer:Renderer) {
         this.element = this._elementRef.nativeElement;
+    }
+
+    public ngOnInit():void {
+        //this.renderer.setElementAttribute(this.element, 'draggable', 'true');
+        this.mousePosition = this.element.parentElement.createSVGPoint();
+        this.screenCTM = this.element.parentElement.getScreenCTM();
     }
 
     onMouseDown(event:any) {
@@ -29,21 +37,19 @@ export class Draggable {
         widgetCorner.x = 0;
         widgetCorner.y = 0;
 
-        var mousePosition = this.element.parentElement.createSVGPoint();
-        mousePosition.x = event.clientX;
-        mousePosition.y = event.clientY;
+        this.mousePosition.x = event.clientX;
+        this.mousePosition.y = event.clientY;
 
         // Transforms the screen mouse position to the canvas SVG coordinates
-        var m = this.element.parentElement.getScreenCTM();
-        mousePosition = mousePosition.matrixTransform(m.inverse());
+        this.mousePosition = this.mousePosition.matrixTransform(this.screenCTM.inverse());
 
         // Transforms the widget corner position to the canvas SVG coordinates
-        m = this.element.getCTM();
+        var m = this.element.getCTM();
         widgetCorner = widgetCorner.matrixTransform(m);
 
         // Account for the distance from the mouse to the widget corner (which is what we must update)
-        this.mouseOffsetX = mousePosition.x - widgetCorner.x;
-        this.mouseOffsetY = mousePosition.y - widgetCorner.y;
+        this.mouseOffsetX = this.mousePosition.x - widgetCorner.x;
+        this.mouseOffsetY = this.mousePosition.y - widgetCorner.y;
     }
 
     onMouseUp(event:any) {
@@ -57,17 +63,18 @@ export class Draggable {
         if (!this.mouseDown)
             return;
 
-        var mousePosition = this.element.parentElement.createSVGPoint();
-        mousePosition.x = event.clientX;
-        mousePosition.y = event.clientY;
+        this.mousePosition.x = event.clientX;
+        this.mousePosition.y = event.clientY;
 
         // Transform the mouse position to the canvas SVG coordinates
-        var m = this.element.parentElement.getScreenCTM();
-        mousePosition = mousePosition.matrixTransform(m.inverse());
+        this.mousePosition = this.mousePosition.matrixTransform(this.screenCTM.inverse());
 
         // Account for the mouse offset
-        var newWidgetPosition = {x: mousePosition.x - this.mouseOffsetX, y: mousePosition.y - this.mouseOffsetY};
+        var newWidgetPosition = {x: this.mousePosition.x - this.mouseOffsetX, y: this.mousePosition.y - this.mouseOffsetY};
 
         this.positionChangeRequest.emit(newWidgetPosition);
+    }
+
+    public ngOnDestroy():void {
     }
 }

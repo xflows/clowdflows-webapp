@@ -4,7 +4,7 @@ import {FormsModule}        from '@angular/forms';
 import {EditorComponent}   from './editor.component';
 import {TreeViewComponent} from "./widget-tree/tree-view.component";
 import {ContextMenuComponent, ContextMenuService} from "angular2-contextmenu/angular2-contextmenu";
-import {Draggable} from "../../directives/draggable.directive";
+import {DraggableWidget} from "../../directives/draggable-widget.directive";
 import {WidgetDialogComponent} from "./widget-dialogs/widget-dialog.component";
 import {LoggingComponent} from "./logging/logging.component";
 import {WidgetCanvasComponent} from "./widget-canvas/widget-canvas.component";
@@ -13,8 +13,9 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
 import {ModalModule, TabsModule} from "ng2-bootstrap/ng2-bootstrap";
 import {HttpModule} from "@angular/http";
 import {routing} from "../../app.routing";
-import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
+import {UPLOAD_DIRECTIVES} from 'ng2-uploader/ng2-uploader';
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd/';
+import {DraggableWindow} from "../../directives/draggable-window.directive";
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd/';
         TreeViewComponent,
         TreeViewComponent,
         WidgetDialogComponent,
-        Draggable,
+        DraggableWidget,
+        DraggableWindow,
         ContextMenuComponent,
         ToolbarComponent,
         WidgetTreeComponent,
@@ -38,6 +40,7 @@ import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd/';
         LoggingComponent,
         UPLOAD_DIRECTIVES,
         DND_DIRECTIVES
+        //Draggable
     ],
     providers: [
         ContextMenuService,

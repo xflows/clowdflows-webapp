@@ -1,6 +1,6 @@
 .widget-dialog {
   position: absolute;
-  width: auto;
+  min-width: 400px;
   height: auto;
   top: 50%;
   left: 50%;
@@ -12,6 +12,21 @@
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+.widget-dialog .panel-heading {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  not supported by any browser */
 }
 .widget-dialog .panel-footer .form-group {
   margin-bottom: 0px;

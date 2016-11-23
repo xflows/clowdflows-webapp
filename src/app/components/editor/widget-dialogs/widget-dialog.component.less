@@ -2,7 +2,7 @@
 
 .widget-dialog {
   position: absolute;
-  width: auto;
+  min-width: 400px;
   height: auto;
   top: 50%;
   left: 50%;
@@ -13,6 +13,11 @@
   transform: translate(-50%, -50%);
 
   .dialog-shadow();
+
+  .panel-heading {
+    .noselect();
+    //cursor: pointer;
+  }
 
   .panel-footer {
     .form-group {
