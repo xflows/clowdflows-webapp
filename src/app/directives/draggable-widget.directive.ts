@@ -1,4 +1,4 @@
-import {Directive, ElementRef, EventEmitter, OnInit, Output, Renderer, OnDestroy} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, OnInit, Output, Renderer} from '@angular/core';
 
 @Directive({
     selector: '[draggable-widget]',
@@ -8,7 +8,7 @@ import {Directive, ElementRef, EventEmitter, OnInit, Output, Renderer, OnDestroy
         '(window:mousemove)': 'onMouseMove($event)'
     }
 })
-export class DraggableWidget implements OnInit, OnDestroy {
+export class DraggableWidget implements OnInit {
 
     element:any = null;
     mouseDown = false;
@@ -25,7 +25,6 @@ export class DraggableWidget implements OnInit, OnDestroy {
     }
 
     public ngOnInit():void {
-        //this.renderer.setElementAttribute(this.element, 'draggable', 'true');
         this.mousePosition = this.element.parentElement.createSVGPoint();
         this.screenCTM = this.element.parentElement.getScreenCTM();
     }
@@ -73,8 +72,5 @@ export class DraggableWidget implements OnInit, OnDestroy {
         var newWidgetPosition = {x: this.mousePosition.x - this.mouseOffsetX, y: this.mousePosition.y - this.mouseOffsetY};
 
         this.positionChangeRequest.emit(newWidgetPosition);
-    }
-
-    public ngOnDestroy():void {
     }
 }

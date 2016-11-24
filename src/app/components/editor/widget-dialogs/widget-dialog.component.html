@@ -1,7 +1,7 @@
 <div class="widget-dialog panel panel-primary"
-     draggable-window
      [hidden]="!widget.showDialog">
-    <div class="panel-heading">
+    <div class="panel-heading"
+         draggable-window>
         <h3 class="panel-title">{{widget.name}}</h3>
     </div>
     <div class="panel-body">
@@ -79,9 +79,9 @@
 </div>
 
 <div class="widget-dialog panel panel-primary input-designation"
-     draggable-window
      [hidden]="!widget.showInputDesignation">
-    <div class="panel-heading">
+    <div class="panel-heading"
+         draggable-window>
         <h3 class="panel-title">{{widget.name}} input/output advanced settings</h3>
     </div>
     <div class="panel-body">
@@ -176,9 +176,9 @@
 </div>
 
 <div class="widget-dialog panel panel-primary"
-     draggable-window
      [hidden]="!widget.showResults">
-    <div class="panel-heading">
+    <div class="panel-heading"
+         draggable-window>
         <h3 class="panel-title">{{widget.name}} results</h3>
     </div>
     <div class="panel-body">
@@ -197,9 +197,9 @@
 </div>
 
 <div class="widget-dialog panel panel-primary"
-     draggable-window
      [hidden]="!widget.showHelp">
-    <div class="panel-heading">
+    <div class="panel-heading"
+         draggable-window>
         <h3 class="panel-title">{{widget.name}} help</h3>
     </div>
     <div class="panel-body">
@@ -213,9 +213,9 @@
 </div>
 
 <div class="widget-dialog panel panel-primary"
-     draggable-window
      [hidden]="!widget.showRenameDialog">
-    <div class="panel-heading">
+    <div class="panel-heading"
+         draggable-window>
         <h3 class="panel-title">{{widget.name}} rename</h3>
     </div>
     <div class="panel-body">
@@ -240,9 +240,9 @@
 </div>
 
 <div class="widget-dialog panel panel-primary"
-     draggable-window
      [hidden]="!widget.showVisualizationDialog">
-    <div class="panel-heading">
+    <div class="panel-heading"
+         draggable-window>
         <h3 class="panel-title">{{widget.name}} visualization</h3>
     </div>
     <div class="panel-body" [innerHTML]="widget.visualizationHtml">
@@ -255,9 +255,9 @@
 </div>
 
 <div class="widget-dialog panel panel-primary"
-     draggable-window
      [hidden]="!widget.showInteractionDialog">
-    <div class="panel-heading">
+    <div class="panel-heading"
+         draggable-window>
         <h3 class="panel-title">{{widget.name}} interaction</h3>
     </div>
     <div #formContainer class="panel-body" [innerHTML]="widget.interactionHtml">

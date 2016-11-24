@@ -40,7 +40,6 @@ import {DraggableWindow} from "../../directives/draggable-window.directive";
         LoggingComponent,
         UPLOAD_DIRECTIVES,
         DND_DIRECTIVES
-        //Draggable
     ],
     providers: [
         ContextMenuService,
