@@ -44,5 +44,4 @@ export class DraggableWindow implements OnDestroy, OnInit {
     public ngOnDestroy():void {
         this.renderer.setElementAttribute(this.panelHeaderEl.nativeElement, 'draggable', 'false');
     }
-
 }
