@@ -22,18 +22,15 @@ export class DraggableWindow implements OnDestroy, OnInit {
     }
 
     onDragStart(event:MouseEvent) {
-        console.log('onDragStart', event.x, event.y);
         this.Δx = event.x - this.panelEl.offsetLeft;
         this.Δy = event.y - this.panelEl.offsetTop;
     }
 
     onDrag(event:MouseEvent) {
-        console.log('onDrag', event.x, event.y);
         this.doTranslation(event.x, event.y);
     }
 
     onDragEnd(event:MouseEvent) {
-        console.log('onDragEnd');
         this.Δx = 0;
         this.Δy = 0;
     }
