@@ -1,0 +1,48 @@
+main {
+  padding: 1em;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  margin-top: 50px;
+  display: block;
+}
+
+#loading-indicator {
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  position: fixed;
+  z-index: 9999;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.7;
+  padding: 10px 10px;
+  border: 1px dashed;
+
+  #loading-text {
+    letter-spacing: 3px;
+  }
+
+  #loading-icon {
+    -moz-animation: spin 0.5s linear infinite;
+    -ms-animation: spin 0.5s linear infinite;
+    -webkit-animation: spin 0.5s linear infinite;
+    animation: spin 0.5s linear infinite;
+  }
+}
+
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(360deg);}
+}

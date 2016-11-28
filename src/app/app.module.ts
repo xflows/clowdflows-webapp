@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule}  from '@angular/platform-browser';
 import {AppComponent} from './app.component';
-import {HttpModule} from '@angular/http';
+import {HttpModule, Http, XHRBackend, RequestOptions, ConnectionBackend} from '@angular/http';
 import {UserService} from "./services/user.service";
 import {LoggedInGuard} from "./services/logged-in.guard";
 import {LoggerService} from "./services/logger.service";
@@ -15,6 +15,8 @@ import {WorkflowsComponent} from "./components/workflows/workflows.component";
 import {UserWorkflowsComponent} from "./components/workflows/user-workflows.component";
 import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.component";
 import {FooterComponent} from "./components/footer/footer.component";
+import {LoadingService} from "./services/loading.service";
+import {HttpLoading} from "./services/http-loading.service";
 
 @NgModule({
     imports: [
@@ -22,7 +24,7 @@ import {FooterComponent} from "./components/footer/footer.component";
         routing,
         FormsModule,
         HttpModule,
-        EditorModule
+        EditorModule,
     ],
     declarations: [
         AppComponent,
@@ -31,13 +33,20 @@ import {FooterComponent} from "./components/footer/footer.component";
         FooterComponent,
         WorkflowsComponent,
         UserWorkflowsComponent,
-        WorkflowDetailComponent
+        WorkflowDetailComponent,
     ],
     providers: [
         ClowdFlowsDataService,
         UserService,
         LoggerService,
         LoggedInGuard,
+        LoadingService,
+        {
+            provide: Http,
+            useClass: HttpLoading,
+            deps: [XHRBackend, RequestOptions, LoadingService],
+            useFactory: (backend:XHRBackend, defaultOptions:RequestOptions, loadingService:LoadingService) => new HttpLoading(backend, defaultOptions, loadingService)
+        }
     ],
     bootstrap: [
         AppComponent,

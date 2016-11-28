@@ -25,3 +25,7 @@
     </div><!-- /.container-fluid -->
 </nav>
 <router-outlet></router-outlet>
+<div id="loading-indicator" [hidden]="!loadingService.isLoading">
+    <span id="loading-text">LOADING</span><br>
+    <i id="loading-icon" class="fa fa-spinner" aria-hidden="true"></i>
+</div>
