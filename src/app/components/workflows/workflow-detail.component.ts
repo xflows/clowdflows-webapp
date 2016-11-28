@@ -32,7 +32,6 @@ export class WorkflowDetailComponent extends WorkflowsComponent {
             this.clowdflowsDataService.getWorkflow(id)
                 .then(workflow => {
                     this.workflow = workflow;
-                    console.log(workflow);
                 });
         });
     }

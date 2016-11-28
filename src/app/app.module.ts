@@ -14,6 +14,7 @@ import {EditorModule} from "./components/editor/editor.module";
 import {WorkflowsComponent} from "./components/workflows/workflows.component";
 import {UserWorkflowsComponent} from "./components/workflows/user-workflows.component";
 import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.component";
+import {FooterComponent} from "./components/footer/footer.component";
 
 @NgModule({
     imports: [
@@ -27,6 +28,7 @@ import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.co
         AppComponent,
         HomeComponent,
         LoginComponent,
+        FooterComponent,
         WorkflowsComponent,
         UserWorkflowsComponent,
         WorkflowDetailComponent

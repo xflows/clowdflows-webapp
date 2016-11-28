@@ -1,7 +1,19 @@
 @import url("http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
 
-body {
+html, body {
     height: 100%;
+    margin: 0;
+}
+main.container {
+    min-height: 100%;
+
+    /* Equal to height of footer */
+    /* But also accounting for potential margin-bottom of last child */
+    margin-bottom: -182px;
+}
+footer,
+.push {
+    height: 182px;
 }
 
 

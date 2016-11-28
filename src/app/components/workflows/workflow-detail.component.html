@@ -1,18 +1,24 @@
-<main class="container" *ngIf="workflow">
-    <h1>{{ workflow.name }} <small>by {{workflow.user.username}}</small></h1>
-    <section class="row" *ngIf="!workflow.is_subprocess">
-        <div class="col-sm-12">
-            <div class="preview-container" [innerHTML]="getTrustedHTML(workflow.preview)">
+<main class="container">
+    <template [ngIf]="workflow">
+        <h1>{{ workflow.name }}
+            <small>by {{workflow.user.username}}</small>
+        </h1>
+        <section class="row" *ngIf="!workflow.is_subprocess">
+            <div class="col-sm-12">
+                <div class="preview-container" [innerHTML]="getTrustedHTML(workflow.preview)">
+                </div>
+                <p>
+                    <a class="btn btn-primary btn-sm" [routerLink]="['/workflow/', workflow.id]"><i class="fa fa-link"
+                                                                                                    aria-hidden="true"></i>
+                        Share
+                        link</a>
+                    <a class="btn btn-success btn-sm" href="">Launch (creates a personal copy)</a>
+                    <a class="btn btn-default btn-sm" [routerLink]="['/editor/', workflow.id]"
+                       *ngIf="workflow.user.username == userService.getUsername()">Edit</a>
+                </p>
             </div>
-            <p>
-                <a class="btn btn-primary btn-sm" [routerLink]="['/workflow/', workflow.id]"><i class="fa fa-link"
-                                                                                         aria-hidden="true"></i>
-                    Share
-                    link</a>
-                <a class="btn btn-success btn-sm" href="">Launch (creates a personal copy)</a>
-                <a class="btn btn-default btn-sm" [routerLink]="['/editor/', workflow.id]"
-                   *ngIf="workflow.user.username == userService.getUsername()">Edit</a>
-            </p>
-        </div>
-    </section>
+        </section>
+    </template>
+    <div class="push"></div>
 </main>
+<footer-comp></footer-comp>
