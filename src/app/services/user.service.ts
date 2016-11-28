@@ -22,6 +22,7 @@ export class UserService {
             .map(res => res.json())
             .map((res) => {
                 if (res.token) {
+                    localStorage.setItem('username', username);
                     localStorage.setItem('auth_token', res.token);
                     this.loggedIn = true;
                     return true;
@@ -38,5 +39,9 @@ export class UserService {
 
     isLoggedIn() {
         return this.loggedIn;
+    }
+
+    getUsername() {
+        return localStorage.getItem('username');
     }
 }

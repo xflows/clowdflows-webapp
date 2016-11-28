@@ -14,12 +14,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li outerLinkActive="active" [routerLinkActive]="['active']"><a [routerLink]="['/']">Home</a></li>
                 <li outerLinkActive="active" [routerLinkActive]="['active']"><a [routerLink]="['/your-workflows']">Your workflows</a></li>
                 <li outerLinkActive="active" [routerLinkActive]="['active']"><a [routerLink]="['/explore-workflows']">Explore workflows</a></li>
                 <li outerLinkActive="active">
                     <a [routerLink]="['/login']" *ngIf="!userService.isLoggedIn()">Log in</a>
-                    <a href="" (click)="userService.logout(''); $event.preventDefault()" *ngIf="userService.isLoggedIn()">Log out</a>
+                    <a href="" (click)="userService.logout(''); $event.preventDefault()" *ngIf="userService.isLoggedIn()">Log out [{{ userService.getUsername() }}]</a>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->

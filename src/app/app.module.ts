@@ -11,6 +11,9 @@ import {LoginComponent} from "./components/login/login.component";
 import {HomeComponent} from "./components/home/home.component";
 import {ClowdFlowsDataService} from './services/clowdflows-data.service';
 import {EditorModule} from "./components/editor/editor.module";
+import {WorkflowsComponent} from "./components/workflows/workflows.component";
+import {UserWorkflowsComponent} from "./components/workflows/user-workflows.component";
+import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.component";
 
 @NgModule({
     imports: [
@@ -23,7 +26,10 @@ import {EditorModule} from "./components/editor/editor.module";
     declarations: [
         AppComponent,
         HomeComponent,
-        LoginComponent
+        LoginComponent,
+        WorkflowsComponent,
+        UserWorkflowsComponent,
+        WorkflowDetailComponent
     ],
     providers: [
         ClowdFlowsDataService,

@@ -187,7 +187,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService.saveWidgetConfiguration(widget, configuration)
             .then((response:any) => {
                 this.updateWidget(widget)
-                    .then(()=>{
+                    .then(()=> {
                         widget.showInputDesignation = false;
                     });
             });
@@ -424,7 +424,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         if (!(workflowUrl in this.loadedSubprocesses)) {
             this.clowdflowsDataService.getWorkflow(workflowUrl)
                 .then(data => {
-                    let subprocessWorkflow = this.parseWorkflow(data);
+                    let subprocessWorkflow = Workflow.createFromJSON(data);
                     subprocessWorkflow.subprocessWidget = widget;
                     this.workflows.push(subprocessWorkflow);
                     this.loadedSubprocesses[workflowUrl] = subprocessWorkflow;
@@ -466,9 +466,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     private parseWorkflow(data:any):Workflow {
-        let workflow = new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
-            data.is_public, data.owner, data.description, data.widget, data.template_parent);
-        return workflow;
+        return new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
+            data.is_public, data.user, data.description, data.widget, data.template_parent);
     }
 
     ngOnInit() {
@@ -478,7 +477,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             let id = +params['id'];
             this.clowdflowsDataService.getWorkflow(id)
                 .then(data => {
-                    this.workflow = this.parseWorkflow(data);
+                    this.workflow = Workflow.createFromJSON(data);
                     this.workflows = [];  // Clear workflow tabs on load
                     this.workflows.push(this.workflow);
                     this.switchToWorkflowTab(this.workflow);

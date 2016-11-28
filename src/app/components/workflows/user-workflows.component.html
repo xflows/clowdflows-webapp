@@ -1,0 +1,34 @@
+
+<div class="container">
+    <h1>{{ title }}</h1>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Workflow title</th>
+            <th>Public URL</th>
+            <th style="width:15%;">Streaming</th>
+            <th style="width:30%;">Action</th>
+        </tr>
+
+        </thead>
+        <tbody>
+        <template ngFor let-workflow [ngForOf]="workflows">
+        <tr *ngIf="!workflow.is_subprocess">
+            <td class="name">{{workflow.name}}</td>
+            <td ng-if="workflow.public"><a [routerLink]="['/workflow/', workflow.id]">{{base_url}}/workflow/{{workflow.id}}</a> <template ng-if="!workflow.public">This workflow is private</template> </td>
+            <td>TODO</td>
+            <td><a [routerLink]="['/editor/', workflow.id]">Edit</a> |
+                <a href="">Open as new</a> |
+                <a href="">Delete</a> |
+                <a href="" ng-if="!workflow.public">Make public</a> <a href="" ng-if="workflow.public">Make private</a> |
+                <a href="">Export to JSON</a>
+            </td>
+        </tr>
+        </template>
+        </tbody>
+
+    </table>
+
+    <a href="">Import a workflow from another installation of ClowdFlows</a>
+
+</div>
