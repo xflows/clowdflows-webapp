@@ -2,6 +2,9 @@ import {Http, RequestOptions, ConnectionBackend, RequestOptionsArgs} from "@angu
 import {LoadingService} from "./loading.service";
 
 
+/*
+    Overrides Http methods to toggle the loading flag
+ */
 export class HttpLoading extends Http {
 
     constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, private loadingService: LoadingService) {

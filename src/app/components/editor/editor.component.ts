@@ -9,8 +9,10 @@ import {Connection} from "../../models/connection";
 import {Output as WorkflowOutput, Output} from "../../models/output";
 import {Workflow} from "../../models/workflow";
 import {DomSanitizer} from "@angular/platform-browser";
-import {specialWidgetNames} from '../../services/special-widgets';
 import {Input} from "../../models/input";
+import {Category} from "../../models/category";
+import {specialCategoryName, specialWidgetNames} from '../../services/special-widgets';
+import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 
 @Component({
     selector: 'editor',
@@ -19,6 +21,8 @@ import {Input} from "../../models/input";
 })
 export class EditorComponent implements OnInit, OnDestroy {
     @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent;
+    @ViewChild(WidgetTreeComponent) widgetTreeComponent: WidgetTreeComponent;
+    widgetTree:Category[];
     workflow:any = {};
     workflows:Workflow[] = [];
     userWorkflows:Workflow[] = [];
@@ -26,6 +30,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     loadedSubprocesses:any = {};
     activeWorkflow:Workflow = null;
+    recommendWidget:Widget = null;
 
     constructor(private domSanitizer:DomSanitizer,
                 private clowdflowsDataService:ClowdFlowsDataService,
@@ -465,6 +470,11 @@ export class EditorComponent implements OnInit, OnDestroy {
             });
     }
 
+    updateRecommendation(recommendWidget:Widget) {
+        this.recommendWidget = recommendWidget;
+        this.widgetTreeComponent.updateRecommendation(recommendWidget);
+    }
+
     private parseWorkflow(data:any):Workflow {
         return new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
             data.is_public, data.user, data.description, data.widget, data.template_parent);
@@ -472,7 +482,6 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.sub = this.route.params.subscribe((params:Params) => {
-
             // Fetch the current workflow
             let id = +params['id'];
             this.clowdflowsDataService.getWorkflow(id)

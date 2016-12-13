@@ -9,8 +9,14 @@
             <tree-view [categories]="category.children" (addWidgetRequest)="addWidgetToCanvas($event)"></tree-view>
             <ul>
                 <li *ngFor="let widget of category.widgets">
-                <span class="widget" [class.hidden]="widget.hidden" (click)="addWidgetToCanvas(widget)">
-                    <img class="widget-tree-icon" src="{{ iconUrl(widget) }}"/> {{widget.name}}
+                <span class="widget"
+                      [class.hidden]="widget.hidden"
+                      [class.recommendation]="widget.recommended_input || widget.recommended_output"
+                      (click)="addWidgetToCanvas(widget)"
+                      [attr.title]="widget.name">
+                    <i class="fa" [class.fa-long-arrow-right]="widget.recommended_output"></i>
+                    <img class="widget-tree-icon" src="{{ iconUrl(widget) }}"/> <span class="widget-name">{{widget.name}}</span>
+                    <i class="fa" [class.fa-long-arrow-right]="widget.recommended_input"></i>
                 </span>
                 </li>
             </ul>

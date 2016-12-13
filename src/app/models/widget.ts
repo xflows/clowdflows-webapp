@@ -47,7 +47,9 @@ export class Widget {
         inputs:any[],
         outputs:any[],
         public workflow:Workflow,
-        public workflow_link:string
+        public workflow_link:string,
+        public recommended_inputs:Array<string>,
+        public recommended_outputs:Array<string>
     ){
         // Keep proper inputs and parameters separately
         this.inputs = new Array<Input>();
@@ -80,7 +82,8 @@ export class Widget {
     public static createFromJSON(data:any, workflow:Workflow):Widget {
         return new Widget(data.id, data.url, data.x, data.y, data.name, data.finished, data.error,
             data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
-            data.description, data.icon, data.inputs, data.outputs, workflow, data.workflow_link)
+            data.description, data.icon, data.inputs, data.outputs, workflow, data.workflow_link,
+            data.recommended_inputs, data.recommended_outputs);
     }
 
     get boxHeight() {

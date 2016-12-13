@@ -4,7 +4,9 @@
          (createWorkflowRequest)="createWorkflow()"
          (saveWorkflowRequest)="saveWorkflow($event)">
 </toolbar>
-<widget-tree (addWidgetRequest)="addWidget($event)"></widget-tree>
+<widget-tree [widgetTree]="widgetTree"
+             (addWidgetRequest)="addWidget($event)">
+</widget-tree>
 <tabset id="editor-tabs">
     <tab *ngFor="let workflow of workflows"
             [heading]="workflow.name"
@@ -23,7 +25,8 @@
                        (continueRunWorkflowRequest)="continueRunWorkflow($event)"
                        (fetchOutputResultsRequest)="fetchOutputValue($event)"
                        (openSubprocessRequest)="openSubprocess($event)"
-                       (saveWidgetConfigurationRequest)="saveWidgetConfiguration($event)">
+                       (saveWidgetConfigurationRequest)="saveWidgetConfiguration($event)"
+                       (showRecommendationsRequest)="updateRecommendation($event)">
         </widget-canvas>
     </tab>
 </tabset>

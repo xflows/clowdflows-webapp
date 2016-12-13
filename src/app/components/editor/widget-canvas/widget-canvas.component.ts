@@ -26,6 +26,7 @@ export class WidgetCanvasComponent implements OnInit {
     @Output() continueRunWorkflowRequest = new EventEmitter<String>();
     @Output() fetchOutputResultsRequest = new EventEmitter<WorkflowOutput>();
     @Output() openSubprocessRequest = new EventEmitter<Widget>();
+    @Output() showRecommendationsRequest = new EventEmitter<Widget>();
     @Output() saveWidgetConfigurationRequest = new EventEmitter<any>();
     ui_constants = UI;
     selectedInput:WorkflowInput = null;
@@ -153,6 +154,10 @@ export class WidgetCanvasComponent implements OnInit {
                 this.newConnection();
             }
         }
+
+        if (object instanceof Widget) {
+            this.showRecommendationsRequest.emit(<Widget> object);
+        }
     }
 
     newConnection() {
@@ -172,6 +177,7 @@ export class WidgetCanvasComponent implements OnInit {
             conn.selected = false;
         }
         this.unselectSignals();
+        this.showRecommendationsRequest.emit(null);
     }
 
     unselectSignals() {
