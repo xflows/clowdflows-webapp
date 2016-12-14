@@ -52,10 +52,10 @@
   stroke-miterlimit: 4;
   stroke-dasharray: none;
   cursor: pointer;
-  -webkit-transition: fill 200ms ease-in-out;
-  -moz-transition: fill 200ms ease-in-out;
-  -o-transition: fill 200ms ease-in-out;
-  transition: fill 200ms ease-in-out;
+  -webkit-transition: fill 100ms ease-in-out;
+  -moz-transition: fill 100ms ease-in-out;
+  -o-transition: fill 100ms ease-in-out;
+  transition: fill 100ms ease-in-out;
 }
 #widget-canvas .widget .widget-box:hover {
   fill: #fff5c2;
@@ -76,10 +76,10 @@
   stroke-miterlimit: 4;
   stroke-dasharray: none;
   cursor: pointer;
-  -webkit-transition: fill 200ms ease-in-out;
-  -moz-transition: fill 200ms ease-in-out;
-  -o-transition: fill 200ms ease-in-out;
-  transition: fill 200ms ease-in-out;
+  -webkit-transition: fill 100ms ease-in-out;
+  -moz-transition: fill 100ms ease-in-out;
+  -o-transition: fill 100ms ease-in-out;
+  transition: fill 100ms ease-in-out;
 }
 #widget-canvas .widget .input:hover,
 #widget-canvas .widget .output:hover {
@@ -104,10 +104,10 @@
 #widget-canvas .widget text.signal-text {
   pointer-events: none;
   fill: #a3a3a3;
-  -webkit-transition: fill 200ms ease-in-out;
-  -moz-transition: fill 200ms ease-in-out;
-  -o-transition: fill 200ms ease-in-out;
-  transition: fill 200ms ease-in-out;
+  -webkit-transition: fill 100ms ease-in-out;
+  -moz-transition: fill 100ms ease-in-out;
+  -o-transition: fill 100ms ease-in-out;
+  transition: fill 100ms ease-in-out;
 }
 #widget-canvas .widget .widget-error-icon {
   fill: #ff572b;
@@ -126,10 +126,10 @@
 #widget-canvas .connection path {
   stroke: #a3a3a3;
   cursor: pointer;
-  -webkit-transition: stroke 200ms ease-in-out;
-  -moz-transition: stroke 200ms ease-in-out;
-  -o-transition: stroke 200ms ease-in-out;
-  transition: stroke 200ms ease-in-out;
+  -webkit-transition: stroke 100ms ease-in-out;
+  -moz-transition: stroke 100ms ease-in-out;
+  -o-transition: stroke 100ms ease-in-out;
+  transition: stroke 100ms ease-in-out;
 }
 #widget-canvas .connection path:hover {
   stroke: #ffe45c;

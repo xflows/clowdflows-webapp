@@ -15,6 +15,7 @@
 }
 #toolbar #status {
   padding: 9px 15px 9px 15px;
+  line-height: 28px;
 }
 #toolbar #status #status-msg {
   float: left;

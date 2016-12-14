@@ -8,8 +8,17 @@ ul > li {
 .widget,
 .category {
   cursor: pointer;
-  line-height: 15px;
+  line-height: 20px;
   font-size: 15px;
+}
+.widget {
+  display: block;
+  overflow-style: marquee-block;
+}
+.widget-name {
+  max-width: 180px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .widget-tree-icon {
   height: 16px;

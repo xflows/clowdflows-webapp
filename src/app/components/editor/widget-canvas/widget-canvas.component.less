@@ -4,6 +4,7 @@
 @signal-width: 40px;
 @signal-height: 16px;
 @widget-width: @widget-box-width + 2*@signal-width;
+@hover-speed: 100ms;
 
 #widget-canvas {
   position: absolute;
@@ -51,10 +52,10 @@
       stroke-dasharray: none;
       cursor: pointer;
 
-      -webkit-transition: fill 200ms ease-in-out;
-      -moz-transition: fill 200ms ease-in-out;
-      -o-transition: fill 200ms ease-in-out;
-      transition: fill 200ms ease-in-out;
+      -webkit-transition: fill @hover-speed ease-in-out;
+      -moz-transition: fill @hover-speed ease-in-out;
+      -o-transition: fill @hover-speed ease-in-out;
+      transition: fill @hover-speed ease-in-out;
 
       &:hover {
         fill: lighten(@cf-yellow, 20%);
@@ -80,10 +81,10 @@
       stroke-dasharray: none;
       cursor: pointer;
 
-      -webkit-transition: fill 200ms ease-in-out;
-      -moz-transition: fill 200ms ease-in-out;
-      -o-transition: fill 200ms ease-in-out;
-      transition: fill 200ms ease-in-out;
+      -webkit-transition: fill @hover-speed ease-in-out;
+      -moz-transition: fill @hover-speed ease-in-out;
+      -o-transition: fill @hover-speed ease-in-out;
+      transition: fill @hover-speed ease-in-out;
 
       &:hover {
         fill: darken(#d7eef4, 10%);
@@ -107,10 +108,10 @@
     text.signal-text {
       pointer-events: none;
       fill: #a3a3a3;
-      -webkit-transition: fill 200ms ease-in-out;
-      -moz-transition: fill 200ms ease-in-out;
-      -o-transition: fill 200ms ease-in-out;
-      transition: fill 200ms ease-in-out;
+      -webkit-transition: fill @hover-speed ease-in-out;
+      -moz-transition: fill @hover-speed ease-in-out;
+      -o-transition: fill @hover-speed ease-in-out;
+      transition: fill @hover-speed ease-in-out;
     }
 
     .widget-error-icon {
@@ -135,10 +136,10 @@
     path {
       stroke: #a3a3a3;
       cursor: pointer;
-      -webkit-transition: stroke 200ms ease-in-out;
-      -moz-transition: stroke 200ms ease-in-out;
-      -o-transition: stroke 200ms ease-in-out;
-      transition: stroke 200ms ease-in-out;
+      -webkit-transition: stroke @hover-speed ease-in-out;
+      -moz-transition: stroke @hover-speed ease-in-out;
+      -o-transition: stroke @hover-speed ease-in-out;
+      transition: stroke @hover-speed ease-in-out;
     }
 
     path:hover {
