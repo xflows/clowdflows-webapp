@@ -13,10 +13,11 @@
                       [class.selected]="input.selected"
                       (click)="select($event, input)"/>
                 <text class="signal-text"
-                      [attr.x]="input.x + 9"
+                      [attr.x]="input.x + 20"
                       [attr.y]="input.y + ui_constants.signalHeight - 3"
                       [attr.height]="ui_constants.signalHeight"
-                      [attr.width]="ui_constants.signalWidth">
+                      [attr.width]="ui_constants.signalWidth"
+                      text-anchor="middle">
                     <tspan>{{input.short_name}}</tspan>
                 </text>
             </g>
@@ -27,10 +28,11 @@
                       [class.selected]="output.selected"
                       (click)="select($event, output)"/>
                 <text class="signal-text"
-                      [attr.x]="output.x + 9"
+                      [attr.x]="output.x + 20"
                       [attr.y]="output.y + ui_constants.signalHeight - 3"
                       [attr.height]="ui_constants.signalHeight"
-                      [attr.width]="ui_constants.signalWidth">
+                      [attr.width]="ui_constants.signalWidth"
+                      text-anchor="middle">
                     <tspan>{{output.short_name}}</tspan>
                 </text>
             </g>

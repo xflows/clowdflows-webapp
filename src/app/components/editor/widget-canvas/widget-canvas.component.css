@@ -102,6 +102,7 @@
   fill: white;
 }
 #widget-canvas .widget text.signal-text {
+  font-family: monospace;
   pointer-events: none;
   fill: #a3a3a3;
   -webkit-transition: fill 100ms ease-in-out;
