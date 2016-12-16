@@ -11,7 +11,7 @@
     <a class="btn btn-info btn-sm" (click)="openImportWebserviceDialog()">Import webservice</a>
 </div>
 
-<div class="import-webservice-dialog panel panel-primary" [hidden]="!showImportWebserviceDialog">
+<div class="import-webservice-dialog panel panel-primary" *ngIf="showImportWebserviceDialog">
     <div class="panel-heading">
         <h3 class="panel-title">Import webservice</h3>
     </div>

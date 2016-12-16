@@ -16,6 +16,7 @@ import {routing} from "../../app.routing";
 import {UPLOAD_DIRECTIVES} from 'ng2-uploader/ng2-uploader';
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd/';
 import {DraggableWindow} from "../../directives/draggable-window.directive";
+import {FocusOnVisible} from "../../directives/focus.directive";
 
 @NgModule({
     imports: [
@@ -33,6 +34,7 @@ import {DraggableWindow} from "../../directives/draggable-window.directive";
         WidgetDialogComponent,
         DraggableWidget,
         DraggableWindow,
+        FocusOnVisible,
         ContextMenuComponent,
         ToolbarComponent,
         WidgetTreeComponent,

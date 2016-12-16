@@ -31,6 +31,10 @@
 .widget-dialog .panel-footer .form-group {
   margin-bottom: 0px;
 }
+.widget-dialog.widget-results .panel-body {
+  overflow: auto;
+  max-height: 600px;
+}
 .input-designation .drag-between-arrows {
   position: absolute;
   left: -8px;

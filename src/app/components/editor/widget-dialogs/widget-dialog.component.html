@@ -1,5 +1,6 @@
 <div class="widget-dialog panel panel-primary"
-     [hidden]="!widget.showDialog">
+     focus-visible
+     *ngIf="widget.showDialog">
     <div class="panel-heading"
          draggable-window>
         <h3 class="panel-title">{{widget.name}}</h3>
@@ -79,7 +80,8 @@
 </div>
 
 <div class="widget-dialog panel panel-primary input-designation"
-     [hidden]="!widget.showInputDesignation">
+     focus-visible
+     *ngIf="widget.showInputDesignation">
     <div class="panel-heading"
          draggable-window>
         <h3 class="panel-title">{{widget.name}} input/output advanced settings</h3>
@@ -175,8 +177,9 @@
     </div>
 </div>
 
-<div class="widget-dialog panel panel-primary"
-     [hidden]="!widget.showResults">
+<div class="widget-dialog panel panel-primary widget-results"
+     focus-visible
+     *ngIf="widget.showResults">
     <div class="panel-heading"
          draggable-window>
         <h3 class="panel-title">{{widget.name}} results</h3>
@@ -184,7 +187,9 @@
     <div class="panel-body">
         <ul>
             <li *ngFor="let output of widget.outputs">
-                {{ output.name }} = {{ output.value }}
+                {{ output.name }} =
+                <template [ngIf]="output.value != null">{{ output.value|slice:0:600 }} <span *ngIf="output.value.length >= 600">...</span></template>
+                <template [ngIf]="output.value == null">N/A</template>
             </li>
         </ul>
         <p *ngIf="widget.outputs.length == 0">This widget has no outputs.</p>
@@ -197,7 +202,8 @@
 </div>
 
 <div class="widget-dialog panel panel-primary"
-     [hidden]="!widget.showHelp">
+     focus-visible
+     *ngIf="widget.showHelp">
     <div class="panel-heading"
          draggable-window>
         <h3 class="panel-title">{{widget.name}} help</h3>
@@ -213,7 +219,8 @@
 </div>
 
 <div class="widget-dialog panel panel-primary"
-     [hidden]="!widget.showRenameDialog">
+     focus-visible
+     *ngIf="widget.showRenameDialog">
     <div class="panel-heading"
          draggable-window>
         <h3 class="panel-title">{{widget.name}} rename</h3>
@@ -240,7 +247,8 @@
 </div>
 
 <div class="widget-dialog panel panel-primary"
-     [hidden]="!widget.showVisualizationDialog">
+     focus-visible
+     *ngIf="widget.showVisualizationDialog">
     <div class="panel-heading"
          draggable-window>
         <h3 class="panel-title">{{widget.name}} visualization</h3>
@@ -255,7 +263,8 @@
 </div>
 
 <div class="widget-dialog panel panel-primary"
-     [hidden]="!widget.showInteractionDialog">
+     focus-visible
+     *ngIf="widget.showInteractionDialog">
     <div class="panel-heading"
          draggable-window>
         <h3 class="panel-title">{{widget.name}} interaction</h3>
