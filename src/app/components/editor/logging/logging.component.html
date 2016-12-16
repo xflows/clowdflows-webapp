@@ -1,6 +1,6 @@
 <div #log id="log">
     <ul>
-        <li *ngFor="let msg of messages" [attr.class]="'bg-' + msg.type">
+        <li #msgEl *ngFor="let msg of messages" [attr.class]="'bg-' + msg.type">
             [{{msg.timestamp}}] {{msg.text}}
         </li>
     </ul>
