@@ -13,10 +13,10 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
 import {ModalModule, TabsModule} from "ng2-bootstrap/ng2-bootstrap";
 import {HttpModule} from "@angular/http";
 import {routing} from "../../app.routing";
-import {UPLOAD_DIRECTIVES} from 'ng2-uploader/ng2-uploader';
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd/';
 import {DraggableWindow} from "../../directives/draggable-window.directive";
 import {FocusOnVisible} from "../../directives/focus.directive";
+import {Ng2UploaderModule} from 'ng2-uploader/ng2-uploader'
 
 @NgModule({
     imports: [
@@ -25,7 +25,8 @@ import {FocusOnVisible} from "../../directives/focus.directive";
         HttpModule,
         ModalModule,
         TabsModule,
-        routing
+        routing,
+        Ng2UploaderModule,
     ],
     declarations: [
         EditorComponent,
@@ -40,7 +41,6 @@ import {FocusOnVisible} from "../../directives/focus.directive";
         WidgetTreeComponent,
         WidgetCanvasComponent,
         LoggingComponent,
-        UPLOAD_DIRECTIVES,
         DND_DIRECTIVES
     ],
     providers: [
