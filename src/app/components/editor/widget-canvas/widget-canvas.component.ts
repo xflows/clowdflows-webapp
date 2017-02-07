@@ -33,12 +33,12 @@ export class WidgetCanvasComponent implements OnInit {
     selectedOutput:WorkflowOutput = null;
 
     widgetBounds = {
-        x: -1,
-        y: -1
+        x: 0,
+        y: 0
     };
     visibleCanvasSize = {
-        width: -1,
-        height: -1
+        width: 0,
+        height: 0
     };
 
     @ViewChild('svgElement') private svgElement:ElementRef;
@@ -65,6 +65,9 @@ export class WidgetCanvasComponent implements OnInit {
     }
 
     updateCanvasBounds() {
+        if (this.workflow.widgets.length == 0)
+            return;
+
         this.widgetBounds.x = this.workflow.widgets[0].x;
         this.widgetBounds.y = this.workflow.widgets[0].y;
 

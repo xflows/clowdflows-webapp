@@ -187,9 +187,7 @@
     <div class="panel-body">
         <ul>
             <li *ngFor="let output of widget.outputs">
-                {{ output.name }} =
-                <template [ngIf]="output.value != null">{{ output.value|slice:0:600 }} <span *ngIf="output.value.length >= 600">...</span></template>
-                <template [ngIf]="output.value == null">N/A</template>
+                {{ output.name }} = {{ output.value }}
             </li>
         </ul>
         <p *ngIf="widget.outputs.length == 0">This widget has no outputs.</p>

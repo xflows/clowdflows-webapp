@@ -10,7 +10,7 @@ import {LoggingComponent} from "./logging/logging.component";
 import {WidgetCanvasComponent} from "./widget-canvas/widget-canvas.component";
 import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
-import {ModalModule, TabsModule} from "ng2-bootstrap/ng2-bootstrap";
+import {ModalModule, TabsModule} from "ng2-bootstrap";
 import {HttpModule} from "@angular/http";
 import {routing} from "../../app.routing";
 import {DND_PROVIDERS, DND_DIRECTIVES} from 'ng2-dnd/';
