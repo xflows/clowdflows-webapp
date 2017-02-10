@@ -9,7 +9,7 @@
         <button id="save-workflow-btn" class="btn btn-default" (click)="showSaveWorkflowModal()">
             <i class="fa fa-floppy-o" title="Save workflow"></i>
         </button>
-        <button id="run-workflow" class="btn btn-default" (click)="runWorkflow()">
+        <button id="run-workflow-btn" class="btn btn-default" (click)="runWorkflow()">
             <i class="fa fa-play" title="Run"></i>
         </button>
     </div>
@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div bsModal #createWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div id="create-workflow-modal" bsModal #createWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -36,13 +36,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" (click)="createWorkflowModal.hide()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="createWorkflow()">Create</button>
+                <button id="create-workflow-confirm-btn" type="button" class="btn btn-primary" (click)="createWorkflow()">Create</button>
             </div>
         </div>
     </div>
 </div>
 
-<div bsModal #openWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div id="open-workflow-modal" bsModal #openWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -70,7 +70,7 @@
     </div>
 </div>
 
-<div bsModal #saveWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div id="#save-workflow-modal" bsModal #saveWorkflowModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -96,14 +96,13 @@
                                   [(ngModel)]="workflow.description"
                                   class="form-control"
                                   placeholder="Describe what this workflow does"
-                                  rows="8">
-                            {{workflow.description}}
-                        </textarea>
+                                  rows="8">{{workflow.description}}</textarea>
                     </div>
                     <div class="form-group form-group-sm">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"
+                                <input id="workflow-is-public"
+                                       type="checkbox"
                                        name="is-public"
                                        [(ngModel)]="workflow.is_public"/> Public workflow
                             </label>
@@ -113,7 +112,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" (click)="saveWorkflowModal.hide()">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveWorkflow()">Apply</button>
+                <button id="apply-workflow-changes-btn" type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveWorkflow()">Apply</button>
             </div>
         </div>
     </div>

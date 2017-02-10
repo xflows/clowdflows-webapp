@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {LoginComponent} from "./login.component";
 import {FormsModule} from "@angular/forms";
 import {Observable} from "rxjs/Rx";
+import {FooterComponent} from "../footer/footer.component";
 
 let TEST_CREDENTIALS = {
     username: 'testuser',
@@ -48,7 +49,8 @@ describe('LoginComponent', () => {
                     FormsModule
                 ],
                 declarations: [
-                    LoginComponent
+                    LoginComponent,
+                    FooterComponent
                 ],
                 providers: [
                     { provide: UserService, useClass: MockUserService },
