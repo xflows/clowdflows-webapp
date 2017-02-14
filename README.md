@@ -29,3 +29,9 @@ Run less in watch mode:
 ```
 npm run-script less
 ```
+
+Run unit tests:
+
+```
+npm test
+```

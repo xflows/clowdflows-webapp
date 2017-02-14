@@ -6,7 +6,7 @@ module.exports = {
     devtool: 'inline-source-map',
 
     resolve: {
-        extensions: ['', '.ts', '.js']
+        extensions: ['', '.js', '.ts']
     },
 
     module: {

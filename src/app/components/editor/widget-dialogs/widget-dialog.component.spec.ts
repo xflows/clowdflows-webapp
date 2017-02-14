@@ -5,14 +5,13 @@ import {WidgetDialogComponent} from "./widget-dialog.component";
 import {By} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {DND_DIRECTIVES} from "ng2-dnd/";
-import {Ng2UploaderModule} from 'ng2-uploader/ng2-uploader'
 import {ClowdFlowsDataService} from "../../../services/clowdflows-data.service";
 import {LoggerService} from "../../../services/logger.service";
+import {Ng2UploaderModule} from "ng2-uploader/ng2-uploader";
 
 let clowdFlowsDataServiceStub = {
 };
 let loggerServiceStub = {
-
 };
 
 describe('WidgetDialogComponent', () => {
