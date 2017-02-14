@@ -48,8 +48,8 @@ export class WidgetCanvasComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.visibleCanvasSize.width = this.svgElement.nativeElement.width.baseVal.value - 10;
-        this.visibleCanvasSize.height = this.svgElement.nativeElement.height.baseVal.value - 10;
+        this.visibleCanvasSize.width = this.svgElement.nativeElement.scrollWidth;
+        this.visibleCanvasSize.height = this.svgElement.nativeElement.scrollHeight;
         this.updateCanvasBounds();
     }
 
@@ -71,14 +71,15 @@ export class WidgetCanvasComponent implements OnInit {
         this.widgetBounds.x = this.workflow.widgets[0].x;
         this.widgetBounds.y = this.workflow.widgets[0].y;
 
-        for (let widget of this.workflow.widgets) {
-            if (widget.x > this.widgetBounds.x) {
-                this.widgetBounds.x = widget.bounds.x2;
+            for (let widget of this.workflow.widgets) {
+                if (widget.x > this.widgetBounds.x) {
+                    this.widgetBounds.x = widget.bounds.x2;
+                }
+                if (widget.y > this.widgetBounds.y) {
+                    this.widgetBounds.y = widget.bounds.y2;
+                }
             }
-            if (widget.y > this.widgetBounds.y) {
-                this.widgetBounds.y = widget.bounds.y2;
-            }
-        }
+
     }
 
     get canvasHeight() {
