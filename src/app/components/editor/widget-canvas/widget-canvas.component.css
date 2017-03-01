@@ -64,6 +64,11 @@
   fill: #ffe45c;
   stroke: #333333;
 }
+#widget-canvas .widget .widget-save-results-icon {
+  opacity: 0.5;
+  width: 13px;
+  height: 17px;
+}
 #widget-canvas .widget image {
   pointer-events: none;
 }

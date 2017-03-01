@@ -190,6 +190,14 @@
                 {{ output.name }} = {{ output.value }}
             </li>
         </ul>
+        <div class="checkbox" *ngIf="widget.outputs.length > 0">
+            <label>
+                <input type="checkbox"
+                       (change)="toggleSaveResults(widget, $event)"
+                       [checked]="widget.save_results"
+                       [name]="save-results"/> Store the outputs of this widget for later inspection.
+            </label>
+        </div>
         <p *ngIf="widget.outputs.length == 0">This widget has no outputs.</p>
     </div>
     <div class="panel-footer">

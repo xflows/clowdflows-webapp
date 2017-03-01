@@ -49,6 +49,11 @@
                    y="7"
                    [attr.x]="ui_constants.signalWidth + (ui_constants.widgetBoxWidth - ui_constants.iconSide)/2"
                    [attr.href]="widget.icon"/>
+            <image class="widget-save-results-icon"
+                   y="1"
+                   *ngIf="widget.save_results"
+                   [attr.x]="ui_constants.signalWidth + ui_constants.widgetBoxWidth - 15"
+                   xlink:href="/public/images/save_results.svg"/>
             <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle"
                   (dblclick)="showRenameDialog(widget)">
                 <tspan>{{widget.name}}</tspan>

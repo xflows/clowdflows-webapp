@@ -27,7 +27,8 @@ export class WidgetDialogComponent {
 
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
-                private loggerService:LoggerService) {}
+                private loggerService:LoggerService) {
+    }
 
     closeDialog() {
         this.widget.showDialog = false;
@@ -66,8 +67,8 @@ export class WidgetDialogComponent {
             'benchmark': this.benchmark
         };
         this.saveWidgetConfigurationRequest.emit({
-           widget: this.widget,
-           configuration: configuration
+            widget: this.widget,
+            configuration: configuration
         });
     }
 
@@ -86,6 +87,11 @@ export class WidgetDialogComponent {
 
     closeResults() {
         this.widget.showResults = false;
+        this.saveWidgetRequest.emit(this.widget);
+    }
+
+    toggleSaveResults(widget:Widget, event:any) {
+        this.widget.save_results = event.currentTarget.checked;
     }
 
     closeHelp() {
@@ -111,7 +117,7 @@ export class WidgetDialogComponent {
         return this.clowdflowsDataService.getFileUploadOption(input);
     }
 
-    handleUpload(data:any): void {
+    handleUpload(data:any):void {
         if (data && data.response) {
             data = JSON.parse(data.response);
             let error = this.loggerService.reportMessage(data);
