@@ -14,9 +14,13 @@
                       [class.recommendation]="widget.recommended_input || widget.recommended_output"
                       (click)="addWidgetToCanvas(widget)"
                       [attr.title]="widget.name">
-                    <i class="fa" [class.fa-long-arrow-right]="widget.recommended_output" [class.hidden]="!widget.recommended_output"></i>
                     <img class="widget-tree-icon" src="{{ iconUrl(widget) }}"/> <span class="widget-name">{{widget.name}}</span>
-                    <i class="fa" [class.fa-long-arrow-right]="widget.recommended_input" [class.hidden]="!widget.recommended_input"></i>
+                    <span class="label label-success" [class.hidden]="!widget.recommended_output">
+                        To output
+                    </span>
+                    <span class="label label-success" [class.hidden]="!widget.recommended_input">
+                        To input
+                    </span>
                 </span>
                 </li>
             </ul>

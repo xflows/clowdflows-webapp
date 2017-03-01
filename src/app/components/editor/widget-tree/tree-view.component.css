@@ -24,10 +24,6 @@ ul > li {
   height: 16px;
   width: auto;
 }
-.recommendation {
-  border: 2px dashed #7ec14e;
-  padding: 2px;
-}
 .recommendation .fa {
-  color: #7ec14e;
+  color: white;
 }

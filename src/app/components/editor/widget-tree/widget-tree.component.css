@@ -12,13 +12,6 @@
 #widgets #widget-tree {
   margin-left: -20px;
 }
-#widgets #legend .recommendation {
-  border: 2px dashed #7ec14e;
-  padding: 2px;
-}
-#widgets #legend .recommendation .fa {
-  color: #7ec14e;
-}
 .import-webservice-dialog {
   position: absolute;
   width: auto;
