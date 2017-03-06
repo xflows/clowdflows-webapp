@@ -47,6 +47,10 @@ export class EditorComponent implements OnInit, OnDestroy {
         } else {
             // Regular widgets
             let activeWorkflow = this.activeWorkflow;
+            let save_results = false;
+            if (abstractWidget.interactive) {
+                save_results = true;
+            }
             let widgetData = {
                 workflow: activeWorkflow.url,
                 x: 50,
@@ -58,7 +62,8 @@ export class EditorComponent implements OnInit, OnDestroy {
                 running: false,
                 interaction_waiting: false,
                 type: 'regular',
-                progress: 0
+                progress: 0,
+                save_results: save_results
             };
 
             // Sync with server

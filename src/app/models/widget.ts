@@ -36,6 +36,7 @@ export class Widget {
         public y:number,
         public name:string,
         public save_results:boolean,
+        public must_save:boolean,
         public finished:boolean,
         public error:boolean,
         public running:boolean,
@@ -81,8 +82,8 @@ export class Widget {
     }
 
     public static createFromJSON(data:any, workflow:Workflow):Widget {
-        return new Widget(data.id, data.url, data.x, data.y, data.name, data.save_results, data.finished, data.error,
-            data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
+        return new Widget(data.id, data.url, data.x, data.y, data.name, data.save_results, data.must_save, data.finished,
+            data.error, data.running, data.interaction_waiting, data.type, data.progress, data.abstract_widget,
             data.description, data.icon, data.inputs, data.outputs, workflow, data.workflow_link,
             data.recommended_inputs, data.recommended_outputs);
     }
