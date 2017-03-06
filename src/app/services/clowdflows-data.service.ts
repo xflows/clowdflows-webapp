@@ -336,9 +336,10 @@ export class ClowdFlowsDataService {
 
     fetchOutputValue(output:WidgetOutput) {
         let options = this.getRequestOptions();
+        let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
         options.body = '';
         return this.http
-            .get(`${output.url}value/`, options)
+            .get(`${output.url}value/?${date}`, options)
             .toPromise()
             .then(response => response.json());
     }

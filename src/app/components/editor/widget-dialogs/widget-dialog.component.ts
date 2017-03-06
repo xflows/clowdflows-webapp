@@ -15,6 +15,7 @@ export class WidgetDialogComponent {
     @Output() continueRunWorkflowRequest = new EventEmitter<String>();
     @Output() saveWidgetRequest = new EventEmitter<Widget>();
     @Output() saveWidgetConfigurationRequest = new EventEmitter<any>();
+    @Output() resetWidgetRequest = new EventEmitter<any>();
     @ViewChild('formContainer') private formContainer:ElementRef;
 
     uploadFile:any;
@@ -100,6 +101,7 @@ export class WidgetDialogComponent {
 
     applyParameters() {
         this.clowdflowsDataService.saveParameters(this.widget);
+        this.resetWidgetRequest.emit(this.widget);
         this.widget.showDialog = false;
     }
 

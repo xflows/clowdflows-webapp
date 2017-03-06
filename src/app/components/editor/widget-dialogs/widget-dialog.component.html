@@ -74,7 +74,7 @@
     <div class="panel-footer">
         <div class="form-group form-group-sm">
             <button (click)="closeDialog()" class="btn btn-default">Close</button>
-            <button (click)="applyParameters()" class="btn btn-primary">Apply</button>
+            <button (click)="applyParameters()" class="btn btn-primary" *ngIf="widget.parameters.length > 0">Apply</button>
         </div>
     </div>
 </div>

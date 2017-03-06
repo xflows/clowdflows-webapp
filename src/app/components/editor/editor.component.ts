@@ -236,8 +236,15 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .resetWidget(widget)
             .then((data) => {
+                this._clearOutputs(widget);
                 this.loggerService.reportMessage(data);
             });
+    }
+
+    _clearOutputs(widget:Widget) {
+        for (let output of widget.outputs) {
+            output.value = undefined;
+        }
     }
 
     runWidget(widget:Widget) {
