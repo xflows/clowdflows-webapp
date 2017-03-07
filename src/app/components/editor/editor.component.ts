@@ -308,39 +308,37 @@ export class EditorComponent implements OnInit, OnDestroy {
         let workflow = event.workflow;
         let canvasTab = event.canvasTab;
 
-        // Check for existing connection and delete it if it exists
-        var deleteExisting = new Promise<any>(function (resolve, reject) {
-            resolve(true); // Immediately resolve if nothing is to delete
-        });
         if (selectedInput.connection != null) {
+            // We are replacing some existing connection
             var connectionToDelete = selectedInput.connection;
             selectedInput.connection = null;
-            deleteExisting = this.deleteConnection(connectionToDelete);
+
+            // Only delete local connection object since the server
+            // deletes existing connections on the input
+            this.deleteConnectionReference(connectionToDelete);
         }
 
         let connectionData = {
             input: selectedInput.url,
             output: selectedOutput.url,
-            workflow: workflow.url,
+            workflow: workflow.url
         };
         var updateInputs = selectedInput.multi_id != 0;
-        deleteExisting.then(() => {
-            this.clowdflowsDataService
-                .createConnection(connectionData)
-                .then((data:any) => {
-                    let error = this.loggerService.reportMessage(data);
-                    if (!error) {
-                        let input_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.input_widget);
-                        let output_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.output_widget);
-                        let connection = new Connection(data.url, output_widget, input_widget, data.output, data.input, workflow);
-                        workflow.connections.push(connection);
-                        selectedInput.connection = connection;
-                        canvasTab.unselectSignals();
-                        if (updateInputs) {
-                            this.updateWidget(input_widget);
-                        }
-                    }
-                });
+        this.clowdflowsDataService
+        .createConnection(connectionData)
+        .then((data:any) => {
+            let error = this.loggerService.reportMessage(data);
+            if (!error) {
+                let input_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.input_widget);
+                let output_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.output_widget);
+                let connection = new Connection(data.url, output_widget, input_widget, data.output, data.input, workflow);
+                workflow.connections.push(connection);
+                selectedInput.connection = connection;
+                canvasTab.unselectSignals();
+                if (updateInputs) {
+                    this.updateWidget(input_widget);
+                }
+            }
         });
     }
 
