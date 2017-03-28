@@ -1,5 +1,5 @@
 <main class="container">
-    <template [ngIf]="workflow">
+    <ng-template [ngIf]="workflow">
         <h1>{{ workflow.name }}
             <small>by {{workflow.user.username}}</small>
         </h1>
@@ -18,7 +18,7 @@
                 </p>
             </div>
         </section>
-    </template>
+    </ng-template>
     <div class="push"></div>
 </main>
 <footer-comp></footer-comp>

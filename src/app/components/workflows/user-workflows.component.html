@@ -11,19 +11,22 @@
 
         </thead>
         <tbody>
-        <template ngFor let-workflow [ngForOf]="workflows">
-        <tr *ngIf="!workflow.is_subprocess">
-            <td class="name">{{workflow.name}}</td>
-            <td ng-if="workflow.public"><a [routerLink]="['/workflow/', workflow.id]">{{base_url}}/workflow/{{workflow.id}}</a> <template ng-if="!workflow.public">This workflow is private</template> </td>
-            <td>TODO</td>
-            <td><a [routerLink]="['/editor/', workflow.id]">Edit</a> |
-                <a href="">Open as new</a> |
-                <a href="">Delete</a> |
-                <a href="" ng-if="!workflow.public">Make public</a> <a href="" ng-if="workflow.public">Make private</a> |
-                <a href="">Export to JSON</a>
-            </td>
-        </tr>
-        </template>
+        <ng-template ngFor let-workflow [ngForOf]="workflows">
+            <tr *ngIf="!workflow.is_subprocess">
+                <td class="name">{{workflow.name}}</td>
+                <td ng-if="workflow.public"><a [routerLink]="['/workflow/', workflow.id]">{{base_url}}/workflow/{{workflow.id}}</a>
+                    <ng-template ng-if="!workflow.public">This workflow is private</ng-template>
+                </td>
+                <td>TODO</td>
+                <td><a [routerLink]="['/editor/', workflow.id]">Edit</a> |
+                    <a href="">Open as new</a> |
+                    <a href="">Delete</a> |
+                    <a href="" ng-if="!workflow.public">Make public</a> <a href="" ng-if="workflow.public">Make
+                        private</a> |
+                    <a href="">Export to JSON</a>
+                </td>
+            </tr>
+        </ng-template>
         </tbody>
 
     </table>

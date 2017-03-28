@@ -53,14 +53,14 @@
             </div>
             <div class="modal-body">
                 <ul>
-                    <template ngFor let-workflow [ngForOf]="userWorkflows">
+                    <ng-template ngFor let-workflow [ngForOf]="userWorkflows">
                         <li *ngIf="!workflow.is_subprocess">
                             <a [routerLink]="['/editor/', workflow.id]"
                                (click)="openWorkflowModal.hide()">
                                 {{workflow.name}}
                             </a>
                         </li>
-                    </template>
+                    </ng-template>
                 </ul>
             </div>
             <div class="modal-footer">

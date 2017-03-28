@@ -1,7 +1,7 @@
 <main class="container">
     <h1>{{ title }}</h1>
 
-    <template ngFor let-workflow [ngForOf]="workflows">
+    <ng-template ngFor let-workflow [ngForOf]="workflows">
         <section class="row" *ngIf="!workflow.is_subprocess && workflow.is_public">
             <div class="col-sm-6">
                 <h2 class="name">{{workflow.name}}
@@ -23,7 +23,7 @@
             <div class="col-sm-6 preview-container" [innerHTML]="getTrustedHTML(workflow.preview)">
             </div>
         </section>
-    </template>
+    </ng-template>
     <div class="push"></div>
 </main>
 <footer-comp></footer-comp>
