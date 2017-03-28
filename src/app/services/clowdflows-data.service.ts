@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers, RequestOptions} from "@angular/http";
+import {Http, Headers, RequestOptions, Response} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
@@ -178,7 +178,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    visualizeWidget(widget:Widget) {
+    visualizeWidget(widget:Widget):Promise<Response> {
         let options = this.getRequestOptions();
         options.body = '';
         return this.http
@@ -188,7 +188,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    interactWidget(widget:Widget) {
+    interactWidget(widget:Widget):Promise<Response> {
         let options = this.getRequestOptions();
         options.body = '';
         return this.http
