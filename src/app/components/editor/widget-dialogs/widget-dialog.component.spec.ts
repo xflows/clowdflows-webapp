@@ -4,7 +4,7 @@ import {Widget} from "../../../models/widget";
 import {WidgetDialogComponent} from "./widget-dialog.component";
 import {By} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
-import {DND_DIRECTIVES} from "ng2-dnd/";
+import {DndModule} from "ng2-dnd";
 import {ClowdFlowsDataService} from "../../../services/clowdflows-data.service";
 import {LoggerService} from "../../../services/logger.service";
 import {Ng2UploaderModule} from "ng2-uploader/ng2-uploader";
@@ -22,8 +22,8 @@ describe('WidgetDialogComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [FormsModule, Ng2UploaderModule],
-            declarations: [WidgetDialogComponent, DND_DIRECTIVES],
+            imports: [FormsModule, Ng2UploaderModule, DndModule.forRoot()],
+            declarations: [WidgetDialogComponent,],
             providers: [
                 {provide: ClowdFlowsDataService, useValue: clowdFlowsDataServiceStub},
                 {provide: LoggerService, useValue: loggerServiceStub}]
