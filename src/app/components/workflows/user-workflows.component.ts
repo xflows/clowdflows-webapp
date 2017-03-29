@@ -24,7 +24,6 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
     }
 
     ngOnInit():void {
-
         this.clowdflowsDataService.getUserWorkflows()
             .then(workflows => {
                 this.workflows = <Workflow[]> workflows;

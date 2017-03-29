@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions, Response} from "@angular/http";
-import 'rxjs/add/operator/toPromise';
+//import 'rxjs/add/operator/toPromise';
+import {toPromise} from "rxjs/operator/toPromise";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
 import {Connection} from "../models/connection";
@@ -80,7 +81,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getWorkflow(idOrUrl:any):Promise<any> {
+    getWorkflow(idOrUrl:any, includePreview?:boolean):Promise<any> {
         let options = this.getRequestOptions();
         options.body = '';
         let url = idOrUrl;
@@ -88,28 +89,40 @@ export class ClowdFlowsDataService {
             let id = idOrUrl;
             url = `${API_ENDPOINT}${this.workflowsUrl}${id}/`;
         }
+        let preview = 0;
+        if (includePreview) {
+            preview = 1;
+        }
         return this.http
-            .get(url, options)
+            .get(`${url}?preview=${preview}`, options)
             .toPromise()
             .then(response => response.json())
             .catch(error => this.handleError(error));
     }
 
-    getUserWorkflows():Promise<any> {
+    getUserWorkflows(includePreview?:boolean):Promise<any> {
         let options = this.getRequestOptions();
         options.body = '';
+        let preview = 0;
+        if (includePreview) {
+            preview = 1;
+        }
         return this.http
-            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1`, options)
+            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1&preview=${preview}`, options)
             .toPromise()
             .then(response => response.json())
             .catch(error => this.handleError(error));
     }
 
-    getPublicWorkflows():Promise<any> {
+    getPublicWorkflows(includePreview?:boolean):Promise<any> {
         let options = this.getRequestOptions();
         options.body = '';
+        let preview = 0;
+        if (includePreview) {
+            preview = 1;
+        }
         return this.http
-            .get(`${API_ENDPOINT}${this.workflowsUrl}`, options)
+            .get(`${API_ENDPOINT}${this.workflowsUrl}?preview=${preview}`, options)
             .toPromise()
             .then(response => response.json())
             .catch(error => this.handleError(error));

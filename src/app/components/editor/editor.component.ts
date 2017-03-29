@@ -232,7 +232,10 @@ export class EditorComponent implements OnInit, OnDestroy {
             if (widget.workflow_link in this.loadedSubprocesses) {
                 let workflow = this.loadedSubprocesses[widget.workflow_link];
                 let idx = this.workflows.indexOf(workflow);
+                console.log(idx);
+                console.log(this.workflows.length);
                 this.workflows.splice(idx, 1);
+                console.log(this.workflows);
             }
         }
     }
@@ -463,8 +466,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     visualizeWidget(widget:Widget) {
         this.clowdflowsDataService
             .visualizeWidget(widget)
-            .then(response => {
-                //noinspection TypeScriptValidateTypes
+            .then((response) => {
                 widget.visualizationHtml = this.domSanitizer.bypassSecurityTrustHtml(response.text());
                 widget.showVisualizationDialog = true;
             });
@@ -473,8 +475,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     interactWidget(widget:Widget) {
         this.clowdflowsDataService
             .interactWidget(widget)
-            .then(response => {
-                //noinspection TypeScriptValidateTypes
+            .then((response) => {
                 widget.interactionHtml = this.domSanitizer.bypassSecurityTrustHtml(response.text());
                 widget.showInteractionDialog = true;
             });

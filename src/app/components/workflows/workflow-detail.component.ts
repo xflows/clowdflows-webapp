@@ -29,7 +29,8 @@ export class WorkflowDetailComponent extends WorkflowsComponent {
 
             // Fetch the current workflow
             let id = +params['id'];
-            this.clowdflowsDataService.getWorkflow(id)
+            let includePreview = true;
+            this.clowdflowsDataService.getWorkflow(id, includePreview)
                 .then(workflow => {
                     this.workflow = workflow;
                 });
