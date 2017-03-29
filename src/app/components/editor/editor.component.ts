@@ -13,6 +13,7 @@ import {Input} from "../../models/input";
 import {Category} from "../../models/category";
 import {specialCategoryName, specialWidgetNames} from '../../services/special-widgets';
 import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
+import {RecommenderService} from "../../services/recommender.service";
 
 @Component({
     selector: 'editor',
@@ -36,7 +37,8 @@ export class EditorComponent implements OnInit, OnDestroy {
                 private clowdflowsDataService:ClowdFlowsDataService,
                 private route:ActivatedRoute,
                 private router:Router,
-                private loggerService:LoggerService) {
+                private loggerService:LoggerService,
+                private recommenderService:RecommenderService) {
     }
 
     addWidget(abstractWidget:AbstractWidget) {

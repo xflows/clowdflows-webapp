@@ -17,6 +17,7 @@ import {DndModule} from 'ng2-dnd';
 import {DraggableWindow} from "../../directives/draggable-window.directive";
 import {FocusOnVisible} from "../../directives/focus.directive";
 import {Ng2UploaderModule} from 'ng2-uploader/ng2-uploader'
+import {RecommenderService} from "../../services/recommender.service";
 
 @NgModule({
     imports: [
@@ -45,6 +46,7 @@ import {Ng2UploaderModule} from 'ng2-uploader/ng2-uploader'
     ],
     providers: [
         ContextMenuService,
+        RecommenderService
     ],
     exports: [
         EditorComponent

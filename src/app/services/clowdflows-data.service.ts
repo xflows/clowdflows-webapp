@@ -18,6 +18,7 @@ export class ClowdFlowsDataService {
     widgetsUrl = 'widgets/';
     connectionsUrl = 'connections/';
     importWebserviceUrl = this.widgetLibraryUrl + 'import-ws/';
+    recommenderModelUrl = 'recommender-model/';
 
     constructor(private http:Http, private loggerService:LoggerService) {
     }
@@ -382,5 +383,14 @@ export class ClowdFlowsDataService {
         socket.onmessage = function (e) {
             onUpdateCallback(JSON.parse(e.data));
         }
+    }
+
+    getRecommenderModel() {
+        let options = this.getRequestOptions();
+        options.body = '';
+        return this.http
+            .get(`${API_ENDPOINT}${this.recommenderModelUrl}`, options)
+            .toPromise()
+            .then(response => response.json());
     }
 }
