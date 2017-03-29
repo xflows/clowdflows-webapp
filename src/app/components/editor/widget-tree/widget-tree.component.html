@@ -6,7 +6,7 @@
         </div>
     </form>
     <div id="widget-tree">
-        <tree-view [categories]="widgetTree" (addWidgetRequest)="addWidgetToCanvas($event)"></tree-view>
+        <tree-view [categories]="widgetLibraryService.widgetTree" (addWidgetRequest)="addWidgetToCanvas($event)"></tree-view>
     </div>
     <a class="btn btn-info btn-sm" (click)="openImportWebserviceDialog()">Import webservice</a>
 </div>

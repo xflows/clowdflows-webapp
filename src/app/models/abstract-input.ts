@@ -1,5 +1,6 @@
 import {AbstractOption} from "./abstract-option";
 export class AbstractInput {
+    id:number;
     name:string;
     short_name:string;
     description:string;

@@ -1,15 +1,19 @@
 import {Injectable} from '@angular/core';
+import * as Collections from 'typescript-collections';
 import {ClowdFlowsDataService} from "./clowdflows-data.service";
-import {AbstractInput} from "../models/abstract-input";
-import {AbstractOutput} from "../models/abstract-output";
+import {Widget} from "../models/widget";
+import {AbstractWidget} from "../models/abstract-widget";
+import {WidgetLibraryService} from "./widget-library.service";
+
 
 @Injectable()
 export class RecommenderService {
 
     // A mapping between abstract input ids and abstract output ids
-    private recommenderModel:any = {};
+    private recommenderModel: any = {};
 
-    constructor(public clowdflowsDataService:ClowdFlowsDataService) {
+    constructor(public clowdflowsDataService: ClowdFlowsDataService,
+                public widgetLibraryService:WidgetLibraryService) {
         this.init();
     }
 
@@ -22,9 +26,9 @@ export class RecommenderService {
     }
 
     // Recommend output ids for the given input id
-    recommendOutputs(abstract_input_id:number):number[] {
+    recommendOutputs(abstract_input_id: number): number[] {
         let id = abstract_input_id.toString();
-        let recommendation:number[];
+        let recommendation: number[];
         if (this.recommenderModel && 'recomm_for_abstract_input_id' in this.recommenderModel) {
             recommendation = this.recommenderModel['recomm_for_abstract_input_id'][id];
         }
@@ -35,9 +39,9 @@ export class RecommenderService {
     }
 
     // Recommend input ids for the given output id
-    recommendInputs(abstract_output_id:number):number[] {
+    recommendInputs(abstract_output_id: number): number[] {
         let id = abstract_output_id.toString();
-        let recommendation:number[];
+        let recommendation: number[];
         if (this.recommenderModel && 'recomm_for_abstract_output_id' in this.recommenderModel) {
             recommendation = this.recommenderModel['recomm_for_abstract_output_id'][id];
         }
@@ -45,5 +49,44 @@ export class RecommenderService {
             recommendation = [];
         }
         return recommendation;
+    }
+
+    // Get a recommendation object, containing recommended abstract input ids and output ids
+    getRecommendation(widget: Widget): WidgetRecommendation {
+        let abstractOutputIds = new Collections.Set<number>();
+        let abstractInputIds = new Collections.Set<number>();
+
+        if (widget != null) {
+            for (let input_obj of widget.inputs) {
+                for (let abstract_output_id of this.recommendOutputs(input_obj.abstract_input_id)) {
+                    abstractOutputIds.add(abstract_output_id);
+                }
+            }
+            for (let output_obj of widget.outputs) {
+                for (let abstract_input_id of this.recommendInputs(output_obj.abstract_output_id)) {
+                    abstractInputIds.add(abstract_input_id);
+                }
+            }
+        }
+        return new WidgetRecommendation(abstractOutputIds, abstractInputIds);
+    }
+}
+
+export class WidgetRecommendation {
+    constructor(public recommendedAbstractOutputIds: Collections.Set<number>,
+                public recommendedAbstractInputIds: Collections.Set<number>) {
+    }
+
+    isRecommendedInputWidget(candidate:AbstractWidget) {
+        return false;
+    }
+
+    isRecommendedOutputWidget(candidate:AbstractWidget) {
+        return false;
+    }
+
+    empty() {
+        return this.recommendedAbstractInputIds.size() == 0 &&
+            this.recommendedAbstractOutputIds.size() == 0;
     }
 }

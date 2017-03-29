@@ -10,10 +10,10 @@ import {Output as WorkflowOutput, Output} from "../../models/output";
 import {Workflow} from "../../models/workflow";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Input} from "../../models/input";
-import {Category} from "../../models/category";
 import {specialCategoryName, specialWidgetNames} from '../../services/special-widgets';
 import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {RecommenderService} from "../../services/recommender.service";
+import {WidgetLibraryService} from "../../services/widget-library.service";
 
 @Component({
     selector: 'editor',
@@ -23,7 +23,6 @@ import {RecommenderService} from "../../services/recommender.service";
 export class EditorComponent implements OnInit, OnDestroy {
     @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent;
     @ViewChild(WidgetTreeComponent) widgetTreeComponent: WidgetTreeComponent;
-    widgetTree:Category[];
     workflow:any = {};
     workflows:Workflow[] = [];
     userWorkflows:Workflow[] = [];
@@ -38,6 +37,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                 private route:ActivatedRoute,
                 private router:Router,
                 private loggerService:LoggerService,
+                private widgetLibraryService:WidgetLibraryService,
                 private recommenderService:RecommenderService) {
     }
 
@@ -485,12 +485,8 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     updateRecommendation(recommendWidget:Widget) {
         this.recommendWidget = recommendWidget;
-        this.widgetTreeComponent.updateRecommendation(recommendWidget);
-    }
-
-    private parseWorkflow(data:any):Workflow {
-        return new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
-            data.is_public, data.user, data.description, data.widget, data.template_parent);
+        let widgetRecommendation = this.recommenderService.getRecommendation(recommendWidget);
+        this.widgetTreeComponent.updateRecommendation(widgetRecommendation);
     }
 
     ngOnInit() {

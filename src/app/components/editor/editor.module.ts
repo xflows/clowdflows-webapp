@@ -18,6 +18,7 @@ import {DraggableWindow} from "../../directives/draggable-window.directive";
 import {FocusOnVisible} from "../../directives/focus.directive";
 import {Ng2UploaderModule} from 'ng2-uploader/ng2-uploader'
 import {RecommenderService} from "../../services/recommender.service";
+import {WidgetLibraryService} from "../../services/widget-library.service";
 
 @NgModule({
     imports: [
@@ -45,6 +46,7 @@ import {RecommenderService} from "../../services/recommender.service";
         LoggingComponent,
     ],
     providers: [
+        WidgetLibraryService,
         ContextMenuService,
         RecommenderService
     ],

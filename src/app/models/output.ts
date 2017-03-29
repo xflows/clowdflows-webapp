@@ -15,6 +15,7 @@ export class Output {
         public description:string,
         public variable:string,
         public order:number,
+        public abstract_output_id:number,
         public inner_output:string,
         public outer_output:string,
         public widget:Widget

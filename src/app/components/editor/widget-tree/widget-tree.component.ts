@@ -3,23 +3,26 @@ import {ClowdFlowsDataService} from '../../../services/clowdflows-data.service';
 import {Category} from "../../../models/category";
 import {AbstractWidget} from "../../../models/abstract-widget";
 import {LoggerService} from "../../../services/logger.service";
-import {Widget} from "../../../models/widget";
-import {specialWidgetNames, specialCategoryName} from "../../../services/special-widgets";
+import {WidgetRecommendation} from "../../../services/recommender.service";
+import {WidgetLibraryService} from "../../../services/widget-library.service";
 
 @Component({
     selector: 'widget-tree',
     template: require('./widget-tree.component.html'),
     styles: [require('./widget-tree.component.css'),]
 })
-export class WidgetTreeComponent implements OnInit {
+export class WidgetTreeComponent {
 
-    @Input() widgetTree:Category[];
+    widgetTree:Category[];
     filterString:string = '';
     showImportWebserviceDialog = false;
     @Output() addWidgetRequest = new EventEmitter<AbstractWidget>();
+    @Output() importWebServiceRequest = new EventEmitter<string>();
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
+                private widgetLibraryService:WidgetLibraryService,
                 private loggerService:LoggerService) {
+        this.widgetTree = widgetLibraryService.widgetTree;
     }
 
     filterTree() {
@@ -90,17 +93,17 @@ export class WidgetTreeComponent implements OnInit {
         this.showImportWebserviceDialog = false;
     }
 
-    updateRecommendation(recommendWidget:Widget) {
+    updateRecommendation(widgetRecommendation:WidgetRecommendation) {
         if (this.widgetTree == null) {
             return;
         }
         this.resetRecommendations();
 
-        if (recommendWidget == null) {
+        if (widgetRecommendation == null) {
             return;
         }
         for (let category of this.widgetTree) {
-            WidgetTreeComponent.markRecommendation(category, recommendWidget);
+            WidgetTreeComponent.markRecommendation(category, widgetRecommendation);
         }
     }
 
@@ -111,38 +114,34 @@ export class WidgetTreeComponent implements OnInit {
         }
     }
 
-    static markRecommendation(category:Category, recommendWidget:Widget) {
+    static markRecommendation(category:Category, widgetRecommendation:WidgetRecommendation) {
         let hide = true;
-        for (let widget of category.widgets) {
-            if (recommendWidget == null) {
-                widget.recommended_input = false;
-                widget.recommended_output = false;
+        for (let abstractWidget of category.widgets) {
+            if (widgetRecommendation == null || widgetRecommendation.empty()) {
+                abstractWidget.recommended_input = false;
+                abstractWidget.recommended_output = false;
                 continue;
             }
 
-            for (let widget_name of recommendWidget.recommended_inputs) {
-                if (widget.name == widget_name) {
-                    hide = false;
-                    widget.hidden = false;
-                    widget.recommended_input = true;
-                } else {
-                    widget.recommended_input = false;
-                }
+            if (widgetRecommendation.isRecommendedInputWidget(abstractWidget)) {
+                hide = false;
+                abstractWidget.hidden = false;
+                abstractWidget.recommended_input = true;
+            } else {
+                abstractWidget.recommended_input = false;
             }
 
-            for (let widget_name of recommendWidget.recommended_outputs) {
-                if (widget.name == widget_name) {
-                    hide = false;
-                    widget.hidden = false;
-                    widget.recommended_output = true;
-                } else {
-                    widget.recommended_output = false;
-                }
+            if (widgetRecommendation.isRecommendedOutputWidget(abstractWidget)) {
+                hide = false;
+                abstractWidget.hidden = false;
+                abstractWidget.recommended_output = true;
+            } else {
+                abstractWidget.recommended_output = false;
             }
         }
 
         for (let childCategory of category.children) {
-            let childrenHide = WidgetTreeComponent.markRecommendation(childCategory, recommendWidget);
+            let childrenHide = WidgetTreeComponent.markRecommendation(childCategory, widgetRecommendation);
 
             // If any of the children match, show the parent as well
             if (!childrenHide) {
@@ -158,67 +157,6 @@ export class WidgetTreeComponent implements OnInit {
         return hide;
     }
 
-    getWidgetLibrary() {
-        this.clowdflowsDataService.getWidgetLibrary()
-            .then(data => {
-                let library = this.parseWidgetLibrary(data);
-                library = this.addSpecialWidgets(library);
-                this.widgetTree = library
-            });
-    }
-
-    private parseWidgetLibrary(data:Category[]):Category[] {
-        let widgetTree:Category[] = [];
-        for (let cat of <Category[]> data) {
-            widgetTree.push(new Category(cat.name, cat.user, cat.order, cat.children, cat.widgets));
-        }
-        return widgetTree;
-    }
-
-    private addSpecialWidgets(library:Category[]):Category[] {
-        let specialWidgets:AbstractWidget[] = [];
-        specialWidgets.push(<AbstractWidget> {
-            name: specialWidgetNames.subprocessWidget,
-            static_image: "/public/images/gears.png",
-            special: true,
-            hidden: false
-        });
-        specialWidgets.push(<AbstractWidget> {
-            name: specialWidgetNames.inputWidget,
-            static_image: "/public/images/forward-arrow.png",
-            special: true,
-            hidden: false
-        });
-        specialWidgets.push(<AbstractWidget> {
-            name: specialWidgetNames.outputWidget,
-            static_image: "/public/images/forward-arrow.png",
-            special: true,
-            hidden: false
-        });
-        specialWidgets.push(<AbstractWidget> {
-            name: specialWidgetNames.forLoopWidgets,
-            static_image: "/public/images/loop.png",
-            special: true,
-            hidden: false
-        });
-        specialWidgets.push(<AbstractWidget> {
-            name: specialWidgetNames.xValidationWidgets,
-            static_image: "/public/images/loop.png",
-            special: true,
-            hidden: false
-        });
-        let subprocessCategory = new Category(
-            specialCategoryName,
-            null,
-            library[library.length - 1].order + 1,
-            [],
-            specialWidgets
-        );
-        subprocessCategory.collapsed = false;
-        library.push(subprocessCategory);
-        return library;
-    }
-
     importWebservice(wsdl:string) {
         this.closeImportWebserviceDialog();
         this.clowdflowsDataService.importWebservice(wsdl)
@@ -226,13 +164,9 @@ export class WidgetTreeComponent implements OnInit {
                 let error = this.loggerService.reportMessage(data);
                 if (!error) {
                     // Reload library
-                    this.getWidgetLibrary();
+                    this.widgetLibraryService.reload();
                     this.loggerService.success(`Successfully imported webservice from: ${wsdl}`);
                 }
             });
-    }
-
-    ngOnInit() {
-        this.getWidgetLibrary();
     }
 }

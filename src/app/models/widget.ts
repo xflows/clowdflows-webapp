@@ -59,8 +59,8 @@ export class Widget {
         for (let input of inputs) {
             let input_obj:Input = new Input(input.id, input.url, input.deserialized_value, input.name, input.short_name,
                                             input.description, input.variable, input.required, input.parameter,
-                                            input.multi_id, input.parameter_type, input.order, input.inner_output,
-                                            input.outer_output, input.options, this);
+                                            input.multi_id, input.parameter_type, input.order, input.abstract_input_id,
+                                            input.inner_output, input.outer_output, input.options, this);
             if (input.parameter) {
                 this.parameters.push(input_obj);
             } else {
@@ -70,7 +70,7 @@ export class Widget {
         this.outputs = new Array<Output>();
         for (let output of outputs) {
             this.outputs.push(new Output(output.id, output.url, output.name, output.short_name,
-                                         output.description, output.variable, output.order,
+                                         output.description, output.variable, output.order, output.abstract_output_id,
                                          output.inner_output, output.outer_output, this));
 
             if (output.variable == 'clowdflows_elapsed') {

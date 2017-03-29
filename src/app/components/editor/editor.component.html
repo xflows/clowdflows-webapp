@@ -4,8 +4,7 @@
          (createWorkflowRequest)="createWorkflow()"
          (saveWorkflowRequest)="saveWorkflow($event)">
 </toolbar>
-<widget-tree [widgetTree]="widgetTree"
-             (addWidgetRequest)="addWidget($event)">
+<widget-tree (addWidgetRequest)="addWidget($event)">
 </widget-tree>
 <tabset id="editor-tabs">
     <tab *ngFor="let workflow of workflows"
