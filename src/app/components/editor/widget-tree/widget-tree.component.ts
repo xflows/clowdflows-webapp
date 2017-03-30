@@ -17,7 +17,6 @@ export class WidgetTreeComponent {
     filterString:string = '';
     showImportWebserviceDialog = false;
     @Output() addWidgetRequest = new EventEmitter<AbstractWidget>();
-    @Output() importWebServiceRequest = new EventEmitter<string>();
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
                 private widgetLibraryService:WidgetLibraryService,

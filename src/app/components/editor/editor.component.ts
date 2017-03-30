@@ -10,7 +10,7 @@ import {Output as WorkflowOutput, Output} from "../../models/output";
 import {Workflow} from "../../models/workflow";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Input} from "../../models/input";
-import {specialCategoryName, specialWidgetNames} from '../../services/special-widgets';
+import {specialWidgetNames} from '../../services/special-widgets';
 import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
@@ -194,8 +194,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     saveWidgetConfiguration(event:any) {
-        var widget = event.widget;
-        var configuration = event.configuration;
+        let widget = event.widget;
+        let configuration = event.configuration;
         this.clowdflowsDataService.saveWidgetConfiguration(widget, configuration)
             .then((response:any) => {
                 this.updateWidget(widget)
@@ -272,7 +272,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             .then((data) => {
                 let newWidget:Widget = Widget.createFromJSON(data, workflow);
                 for (let conn of this.workflow.connections.filter((c:Connection) => c.input_widget.url == newWidget.url)) {
-                    var input = newWidget.inputs.find((i:Input) => conn.input.url == i.url);
+                    let input = newWidget.inputs.find((i:Input) => conn.input.url == i.url);
                     if (!input) {
                         this.deleteConnectionReference(conn);
                     } else {
@@ -280,7 +280,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                     }
                 }
                 for (let conn of this.workflow.connections.filter((c:Connection) => c.output_widget.url == newWidget.url)) {
-                    var output = newWidget.outputs.find((o:Output) => conn.output.url == o.url)
+                    let output = newWidget.outputs.find((o:Output) => conn.output.url == o.url);
                     if (!output) {
                         this.deleteConnectionReference(conn);
                     } else {
@@ -308,14 +308,14 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     addConnection(event:any) {
-        var selectedInput = event.selectedInput;
-        var selectedOutput = event.selectedOutput;
+        let selectedInput = event.selectedInput;
+        let selectedOutput = event.selectedOutput;
         let workflow = event.workflow;
         let canvasTab = event.canvasTab;
 
         if (selectedInput.connection != null) {
             // We are replacing some existing connection
-            var connectionToDelete = selectedInput.connection;
+            let connectionToDelete = selectedInput.connection;
             selectedInput.connection = null;
 
             // Only delete local connection object since the server
@@ -328,7 +328,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             output: selectedOutput.url,
             workflow: workflow.url
         };
-        var updateInputs = selectedInput.multi_id != 0;
+        let updateInputs = selectedInput.multi_id != 0;
         this.clowdflowsDataService
         .createConnection(connectionData)
         .then((data:any) => {
@@ -349,7 +349,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     deleteConnection(connection:Connection, widgetDelete = false) {
         let workflow = connection.workflow;
-        var updateInputs = connection.input.multi_id != 0 && !widgetDelete;
+        let updateInputs = connection.input.multi_id != 0 && !widgetDelete;
         return this.clowdflowsDataService
             .deleteConnection(connection)
             .then((data) => {
