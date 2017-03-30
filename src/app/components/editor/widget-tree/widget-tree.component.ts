@@ -13,7 +13,7 @@ import {WidgetLibraryService} from "../../../services/widget-library.service";
 })
 export class WidgetTreeComponent {
 
-    widgetTree:Category[];
+    //widgetTree:Category[];
     filterString:string = '';
     showImportWebserviceDialog = false;
     @Output() addWidgetRequest = new EventEmitter<AbstractWidget>();
@@ -22,7 +22,7 @@ export class WidgetTreeComponent {
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
                 private widgetLibraryService:WidgetLibraryService,
                 private loggerService:LoggerService) {
-        this.widgetTree = widgetLibraryService.widgetTree;
+        //this.widgetLibraryService.widgetTree = widgetLibraryService.widgetTree;
     }
 
     filterTree() {
@@ -58,7 +58,7 @@ export class WidgetTreeComponent {
         if (this.filterString.trim() == "") {
             this.collapseAll();
         } else {
-            for (let category of this.widgetTree) {
+            for (let category of this.widgetLibraryService.widgetTree) {
                 applyFilter(category, this.filterString);
             }
         }
@@ -76,7 +76,7 @@ export class WidgetTreeComponent {
             }
         }
 
-        for (let category of this.widgetTree) {
+        for (let category of this.widgetLibraryService.widgetTree) {
             collapse(category);
         }
     }
@@ -94,7 +94,7 @@ export class WidgetTreeComponent {
     }
 
     updateRecommendation(widgetRecommendation:WidgetRecommendation) {
-        if (this.widgetTree == null) {
+        if (this.widgetLibraryService.widgetTree == null) {
             return;
         }
         this.resetRecommendations();
@@ -102,14 +102,14 @@ export class WidgetTreeComponent {
         if (widgetRecommendation == null) {
             return;
         }
-        for (let category of this.widgetTree) {
+        for (let category of this.widgetLibraryService.widgetTree) {
             WidgetTreeComponent.markRecommendation(category, widgetRecommendation);
         }
     }
 
     resetRecommendations() {
         this.filterTree();  // Filter to the current filterString
-        for (let category of this.widgetTree) { // No recommendations in the tree
+        for (let category of this.widgetLibraryService.widgetTree) { // No recommendations in the tree
             WidgetTreeComponent.markRecommendation(category, null);
         }
     }
@@ -122,6 +122,7 @@ export class WidgetTreeComponent {
                 abstractWidget.recommended_output = false;
                 continue;
             }
+
 
             if (widgetRecommendation.isRecommendedInputWidget(abstractWidget)) {
                 hide = false;

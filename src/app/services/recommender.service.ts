@@ -13,7 +13,7 @@ export class RecommenderService {
     private recommenderModel: any = {};
 
     constructor(public clowdflowsDataService: ClowdFlowsDataService,
-                public widgetLibraryService:WidgetLibraryService) {
+                public widgetLibraryService: WidgetLibraryService) {
         this.init();
     }
 
@@ -22,7 +22,7 @@ export class RecommenderService {
             .getRecommenderModel()
             .then((recommenderModel) => {
                 this.recommenderModel = recommenderModel;
-            })
+            });
     }
 
     // Recommend output ids for the given input id
@@ -58,31 +58,56 @@ export class RecommenderService {
 
         if (widget != null) {
             for (let input_obj of widget.inputs) {
+                if (!input_obj.abstract_input_id) {
+                    continue;
+                }
                 for (let abstract_output_id of this.recommendOutputs(input_obj.abstract_input_id)) {
                     abstractOutputIds.add(abstract_output_id);
                 }
             }
             for (let output_obj of widget.outputs) {
+                if (!output_obj.abstract_output_id) {
+                    continue;
+                }
                 for (let abstract_input_id of this.recommendInputs(output_obj.abstract_output_id)) {
                     abstractInputIds.add(abstract_input_id);
                 }
             }
         }
-        return new WidgetRecommendation(abstractOutputIds, abstractInputIds);
+        return new WidgetRecommendation(this, abstractOutputIds, abstractInputIds);
     }
 }
 
 export class WidgetRecommendation {
-    constructor(public recommendedAbstractOutputIds: Collections.Set<number>,
+    constructor(public recommenderService: RecommenderService,
+                public recommendedAbstractOutputIds: Collections.Set<number>,
                 public recommendedAbstractInputIds: Collections.Set<number>) {
     }
 
-    isRecommendedInputWidget(candidate:AbstractWidget) {
-        return false;
+    isRecommendedInputWidget(candidate: AbstractWidget) {
+        let isRecommended = false;
+        if (candidate.outputs) {
+            for (let output of candidate.outputs) {
+                if (this.recommendedAbstractOutputIds.contains(output.id)) {
+                    isRecommended = true;
+                    break;
+                }
+            }
+        }
+        return isRecommended;
     }
 
-    isRecommendedOutputWidget(candidate:AbstractWidget) {
-        return false;
+    isRecommendedOutputWidget(candidate: AbstractWidget) {
+        let isRecommended = false;
+        if (candidate.inputs) {
+            for (let input of candidate.inputs) {
+                if (this.recommendedAbstractInputIds.contains(input.id)) {
+                    isRecommended = true;
+                    break;
+                }
+            }
+        }
+        return isRecommended;
     }
 
     empty() {
