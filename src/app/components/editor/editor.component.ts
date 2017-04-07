@@ -257,9 +257,9 @@ export class EditorComponent implements OnInit, OnDestroy {
         }
     }
 
-    runWidget(widget:Widget) {
+    runWidget(widget:Widget, interact:boolean = false) {
         this.clowdflowsDataService
-            .runWidget(widget)
+            .runWidget(widget, interact)
             .then((data) => {
                 this.loggerService.reportMessage(data);
             });

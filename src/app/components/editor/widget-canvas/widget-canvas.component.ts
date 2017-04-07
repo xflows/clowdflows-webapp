@@ -23,6 +23,7 @@ export class WidgetCanvasComponent implements OnInit {
     @Output() resetWorkflowRequest = new EventEmitter();
     @Output() copyWidgetRequest = new EventEmitter<Widget>();
     @Output() runWidgetRequest = new EventEmitter<Widget>();
+    @Output() runAndInteractWidgetRequest = new EventEmitter<Widget>();
     @Output() continueRunWorkflowRequest = new EventEmitter<String>();
     @Output() fetchOutputResultsRequest = new EventEmitter<WorkflowOutput>();
     @Output() openSubprocessRequest = new EventEmitter<Widget>();
@@ -233,7 +234,7 @@ export class WidgetCanvasComponent implements OnInit {
         this.runWidgetRequest.emit(widget);
     }
     runWidgetWithInteraction(widget:Widget) {
-        this.runWidgetRequest.emit(widget); //run_interaction: true
+        this.runAndInteractWidgetRequest.emit(widget);
     }
 
     continueRunWorkflow(event:any) {

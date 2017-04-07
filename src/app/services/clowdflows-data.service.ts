@@ -268,10 +268,11 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    runWidget(widget:Widget) {
+    runWidget(widget:Widget, interact:boolean) {
         let options = this.getRequestOptions();
+        let interactFlag = interact ? 1 : 0;
         return this.http
-            .post(`${widget.url}run/`, '', options)
+            .post(`${widget.url}run/?interact=${interactFlag}`, '', options)
             .toPromise()
             .then(response => response.json())
             .catch(error => this.handleError(error));
