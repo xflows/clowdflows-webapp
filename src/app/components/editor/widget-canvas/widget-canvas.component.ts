@@ -232,6 +232,9 @@ export class WidgetCanvasComponent implements OnInit {
     runWidget(widget:Widget) {
         this.runWidgetRequest.emit(widget);
     }
+    runWidgetWithInteraction(widget:Widget) {
+        this.runWidgetRequest.emit(widget); //run_interaction: true
+    }
 
     continueRunWorkflow(event:any) {
         this.continueRunWorkflowRequest.emit(event);
@@ -260,8 +263,12 @@ export class WidgetCanvasComponent implements OnInit {
         this.contextMenuService.show.next({
             actions: [
                 {
-                    html: () => `<span class="glyphicon glyphicon-play"></span> Run only this`,
+                    html: () => `<span class="glyphicon glyphicon-play"></span> Run`,
                     click: (widget:Widget) => this.runWidget(widget)
+                },
+                {
+                    html: () => `<span class="glyphicon glyphicon-alert"></span> Run & interact`,
+                    click: (widget:Widget) => this.runWidgetWithInteraction(widget)
                 },
                 {
                     html: () => `<span class="glyphicon glyphicon-pencil"></span> Properties`,
