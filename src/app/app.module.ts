@@ -17,7 +17,8 @@ import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.co
 import {FooterComponent} from "./components/footer/footer.component";
 import {LoadingService} from "./services/loading.service";
 import {HttpLoading} from "./services/http-loading.service";
-import {ImportWorkflowComponent} from "./components/import/import-workflow.component";
+import {ImportWorkflowComponent} from "./components/import-export/import-workflow.component";
+import {ExportWorkflowComponent} from "./components/import-export/export-workflow.component";
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import {ImportWorkflowComponent} from "./components/import/import-workflow.compo
         WorkflowsComponent,
         UserWorkflowsComponent,
         WorkflowDetailComponent,
-        ImportWorkflowComponent
+        ImportWorkflowComponent,
+        ExportWorkflowComponent
     ],
     providers: [
         ClowdFlowsDataService,

@@ -23,7 +23,7 @@
                     <a href="">Delete</a> |
                     <a href="" ng-if="!workflow.public">Make public</a> <a href="" ng-if="workflow.public">Make
                         private</a> |
-                    <a href="">Export to JSON</a>
+                    <a [routerLink]="['/export-workflow/', workflow.id]">Export to JSON</a>
                 </td>
             </tr>
         </ng-template>

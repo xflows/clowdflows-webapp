@@ -6,7 +6,8 @@ import {HomeComponent} from "./components/home/home.component";
 import {UserWorkflowsComponent} from "./components/workflows/user-workflows.component";
 import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.component";
 import {WorkflowsComponent} from "./components/workflows/workflows.component";
-import {ImportWorkflowComponent} from "./components/import/import-workflow.component";
+import {ImportWorkflowComponent} from "./components/import-export/import-workflow.component";
+import {ExportWorkflowComponent} from "./components/import-export/export-workflow.component";
 
 export const routes: Routes = [
     {
@@ -35,6 +36,11 @@ export const routes: Routes = [
     {
         path: 'workflow/:id',
         component: WorkflowDetailComponent,
+        canActivate: [LoggedInGuard]
+    },
+    {
+        path: 'export-workflow/:id',
+        component: ExportWorkflowComponent,
         canActivate: [LoggedInGuard]
     },
     {

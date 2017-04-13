@@ -390,6 +390,16 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    exportWorkflow(workflowId:number) {
+        let options = this.getRequestOptions();
+        let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
+        options.body = '';
+        return this.http
+            .get(`${API_ENDPOINT}${this.workflowsUrl}${workflowId}/export/?${date}`, options)
+            .toPromise()
+            .then(response => response.json());
+    }
+
     workflowUpdates(onUpdateCallback:any, workflow:Workflow) {
         let socket = new WebSocket(`ws://${DOMAIN}/workflow-updates/?workflow_pk=${workflow.id}`);
         socket.onmessage = function (e) {
@@ -403,6 +413,6 @@ export class ClowdFlowsDataService {
         return this.http
             .get(`${API_ENDPOINT}${this.recommenderModelUrl}`, options)
             .toPromise()
-            .then(response => response.json());
+            .then(response => response);
     }
 }
