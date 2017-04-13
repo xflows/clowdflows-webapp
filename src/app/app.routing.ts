@@ -6,6 +6,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {UserWorkflowsComponent} from "./components/workflows/user-workflows.component";
 import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.component";
 import {WorkflowsComponent} from "./components/workflows/workflows.component";
+import {ImportWorkflowComponent} from "./components/import/import-workflow.component";
 
 export const routes: Routes = [
     {
@@ -36,6 +37,11 @@ export const routes: Routes = [
         component: WorkflowDetailComponent,
         canActivate: [LoggedInGuard]
     },
+    {
+        path: 'import-workflow',
+        component: ImportWorkflowComponent,
+        canActivate: [LoggedInGuard]
+    }
 ];
 
 export const routing = RouterModule.forRoot(routes);

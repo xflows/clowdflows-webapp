@@ -18,6 +18,7 @@ export class ClowdFlowsDataService {
     widgetsUrl = 'widgets/';
     connectionsUrl = 'connections/';
     importWebserviceUrl = this.widgetLibraryUrl + 'import-ws/';
+    importWorkflowUrl = this.workflowsUrl + 'import/';
     recommenderModelUrl = 'recommender-model/';
 
     constructor(private http:Http, private loggerService:LoggerService) {
@@ -371,9 +372,19 @@ export class ClowdFlowsDataService {
 
     importWebservice(wsdlAddr:string) {
         let options = this.getRequestOptions();
-        var data = {wsdl: wsdlAddr};
+        let data = {wsdl: wsdlAddr};
         return this.http
             .post(`${API_ENDPOINT}${this.importWebserviceUrl}`, JSON.stringify(data), options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    importWorkflow(workflowData:string) {
+        let options = this.getRequestOptions();
+        let data = {data: workflowData};
+        return this.http
+            .post(`${API_ENDPOINT}${this.importWorkflowUrl}`, JSON.stringify(data), options)
             .toPromise()
             .then(response => response.json())
             .catch(error => this.handleError(error));

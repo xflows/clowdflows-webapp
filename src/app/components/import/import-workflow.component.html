@@ -1,0 +1,16 @@
+<main class="container">
+    <h1>Import workflow</h1>
+    <p>Paste your workflow data in the box below:</p>
+    <form method="post">
+        <p><label for="id_data">Data:</label>
+            <textarea id="id_data" rows="10" cols="40" name="data"
+                      class="formfieldclass" [(ngModel)]="workflowData"></textarea>
+        </p>
+        <button type="submit" class="btn btn-primary" (click)="importWorkflow()">Import</button>
+    </form>
+    <p class="text-danger" *ngIf="errorMsg">
+        Error: {{ errorMsg }}
+    </p>
+    <div class="push"></div>
+</main>
+<footer-comp></footer-comp>
