@@ -276,7 +276,7 @@
          draggable-window>
         <h3 class="panel-title">{{widget.name}} interaction</h3>
     </div>
-    <div #formContainer class="panel-body" [innerHTML]="widget.interactionHtml">
+    <div #formContainer class="panel-body" [innerHTML]="widget.interactionHtml | sanitizecf">
     </div>
     <div class="panel-footer">
         <div class="form-group form-group-sm">

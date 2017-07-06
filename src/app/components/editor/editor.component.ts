@@ -478,7 +478,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .interactWidget(widget)
             .then((response) => {
-                widget.interactionHtml = this.domSanitizer.bypassSecurityTrustHtml(response.text());
+                widget.interactionHtml = response.text(); //this.domSanitizer.bypassSecurityTrustHtml(response.text());
                 widget.showInteractionDialog = true;
             });
     }

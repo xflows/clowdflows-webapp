@@ -19,6 +19,7 @@ import {FocusOnVisible} from "../../directives/focus.directive";
 import {Ng2UploaderModule} from 'ng2-uploader/ng2-uploader'
 import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
+import {Sanitize} from "./sanitizejs.pipe";
 
 @NgModule({
     imports: [
@@ -44,6 +45,7 @@ import {WidgetLibraryService} from "../../services/widget-library.service";
         WidgetTreeComponent,
         WidgetCanvasComponent,
         LoggingComponent,
+        Sanitize
     ],
     providers: [
         WidgetLibraryService,
