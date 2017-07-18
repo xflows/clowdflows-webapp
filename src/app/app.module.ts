@@ -19,6 +19,7 @@ import {LoadingService} from "./services/loading.service";
 import {HttpLoading} from "./services/http-loading.service";
 import {ImportWorkflowComponent} from "./components/import-export/import-workflow.component";
 import {ExportWorkflowComponent} from "./components/import-export/export-workflow.component";
+import {StreamComponent} from "./components/streams/stream.component";
 
 @NgModule({
     imports: [
@@ -37,7 +38,8 @@ import {ExportWorkflowComponent} from "./components/import-export/export-workflo
         UserWorkflowsComponent,
         WorkflowDetailComponent,
         ImportWorkflowComponent,
-        ExportWorkflowComponent
+        ExportWorkflowComponent,
+        StreamComponent
     ],
     providers: [
         ClowdFlowsDataService,

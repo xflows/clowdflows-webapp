@@ -16,6 +16,7 @@ export class ClowdFlowsDataService {
     widgetLibraryUrl = 'widget-library/';
     workflowsUrl = 'workflows/';
     widgetsUrl = 'widgets/';
+    streamsUrl = 'streams/';
     connectionsUrl = 'connections/';
     importWebserviceUrl = this.widgetLibraryUrl + 'import-ws/';
     importWorkflowUrl = this.workflowsUrl + 'import/';
@@ -414,5 +415,52 @@ export class ClowdFlowsDataService {
             .get(`${API_ENDPOINT}${this.recommenderModelUrl}`, options)
             .toPromise()
             .then(response => response);
+    }
+
+    getStream(id: number) {
+        let options = this.getRequestOptions();
+        let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
+        options.body = '';
+        return this.http
+            .get(`${API_ENDPOINT}${this.streamsUrl}${id}/?${date}`, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    startStreaming(workflowId: number) {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${API_ENDPOINT}${this.workflowsUrl}${workflowId}/start-streaming/`, {}, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    resetStream(id: number) {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${API_ENDPOINT}${this.streamsUrl}${id}/reset/`, {}, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    deactivateStream(id: number) {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${API_ENDPOINT}${this.streamsUrl}${id}/deactivate/`, {}, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    activateStream(id: number) {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${API_ENDPOINT}${this.streamsUrl}${id}/activate/`, {}, options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
     }
 }

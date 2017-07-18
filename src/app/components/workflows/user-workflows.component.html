@@ -17,7 +17,32 @@
                 <td ng-if="workflow.public"><a [routerLink]="['/workflow/', workflow.id]">{{base_url}}/workflow/{{workflow.id}}</a>
                     <ng-template ng-if="!workflow.public">This workflow is private</ng-template>
                 </td>
-                <td>TODO</td>
+                <td>
+                    <ng-template [ngIf]="workflow.can_be_streaming">
+                        <ng-template [ngIf]="workflow.stream != null">
+                            <ng-template [ngIf]="workflow.stream.active">
+                                <span class="label label-success">
+                                    <span class="fa fa-check"></span> Active
+                                </span>
+                                <a [routerLink]="['/streams/', workflow.stream.id]" class="btn btn-default btn-xs"><span class="fa fa-wrench"></span></a>
+                            </ng-template>
+                            <ng-template [ngIf]="!workflow.stream.active">
+                                <span class="label label-warning">
+                                    <span class="fa fa-times"></span> Inactive
+                                </span>
+                                <a [routerLink]="['/streams/', workflow.stream.id]" class="btn btn-default btn-xs"><span class="fa fa-wrench"></span></a>
+                            </ng-template>
+                        </ng-template>
+                        <ng-template [ngIf]="workflow.stream == null">
+                            <a (click)="startStreaming(workflow.id)" class="btn btn-info btn-xs">Start stream mining</a>
+                        </ng-template>
+                    </ng-template>
+                    <ng-template [ngIf]="!workflow.can_be_streaming">
+                        <span class="label label-default">
+                            <span class="fa fa-times"></span> No streaming widgets
+                        </span>
+                    </ng-template>
+                </td>
                 <td><a [routerLink]="['/editor/', workflow.id]">Edit</a> |
                     <a href="">Open as new</a> |
                     <a href="">Delete</a> |
@@ -28,9 +53,7 @@
             </tr>
         </ng-template>
         </tbody>
-
     </table>
-
     <a [routerLink]="['/import-workflow/']">Import a workflow from another installation of ClowdFlows</a>
     <div class="push"></div>
 </main>

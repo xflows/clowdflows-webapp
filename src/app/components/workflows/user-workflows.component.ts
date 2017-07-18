@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
 import {DomSanitizer} from "@angular/platform-browser";
 
+
 @Component({
     selector: 'workflows',
     styles: [require('./workflows.component.css')],
@@ -27,6 +28,13 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
         this.clowdflowsDataService.getUserWorkflows()
             .then(workflows => {
                 this.workflows = <Workflow[]> workflows;
+            });
+    }
+
+    startStreaming(workflowId: number) {
+        this.clowdflowsDataService.startStreaming(workflowId)
+            .then(data => {
+                this.router.navigate(['streams', data.stream_id]);
             });
     }
 }

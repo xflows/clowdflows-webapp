@@ -8,6 +8,7 @@ import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.co
 import {WorkflowsComponent} from "./components/workflows/workflows.component";
 import {ImportWorkflowComponent} from "./components/import-export/import-workflow.component";
 import {ExportWorkflowComponent} from "./components/import-export/export-workflow.component";
+import {StreamComponent} from "./components/streams/stream.component";
 
 export const routes: Routes = [
     {
@@ -36,6 +37,11 @@ export const routes: Routes = [
     {
         path: 'workflow/:id',
         component: WorkflowDetailComponent,
+        canActivate: [LoggedInGuard]
+    },
+    {
+        path: 'streams/:id',
+        component: StreamComponent,
         canActivate: [LoggedInGuard]
     },
     {
