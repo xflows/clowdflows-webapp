@@ -9,6 +9,7 @@ import {WorkflowsComponent} from "./components/workflows/workflows.component";
 import {ImportWorkflowComponent} from "./components/import-export/import-workflow.component";
 import {ExportWorkflowComponent} from "./components/import-export/export-workflow.component";
 import {StreamComponent} from "./components/streams/stream.component";
+import {StreamingWidgetComponent} from "./components/streams/streaming-widget.component";
 
 export const routes: Routes = [
     {
@@ -42,6 +43,11 @@ export const routes: Routes = [
     {
         path: 'streams/:id',
         component: StreamComponent,
+        canActivate: [LoggedInGuard]
+    },
+    {
+        path: 'streams/data/:stream_id/:id',
+        component: StreamingWidgetComponent,
         canActivate: [LoggedInGuard]
     },
     {

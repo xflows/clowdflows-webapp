@@ -417,6 +417,8 @@ export class ClowdFlowsDataService {
             .then(response => response);
     }
 
+    // Streams:
+
     getStream(id: number) {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
@@ -461,6 +463,17 @@ export class ClowdFlowsDataService {
             .post(`${API_ENDPOINT}${this.streamsUrl}${id}/activate/`, {}, options)
             .toPromise()
             .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
+    getWidgetStreamVisualization(id: number):Promise<Response> {
+        let options = this.getRequestOptions();
+        let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
+        options.body = '';
+        return this.http
+            .get(`${API_ENDPOINT}${this.widgetsUrl}${id}/stream-visualization?${date}`, options)
+            .toPromise()
+            .then(html => html)
             .catch(error => this.handleError(error));
     }
 }

@@ -1,0 +1,12 @@
+<main class="container">
+    <nav class="visualization-widgets-nav navbar navbar-default" role="navigation">
+        <ul class="nav navbar-nav">
+            <li *ngFor="let w of stream.stream_visualization_widgets" [class.active]="widget_id == w.id">
+                <a [routerLink]="['/streams/data/', stream.id, w.id]">{{w.name}}</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="visualization-container" [innerHTML]="widget_visualization_html | sanitizecf">
+    </div>
+</main>
+<footer-comp></footer-comp>

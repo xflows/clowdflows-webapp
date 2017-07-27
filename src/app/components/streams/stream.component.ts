@@ -62,6 +62,12 @@ export class StreamComponent implements OnInit, OnDestroy {
     }
 
     reset() {
+
+        let choice = confirm('Are you sure you wish to reset the stream? This means that all data that you have mined so far will be cleared.');
+        if (!choice) {
+            return;
+        }
+
         this.clowdflowsDataService.resetStream(this.stream.id)
             .then(data => {
                 let error = this.loggerService.reportMessage(data);

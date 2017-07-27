@@ -19,7 +19,8 @@ import {FocusOnVisible} from "../../directives/focus.directive";
 import {Ng2UploaderModule} from 'ng2-uploader/ng2-uploader'
 import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
-import {Sanitize} from "./sanitizejs.pipe";
+import {Sanitize} from "../../pipes/sanitizejs.pipe";
+import {SanitizeModule} from "../../pipes/sanitize.module";
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import {Sanitize} from "./sanitizejs.pipe";
         TabsModule.forRoot(),
         routing,
         Ng2UploaderModule,
-        DndModule.forRoot()
+        DndModule.forRoot(),
+        SanitizeModule
     ],
     declarations: [
         EditorComponent,
@@ -45,7 +47,6 @@ import {Sanitize} from "./sanitizejs.pipe";
         WidgetTreeComponent,
         WidgetCanvasComponent,
         LoggingComponent,
-        Sanitize
     ],
     providers: [
         WidgetLibraryService,

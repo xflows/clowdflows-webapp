@@ -46,9 +46,9 @@
         </thead>
         <tbody>
 
-        <tr>
-            <td class="name">widget name</td>
-            <td><a href="" class="btn btn-sm btn-default">View results</a></td>
+        <tr *ngFor="let widget of stream.stream_visualization_widgets">
+            <td class="name">{{ widget.name }}</td>
+            <td><a [routerLink]="['/streams/data/', stream.id, widget.id]" class="btn btn-sm btn-default">View results</a></td>
         </tr>
 
         </tbody>

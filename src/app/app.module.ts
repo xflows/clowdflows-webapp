@@ -20,6 +20,8 @@ import {HttpLoading} from "./services/http-loading.service";
 import {ImportWorkflowComponent} from "./components/import-export/import-workflow.component";
 import {ExportWorkflowComponent} from "./components/import-export/export-workflow.component";
 import {StreamComponent} from "./components/streams/stream.component";
+import {StreamingWidgetComponent} from "./components/streams/streaming-widget.component";
+import {SanitizeModule} from "./pipes/sanitize.module";
 
 @NgModule({
     imports: [
@@ -28,6 +30,7 @@ import {StreamComponent} from "./components/streams/stream.component";
         FormsModule,
         HttpModule,
         EditorModule,
+        SanitizeModule
     ],
     declarations: [
         AppComponent,
@@ -39,7 +42,8 @@ import {StreamComponent} from "./components/streams/stream.component";
         WorkflowDetailComponent,
         ImportWorkflowComponent,
         ExportWorkflowComponent,
-        StreamComponent
+        StreamComponent,
+        StreamingWidgetComponent,
     ],
     providers: [
         ClowdFlowsDataService,
