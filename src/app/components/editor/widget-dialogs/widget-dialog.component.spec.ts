@@ -8,6 +8,7 @@ import {DndModule} from "ng2-dnd";
 import {ClowdFlowsDataService} from "../../../services/clowdflows-data.service";
 import {LoggerService} from "../../../services/logger.service";
 import {Ng2UploaderModule} from "ng2-uploader/ng2-uploader";
+import {SanitizeModule} from "../../../pipes/sanitize.module";
 
 let clowdFlowsDataServiceStub = {
 };
@@ -22,7 +23,7 @@ describe('WidgetDialogComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [FormsModule, Ng2UploaderModule, DndModule.forRoot()],
+            imports: [FormsModule, Ng2UploaderModule, DndModule.forRoot(), SanitizeModule],
             declarations: [WidgetDialogComponent,],
             providers: [
                 {provide: ClowdFlowsDataService, useValue: clowdFlowsDataServiceStub},
