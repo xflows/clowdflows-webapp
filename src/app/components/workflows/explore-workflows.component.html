@@ -1,6 +1,36 @@
 <main class="container">
-    <h1>{{ title }}</h1>
 
+    <h1>Staff picks</h1>
+    <div id="staff-picks">
+        <carousel>
+            <ng-template ngFor let-workflow [ngForOf]="highlighted_workflows">
+                <slide class="row" *ngIf="!workflow.is_subprocess && workflow.is_public">
+                    <div class="col-sm-6">
+                        <h2 class="name">{{workflow.name}}
+                            <small>by {{workflow.user.username}}</small>
+                        </h2>
+                        <p class="description">
+                            {{workflow.description}}
+                        </p>
+                        <p>
+                            <a class="btn btn-primary btn-sm" [routerLink]="['/workflow/', workflow.id]"><i
+                                    class="fa fa-link"
+                                    aria-hidden="true"></i>
+                                Share
+                                link</a>
+                            <a class="btn btn-success btn-sm" href="">Launch (creates a personal copy)</a>
+                            <a class="btn btn-default btn-sm" [routerLink]="['/editor/', workflow.id]"
+                               *ngIf="workflow.user.username == userService.getUsername()">Edit</a>
+                        </p>
+                    </div>
+                    <div class="col-sm-6 preview-container" [innerHTML]="getTrustedHTML(workflow.preview)">
+                    </div>
+                </slide>
+            </ng-template>
+        </carousel>
+    </div>
+
+    <h1>{{ title }}</h1>
     <ng-template ngFor let-workflow [ngForOf]="workflows">
         <section class="row" *ngIf="!workflow.is_subprocess && workflow.is_public">
             <div class="col-sm-6">
@@ -12,7 +42,7 @@
                 </p>
                 <p>
                     <a class="btn btn-primary btn-sm" [routerLink]="['/workflow/', workflow.id]"><i class="fa fa-link"
-                                                                                              aria-hidden="true"></i>
+                                                                                                    aria-hidden="true"></i>
                         Share
                         link</a>
                     <a class="btn btn-success btn-sm" href="">Launch (creates a personal copy)</a>

@@ -1,3 +1,5 @@
+@import "../../common";
+
 section {
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
@@ -10,3 +12,33 @@ section {
     padding-top: 20px;
   }
 }
+
+#staff-picks {
+  border: 1px solid black;
+
+  slide {
+    padding: 0 25px;
+  }
+
+  carousel {
+    .carousel-control {
+      display: none;
+    }
+  }
+}
+
+.carousel {
+  .carousel-control {
+    &.left,
+    &.right {
+      background-image: none !important;
+    }
+  }
+}.carousel {
+   .carousel-control {
+     &.left,
+     &.right {
+       background-image: none !important;
+     }
+   }
+ }

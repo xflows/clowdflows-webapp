@@ -5,6 +5,7 @@ import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
 import {ActivatedRoute, Router, Params} from "@angular/router";
 import {UserService} from "../../services/user.service";
 import {Workflow} from "../../models/workflow";
+import {LoggerService} from "../../services/logger.service";
 
 @Component({
     selector: 'workflows',
@@ -20,8 +21,9 @@ export class WorkflowDetailComponent extends WorkflowsComponent {
                 clowdflowsDataService:ClowdFlowsDataService,
                 route:ActivatedRoute,
                 router:Router,
-                userService:UserService) {
-        super(domSanitizer, clowdflowsDataService, route, router, userService);
+                userService:UserService,
+                loggerService:LoggerService) {
+        super(domSanitizer, clowdflowsDataService, route, router, userService, loggerService);
     }
 
     ngOnInit():void {

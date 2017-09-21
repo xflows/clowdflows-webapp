@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {BASE_URL} from "../../config";
 import {UserService} from "../../services/user.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {LoggerService} from "../../services/logger.service";
 
 
 @Component({
@@ -14,6 +15,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 })
 export class WorkflowsComponent implements OnInit, OnDestroy {
     workflows:Workflow[] = [];
+    highlighted_workflows:Workflow[] = [];
     title:string = 'Explore workflows';
     base_url:string;
 
@@ -21,7 +23,8 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
                 public clowdflowsDataService:ClowdFlowsDataService,
                 public route:ActivatedRoute,
                 public router:Router,
-                public userService:UserService) {
+                public userService:UserService,
+                private loggerService:LoggerService) {
         this.base_url = BASE_URL;
     }
 
@@ -30,6 +33,7 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService.getPublicWorkflows(includePreview)
             .then(workflows => {
                 this.workflows = workflows;
+                this.highlighted_workflows = workflows;
             });
     }
 
@@ -39,5 +43,24 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy():void {
         this.workflows = [];
+        this.highlighted_workflows = [];
+    }
+
+    newWorkflow() {
+        let workflowData:any = {
+            name: 'Untitled workflow',
+            is_public: false,
+            description: '',
+            widget: null,
+            template_parent: null
+        };
+        this.clowdflowsDataService
+            .createWorkflow(workflowData)
+            .then((data:any) => {
+                let error = this.loggerService.reportMessage(data);
+                if (!error) {
+                    this.router.navigate(['/editor', data.id]);
+                }
+            });
     }
 }

@@ -8,3 +8,20 @@ section .description {
 section .preview-container {
   padding-top: 20px;
 }
+#staff-picks {
+  border: 1px solid black;
+}
+#staff-picks slide {
+  padding: 0 25px;
+}
+#staff-picks carousel .carousel-control {
+  display: none;
+}
+.carousel .carousel-control.left,
+.carousel .carousel-control.right {
+  background-image: none !important;
+}
+.carousel .carousel-control.left,
+.carousel .carousel-control.right {
+  background-image: none !important;
+}
