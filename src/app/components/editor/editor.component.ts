@@ -28,6 +28,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     userWorkflows:Workflow[] = [];
     sub:any;
 
+    tutorial:boolean = false;
     loadedSubprocesses:any = {};
     activeWorkflow:Workflow = null;
     recommendWidget:Widget = null;
@@ -491,6 +492,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.sub = this.route.params.subscribe((params:Params) => {
+            this.tutorial = this.route.snapshot.data[0]['tutorial'];
             // Fetch the current workflow
             let id = +params['id'];
             this.clowdflowsDataService.getWorkflow(id)

@@ -19,6 +19,13 @@ export const routes: Routes = [
     {
         path: 'editor/:id',
         component: EditorComponent,
+        data: [{tutorial: false}],
+        canActivate: [LoggedInGuard]
+    },
+    {
+        path: 'tutorial/:id',
+        component: EditorComponent,
+        data: [{tutorial: true}],
         canActivate: [LoggedInGuard]
     },
     {

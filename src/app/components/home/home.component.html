@@ -8,13 +8,11 @@
         </div>
         <div class="row cf-buttons">
             <div class="col-lg-12">
-                <button type="button" [routerLink]="['/tutorial']"
-                        class="btn btn-primary btn-success btn-xlg">
+                <button type="button" (click)="runTutorial()" class="btn btn-primary btn-success btn-xlg">
                     Try the tutorial
                 </button>
-                <button type="button" [routerLink]="['/editor']"
-                        class="btn btn-primary btn-lg">
-                    Start working
+                <button type="button" (click)="newWorkflow()" class="btn btn-primary btn-lg">
+                    New workflow
                 </button>
                 <button type="button" [routerLink]="['/explore-workflows']"
                         class="btn btn-primary btn-lg">

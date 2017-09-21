@@ -6,6 +6,7 @@ import {UserService} from "./services/user.service";
 import {LoggedInGuard} from "./services/logged-in.guard";
 import {LoggerService} from "./services/logger.service";
 import {FormsModule} from "@angular/forms";
+import {CarouselModule} from "ng2-bootstrap";
 import {routing} from './app.routing';
 import {LoginComponent} from "./components/login/login.component";
 import {HomeComponent} from "./components/home/home.component";
@@ -30,7 +31,8 @@ import {SanitizeModule} from "./pipes/sanitize.module";
         FormsModule,
         HttpModule,
         EditorModule,
-        SanitizeModule
+        SanitizeModule,
+        CarouselModule.forRoot()
     ],
     declarations: [
         AppComponent,

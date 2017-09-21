@@ -21,6 +21,7 @@ import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
 import {Sanitize} from "../../pipes/sanitizejs.pipe";
 import {SanitizeModule} from "../../pipes/sanitize.module";
+import {TutorialComponent} from "./tutorial/tutorial.component";
 
 @NgModule({
     imports: [
@@ -47,6 +48,7 @@ import {SanitizeModule} from "../../pipes/sanitize.module";
         WidgetTreeComponent,
         WidgetCanvasComponent,
         LoggingComponent,
+        TutorialComponent
     ],
     providers: [
         WidgetLibraryService,

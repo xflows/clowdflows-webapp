@@ -1,0 +1,93 @@
+<div class="alert alert-success tutorial-window tutorial step0" *ngIf="activeStep(0)">
+    <strong>ClowdFlows tutorial</strong>
+    <br>
+    Welcome to the ClowdFlows tutorial. By following simple instructions you will construct your very own working workflow.<br>
+    <button class="btn btn-success" (click)="goToNextStep()">Go to the first step »</button>
+</div>
+
+
+<div class="popover right popover-widgets tutorial step1" *ngIf="activeStep(1)">
+    <div class="arrow"></div>
+    <h3 class="popover-title">Step 1: Widget repository</h3>
+    <div class="popover-content">
+        <p>This is the widget repository. All the possible widgets that you can put on the canvas are found here.</p>
+        <p>Find the widget entitled "<strong>Create Integer</strong>" and and click on it.</p>
+        <p>Click the "Next" button once you've added the widget to the canvas.</p>
+        <button class="btn btn-warning" style="margin-bottom:10px;" (click)="goToPrevStep()">&laquo; Back</button>
+        <button class="btn btn-success pull-right" style="margin-bottom:10px;" (click)="goToNextStep()">Next &raquo;</button>
+    </div>
+</div>
+
+<div class="popover right popover-step2 tutorial step2" *ngIf="activeStep(2)">
+    <div class="arrow"></div>
+    <h3 class="popover-title">Step 2: Your first widget</h3>
+    <div class="popover-content">
+        <p>Great! Now you have your first widget on the canvas.</p>
+        <p>Widgets are processing units that have <strong>inputs</strong>, <strong>outputs</strong>, and <strong>parameters</strong>.</p>
+        <p>This particular one doesn't have any inputs but it has a parameter. You can see what it is by <strong>double clicking the widget</strong>! Once you do, set it to a number. Let's say <strong>5</strong>. Then click "Apply".</p>
+        <button class="btn btn-warning" style="margin-bottom:10px;" (click)="goToPrevStep()">&laquo; Back</button>
+        <button class="btn btn-success pull-right" style="margin-bottom:10px;" (click)="goToNextStep()">Next &raquo;</button>
+    </div>
+</div>
+
+<div class="popover right popover-step3 tutorial step3" *ngIf="activeStep(3)">
+    <div class="arrow"></div>
+    <h3 class="popover-title">Step 3: Some more widgets</h3>
+    <div class="popover-content">
+        <div class="popover-textcontent3" style="display:none;">
+            <p>Click the button again to see instructions.</p>
+        </div>
+        <div class="popover-textcontent3">
+            <p>Ok now we're gonna add some more widgets to the canvas. Search the widget repository for the following widgets and add them to the canvas:</p>
+            <ul>
+                <li><strong>Add integers</strong></li>
+                <li><strong>Object viewer</strong></li>
+            </ul>
+            <p>If you're having trouble finding a widget you can use the search at the top of the widget repository.</p>
+        </div>
+        <button class="btn btn-warning" style="margin-bottom:10px;" (click)="goToPrevStep()">&laquo; Back</button>
+        <button class="btn btn-success pull-right" style="margin-bottom:10px;" (click)="goToNextStep()">Next &raquo;</button>
+    </div>
+</div>
+
+<div class="popover bottom popover-step4 tutorial step4" *ngIf="activeStep(4)">
+    <div class="arrow"></div>
+    <h3 class="popover-title">Step 4: Arrange the widgets</h3>
+    <div class="popover-content">
+        <p>By dragging and dropping, you can arrange widgets on the canvas as you please.</p>
+        <p>Arrange the three widgets so that they look like this:</p>
+        <p><img src="/public/images/tutorial-step4.png"></p>
+        <button class="btn btn-warning" style="margin-bottom:10px;" (click)="goToPrevStep()">&laquo; Back</button>
+        <button class="btn btn-success pull-right" style="margin-bottom:10px;" (click)="goToNextStep()">Next &raquo;</button>
+    </div>
+</div>
+
+<div class="popover bottom popover-step5 tutorial step5" *ngIf="activeStep(5)">
+    <div class="arrow"></div>
+    <h3 class="popover-title">Step 5: Connect the widgets</h3>
+    <div class="popover-content" style="font-size:12px;">
+        <p>You can connect widget by clicking consecutively on outputs and then inputs. Try it and connect the widgets so that they look like on the picture:</p>
+        <p><img src="/public/images/tutorial-step5.png"></p>
+        <p>If you add an unwanted connection by mistake you can select it by clicking on it and hit the "Delete" button on your keyboard.</p>
+        <button class="btn btn-warning" style="margin-bottom:10px;" (click)="goToPrevStep()">&laquo; Back</button>
+        <button class="btn btn-success pull-right" style="margin-bottom:10px;" (click)="goToNextStep()">Next &raquo;</button>
+    </div>
+</div>
+
+<div class="popover bottom popover-step6 tutorial step6" *ngIf="activeStep(6)">
+    <div class="arrow" style="left:95px;"></div>
+    <h3 class="popover-title">Step 6: Execute the workflow</h3>
+    <div class="popover-content">
+        <p>Execute the workflow by clicking the icon that looks like the play button.</p>
+        <button class="btn btn-warning" style="margin-bottom:10px;" (click)="goToPrevStep()">&laquo; Back</button>
+        <button class="btn btn-success pull-right" style="margin-bottom:10px;" (click)="goToNextStep()">Next &raquo;</button>
+    </div>
+</div>
+
+<div class="alert alert-success tutorial-window tutorial step7" *ngIf="activeStep(7)">
+    <strong>Congratulations!</strong>
+    <br>
+    You have now constructed a workflow that takes a number and multiplies it by two by adding it with itself. Hooray!<br>
+    This is it for now! We're gonna add other tutorials to do complex stuff very very soon!<br>
+    <button class="btn btn-success" (click)="goToNextStep()">Close this window &raquo;</button>
+</div>
