@@ -3,7 +3,7 @@
     <h1>Staff picks</h1>
     <div id="staff-picks">
         <carousel>
-            <ng-template ngFor let-workflow [ngForOf]="highlighted_workflows">
+            <ng-template ngFor let-workflow [ngForOf]="staff_picks">
                 <slide class="row" *ngIf="!workflow.is_subprocess && workflow.is_public">
                     <div class="col-sm-6">
                         <h2 class="name">{{workflow.name}}

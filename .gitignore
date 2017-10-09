@@ -4,3 +4,4 @@ src/**/*.js
 *.js.map
 *.log
 .idea/
+dist/

@@ -184,3 +184,25 @@ header h1 {
 tabset > ul {
     padding-left: 5px !important;
 }
+
+
+.carousel-control.left,
+.carousel-control.right {
+     display:none;
+ }
+
+.carousel-indicators {
+    bottom: 0;
+}
+
+.carousel-indicators li {
+    background-color: #222;
+    margin: 0 10px;
+}
+
+.carousel-indicators li.active {
+    border-color: #222;
+    background-color: white;
+    margin: 0 10px;
+}
+

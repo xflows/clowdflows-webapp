@@ -15,7 +15,7 @@ import {LoggerService} from "../../services/logger.service";
 })
 export class WorkflowsComponent implements OnInit, OnDestroy {
     workflows:Workflow[] = [];
-    highlighted_workflows:Workflow[] = [];
+    staff_picks:Workflow[] = [];
     title:string = 'Explore workflows';
     base_url:string;
 
@@ -33,7 +33,7 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService.getPublicWorkflows(includePreview)
             .then(workflows => {
                 this.workflows = workflows;
-                this.highlighted_workflows = workflows;
+                this.staff_picks = workflows.filter((workflow:Workflow) => workflow.staff_pick);
             });
     }
 
@@ -43,7 +43,7 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy():void {
         this.workflows = [];
-        this.highlighted_workflows = [];
+        this.staff_picks = [];
     }
 
     newWorkflow() {

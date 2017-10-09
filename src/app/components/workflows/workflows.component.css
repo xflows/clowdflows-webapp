@@ -9,19 +9,12 @@ section .preview-container {
   padding-top: 20px;
 }
 #staff-picks {
-  border: 1px solid black;
+  border: 2px solid #4cae4c;
+  padding: 15px;
 }
-#staff-picks slide {
-  padding: 0 25px;
+h1 {
+  margin-top: 40px;
 }
-#staff-picks carousel .carousel-control {
-  display: none;
-}
-.carousel .carousel-control.left,
-.carousel .carousel-control.right {
-  background-image: none !important;
-}
-.carousel .carousel-control.left,
-.carousel .carousel-control.right {
-  background-image: none !important;
+.btn-lg {
+  margin-bottom: 10px;
 }
