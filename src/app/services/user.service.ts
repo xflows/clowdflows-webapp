@@ -25,9 +25,8 @@ export class UserService {
                     localStorage.setItem('username', username);
                     localStorage.setItem('auth_token', res.token);
                     this.loggedIn = true;
-                    return true;
                 }
-                return false;
+                return res;
             });
     }
 
@@ -35,6 +34,24 @@ export class UserService {
         localStorage.removeItem('auth_token');
         this.loggedIn = false;
         this.router.navigate([redirectUrl]);
+    }
+
+    register(username:string, password:string, email:string) {
+        console.log('register');
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        return this.http
+            .post(`${API_ENDPOINT}register/`, JSON.stringify({ username, password, email }), { headers })
+            .map(res => res.json())
+            .map((res) => {
+                if (res.token) {
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('auth_token', res.token);
+                    this.loggedIn = true;
+                }
+                return res;
+            });
     }
 
     isLoggedIn() {

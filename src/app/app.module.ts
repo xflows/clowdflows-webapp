@@ -6,7 +6,7 @@ import {UserService} from "./services/user.service";
 import {LoggedInGuard} from "./services/logged-in.guard";
 import {LoggerService} from "./services/logger.service";
 import {FormsModule} from "@angular/forms";
-import {CarouselModule} from "ng2-bootstrap";
+import {AlertModule, CarouselModule} from "ng2-bootstrap";
 import {routing} from './app.routing';
 import {LoginComponent} from "./components/login/login.component";
 import {HomeComponent} from "./components/home/home.component";
@@ -23,6 +23,7 @@ import {ExportWorkflowComponent} from "./components/import-export/export-workflo
 import {StreamComponent} from "./components/streams/stream.component";
 import {StreamingWidgetComponent} from "./components/streams/streaming-widget.component";
 import {SanitizeModule} from "./pipes/sanitize.module";
+import {EqualValidator} from "./directives/validateEqual.directive";
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import {SanitizeModule} from "./pipes/sanitize.module";
         HttpModule,
         EditorModule,
         SanitizeModule,
-        CarouselModule.forRoot()
+        CarouselModule.forRoot(),
+        AlertModule.forRoot()
     ],
     declarations: [
         AppComponent,
@@ -46,6 +48,7 @@ import {SanitizeModule} from "./pipes/sanitize.module";
         ExportWorkflowComponent,
         StreamComponent,
         StreamingWidgetComponent,
+        EqualValidator,
     ],
     providers: [
         ClowdFlowsDataService,

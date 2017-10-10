@@ -5,25 +5,42 @@
             <p>
                 Don't have an account yet? Create one! It takes like two seconds.
             </p>
-            <form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Username</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Username">
+            <form id="registration-form" (ngSubmit)="attemptRegistration()" (keyup.enter)="attemptRegistration()"
+                  #registrationForm="ngForm">
+                <div class="form-group" [class.has-error]="username.invalid && (username.dirty || username.touched)">
+                    <label class="control-label" for="register-username">Username</label>
+                    <input type="text" class="form-control" id="register-username" name="username"
+                           placeholder="Username" required minlength="3"
+                           [(ngModel)]="registrationData.username" #username="ngModel">
+                </div>
+                <div class="form-group" [class.has-error]="email.invalid && (email.dirty || email.touched)">
+                    <label class="control-label" for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required
+                           email #email="ngModel" [(ngModel)]="registrationData.email">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                    <label class="control-label" for="password">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="Password" required
+                           [(ngModel)]="registrationData.password" #password="ngModel">
+                </div>
+                <div class="form-group"
+                     [class.has-error]="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)">
+                    <label class="control-label" for="confirmPassword">Repeat password</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                           placeholder="Password" required validateEqual="password" #confirmPassword="ngModel"
+                           [(ngModel)]="registrationData.confirmPassword">
+                    <span class="help-block"
+                          *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)">
+                        The passwords don't match
+                    </span>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <button type="submit" class="btn btn-primary"
+                            [class.disabled]="!registrationForm.form.valid">Sign up
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Repeat password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                </div>
-                <button type="submit" class="btn btn-primary">Sign up</button>
             </form>
+            <alert type="danger" *ngIf="registrationError" dismissible="true">{{ registrationError }}</alert>
         </div>
         <div class="col-lg-6">
             <h1>Log in</h1>
@@ -49,11 +66,12 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <button type="submit" (click)="attemptLogin()" class="btn btn-primary"
+                    <button type="submit" class="btn btn-primary"
                             [class.disabled]="!loginForm.form.valid">Log in
                     </button>
                 </div>
             </form>
+            <alert type="danger" *ngIf="loginError" dismissible="true">{{ loginError }}</alert>
         </div>
     </div>
     <div class="push"></div>
