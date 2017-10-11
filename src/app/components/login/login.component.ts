@@ -43,7 +43,6 @@ export class LoginComponent {
     }
 
     attemptRegistration() {
-        console.log('attemptRegistration');
         this.userService
             .register(this.registrationData.username, this.registrationData.password, this.registrationData.email)
             .subscribe(

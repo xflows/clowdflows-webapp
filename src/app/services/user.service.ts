@@ -37,7 +37,6 @@ export class UserService {
     }
 
     register(username:string, password:string, email:string) {
-        console.log('register');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
