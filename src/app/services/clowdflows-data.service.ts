@@ -402,7 +402,8 @@ export class ClowdFlowsDataService {
     }
 
     workflowUpdates(onUpdateCallback:any, workflow:Workflow) {
-        let socket = new WebSocket(`ws://${DOMAIN}/workflow-updates/?workflow_pk=${workflow.id}`);
+        let domain = window.location.hostname == 'localhost' ? DOMAIN : window.location.hostname;
+        let socket = new WebSocket(`ws://${domain}/workflow-updates/?workflow_pk=${workflow.id}`);
         socket.onmessage = function (e) {
             onUpdateCallback(JSON.parse(e.data));
         }
