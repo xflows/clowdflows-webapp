@@ -8,6 +8,7 @@ import {LoginComponent} from "./login.component";
 import {FormsModule} from "@angular/forms";
 import {Observable} from "rxjs/Rx";
 import {FooterComponent} from "../footer/footer.component";
+import {AlertModule} from "ng2-bootstrap";
 
 let TEST_CREDENTIALS = {
     username: 'testuser',
@@ -46,7 +47,8 @@ describe('LoginComponent', () => {
         TestBed
             .configureTestingModule({
                 imports: [
-                    FormsModule
+                    FormsModule,
+                    AlertModule.forRoot()
                 ],
                 declarations: [
                     LoginComponent,
