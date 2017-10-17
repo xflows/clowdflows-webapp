@@ -470,7 +470,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .visualizeWidget(widget)
             .then((response) => {
-                widget.visualizationHtml = this.domSanitizer.bypassSecurityTrustHtml(response.text());
+                widget.visualizationHtml = response.text();
                 widget.showVisualizationDialog = true;
             });
     }
@@ -479,7 +479,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .interactWidget(widget)
             .then((response) => {
-                widget.interactionHtml = response.text(); //this.domSanitizer.bypassSecurityTrustHtml(response.text());
+                widget.interactionHtml = response.text();
                 widget.showInteractionDialog = true;
             });
     }
@@ -493,6 +493,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.sub = this.route.params.subscribe((params:Params) => {
             this.tutorial = this.route.snapshot.data[0]['tutorial'];
+            console.log(this.tutorial);
             // Fetch the current workflow
             let id = +params['id'];
             this.clowdflowsDataService.getWorkflow(id)
