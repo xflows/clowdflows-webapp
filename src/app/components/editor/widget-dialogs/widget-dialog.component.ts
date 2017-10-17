@@ -91,8 +91,9 @@ export class WidgetDialogComponent {
         this.saveWidgetRequest.emit(this.widget);
     }
 
-    toggleSaveResults(widget:Widget, event:any) {
+    toggleSaveResults(event:any) {
         this.widget.save_results = event.currentTarget.checked;
+        this.widget.finished = false;
     }
 
     closeHelp() {

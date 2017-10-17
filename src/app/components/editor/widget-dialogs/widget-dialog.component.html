@@ -193,7 +193,7 @@
         <div class="checkbox" *ngIf="widget.outputs.length + widget.inputs.length > 0">
             <label>
                 <input type="checkbox"
-                       (change)="toggleSaveResults(widget, $event)"
+                       (change)="toggleSaveResults($event)"
                        [checked]="widget.save_results"
                        [disabled]="widget.must_save"
                        name="save-results"/> Store the data on inputs &amp; outputs of this widget for later inspection.
