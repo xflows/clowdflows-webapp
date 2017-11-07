@@ -493,7 +493,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.sub = this.route.params.subscribe((params:Params) => {
             this.tutorial = this.route.snapshot.data[0]['tutorial'];
-            console.log(this.tutorial);
             // Fetch the current workflow
             let id = +params['id'];
             this.clowdflowsDataService.getWorkflow(id)
