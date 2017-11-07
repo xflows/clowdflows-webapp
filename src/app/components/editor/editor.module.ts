@@ -22,6 +22,7 @@ import {WidgetLibraryService} from "../../services/widget-library.service";
 import {Sanitize} from "../../pipes/sanitizejs.pipe";
 import {SanitizeModule} from "../../pipes/sanitize.module";
 import {TutorialComponent} from "./tutorial/tutorial.component";
+import {CutPipe} from "../../pipes/cut.pipe";
 
 @NgModule({
     imports: [
@@ -48,7 +49,8 @@ import {TutorialComponent} from "./tutorial/tutorial.component";
         WidgetTreeComponent,
         WidgetCanvasComponent,
         LoggingComponent,
-        TutorialComponent
+        TutorialComponent,
+        CutPipe
     ],
     providers: [
         WidgetLibraryService,

@@ -187,7 +187,7 @@
     <div class="panel-body">
         <ul>
             <li *ngFor="let output of widget.outputs">
-                {{ output.name }} = {{ output.value }}
+                {{ output.name }} = {{ output.value|cut:300 }}
             </li>
         </ul>
         <div class="checkbox" *ngIf="widget.outputs.length + widget.inputs.length > 0">
