@@ -34,33 +34,44 @@ export class WidgetLibraryService {
 
     private addSpecialWidgets(library:Category[]):Category[] {
         let specialWidgets:AbstractWidget[] = [];
+        let cfpackage = 'special';
         specialWidgets.push(<AbstractWidget> {
             name: specialWidgetNames.subprocessWidget,
             static_image: "/public/images/gears.png",
+            cfpackage: cfpackage,
+            description: 'Encapsulate a workflow inside a widget',
             special: true,
             hidden: false
         });
         specialWidgets.push(<AbstractWidget> {
             name: specialWidgetNames.inputWidget,
             static_image: "/public/images/forward-arrow.png",
+            cfpackage: cfpackage,
+            description: 'Add an input to a subprocess',
             special: true,
             hidden: false
         });
         specialWidgets.push(<AbstractWidget> {
             name: specialWidgetNames.outputWidget,
             static_image: "/public/images/forward-arrow.png",
+            cfpackage: cfpackage,
+            description: 'Add an output to a subprocess',
             special: true,
             hidden: false
         });
         specialWidgets.push(<AbstractWidget> {
             name: specialWidgetNames.forLoopWidgets,
             static_image: "/public/images/loop.png",
+            cfpackage: cfpackage,
+            description: 'Add this into a subprocess to create a for loop',
             special: true,
             hidden: false
         });
         specialWidgets.push(<AbstractWidget> {
             name: specialWidgetNames.xValidationWidgets,
             static_image: "/public/images/loop.png",
+            cfpackage: cfpackage,
+            description: 'Add this into a subprocess to create a for cross-validation',
             special: true,
             hidden: false
         });

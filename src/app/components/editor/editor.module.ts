@@ -10,7 +10,7 @@ import {LoggingComponent} from "./logging/logging.component";
 import {WidgetCanvasComponent} from "./widget-canvas/widget-canvas.component";
 import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
-import {ModalModule, TabsModule} from "ng2-bootstrap";
+import {ModalModule, PopoverModule, TabsModule} from "ng2-bootstrap";
 import {HttpModule} from "@angular/http";
 import {routing} from "../../app.routing";
 import {DndModule} from 'ng2-dnd';
@@ -34,7 +34,8 @@ import {CutPipe} from "../../pipes/cut.pipe";
         routing,
         Ng2UploaderModule,
         DndModule.forRoot(),
-        SanitizeModule
+        SanitizeModule,
+        PopoverModule.forRoot()
     ],
     declarations: [
         EditorComponent,

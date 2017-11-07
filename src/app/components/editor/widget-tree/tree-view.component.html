@@ -9,12 +9,20 @@
             <tree-view [categories]="category.children" (addWidgetRequest)="addWidgetToCanvas($event)"></tree-view>
             <ul>
                 <li *ngFor="let widget of category.widgets">
-                <span class="widget"
-                      [class.hidden]="widget.hidden"
-                      [class.recommendation]="widget.recommended_input || widget.recommended_output"
-                      (click)="addWidgetToCanvas(widget)"
-                      [attr.title]="widget.name">
-                    <img class="widget-tree-icon" src="{{ iconUrl(widget) }}"/> <span class="widget-name">{{widget.name}}</span>
+                    <ng-template #widgetDescriptionPopover>
+                        Package: <strong>{{ widget.cfpackage }}</strong><br>
+                        {{ widget.description }}
+                    </ng-template>
+                    <span class="widget"
+                          [class.hidden]="widget.hidden"
+                          [class.recommendation]="widget.recommended_input || widget.recommended_output"
+                          (click)="addWidgetToCanvas(widget)"
+                          [attr.title]="widget.name"
+                          [popover]="widgetDescriptionPopover"
+                          placement="bottom"
+                          triggers="mouseenter:mouseleave">
+                    <img class="widget-tree-icon" src="{{ iconUrl(widget) }}"/>
+                    <span class="widget-name">{{widget.name}}</span>
                     <span class="label label-success" [class.hidden]="!widget.recommended_output">
                         Output
                     </span>
