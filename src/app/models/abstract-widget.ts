@@ -4,6 +4,7 @@ export class AbstractWidget {
     id:number;
     name:string;
     interactive:boolean;
+    visualization:boolean;
     static_image:string;
     order:number;
     cfpackage:string;

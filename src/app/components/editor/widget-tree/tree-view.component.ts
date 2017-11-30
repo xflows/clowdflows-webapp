@@ -2,7 +2,6 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {Category} from "../../../models/category";
 import {BASE_URL} from "../../../config";
 import {AbstractWidget} from "../../../models/abstract-widget";
-import {Widget} from "../../../models/widget";
 
 @Component({
     selector: 'tree-view',

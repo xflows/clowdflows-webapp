@@ -51,7 +51,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             // Regular widgets
             let activeWorkflow = this.activeWorkflow;
             let save_results = false;
-            if (abstractWidget.interactive) {
+            if (abstractWidget.interactive || abstractWidget.visualization) {
                 save_results = true;
             }
             let widgetData = {
@@ -418,6 +418,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     receiveWorkflowUpdate(data:any) {
         let widget = this.workflow.widgets.find((widgetObj:Widget) => widgetObj.id == data.widget_pk);
+        console.log(data);
         if (widget != undefined) {
             if (data.status.finished && !widget.finished) {
                 if (data.status.is_visualization) {
