@@ -11,34 +11,37 @@ export class Sanitize implements PipeTransform {
 
 
     handleExternalScriptsInHtmlString(s: string) {
-
         let that = this;
         let parser = new DOMParser();
-        let scripts = parser.parseFromString(s, 'text/html').getElementsByTagName('script');
 
-        let results:any = [];
+        let scripts =  Array.from(parser.parseFromString(s, 'text/html').getElementsByTagName('script'));
 
-        for (let i = 0; i < scripts.length; i++) {
-            let src = scripts[i].getAttribute('src');
-            if (src.length && results.indexOf(src) === -1) {
-                results.push(src);
-                that.addScript(src);
-            }
-            let script = document.createElement('script');
-            script.innerHTML = scripts[i].innerHTML;
-            document.body.appendChild(script);
-        }
+        that.loadScripts(scripts,[])
     }
 
-    addScript(src: string) {
+    loadScripts(scripts: HTMLElement[],results:any[]){
+        /* dynamically load javascript files from backend html views in proper order */
+        let that=this
+        let src = scripts[0].getAttribute('src') || "";
         let script = document.createElement('script');
-        script.setAttribute('src', src);
+
+        if (src.length && results.indexOf(src) === -1) {
+            //do not load the same source multiple times
+            results.push(src);
+            script.setAttribute('src', src);
+        }
+
+        script.innerHTML = scripts[0].innerHTML;
+        script.onload = function () {
+            if (scripts.length>0) {
+                that.loadScripts(scripts.slice(1, scripts.length), results)
+            }
+        };
         document.body.appendChild(script);
     }
 
-
     transform(htmlContent: any) {
-        let sanitizeHtmlContent = this.domSanitizer.bypassSecurityTrustHtml(htmlContent);
+        let sanitizeHtmlContent = this.domSanitizer.bypassSecurityTrustHtml(htmlContent); //disables default html sanitization in order to run visualization and interaction view js scripts
 
         this.handleExternalScriptsInHtmlString(htmlContent);
 
