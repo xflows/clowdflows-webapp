@@ -11,7 +11,7 @@
                 <li *ngFor="let widget of category.widgets">
                     <ng-template #widgetDescriptionPopover>
                         Package: <strong>{{ widget.cfpackage }}</strong><br>
-                        {{ widget.description }}
+                        {{ (widget.description.length>200)? (widget.description | slice:0:200)+'...':(widget.description) }}
                     </ng-template>
                     <span class="widget"
                           [class.hidden]="widget.hidden"
@@ -20,6 +20,7 @@
                           [attr.title]="widget.name"
                           [popover]="widgetDescriptionPopover"
                           placement="bottom"
+                          container="body"
                           triggers="mouseenter:mouseleave">
                     <img class="widget-tree-icon" src="{{ iconUrl(widget) }}"/>
                     <span class="widget-name">{{widget.name}}</span>
