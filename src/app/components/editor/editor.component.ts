@@ -235,10 +235,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             if (widget.workflow_link in this.loadedSubprocesses) {
                 let workflow = this.loadedSubprocesses[widget.workflow_link];
                 let idx = this.workflows.indexOf(workflow);
-                console.log(idx);
-                console.log(this.workflows.length);
                 this.workflows.splice(idx, 1);
-                console.log(this.workflows);
             }
         }
     }
@@ -418,7 +415,6 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     receiveWorkflowUpdate(data:any) {
         let widget = this.workflow.widgets.find((widgetObj:Widget) => widgetObj.id == data.widget_pk);
-        console.log(data);
         if (widget != undefined) {
             if (data.status.finished && !widget.finished) {
                 if (data.status.is_visualization) {
