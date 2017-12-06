@@ -467,7 +467,9 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .visualizeWidget(widget)
             .then((response) => {
+                console.log('setting visualization html yo');
                 widget.visualizationHtml = response.text();
+                console.log('finished');
                 widget.showVisualizationDialog = true;
             });
     }
