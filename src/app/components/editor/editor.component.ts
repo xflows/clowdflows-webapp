@@ -51,7 +51,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             // Regular widgets
             let activeWorkflow = this.activeWorkflow;
             let save_results = false;
-            if (abstractWidget.interactive || abstractWidget.visualization) {
+            if (abstractWidget.interactive || abstractWidget.visualization || abstractWidget.always_save_results) {
                 save_results = true;
             }
             let widgetData = {
