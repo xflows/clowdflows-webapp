@@ -22,10 +22,10 @@ export class ClowdFlowsDataService {
     importWorkflowUrl = this.workflowsUrl + 'import/';
     recommenderModelUrl = 'recommender-model/';
 
-    constructor(private http:Http, private loggerService:LoggerService) {
+    constructor(private http: Http, private loggerService: LoggerService) {
     }
 
-    getRequestOptions():RequestOptions {
+    getRequestOptions(): RequestOptions {
         let headers = new Headers();
         let auth_token = localStorage.getItem('auth_token');
         headers.append('Content-Type', 'application/json');
@@ -34,7 +34,7 @@ export class ClowdFlowsDataService {
         return options;
     }
 
-    getFileUploadOption(input:WidgetInput) {
+    getFileUploadOption(input: WidgetInput) {
         return {
             url: `${input.url}upload/`,
             filterExtensions: false,
@@ -54,13 +54,13 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    private handleError(error:any) {
+    private handleError(error: any) {
         console.error('An error occurred', error);
         let message = error.message || error;
         this.loggerService.error(`HTTP error: ${error}`);
     }
 
-    createWorkflow(workflowData:any) {
+    createWorkflow(workflowData: any) {
         let options = this.getRequestOptions();
         return this.http
             .post(`${API_ENDPOINT}${this.workflowsUrl}`, JSON.stringify(workflowData), options)
@@ -69,9 +69,9 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    saveWorkflowInfo(workflow:Workflow) {
+    saveWorkflowInfo(workflow: Workflow) {
         let options = this.getRequestOptions();
-        let workflowData:any = {
+        let workflowData: any = {
             url: workflow.url,
             name: workflow.name,
             description: workflow.description,
@@ -84,7 +84,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getWorkflow(idOrUrl:any, includePreview?:boolean):Promise<any> {
+    getWorkflow(idOrUrl: any, includePreview?: boolean): Promise<any> {
         let options = this.getRequestOptions();
         options.body = '';
         let url = idOrUrl;
@@ -103,7 +103,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getUserWorkflows(includePreview?:boolean):Promise<any> {
+    getUserWorkflows(includePreview?: boolean): Promise<any> {
         let options = this.getRequestOptions();
         options.body = '';
         let preview = 0;
@@ -117,7 +117,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getPublicWorkflows(includePreview?:boolean):Promise<any> {
+    getPublicWorkflows(includePreview?: boolean): Promise<any> {
         let options = this.getRequestOptions();
         options.body = '';
         let preview = 0;
@@ -131,7 +131,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    runWorkflow(workflow:Workflow):Promise<any> {
+    runWorkflow(workflow: Workflow): Promise<any> {
         let options = this.getRequestOptions();
         return this.http
             .post(`${workflow.url}run/`, {}, options)
@@ -140,7 +140,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    resetWorkflow(workflow:Workflow):Promise<any> {
+    resetWorkflow(workflow: Workflow): Promise<any> {
         let options = this.getRequestOptions();
         return this.http
             .post(`${workflow.url}reset/`, {}, options)
@@ -149,7 +149,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    addSubprocessToWorkflow(workflow:Workflow):Promise<any> {
+    addSubprocessToWorkflow(workflow: Workflow): Promise<any> {
         let options = this.getRequestOptions();
         return this.http
             .post(`${workflow.url}subprocess/`, {}, options)
@@ -158,7 +158,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    addInputToSubprocess(workflow:Workflow):Promise<any> {
+    addInputToSubprocess(workflow: Workflow): Promise<any> {
         let options = this.getRequestOptions();
         return this.http
             .post(`${workflow.url}subprocess-input/`, {}, options)
@@ -167,7 +167,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    addForLoopToSubprocess(workflow:Workflow):Promise<any> {
+    addForLoopToSubprocess(workflow: Workflow): Promise<any> {
         let options = this.getRequestOptions();
         return this.http
             .post(`${workflow.url}subprocess-forloop/`, {}, options)
@@ -176,7 +176,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    addXValidationToSubprocess(workflow:Workflow):Promise<any> {
+    addXValidationToSubprocess(workflow: Workflow): Promise<any> {
         let options = this.getRequestOptions();
         return this.http
             .post(`${workflow.url}subprocess-xvalidation/`, {}, options)
@@ -185,7 +185,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    addOutputToSubprocess(workflow:Workflow):Promise<any> {
+    addOutputToSubprocess(workflow: Workflow): Promise<any> {
         let options = this.getRequestOptions();
         return this.http
             .post(`${workflow.url}subprocess-output/`, {}, options)
@@ -194,7 +194,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    visualizeWidget(widget:Widget):Promise<Response> {
+    visualizeWidget(widget: Widget): Promise<Response> {
         let options = this.getRequestOptions();
         options.body = '';
         return this.http
@@ -204,7 +204,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    interactWidget(widget:Widget):Promise<Response> {
+    interactWidget(widget: Widget): Promise<Response> {
         let options = this.getRequestOptions();
         options.body = '';
         return this.http
@@ -214,7 +214,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    finishInteractionWidget(widget:Widget, data:any) {
+    finishInteractionWidget(widget: Widget, data: any) {
         let options = this.getRequestOptions();
         return this.http
             .post(`${widget.url}interact/`, JSON.stringify(data), options)
@@ -223,7 +223,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getWidget(id:number):Promise<any> {
+    getWidget(id: number): Promise<any> {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
         options.body = '';
@@ -234,7 +234,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    createWidget(widgetData:any):Promise<Widget> {
+    createWidget(widgetData: any): Promise<Widget> {
         let options = this.getRequestOptions();
         return this.http
             .post(`${API_ENDPOINT}${this.widgetsUrl}`, JSON.stringify(widgetData), options)
@@ -243,7 +243,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    saveWidget(widget:Widget) {
+    saveWidget(widget: Widget) {
         let options = this.getRequestOptions();
         return this.http
             .patch(widget.url, JSON.stringify(widget, Widget.omitKeys), options)
@@ -252,7 +252,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    copyWidget(widget:Widget) {
+    copyWidget(widget: Widget) {
         let options = this.getRequestOptions();
         return this.http
             .post(`${widget.url}copy/`, JSON.stringify(widget, Widget.omitKeys), options)
@@ -261,7 +261,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    resetWidget(widget:Widget) {
+    resetWidget(widget: Widget) {
         let options = this.getRequestOptions();
         return this.http
             .post(`${widget.url}reset/`, '', options)
@@ -270,7 +270,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    runWidget(widget:Widget, interact:boolean) {
+    runWidget(widget: Widget, interact: boolean) {
         let options = this.getRequestOptions();
         let interactFlag = interact ? 1 : 0;
         return this.http
@@ -280,7 +280,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    deleteWidget(widget:Widget) {
+    deleteWidget(widget: Widget) {
         let options = this.getRequestOptions();
         options.body = '';
         return this.http
@@ -290,7 +290,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    saveWidgetPosition(widget:Widget) {
+    saveWidgetPosition(widget: Widget) {
         let options = this.getRequestOptions();
         return this.http
             .patch(widget.url, JSON.stringify({url: widget.url, x: widget.x, y: widget.y}), options)
@@ -299,9 +299,9 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    saveParameters(widget:Widget) {
+    saveParameters(widget: Widget) {
         let options = this.getRequestOptions();
-        let parameters:any[] = [];
+        let parameters: any[] = [];
         for (var param of widget.parameters) {
             if (param.parameter_type == 'file') {
                 continue;
@@ -318,7 +318,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    saveWidgetConfiguration(widget:Widget, data:any) {
+    saveWidgetConfiguration(widget: Widget, data: any) {
         let options = this.getRequestOptions();
         var configData = {
             inputs: Array<any>(),
@@ -326,13 +326,13 @@ export class ClowdFlowsDataService {
             outputs: Array<any>(),
             benchmark: data.benchmark
         };
-        data.inputs.forEach((input:WidgetInput, order:number) => {
+        data.inputs.forEach((input: WidgetInput, order: number) => {
             configData.inputs.push(input.id);
         });
-        data.parameters.forEach((input:WidgetInput, order:number) => {
+        data.parameters.forEach((input: WidgetInput, order: number) => {
             configData.parameters.push(input.id);
         });
-        data.outputs.forEach((output:WidgetOutput, order:number) => {
+        data.outputs.forEach((output: WidgetOutput, order: number) => {
             configData.outputs.push(output.id);
         });
         return this.http
@@ -342,7 +342,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    createConnection(connectionData:any) {
+    createConnection(connectionData: any) {
         let options = this.getRequestOptions();
         return this.http
             .post(`${API_ENDPOINT}${this.connectionsUrl}`, JSON.stringify(connectionData), options)
@@ -351,7 +351,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    fetchOutputValue(output:WidgetOutput) {
+    fetchOutputValue(output: WidgetOutput) {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
         options.body = '';
@@ -361,7 +361,7 @@ export class ClowdFlowsDataService {
             .then(response => response.json());
     }
 
-    deleteConnection(conn:Connection) {
+    deleteConnection(conn: Connection) {
         let options = this.getRequestOptions();
         options.body = '';
         return this.http
@@ -371,7 +371,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    importWebservice(wsdlAddr:string) {
+    importWebservice(wsdlAddr: string) {
         let options = this.getRequestOptions();
         let data = {wsdl: wsdlAddr};
         return this.http
@@ -381,7 +381,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    importWorkflow(workflowData:string) {
+    importWorkflow(workflowData: string) {
         let options = this.getRequestOptions();
         let data = {data: workflowData};
         return this.http
@@ -391,7 +391,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    exportWorkflow(workflowId:number) {
+    exportWorkflow(workflowId: number) {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
         options.body = '';
@@ -401,11 +401,23 @@ export class ClowdFlowsDataService {
             .then(response => response.json());
     }
 
-    workflowUpdates(onUpdateCallback:any, workflow:Workflow) {
+    workflowUpdates(onUpdateCallback: any, workflow: Workflow) {
+        let editor = this;
         let domain = window.location.hostname == 'localhost' ? DOMAIN : window.location.hostname;
         let socket = new WebSocket(`ws://${domain}/workflow-updates/?workflow_pk=${workflow.id}`);
         socket.onmessage = function (e) {
             onUpdateCallback(JSON.parse(e.data));
+        };
+        socket.onopen = function (e) {
+            editor.loggerService.success('Successfully connected to server.');
+        };
+        socket.onclose = function () {
+            // Try to reconnect in 5 seconds
+            socket = null;
+            editor.loggerService.warning('Lost connection, attempting to reconnect in 5 seconds...');
+            setTimeout(function () {
+                editor.workflowUpdates(onUpdateCallback, workflow);
+            }, 5000);
         }
     }
 
@@ -467,7 +479,7 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getWidgetStreamVisualization(id: number):Promise<Response> {
+    getWidgetStreamVisualization(id: number): Promise<Response> {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
         options.body = '';
