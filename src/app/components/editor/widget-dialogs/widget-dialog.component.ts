@@ -160,6 +160,16 @@ function getFormResults(formElement:any) {
                     formParams[elem.name] = setOrPush(formParams[elem.name], elem.value);
                 }
                 break;
+            case 'select-multiple':
+                let options = elem.options;
+                let values = [];
+                for (let j = 0; j < options.length; j++) {
+                    if (options[j].selected) {
+                        values.push(options[j].value);
+                    }
+                }
+                formParams[elem.name] = values;
+                break;
             default:
                 formParams[elem.name] = setOrPush(formParams[elem.name], elem.value);
         }
