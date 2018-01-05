@@ -173,6 +173,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     saveWidget(widget:Widget) {
+        let activeWorkflow = this.activeWorkflow;
         this.clowdflowsDataService
             .saveWidget(widget)
             .then((data) => {
@@ -181,6 +182,10 @@ export class EditorComponent implements OnInit, OnDestroy {
                     if (widget.workflow_link in this.loadedSubprocesses) {
                         let workflow = this.loadedSubprocesses[widget.workflow_link];
                         workflow.name = widget.name;
+                    }
+                } else if (widget.type == 'input' || widget.type == 'output') {
+                    if (activeWorkflow.subprocessWidget) {
+                        this.updateWidget(activeWorkflow.subprocessWidget);
                     }
                 }
             });
