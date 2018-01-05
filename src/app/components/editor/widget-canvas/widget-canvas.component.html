@@ -54,6 +54,11 @@
                    *ngIf="widget.save_results"
                    [attr.x]="ui_constants.signalWidth + ui_constants.widgetBoxWidth - 15"
                    xlink:href="/public/images/save_results.svg"/>
+            <image class="widget-can-interact-icon"
+                   y="1"
+                   *ngIf="widget.can_interact"
+                   [attr.x]="ui_constants.signalWidth + 2"
+                   xlink:href="/public/images/hand-o-pointer.svg"/>
             <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle"
                   (dblclick)="showRenameDialog(widget)">
                 <tspan>{{widget.name}}</tspan>

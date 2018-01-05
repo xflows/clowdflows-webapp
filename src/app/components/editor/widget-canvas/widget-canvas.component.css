@@ -69,6 +69,11 @@
   width: 13px;
   height: 17px;
 }
+#widget-canvas .widget .widget-can-interact-icon {
+  opacity: 0.5;
+  width: 13px;
+  height: 17px;
+}
 #widget-canvas .widget image {
   pointer-events: none;
 }
