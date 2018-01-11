@@ -53,7 +53,7 @@
                     </ng-template>
                 </td>
                 <td><a [routerLink]="['/editor/', workflow.id]">Edit</a> |
-                    <a href="">Open as new</a> |
+                    <a [routerLink]="" (click)="copyWorkflow(workflow)">Open as new</a> |
                     <a href="">Delete</a> |
                     <a href="" ng-if="!workflow.public">Make public</a> <a href="" ng-if="workflow.public">Make
                         private</a> |

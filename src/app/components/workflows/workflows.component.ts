@@ -63,4 +63,18 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
                 }
             });
     }
+
+    copyWorkflow(workflow: Workflow) {
+        console.log(workflow)
+        this.clowdflowsDataService
+            .copyWorkflow(workflow)
+            .then((data:any) => {
+                let error = this.loggerService.reportMessage(data);
+                if (!error) {
+                    this.router.navigate(['/editor', data.id]);
+                }
+            });
+
+
+    }
 }

@@ -18,7 +18,7 @@
                                     aria-hidden="true"></i>
                                 Share
                                 link</a>
-                            <a class="btn btn-success btn-sm" href="">Launch (creates a personal copy)</a>
+                            <a class="btn btn-success btn-sm" [routerLink]="" (click)="copyWorkflow(workflow)">Launch (creates a personal copy)</a>
                             <a class="btn btn-default btn-sm" [routerLink]="['/editor/', workflow.id]"
                                *ngIf="workflow.user.username == userService.getUsername()">Edit</a>
                         </p>
@@ -45,7 +45,7 @@
                                                                                                     aria-hidden="true"></i>
                         Share
                         link</a>
-                    <a class="btn btn-success btn-sm" href="">Launch (creates a personal copy)</a>
+                    <a class="btn btn-success btn-sm" [routerLink]="" (click)="copyWorkflow(workflow)">Launch (creates a personal copy)</a>
                     <a class="btn btn-default btn-sm" [routerLink]="['/editor/', workflow.id]"
                        *ngIf="workflow.user.username == userService.getUsername()">Edit</a>
                 </p>

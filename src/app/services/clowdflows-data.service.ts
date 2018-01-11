@@ -69,6 +69,15 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    copyWorkflow(workflow: Workflow) {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${workflow.url}copy/`, {} , options)
+            .toPromise()
+            .then(response => response.json())
+            .catch(error => this.handleError(error));
+    }
+
     saveWorkflowInfo(workflow: Workflow) {
         let options = this.getRequestOptions();
         let workflowData: any = {

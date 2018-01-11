@@ -80,7 +80,9 @@
                 <h4 class="modal-title">Save workflow properties</h4>
             </div>
             <div class="modal-body">
-                <form #workflowProperties="ngForm" (onSubmit)="saveWorkflow()">
+                <form #workflowProperties="ngForm"
+                      (onSubmit)="saveWorkflow()"
+                      (keyup.enter)="saveWorkflow()">
                     <div class="form-group form-group-sm">
                         <label for="workflow-name" class="control-label">Name</label>
                         <input id="workflow-name" type="text" name="workflow-name"
