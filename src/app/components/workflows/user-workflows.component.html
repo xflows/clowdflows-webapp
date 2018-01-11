@@ -21,8 +21,9 @@
         <ng-template ngFor let-workflow [ngForOf]="workflows">
             <tr *ngIf="!workflow.is_subprocess">
                 <td class="name">{{workflow.name}}</td>
-                <td ng-if="workflow.public"><a [routerLink]="['/workflow/', workflow.id]">{{base_url}}/workflow/{{workflow.id}}</a>
-                    <ng-template ng-if="!workflow.public">This workflow is private</ng-template>
+                <td>
+                    <a *ngIf="workflow.public" [routerLink]="['/workflow/', workflow.id]">{{base_url}}/workflow/{{workflow.id}}</a>
+                    <ng-template [ngIf]="!workflow.public">This workflow is private</ng-template>
                 </td>
                 <td>
                     <ng-template [ngIf]="workflow.can_be_streaming">
@@ -55,8 +56,8 @@
                 <td><a [routerLink]="['/editor/', workflow.id]">Edit</a> |
                     <a [routerLink]="" (click)="copyWorkflow(workflow)">Open as new</a> |
                     <a href="">Delete</a> |
-                    <a href="" ng-if="!workflow.public">Make public</a> <a href="" ng-if="workflow.public">Make
-                        private</a> |
+                    <a href="" *ngIf="!workflow.public">Make public</a>
+                    <a href="" *ngIf="workflow.public">Make private</a> |
                     <a [routerLink]="['/export-workflow/', workflow.id]">Export to JSON</a>
                 </td>
             </tr>
