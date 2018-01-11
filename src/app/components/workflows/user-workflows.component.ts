@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {WorkflowsComponent} from "./workflows.component";
 import {Workflow} from "../../models/workflow";
 import {ClowdFlowsDataService} from "../../services/clowdflows-data.service";
@@ -15,18 +15,18 @@ import {LoggerService} from "../../services/logger.service";
 })
 export class UserWorkflowsComponent extends WorkflowsComponent {
 
-    title:string = 'Your workflows';
+    title: string = 'Your workflows';
 
-    constructor(domSanitizer:DomSanitizer,
-                clowdflowsDataService:ClowdFlowsDataService,
-                route:ActivatedRoute,
-                router:Router,
-                userService:UserService,
-                loggerService:LoggerService) {
+    constructor(domSanitizer: DomSanitizer,
+                clowdflowsDataService: ClowdFlowsDataService,
+                route: ActivatedRoute,
+                router: Router,
+                userService: UserService,
+                loggerService: LoggerService) {
         super(domSanitizer, clowdflowsDataService, route, router, userService, loggerService);
     }
 
-    ngOnInit():void {
+    ngOnInit(): void {
         this.clowdflowsDataService.getUserWorkflows()
             .then(workflows => {
                 this.workflows = <Workflow[]> workflows;
@@ -39,4 +39,10 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
                 this.router.navigate(['streams', data.stream_id]);
             });
     }
+
+    toggleWorkflowVisibility(workflow: Workflow) {
+        workflow.is_public = !workflow.is_public
+        this.clowdflowsDataService.saveWorkflowInfo(workflow);
+    }
+
 }
