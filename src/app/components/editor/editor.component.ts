@@ -369,6 +369,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     private deleteConnectionReference(connection:Connection) {
+        connection.input.connection = null;
+        connection.output.connection = null;
         let workflow = connection.workflow;
         let idx = workflow.connections.indexOf(connection);
         workflow.connections.splice(idx, 1);
