@@ -10,6 +10,7 @@
     <tab *ngFor="let workflow of workflows"
             [heading]="workflow.name"
             [active]="workflow.active"
+            [removable]="true"
             (select)="switchToWorkflowTab(workflow)">
         <widget-canvas [workflow]="workflow"
                        (addConnectionRequest)="addConnection($event)"

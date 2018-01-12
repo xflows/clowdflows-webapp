@@ -494,6 +494,13 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.widgetTreeComponent.updateRecommendation(widgetRecommendation);
     }
 
+    _clearTabs() {
+        while(this.workflows.length > 0) {
+            this.workflows.splice(0, 1);
+            console.log(this.workflows.length)
+        }
+    }
+
     ngOnInit() {
         this.sub = this.route.params.subscribe((params:Params) => {
             this.tutorial = this.route.snapshot.data[0]['tutorial'];
@@ -505,7 +512,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                     for (let workflow of this.workflows) {
                         workflow.active = false;
                     }
-                    this.workflows = [];  // Clear workflow tabs on load
+                    this._clearTabs(); // Clear workflow tabs on load
                     this.workflow = Workflow.createFromJSON(data);
                     this.workflows.push(this.workflow);
                     this.switchToWorkflowTab(this.workflow);
