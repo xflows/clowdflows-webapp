@@ -14,6 +14,7 @@ import {specialWidgetNames} from '../../services/special-widgets';
 import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
+import {TabsetComponent} from "ng2-bootstrap";
 
 @Component({
     selector: 'editor',
@@ -23,6 +24,7 @@ import {WidgetLibraryService} from "../../services/widget-library.service";
 export class EditorComponent implements OnInit, OnDestroy {
     @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent;
     @ViewChild(WidgetTreeComponent) widgetTreeComponent: WidgetTreeComponent;
+    @ViewChild(TabsetComponent) tabsetComponent: TabsetComponent;
     workflow:any = {};
     workflows:Workflow[] = [];
     userWorkflows:Workflow[] = [];
@@ -495,9 +497,12 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     _clearTabs() {
-        while(this.workflows.length > 0) {
-            this.workflows.splice(0, 1);
-            console.log(this.workflows.length)
+        this.workflows = [];
+
+        // NOTE This is a workaround - here we manually remove any open tabs
+        let tabs = this.tabsetComponent.tabs;
+        while (tabs.length > 0) {
+            tabs.pop()
         }
     }
 
