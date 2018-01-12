@@ -276,7 +276,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             .getWidget(widget.id)
             .then((data) => {
                 let newWidget:Widget = Widget.createFromJSON(data, workflow);
-                for (let conn of this.workflow.connections.filter((c:Connection) => c.input_widget.url == newWidget.url)) {
+                for (let conn of workflow.connections.filter((c:Connection) => c.input_widget.url == newWidget.url)) {
                     let input = newWidget.inputs.find((i:Input) => conn.input.url == i.url);
                     if (!input) {
                         this.deleteConnectionReference(conn);
@@ -284,7 +284,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                         conn.updateInputWidgetRef(newWidget, input.url);
                     }
                 }
-                for (let conn of this.workflow.connections.filter((c:Connection) => c.output_widget.url == newWidget.url)) {
+                for (let conn of workflow.connections.filter((c:Connection) => c.output_widget.url == newWidget.url)) {
                     let output = newWidget.outputs.find((o:Output) => conn.output.url == o.url);
                     if (!output) {
                         this.deleteConnectionReference(conn);
@@ -353,7 +353,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     deleteConnection(connection:Connection, widgetDelete = false) {
-        let workflow = connection.workflow;
         let updateInputs = connection.input.multi_id != 0 && !widgetDelete;
         return this.clowdflowsDataService
             .deleteConnection(connection)
@@ -476,9 +475,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .visualizeWidget(widget)
             .then((response) => {
-                console.log('setting visualization html yo');
                 widget.visualizationHtml = response.text();
-                console.log('finished');
                 widget.showVisualizationDialog = true;
             });
     }
