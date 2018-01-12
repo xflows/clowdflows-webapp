@@ -508,6 +508,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.sub = this.route.params.subscribe((params:Params) => {
             this.tutorial = this.route.snapshot.data[0]['tutorial'];
+            this.loggerService.clear();  // Clear old messages
             // Fetch the current workflow
             let id = +params['id'];
             this.clowdflowsDataService.getWorkflow(id)
