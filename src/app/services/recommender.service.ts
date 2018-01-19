@@ -4,6 +4,9 @@ import {ClowdFlowsDataService} from "./clowdflows-data.service";
 import {Widget} from "../models/widget";
 import {AbstractWidget} from "../models/abstract-widget";
 import {WidgetLibraryService} from "./widget-library.service";
+import {CanvasElement} from "../models/canvas-element";
+import {Input} from "../models/input";
+import {Output} from "../models/output";
 
 
 @Injectable()
@@ -50,32 +53,68 @@ export class RecommenderService {
         }
         return recommendation;
     }
+    getRecommendation(ce: CanvasElement): WidgetRecommendation {
+        if (ce != null) {
+            switch (ce.constructor){
+                case Widget:
+                    return this.getRecommendationForWidget(ce as Widget)
+                case Input:
+                    return this.getRecommendationForInput(ce as Input)
+                case Output:
+                    return this.getRecommendationForOutput(ce as Output)
+            }
+        }
+    }
 
     // Get a recommendation object, containing recommended abstract input ids and output ids
-    getRecommendation(widget: Widget): WidgetRecommendation {
+    getRecommendationForWidget(widget: Widget): WidgetRecommendation {
         let abstractOutputIds = new Collections.Set<number>();
         let abstractInputIds = new Collections.Set<number>();
 
-        if (widget != null) {
-            for (let input_obj of widget.inputs) {
-                if (!input_obj.abstract_input_id) {
-                    continue;
-                }
-                for (let abstract_output_id of this.recommendOutputs(input_obj.abstract_input_id)) {
-                    abstractOutputIds.add(abstract_output_id);
-                }
+        for (let input_obj of widget.inputs) {
+            if (!input_obj.abstract_input_id) {
+                continue;
             }
-            for (let output_obj of widget.outputs) {
-                if (!output_obj.abstract_output_id) {
-                    continue;
-                }
-                for (let abstract_input_id of this.recommendInputs(output_obj.abstract_output_id)) {
-                    abstractInputIds.add(abstract_input_id);
-                }
+            for (let abstract_output_id of this.recommendOutputs(input_obj.abstract_input_id)) {
+                abstractOutputIds.add(abstract_output_id);
             }
         }
+        for (let output_obj of widget.outputs) {
+            if (!output_obj.abstract_output_id) {
+                continue;
+            }
+            for (let abstract_input_id of this.recommendInputs(output_obj.abstract_output_id)) {
+                abstractInputIds.add(abstract_input_id);
+            }
+        }
+
         return new WidgetRecommendation(this, abstractOutputIds, abstractInputIds);
     }
+
+    // Get a recommendation object, containing recommended abstract input ids and output ids
+    getRecommendationForInput(input: Input): WidgetRecommendation {
+        let abstractOutputIds = new Collections.Set<number>();
+        let abstractInputIds = new Collections.Set<number>();
+
+        for (let abstract_output_id of this.recommendOutputs(input.abstract_input_id)) {
+            abstractOutputIds.add(abstract_output_id);
+        }
+
+        return new WidgetRecommendation(this, abstractOutputIds, abstractInputIds);
+    }
+
+    // Get a recommendation object, containing recommended abstract input ids and output ids
+    getRecommendationForOutput(output: Output): WidgetRecommendation {
+        let abstractOutputIds = new Collections.Set<number>();
+        let abstractInputIds = new Collections.Set<number>();
+
+        for (let abstract_input_id of this.recommendInputs(output.abstract_output_id)) {
+            abstractInputIds.add(abstract_input_id);
+        }
+
+        return new WidgetRecommendation(this, abstractOutputIds, abstractInputIds);
+    }
+
 }
 
 export class WidgetRecommendation {

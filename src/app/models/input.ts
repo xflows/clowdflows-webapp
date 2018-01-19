@@ -1,9 +1,9 @@
 import {Option} from "./option";
 import {Widget} from "./widget";
 import {Connection} from "./connection";
-export class Input {
+import {CanvasElement} from "./canvas-element";
 
-    public selected:boolean = false;
+export class Input extends CanvasElement{
     public connection:Connection = null;
 
     constructor(
@@ -25,7 +25,7 @@ export class Input {
         public options:Option[],
         public widget:Widget
     ) {
-
+        super()
     }
 
     get x():number {

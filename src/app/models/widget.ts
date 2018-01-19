@@ -3,8 +3,9 @@ import {Input} from "./input";
 import {UI} from "../services/ui-constants"
 import {Workflow} from "./workflow";
 import {SafeHtml} from "@angular/platform-browser";
+import {CanvasElement} from "./canvas-element";
 
-export class Widget {
+export class Widget extends CanvasElement{
 
     inputs:Input[];
     parameters:Input[];
@@ -16,7 +17,6 @@ export class Widget {
     showInteractionDialog:boolean = false;
     showInputDesignation:boolean = false;
     showHelp:boolean = false;
-    selected:boolean = false;
 
     hasBenchmark:boolean = false;
 
@@ -54,6 +54,7 @@ export class Widget {
         public recommended_inputs:Array<string>,
         public recommended_outputs:Array<string>
     ){
+        super()
         // Keep proper inputs and parameters separately
         this.inputs = new Array<Input>();
         this.parameters = new Array<Input>();

@@ -436,7 +436,7 @@ export class ClowdFlowsDataService {
         return this.http
             .get(`${API_ENDPOINT}${this.recommenderModelUrl}`, options)
             .toPromise()
-            .then(response => response);
+            .then(response => response.json());
     }
 
     // Streams:

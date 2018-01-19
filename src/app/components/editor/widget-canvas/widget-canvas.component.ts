@@ -160,9 +160,9 @@ export class WidgetCanvasComponent implements OnInit {
             }
         }
 
-        if (object instanceof Widget) {
-            this.showRecommendationsRequest.emit(<Widget> object);
-        }
+        // if (object instanceof Widget) {
+        this.showRecommendationsRequest.emit(object);
+        // }
     }
 
     newConnection() {

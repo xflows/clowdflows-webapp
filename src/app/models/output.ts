@@ -1,9 +1,10 @@
 import {Widget} from "./widget";
 import {Connection} from "./connection";
-export class Output {
+import {CanvasElement} from "./canvas-element";
+
+export class Output extends CanvasElement{
 
     public value:any = null;
-    public selected:boolean = false;
     public connection:Connection = null;
 
     constructor(
@@ -20,6 +21,7 @@ export class Output {
         public outer_output:string,
         public widget:Widget
     ) {
+        super()
     }
 
     get x():number {

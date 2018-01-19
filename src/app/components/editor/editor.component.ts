@@ -15,6 +15,7 @@ import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
 import {TabsetComponent} from "ng2-bootstrap";
+import {CanvasElement} from "../../models/canvas-element";
 
 @Component({
     selector: 'editor',
@@ -489,8 +490,8 @@ export class EditorComponent implements OnInit, OnDestroy {
             });
     }
 
-    updateRecommendation(recommendWidget:Widget) {
-        this.recommendWidget = recommendWidget;
+    updateRecommendation(recommendWidget:CanvasElement) {
+        // this.recommendWidget = recommendWidget;
         let widgetRecommendation = this.recommenderService.getRecommendation(recommendWidget);
         this.widgetTreeComponent.updateRecommendation(widgetRecommendation);
     }
