@@ -65,7 +65,6 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
     }
 
     copyWorkflow(workflow: Workflow) {
-        console.log(workflow)
         this.clowdflowsDataService
             .copyWorkflow(workflow)
             .then((data:any) => {

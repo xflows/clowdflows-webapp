@@ -45,4 +45,13 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
         this.clowdflowsDataService.saveWorkflowInfo(workflow);
     }
 
+    deleteWorkflow(workflow: Workflow) {
+        this.clowdflowsDataService
+            .deleteWorkflow(workflow)
+            .then( ()=> {
+                let index = this.workflows.findIndex(w => w.id === workflow.id);
+                this.workflows.splice(index, 1);//remove element from array
+            });
+    }
+
 }

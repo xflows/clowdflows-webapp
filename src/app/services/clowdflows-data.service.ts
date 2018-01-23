@@ -430,6 +430,18 @@ export class ClowdFlowsDataService {
         }
     }
 
+    deleteWorkflow(workflow: Workflow) {
+        let options = this.getRequestOptions();
+        options.body = '';
+        return this.http
+            .delete(workflow.url, options)
+            .toPromise()
+            .then(response => response)
+            .catch(error => this.handleError(error));
+    }
+
+
+
     getRecommenderModel() {
         let options = this.getRequestOptions();
         options.body = '';
