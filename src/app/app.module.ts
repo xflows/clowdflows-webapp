@@ -9,6 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {AlertModule, CarouselModule} from "ng2-bootstrap";
 import {routing} from './app.routing';
 import {LoginComponent} from "./components/login/login.component";
+import {ForgotPasswordComponent} from "./components/login/forgot_password.component";
 import {HomeComponent} from "./components/home/home.component";
 import {ClowdFlowsDataService} from './services/clowdflows-data.service';
 import {EditorModule} from "./components/editor/editor.module";
@@ -24,6 +25,7 @@ import {StreamComponent} from "./components/streams/stream.component";
 import {StreamingWidgetComponent} from "./components/streams/streaming-widget.component";
 import {SanitizeModule} from "./pipes/sanitize.module";
 import {EqualValidator} from "./directives/validateEqual.directive";
+import {PasswordResetComponent} from "./components/login/password_reset.component";
 
 @NgModule({
     imports: [
@@ -40,6 +42,8 @@ import {EqualValidator} from "./directives/validateEqual.directive";
         AppComponent,
         HomeComponent,
         LoginComponent,
+        ForgotPasswordComponent,
+        PasswordResetComponent,
         FooterComponent,
         WorkflowsComponent,
         UserWorkflowsComponent,

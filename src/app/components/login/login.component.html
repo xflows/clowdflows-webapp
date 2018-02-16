@@ -57,7 +57,8 @@
                     <label for="password">Password</label>
                     <input id="password" type="password" class="form-control" required name="password"
                            placeholder="Password" [(ngModel)]="loginCredentials.password">
-                    <a href="">Forgot your password?</a>
+                    <a [routerLink]="['/forgot-password']" >Forgot your password?</a>
+
                 </div>
                 <div class="checkbox">
                     <label>

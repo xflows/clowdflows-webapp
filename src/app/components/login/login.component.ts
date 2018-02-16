@@ -29,32 +29,26 @@ export class LoginComponent {
     attemptLogin() {
         this.userService
             .login(this.loginCredentials.username, this.loginCredentials.password)
-            .subscribe(
-                (result) => {
-                    if (result.status == 'ok') {
-                        this.router.navigate(['']);
-                        this.loginError = '';
-                    } else if (result.status == 'error') {
-                        this.loginError = result.message;
-                    } else {
-                        this.loginError = 'Something went wrong'
-                    }
+            .subscribe((result) => {
+                if (result.status == 200) {
+                    this.router.navigate(['']);
+                    this.loginError = '';
+                } else {
+                    this.loginError = result.errorText
+                }
             });
     }
 
     attemptRegistration() {
         this.userService
             .register(this.registrationData.username, this.registrationData.password, this.registrationData.email)
-            .subscribe(
-                (result) => {
-                    if (result.status == 'ok') {
-                        this.router.navigate(['']);
-                        this.registrationError = '';
-                    } else if (result.status == 'error') {
-                        this.registrationError = result.message;
-                    } else {
-                        this.registrationError = 'Something went wrong'
-                    }
-                });
+            .subscribe((result) => {
+                if (result.status == 200) {
+                    this.router.navigate(['']);
+                    this.registrationError = '';
+                } else {
+                    this.registrationError = result.errorText
+                }
+            });
     }
 }
