@@ -4,8 +4,8 @@ import {AbstractControl} from '@angular/forms';
 import {UserService} from "../../services/user.service";
 
 @Component({
-    selector: 'password_reset',
-    template: require('./password_reset.component.html')
+    selector: 'password-reset',
+    template: require('./password-reset.component.html')
 })
 export class PasswordResetComponent {
     uid: string

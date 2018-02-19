@@ -10,8 +10,8 @@ import {ImportWorkflowComponent} from "./components/import-export/import-workflo
 import {ExportWorkflowComponent} from "./components/import-export/export-workflow.component";
 import {StreamComponent} from "./components/streams/stream.component";
 import {StreamingWidgetComponent} from "./components/streams/streaming-widget.component";
-import {ForgotPasswordComponent} from "./components/login/forgot_password.component";
-import {PasswordResetComponent} from "./components/login/password_reset.component";
+import {ForgotPasswordComponent} from "./components/login/forgot-password.component";
+import {PasswordResetComponent} from "./components/login/password-reset.component";
 
 export const routes: Routes = [
     {

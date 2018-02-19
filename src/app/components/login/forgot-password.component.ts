@@ -4,8 +4,8 @@ import {AbstractControl} from '@angular/forms';
 import {UserService} from "../../services/user.service";
 
 @Component({
-    selector: 'forgot_password',
-    template: require('./forgot_password.component.html')
+    selector: 'forgot-password',
+    template: require('./forgot-password.component.html')
 })
 export class ForgotPasswordComponent {
 
