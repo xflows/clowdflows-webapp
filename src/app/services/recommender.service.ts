@@ -30,28 +30,27 @@ export class RecommenderService {
 
     // Recommend output ids for the given input id
     recommendOutputs(abstract_input_id: number): number[] {
-        let id = abstract_input_id.toString();
-        let recommendation: number[];
-        if (this.recommenderModel && 'recomm_for_abstract_input_id' in this.recommenderModel) {
-            recommendation = this.recommenderModel['recomm_for_abstract_input_id'][id];
+        let recommendations: number[];
+
+        if (abstract_input_id){ //handle inputs without an abstract input, such as inputs for subprocesses, etc.
+            let id = abstract_input_id.toString();
+            if (this.recommenderModel && 'recomm_for_abstract_input_id' in this.recommenderModel) {
+                recommendations = this.recommenderModel['recomm_for_abstract_input_id'][id];
+            }
         }
-        if (!recommendation) {
-            recommendation = [];
-        }
-        return recommendation;
+        return recommendations || [];
     }
 
     // Recommend input ids for the given output id
     recommendInputs(abstract_output_id: number): number[] {
-        let id = abstract_output_id.toString();
-        let recommendation: number[];
-        if (this.recommenderModel && 'recomm_for_abstract_output_id' in this.recommenderModel) {
-            recommendation = this.recommenderModel['recomm_for_abstract_output_id'][id];
+        let recommendations: number[];
+        if (abstract_output_id){ //handle outputs without an abstract output, such as outputs for subprocesses, etc.
+            let id = abstract_output_id.toString();
+            if (this.recommenderModel && 'recomm_for_abstract_output_id' in this.recommenderModel) {
+                recommendations = this.recommenderModel['recomm_for_abstract_output_id'][id];
+            }
         }
-        if (!recommendation) {
-            recommendation = [];
-        }
-        return recommendation;
+        return recommendations || [];
     }
     getRecommendation(ce: CanvasElement): WidgetRecommendation {
         if (ce != null) {
@@ -72,17 +71,11 @@ export class RecommenderService {
         let abstractInputIds = new Collections.Set<number>();
 
         for (let input_obj of widget.inputs) {
-            if (!input_obj.abstract_input_id) {
-                continue;
-            }
             for (let abstract_output_id of this.recommendOutputs(input_obj.abstract_input_id)) {
                 abstractOutputIds.add(abstract_output_id);
             }
         }
         for (let output_obj of widget.outputs) {
-            if (!output_obj.abstract_output_id) {
-                continue;
-            }
             for (let abstract_input_id of this.recommendInputs(output_obj.abstract_output_id)) {
                 abstractInputIds.add(abstract_input_id);
             }
