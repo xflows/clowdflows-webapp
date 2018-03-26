@@ -522,8 +522,24 @@ export class EditorComponent implements OnInit, OnDestroy {
                     this.workflow = Workflow.createFromJSON(data);
                     this.workflows.push(this.workflow);
                     this.switchToWorkflowTab(this.workflow);
-                    this.clowdflowsDataService.workflowUpdates((data:any) => {
-                        this.receiveWorkflowUpdate(data);
+                    this.clowdflowsDataService.editorUpdates((data:any) => {
+                        // console.log(data);
+
+                        switch(data.type) {
+                            case "logMessage": {
+                                this.loggerService.receiveLogMessage(data)
+                                break;
+                            }
+                            case "widget": {
+                                this.receiveWorkflowUpdate(data);
+                                break;
+                            }
+                            default: {
+                                //statements;
+                                break;
+                            }
+                        }
+
                     }, this.workflow);
 
                     this.loggerService.success("Successfully loaded workflow.");

@@ -410,10 +410,10 @@ export class ClowdFlowsDataService {
             .then(response => response.json());
     }
 
-    workflowUpdates(onUpdateCallback: any, workflow: Workflow) {
+    editorUpdates(onUpdateCallback: any, workflow: Workflow) {
         let editor = this;
         let domain = window.location.hostname == 'localhost' ? DOMAIN : window.location.hostname;
-        let socket = new WebSocket(`ws://${domain}/workflow-updates/?workflow_pk=${workflow.id}`);
+        let socket = new WebSocket(`ws://${domain}/editor-updates/?workflow_pk=${workflow.id}`);
         socket.onmessage = function (e) {
             onUpdateCallback(JSON.parse(e.data));
         };
@@ -425,7 +425,7 @@ export class ClowdFlowsDataService {
             socket = null;
             editor.loggerService.warning('Lost connection, attempting to reconnect in 5 seconds...');
             setTimeout(function () {
-                editor.workflowUpdates(onUpdateCallback, workflow);
+                editor.editorUpdates(onUpdateCallback, workflow);
             }, 5000);
         }
     }
