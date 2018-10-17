@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, HostListener} from '@angular/core';
 import {ActivatedRoute, Router, Params} from '@angular/router';
 import {WidgetCanvasComponent} from "./widget-canvas/widget-canvas.component";
 import {AbstractWidget} from "../../models/abstract-widget";
@@ -31,10 +31,45 @@ export class EditorComponent implements OnInit, OnDestroy {
     userWorkflows:Workflow[] = [];
     sub:any;
 
+	resizeComp:any = {width: {open: true}, height: {height: 100, oldY: 0}, grabber: false}
+
+	@HostListener('document:mousemove', ['$event'])
+	onMouseMove(event: MouseEvent) {
+		if (!this.resizeComp.grabber) {
+		    return;
+		}
+		  this.resizerY(event.clientY - this.resizeComp.height.oldY);
+		  this.resizeComp.height.oldY = event.clientY;
+	}
+
+	@HostListener('document:mouseup', ['$event'])
+	onMouseUp(event: MouseEvent) {
+		if (event.target["classList"].contains("grabber"))
+		  this.resizeComp.grabber = false;
+	}
+
+	resizerY(offsetY: number) {
+		this.resizeComp.height.height -= offsetY;
+	}
+
+
+	@HostListener('document:mousedown', ['$event'])
+	onMouseDown(event: MouseEvent) {
+		if (event.target["classList"].contains("grabber-active")) {
+		  this.resizeComp.grabber = true;
+		    this.resizeComp.height.oldY = event.clientY;
+		}
+	}
+
     tutorial:boolean = false;
     loadedSubprocesses:any = {};
     activeWorkflow:Workflow = null;
     recommendWidget:Widget = null;
+
+	removeWorkflowTab(workflow){
+		let index = this.workflows.indexOf(workflow);
+  		this.workflows.splice(index, 1);
+	}
 
     constructor(private domSanitizer:DomSanitizer,
                 private clowdflowsDataService:ClowdFlowsDataService,

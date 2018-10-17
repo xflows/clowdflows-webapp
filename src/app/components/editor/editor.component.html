@@ -4,32 +4,52 @@
          (createWorkflowRequest)="createWorkflow()"
          (saveWorkflowRequest)="saveWorkflow($event)">
 </toolbar>
-<widget-tree (addWidgetRequest)="addWidget($event)">
-</widget-tree>
-<tabset id="editor-tabs">
-    <tab *ngFor="let workflow of workflows"
-            [heading]="workflow.name"
-            [active]="workflow.active"
-            [removable]="true"
-            (select)="switchToWorkflowTab(workflow)">
-        <widget-canvas [workflow]="workflow"
-                       (addConnectionRequest)="addConnection($event)"
-                       (deleteConnectionRequest)="deleteConnection($event)"
-                       (saveWidgetRequest) = "saveWidget($event)"
-                       (saveWidgetPositionRequest) = "saveWidgetPosition($event)"
-                       (deleteWidgetRequest) = "deleteWidget($event)"
-                       (resetWidgetRequest) = "resetWidget($event)"
-                       (resetWorkflowRequest) = "resetWorkflow($event)"
-                       (copyWidgetRequest) = "copyWidget($event)"
-                       (runWidgetRequest) = "runWidget($event)"
-                       (runAndInteractWidgetRequest)="runWidget($event, true)"
-                       (continueRunWorkflowRequest)="continueRunWorkflow($event)"
-                       (fetchOutputResultsRequest)="fetchOutputValue($event)"
-                       (openSubprocessRequest)="openSubprocess($event)"
-                       (saveWidgetConfigurationRequest)="saveWidgetConfiguration($event)"
-                       (showRecommendationsRequest)="updateRecommendation($event)">
-        </widget-canvas>
-    </tab>
-</tabset>
-<logging [messages]="loggerService.messages"></logging>
+
+<div class="holder">
+	<div class="holder-col-1" [style.width.px]='resizeComp.width.width' [class.closed] = "!resizeComp.width.open">
+		<div class="content">
+			<widget-tree (addWidgetRequest)="addWidget($event)">
+			</widget-tree>
+		</div>
+		<div class="grabber grabber-vertical" style="display: inline-block"><span class="widget-tree-holder-span" (click)="resizeComp.width.open = !resizeComp.width.open" [class.widget-tree-holder-span-closed] = "!resizeComp.width.open" title="Toggle widget menu"></span></div>
+    </div>
+	<div class="holder-col-2">
+		<div class="holder-col-2-flex">
+  		<div class="holder-col-2-row-1">
+			<tabset id="editor-tabs">
+				<tab *ngFor="let workflow of workflows"
+						[heading]="workflow.name"
+						[active]="workflow.active"
+						[removable]="true"
+						(removed)="removeWorkflowTab(workflow)"
+						(select)="switchToWorkflowTab(workflow)">
+					<widget-canvas [workflow]="workflow"
+						           (addConnectionRequest)="addConnection($event)"
+						           (deleteConnectionRequest)="deleteConnection($event)"
+						           (saveWidgetRequest) = "saveWidget($event)"
+						           (saveWidgetPositionRequest) = "saveWidgetPosition($event)"
+						           (deleteWidgetRequest) = "deleteWidget($event)"
+						           (resetWidgetRequest) = "resetWidget($event)"
+						           (resetWorkflowRequest) = "resetWorkflow($event)"
+						           (copyWidgetRequest) = "copyWidget($event)"
+						           (runWidgetRequest) = "runWidget($event)"
+						           (runAndInteractWidgetRequest)="runWidget($event, true)"
+						           (continueRunWorkflowRequest)="continueRunWorkflow($event)"
+						           (fetchOutputResultsRequest)="fetchOutputValue($event)"
+						           (openSubprocessRequest)="openSubprocess($event)"
+						           (saveWidgetConfigurationRequest)="saveWidgetConfiguration($event)"
+						           (showRecommendationsRequest)="updateRecommendation($event)">
+					</widget-canvas>
+				</tab>
+			</tabset>
+		</div>
+  		<div class="holder-col-2-row-2"  [style.height.px]='resizeComp.height.height'>
+    		<div class="grabber grabber-active"  ></div>
+    		<div class="content">
+    			<logging [messages]="loggerService.messages"></logging>
+    		</div>  
+  		</div>
+	</div>
+	</div>
+</div>
 <tutorial *ngIf="tutorial"></tutorial>

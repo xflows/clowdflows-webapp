@@ -55,8 +55,8 @@ export class WidgetCanvasComponent implements OnInit {
     }
 
     move(position:any, widget:Widget) {
-        widget.x = position.x;
-        widget.y = position.y;
+        widget.x = Math.max(0,position.x);
+        widget.y = Math.max(0,position.y);
 
         this.updateCanvasBounds();
 

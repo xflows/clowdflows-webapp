@@ -1,8 +1,111 @@
 #editor-tabs {
-  position: absolute;
-  top: 102px;
-  left: 300px;
-  right: 0px;
-  bottom: 100px;
-  overflow: auto;
+  overflow: hidden;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+:host /deep/ #editor-tabs > div {
+	flex: 1 1 auto;
+	overflow: auto;
+}
+
+
+tab {
+	height: 100%;
+}
+
+.holder {
+	height: calc(100% - 46px);
+	margin-top: 46px;
+	overflow: hidden;
+	display: flex;
+}
+
+.holder-col-1 {
+	display: inline-block; 
+	height: 100%; 
+	position: relative; 
+	min-width: 9px; 
+	display: flex;
+}
+
+.holder-col-1.closed {
+	width: 9px;
+}
+
+.holder-col-1 .content {
+	display: inline-block;
+	flex: 1;
+	min-width: 0px;
+}
+
+.holder-col-1.closed .content {
+	display: none;
+}
+	
+.holder-col-2 {
+	display: inline-block;
+	flex: 1;
+	overflow: hidden;
+}
+
+.holder-col-2-flex {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.holder-col-2-row-1 {
+	flex: 1 1 auto;
+	overflow: hidden;
+}
+
+.holder-col-2-row-2 {
+   min-height: 9px;
+	flex: 0 0 auto;
+}
+
+.holder-col-2-row-2 .content {
+  min-height: 0px;
+	height: 100%
+}
+
+.grabber{
+   content: '';
+   cursor: row-resize;
+   height: 9px;
+   width: 100%;
+   border-top: 1px solid #222222;
+   overflow: hidden;
+   background-color: #eff0f1;
+}
+
+.grabber-vertical span.widget-tree-holder-span {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: #5d5d5d;
+	padding-right: 2px;
+	padding-left: 2px;
+	color: #eff0f1;
+	cursor: pointer;
+}
+
+.grabber-vertical span.widget-tree-holder-span::after {
+	font-family: FontAwesome;
+	content: "\f104";
+}
+
+.grabber-vertical span.widget-tree-holder-span-closed::after {
+	content: "\f105";
+}
+
+.grabber-vertical {
+  height: 100%;
+	cursor: auto;
+  width: 9px;
+  border-top: 0px;
+	border-right: 1px solid #222222;
+	padding-top: 40vh;
 }

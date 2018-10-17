@@ -1,9 +1,6 @@
 #log {
-  position: absolute;
-  height: 100px;
-  left: 300px;
-  bottom: 0px;
-  right: 0px;
+  position: relative;
+  height: 100%;
   overflow: auto;
   border-top: 1px solid #222;
   font-family: monospace;
