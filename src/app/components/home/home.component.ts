@@ -25,10 +25,15 @@ export class HomeComponent {
         this.clowdflowsDataService
             .createWorkflow(workflowData)
             .then((data:any) => {
-                let error = this.loggerService.reportMessage(data);
-                if (!error) {
-                    this.router.navigate(['/tutorial', data.id]);
-                }
+				if (data) {
+                	let error = this.loggerService.reportMessage(data);
+                	if (!error) {
+                    	this.router.navigate(['/tutorial', data.id]);
+                	}
+				}
+				else {
+					this.router.navigate(['/explore-workflows']);
+				}
             });
     }
 
@@ -43,10 +48,15 @@ export class HomeComponent {
         this.clowdflowsDataService
             .createWorkflow(workflowData)
             .then((data:any) => {
-                let error = this.loggerService.reportMessage(data);
-                if (!error) {
-                    this.router.navigate(['/editor', data.id]);
-                }
+				if (data) {
+                	let error = this.loggerService.reportMessage(data);
+                	if (!error) {
+                    	this.router.navigate(['/editor', data.id]);
+                	}
+				}
+				else {
+					this.router.navigate(['/explore-workflows']);	
+				}
             });
     }
 }
