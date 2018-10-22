@@ -64,6 +64,16 @@ export class WidgetCanvasComponent implements OnInit {
 
     move(position:any, widgetDragged:Widget) {
 
+		let direction_y = "down";
+		let direction_x = "right";
+
+		if (position.y < widgetDragged.y) {
+			direction_y = "up";
+		}
+		if (position.x < widgetDragged.x) {
+			direction_x = "left";
+		}
+
 		let min_x = Infinity;
 		let min_y = Infinity;
 		let max_x = 0;
@@ -106,18 +116,22 @@ export class WidgetCanvasComponent implements OnInit {
 
 		}
 		else {
+			let x_diff = (position.x-widgetDragged.x);
+			let y_diff = (position.y-widgetDragged.y);
 			widgetDragged.x = Math.max(0,position.x);
 			widgetDragged.y = Math.max(0,position.y);
 			max_x = widgetDragged.bounds.x2;
 			max_y = widgetDragged.bounds.y2;
+			min_x = widgetDragged.bounds.x1;
+			min_y = widgetDragged.bounds.y1;
 		}
 
         this.updateCanvasBounds();
 
         var widgetCanvasEl = this.widgetCanvas.nativeElement;
-		console.log(widgetCanvasEl);
-        widgetCanvasEl.scrollLeft = Math.max(max_x, 0);
-        widgetCanvasEl.scrollTop = Math.max(max_y, 0);
+
+		widgetCanvasEl.scrollTop = Math.max(widgetCanvasEl.scrollTop+y_diff, 0);
+		widgetCanvasEl.scrollLeft = Math.max(widgetCanvasEl.scrollLeft+x_diff,0);
     }
 
     updateCanvasBounds() {
