@@ -16,6 +16,12 @@ import {LoggerService} from "../../services/logger.service";
 export class UserWorkflowsComponent extends WorkflowsComponent {
 
     title: string = 'Your workflows';
+	pages: number[] = []; // to mora pridt iz baze
+	n_all: number = 0; //no of all entries, more pridt iz baze
+	rpp: number = 10 //rows per page
+	bounds: any = {lower: 0, upper: 0}
+	n: number = 0;
+	k: number = 1;
 
     constructor(domSanitizer: DomSanitizer,
                 clowdflowsDataService: ClowdFlowsDataService,
@@ -28,7 +34,12 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
 
     ngOnInit(): void {
         this.clowdflowsDataService.getUserWorkflows()
-            .then(workflows => {
+            .then(workflows => { // TOLE MORE VRNIT SAMO WORKFLOWE, KI JIH POKAŽEMO V TABELI!
+				this.pages = [1];
+				this.n = this.pages.slice(-1)[0];
+				this.n_all = workflows.length; // vsi rezultati
+				this.bounds.lower = (this.k-1)*this.rpp+1;
+				this.bounds.upper = this.bounds.lower-1+Math.min(this.rpp,this.n_all); //n_all so samo vidni rezultati!
                 this.workflows = <Workflow[]> workflows;
             });
     }
@@ -53,5 +64,12 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
                 this.workflows.splice(index, 1);//remove element from array
             });
     }
+
+	changePage(p:number) {
+		if (p != this.k) {
+			this.k = p;
+			// zamenjaj podatke na strani!
+		}
+	}
 
 }

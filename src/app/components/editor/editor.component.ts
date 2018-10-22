@@ -44,7 +44,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
 	@HostListener('document:mouseup', ['$event'])
 	onMouseUp(event: MouseEvent) {
-		if (event.target["classList"].contains("grabber"))
+		if (event.target["classList"] && event.target["classList"].contains("grabber"))
 		  this.resizeComp.grabber = false;
 	}
 
@@ -55,7 +55,7 @@ export class EditorComponent implements OnInit, OnDestroy {
 
 	@HostListener('document:mousedown', ['$event'])
 	onMouseDown(event: MouseEvent) {
-		if (event.target["classList"].contains("grabber-active")) {
+		if (event.target["classList"] && event.target["classList"].contains("grabber-active")) {
 		  this.resizeComp.grabber = true;
 		    this.resizeComp.height.oldY = event.clientY;
 		}
@@ -66,7 +66,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     activeWorkflow:Workflow = null;
     recommendWidget:Widget = null;
 
-	removeWorkflowTab(workflow){
+	removeWorkflowTab(workflow:Workflow){
 		let index = this.workflows.indexOf(workflow);
   		this.workflows.splice(index, 1);
 	}

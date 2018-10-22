@@ -1,5 +1,6 @@
-<div #widgetCanvas id="widget-canvas" (body:keyup)="handleShortcuts($event)">
+<div #widgetCanvas id="widget-canvas" (body:keyup)="handleShortcuts($event)" (mousedown)="startMouseSelect($event)" (mousemove)="widenMouseSelect($event)" (mouseup)="endMouseSelect($event)" (scroll)="widenMouseSelectScroll($event)">
     <svg #svgElement id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" (click)="unselectObjects()" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
+		<rect id="widget-canvas-svg-selection" *ngIf="mouseSelectRect.visible" [attr.x]="mouseSelectRect.position.x" [attr.y]="mouseSelectRect.position.y" [attr.width]="mouseSelectRect.width" [attr.height]="mouseSelectRect.height" />
         <g [id]="'widget-' + widget.id" class="widget noselect" *ngFor="let widget of workflow.widgets"
            draggable-widget
            (positionChangeRequest)="move($event, widget)"

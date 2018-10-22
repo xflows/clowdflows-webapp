@@ -6,7 +6,7 @@
 }
 #widget-canvas > svg {
   position: relative;
-  width: 100%;
+  min-width: 100%;
   min-height: 100%;
 }
 #widget-canvas #tabs {
@@ -21,6 +21,11 @@
   background-color: #f6a828;
   color: white;
   border-right: 1px solid #231f20;
+}
+#widget-canvas-svg-selection {
+	fill: rgba(255,255,0,0.4);
+	stroke-width: 1;
+	stroke: lightgray;
 }
 #widget-canvas .widget {
   min-height: 80px;

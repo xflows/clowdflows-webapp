@@ -18,3 +18,21 @@ h1 {
 .btn-lg {
   margin-bottom: 10px;
 }
+
+table {
+	margin-bottom: 0px;
+}
+
+.table-information {
+	font-size: 14px;
+}
+
+.table-pagination {
+	width: 100%;
+	margin-bottom: 10px;
+	overflow: auto;
+}
+
+.table-pagination > div {
+	float: right;
+}

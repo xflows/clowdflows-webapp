@@ -64,6 +64,20 @@
         </ng-template>
         </tbody>
     </table>
+	<span class="table-information">Showing {{bounds.lower}} to {{bounds.upper}} of {{n_all}} entries.</span>
+	<div class="table-pagination">
+		<div>
+			<span>Pages:</span>
+			<ng-template ngFor let-p [ngForOf]="pages">
+				<button class="table-pagination-button btn btn-default" [class.btn-success] = "p==k" *ngIf="p==1 || p==n || p==k || p==k-1 || p==k+1; else pagesDots" (click)="changePage(p)">
+					{{p}}
+				</button>
+				<ng-template #pagesDots>
+					<span class="table-pagination-dots" *ngIf="p==k-2 || p==k+2">...</span>
+				</ng-template>
+			</ng-template>
+		</div>
+	</div>
     <a [routerLink]="['/import-workflow/']">Import a workflow from another installation of ClowdFlows</a>
     <div class="push"></div>
 </main>
