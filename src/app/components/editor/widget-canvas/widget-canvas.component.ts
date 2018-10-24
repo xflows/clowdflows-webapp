@@ -74,6 +74,8 @@ export class WidgetCanvasComponent implements OnInit {
 			direction_x = "left";
 		}
 
+		let x_diff = 0;
+		let y_diff = 0;
 		let min_x = Infinity;
 		let min_y = Infinity;
 		let max_x = 0;
@@ -104,8 +106,8 @@ export class WidgetCanvasComponent implements OnInit {
 				}
 			}
 
-			let x_diff = Math.max(-min_x,position.x-widgetDragged.x);
-			let y_diff = Math.max(-min_y,position.y-widgetDragged.y);
+			x_diff = Math.max(-min_x,position.x-widgetDragged.x);
+			y_diff = Math.max(-min_y,position.y-widgetDragged.y);
 
 			for (let widget of widgets) {
 				if (widget.selected) {
@@ -116,8 +118,8 @@ export class WidgetCanvasComponent implements OnInit {
 
 		}
 		else {
-			let x_diff = (position.x-widgetDragged.x);
-			let y_diff = (position.y-widgetDragged.y);
+			x_diff = (position.x-widgetDragged.x);
+			y_diff = (position.y-widgetDragged.y);
 			widgetDragged.x = Math.max(0,position.x);
 			widgetDragged.y = Math.max(0,position.y);
 			max_x = widgetDragged.bounds.x2;
@@ -258,11 +260,23 @@ export class WidgetCanvasComponent implements OnInit {
         this.saveWidgetRequest.emit(widget);
     }
 
-    endMove(widget:Widget) {
-        if (widget.x != widget.start_x || widget.y != widget.start_y) {
-            this.saveWidgetPositionRequest.emit(widget);
-            widget.start_x = widget.x;
-            widget.start_y = widget.y;
+    endMove(widgetDragged:Widget) {
+
+		if (widgetDragged.selected) {
+			for (let widget of this.workflow.widgets) {
+				if (widget.selected && (widget.x != widget.start_x || widget.y != widget.start_y)) {
+					this.saveWidgetPositionRequest.emit(widget);
+            		widget.start_x = widget.x;
+            		widget.start_y = widget.y;
+				}
+			}
+		}
+		else {
+        	if (widgetDragged.x != widgetDragged.start_x || widgetDragged.y != widgetDragged.start_y) {
+            	this.saveWidgetPositionRequest.emit(widgetDragged);
+            	widgetDragged.start_x = widgetDragged.x;
+            	widgetDragged.start_y = widgetDragged.y;
+			}
         }
     }
 
