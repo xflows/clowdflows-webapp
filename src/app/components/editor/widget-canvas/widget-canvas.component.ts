@@ -47,7 +47,8 @@ export class WidgetCanvasComponent implements OnInit {
 		width: 0,
 		height: 0,
 		direction: {x: "right", y: "down"},
-		scrollTop: 0
+		scrollTop: 0,
+		start_position: {x: 0, y: 0}
 	}
 
     @ViewChild('svgElement') private svgElement:ElementRef;
@@ -166,7 +167,8 @@ export class WidgetCanvasComponent implements OnInit {
 		if (event.target.id == "widget-canvas-svg") {
 			this.mouseSelectRect.position = {x: event.layerX, y: event.layerY};
 			this.mouseSelectRect.visible = true;
-			this.mouseSelectRect.scrollTop = event.originalTarget.scrollTop;
+			this.mouseSelectRect.scrollTop = event.target.scrollTop;
+			this.mouseSelectRect.start_position = this.mouseSelectRect.position;
 		}
 	}
 
@@ -176,55 +178,46 @@ export class WidgetCanvasComponent implements OnInit {
 
 	widenMouseSelectScroll(event:any) {
 		if (this.mouseSelectRect.visible) {
-			this.widenSelection({movementX: 0, movementY: event.originalTarget.scrollTop-this.mouseSelectRect.scrollTop});
-			this.mouseSelectRect.scrollTop = event.originalTarget.scrollTop;
+			this.widenSelection({movementX: 0, movementY: event.target.scrollTop-this.mouseSelectRect.scrollTop});
+			this.mouseSelectRect.scrollTop = event.target.scrollTop;
 		}
 	}
 	
 	widenSelection (event:any) {
 		if (this.mouseSelectRect.visible) {
 			if (this.mouseSelectRect.direction.x == "right") {
-				if (this.mouseSelectRect.width + event.movementX < 0) {
+				if (event.layerX < this.mouseSelectRect.position.x) {
 					this.mouseSelectRect.direction.x = "left";
-					this.mouseSelectRect.position.x += (this.mouseSelectRect.width + event.movementX);
-					this.mouseSelectRect.width = -(this.mouseSelectRect.width + event.movementX)
-				}
-				else {
-					this.mouseSelectRect.width += event.movementX;
+					this.mouseSelectRect.position.x = event.layerX;
 				}
 			}
 			else if (this.mouseSelectRect.direction.x == "left") {
-				if (this.mouseSelectRect.width - event.movementX < 0) {
+				if (event.layerX > this.mouseSelectRect.position.x) {
 					this.mouseSelectRect.direction.x = "right";
-					this.mouseSelectRect.position.x -= (this.mouseSelectRect.width - event.movementX);
-					this.mouseSelectRect.width = -(this.mouseSelectRect.width - event.movementX)
+					this.mouseSelectRect.position.x = this.mouseSelectRect.start_position.x;
 				}
 				else {
-					this.mouseSelectRect.position.x += event.movementX;
-					this.mouseSelectRect.width -= event.movementX;
+					this.mouseSelectRect.position.x = event.layerX;
 				}
 			}
 			if (this.mouseSelectRect.direction.y == "down") {
-				if (this.mouseSelectRect.height + event.movementY < 0) {
+				if (event.layerY < this.mouseSelectRect.position.y) {
 					this.mouseSelectRect.direction.y = "up";
-					this.mouseSelectRect.position.y += (this.mouseSelectRect.height + event.movementY);
-					this.mouseSelectRect.height = -(this.mouseSelectRect.height + event.movementY)
-				}
-				else {
-					this.mouseSelectRect.height += event.movementY;
+					this.mouseSelectRect.position.y = event.layerY;
 				}
 			}
 			else if (this.mouseSelectRect.direction.y == "up") {
-				if (this.mouseSelectRect.height - event.movementY < 0) {
+				if (event.layerY > this.mouseSelectRect.position.y) {
 					this.mouseSelectRect.direction.y = "down";
-					this.mouseSelectRect.position.y -= (this.mouseSelectRect.height - event.movementY);
-					this.mouseSelectRect.height = -(this.mouseSelectRect.height - event.movementY)
+					this.mouseSelectRect.position.y = this.mouseSelectRect.start_position.y;
 				}
 				else {
-					this.mouseSelectRect.position.y += event.movementY;
-					this.mouseSelectRect.height -= event.movementY;
+					this.mouseSelectRect.position.y = event.layerY;
 				}
 			}
+
+			this.mouseSelectRect.width = Math.abs(this.mouseSelectRect.start_position.x-event.layerX);
+			this.mouseSelectRect.height = Math.abs(this.mouseSelectRect.start_position.y-event.layerY);
 			
 			let widgets = this.workflow.widgets
 			for (let widget of widgets) {
