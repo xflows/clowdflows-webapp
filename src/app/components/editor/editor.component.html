@@ -17,12 +17,11 @@
 		<div class="holder-col-2-flex">
   		<div class="holder-col-2-row-1">
 			<tabset id="editor-tabs">
-				<tab *ngFor="let workflow of workflows"
+				<tab *ngFor="let workflow of workflows; let i = index" [attr.data-index]="i"
 						[heading]="workflow.name"
 						[active]="workflow.active"
-						[removable]="true"
-						(removed)="removeWorkflowTab(workflow)"
-						(select)="switchToWorkflowTab(workflow)">
+						[removable]="(i>0)"
+						(removed)="removeWorkflowTab(workflow)">
 					<widget-canvas [workflow]="workflow"
 						           (addConnectionRequest)="addConnection($event)"
 						           (deleteConnectionRequest)="deleteConnection($event)"

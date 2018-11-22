@@ -3,7 +3,7 @@ import {CommonModule}       from '@angular/common';
 import {FormsModule}        from '@angular/forms';
 import {EditorComponent}   from './editor.component';
 import {TreeViewComponent} from "./widget-tree/tree-view.component";
-import {ContextMenuComponent, ContextMenuService} from "angular2-contextmenu/angular2-contextmenu";
+import {ContextMenuComponent, ContextMenuService} from "angular2-contextmenu";
 import {DraggableWidget} from "../../directives/draggable-widget.directive";
 import {WidgetDialogComponent} from "./widget-dialogs/widget-dialog.component";
 import {LoggingComponent} from "./logging/logging.component";

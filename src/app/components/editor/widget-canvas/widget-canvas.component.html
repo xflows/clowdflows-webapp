@@ -62,7 +62,12 @@
                    xlink:href="/public/images/hand-o-pointer.svg"/>
             <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle"
                   (dblclick)="showRenameDialog(widget)">
-                <tspan>{{widget.name}}</tspan>
+					<tspan *ngIf="widget.name.length > 15; else shortWidgetName">
+						{{widget.name.splice(0,15)}}...
+					</tspan>
+					<ng-template #shortWidgetName>
+						{{widget.name}}
+					</ng-template>
             </text>
             <text class="widget-error-icon" text-anchor="middle"
                   [attr.transform]="'translate('+ ui_constants.widgetWidth/2 + ',' + (widget.labelY + 22) + ')'"

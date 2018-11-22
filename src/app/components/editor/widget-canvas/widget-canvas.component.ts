@@ -168,7 +168,7 @@ export class WidgetCanvasComponent implements OnInit {
 			this.mouseSelectRect.position = {x: event.layerX, y: event.layerY};
 			this.mouseSelectRect.visible = true;
 			this.mouseSelectRect.scrollTop = event.target.scrollTop;
-			this.mouseSelectRect.start_position = this.mouseSelectRect.position;
+			this.mouseSelectRect.start_position = {x: event.layerX, y: event.layerY};
 		}
 	}
 

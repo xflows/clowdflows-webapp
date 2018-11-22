@@ -3,6 +3,12 @@
         <div class="form-group">
             <input type="text" name="filter-query" class="form-control input-sm" placeholder="Widget search"
                    [(ngModel)]="filterString" (ngModelChange)="filterTree()">
+			<span *ngIf="filterString"
+              (click)="clearText()"
+              class="glyphicon glyphicon-remove form-control-feedback" 
+              style="cursor: pointer; pointer-events: all; padding-top: 10px"
+              uib-tooltip="clear">
+        </span>
         </div>
     </form>
     <div id="widget-tree">

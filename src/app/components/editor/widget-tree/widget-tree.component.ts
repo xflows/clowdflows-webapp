@@ -169,4 +169,9 @@ export class WidgetTreeComponent {
                 }
             });
     }
+
+	clearText() {
+		this.filterString = "";
+		this.filterTree();
+	}
 }
