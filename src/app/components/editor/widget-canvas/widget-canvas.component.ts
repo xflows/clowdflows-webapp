@@ -429,53 +429,69 @@ export class WidgetCanvasComponent implements OnInit {
         }
     }
 
-    public onContextMenu($event:MouseEvent, item:any):void {
+    public onContextMenu($event:MouseEvent, item:any, type:string):void {
+
         $event.preventDefault();
-        this.contextMenuService.show.next({
-            actions: [
-                {
-                    html: () => `<span class="glyphicon glyphicon-play"></span> Run`,
-                    click: (widget:Widget) => this.runWidget(widget)
-                },
-                {
-                    html: () => `<span class="glyphicon glyphicon-alert"></span> Run & interact`,
-                    click: (widget:Widget) => this.runWidgetWithInteraction(widget)
-                },
-                {
-                    html: () => `<span class="glyphicon glyphicon-pencil"></span> Properties`,
-                    click: (widget:Widget) => this.showDialog(widget)
-                },
-                {
-                    html: () => `<span class="glyphicon glyphicon-stats"></span> Results`,
-                    click: (widget:Widget) => this.showResults(widget)
-                },
-                {
-                    html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset`,
-                    click: (widget:Widget) => this.resetWidget(widget)
-                },
-                {
-                    html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset workflow`,
-                    click: (_:any) => this.resetWorkflow()
-                },
-                {
-                    html: () => `<span class="glyphicon glyphicon-console"></span> Rename`,
-                    click: (widget:Widget) => this.showRenameDialog(widget)
-                },
-                {
-                    html: () => `<span class="glyphicon glyphicon-copy"></span> Copy`,
-                    click: (widget:Widget) => this.copyWidget(widget)
-                },
-                {
-                    html: () => `<span class="glyphicon glyphicon-trash"></span> Delete`,
-                    click: (widget:Widget) => this.deleteWidget(widget)
-                },
-                {
-                    html: () => `<span class="glyphicon glyphicon-question-sign"></span> Help`,
-                    click: (widget:Widget) => this.showHelp(widget)
-                },
-            ],
-            event: $event,
-            item: item,
-        });
+
+		if (type == "widget") {
+		    this.contextMenuService.show.next({
+		        actions: [
+		            {
+		                html: () => `<span class="glyphicon glyphicon-play"></span> Run`,
+		                click: (widget:Widget) => this.runWidget(widget)
+		            },
+		            {
+		                html: () => `<span class="glyphicon glyphicon-alert"></span> Run & interact`,
+		                click: (widget:Widget) => this.runWidgetWithInteraction(widget)
+		            },
+		            {
+		                html: () => `<span class="glyphicon glyphicon-pencil"></span> Properties`,
+		                click: (widget:Widget) => this.showDialog(widget)
+		            },
+		            {
+		                html: () => `<span class="glyphicon glyphicon-stats"></span> Results`,
+		                click: (widget:Widget) => this.showResults(widget)
+		            },
+		            {
+		                html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset`,
+		                click: (widget:Widget) => this.resetWidget(widget)
+		            },
+		            {
+		                html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset workflow`,
+		                click: (_:any) => this.resetWorkflow()
+		            },
+		            {
+		                html: () => `<span class="glyphicon glyphicon-console"></span> Rename`,
+		                click: (widget:Widget) => this.showRenameDialog(widget)
+		            },
+		            {
+		                html: () => `<span class="glyphicon glyphicon-copy"></span> Copy`,
+		                click: (widget:Widget) => this.copyWidget(widget)
+		            },
+		            {
+		                html: () => `<span class="glyphicon glyphicon-trash"></span> Delete`,
+		                click: (widget:Widget) => this.deleteWidget(widget)
+		            },
+		            {
+		                html: () => `<span class="glyphicon glyphicon-question-sign"></span> Help`,
+		                click: (widget:Widget) => this.showHelp(widget)
+		            },
+		        ],
+		        event: $event,
+		        item: item,
+		    });
+		}
+		else if (type == "connection") {
+			this.contextMenuService.show.next({
+		        actions: [
+		            {
+		                html: () => `<span class="glyphicon glyphicon-trash"></span> Remove`,
+		                click: (connection:Connection) => this.deleteConnection(connection)
+		            },
+		        ],
+		        event: $event,
+		        item: item,
+		    });
+		}
     }
 }

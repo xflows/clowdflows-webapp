@@ -40,7 +40,7 @@
             <rect class="widget-box" [attr.x]="ui_constants.signalWidth" rx="2" ry="2"
                   (click)="select($event, widget)"
                   (dblclick)="handleDoubleClick(widget)"
-                  (contextmenu)="onContextMenu($event, widget)"
+                  (contextmenu)="onContextMenu($event, widget,'widget')"
                   [attr.width]="ui_constants.widgetBoxWidth"
                   [attr.height]="widget.boxHeight"
                   [class.selected]="widget.selected"/>
@@ -60,15 +60,9 @@
                    *ngIf="widget.can_interact"
                    [attr.x]="ui_constants.signalWidth + 2"
                    xlink:href="/public/images/hand-o-pointer.svg"/>
-            <text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle"
-                  (dblclick)="showRenameDialog(widget)">
-					<tspan *ngIf="widget.name.length > 15; else shortWidgetName">
-						{{widget.name.splice(0,15)}}...
-					</tspan>
-					<ng-template #shortWidgetName>
-						{{widget.name}}
-					</ng-template>
-            </text>
+						<foreignObject [attr.x]="0" [attr.y]="widget.boxHeight" [attr.width]="ui_constants.widgetWidth" height="160" style="text-align: center;">
+							{{widget.name}}
+						</foreignObject>
             <text class="widget-error-icon" text-anchor="middle"
                   [attr.transform]="'translate('+ ui_constants.widgetWidth/2 + ',' + (widget.labelY + 22) + ')'"
                   *ngIf="widget.error">
@@ -87,7 +81,8 @@
         <g class="connection" *ngFor="let connection of workflow.connections" [class.selected]="connection.selected">
             <path [attr.stroke-width]="ui_constants.connectionWidth" stroke-linejoin="round" fill="none"
                   [attr.d]="connection.bezierPoints"
-                  (click)="select($event, connection)">
+                  (click)="select($event, connection)"
+									(contextmenu)="onContextMenu($event, connection, 'connection')">
             </path>
         </g>
     </svg>
