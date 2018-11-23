@@ -34,7 +34,7 @@ export class Sanitize implements PipeTransform {
 
         script.innerHTML = scripts[0].innerHTML;
         script.onload = function () {
-            if (scripts.length > 0) {
+            if (scripts.length > 1) {
                 that.loadScripts(scripts.slice(1, scripts.length), results)
             }
         };
