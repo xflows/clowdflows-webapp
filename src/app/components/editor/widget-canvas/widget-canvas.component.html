@@ -67,9 +67,13 @@
                    *ngIf="widget.can_interact"
                    [attr.x]="ui_constants.signalWidth + 2"
                    xlink:href="/public/images/hand-o-pointer.svg"/>
-						<foreignObject [attr.x]="0" [attr.y]="widget.boxHeight" [attr.width]="ui_constants.widgetWidth" height="18px" style="text-align: center; overflow-y: visible;">
-							{{widget.name}}
-						</foreignObject>
+
+<text [attr.x]="ui_constants.widgetWidth/2" [attr.y]="widget.labelY" text-anchor="middle"
+                  (dblclick)="showRenameDialog(widget)">
+                <tspan *ngFor="let chunk of splitNodeLabel(widget.name); let i=index;" [attr.x]="ui_constants.widgetWidth/2" text-anchor="middle" [attr.dy]="(i==0) ? '0em' : '1em'">{{chunk}}</tspan>
+</text>
+
+
             <text class="widget-error-icon" text-anchor="middle"
                   [attr.transform]="'translate('+ ui_constants.widgetWidth/2 + ',' + (widget.labelY + 22) + ')'"
                   *ngIf="widget.error">

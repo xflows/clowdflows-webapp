@@ -50,6 +50,8 @@ export class WidgetCanvasComponent implements OnInit {
 		scrollTop: 0,
 		start_position: {x: 0, y: 0}
 	}
+	
+	krenarray = [1,2];
 
     @ViewChild('svgElement') private svgElement:ElementRef;
     @ViewChild('widgetCanvas') private widgetCanvas:ElementRef;
@@ -61,7 +63,29 @@ export class WidgetCanvasComponent implements OnInit {
         this.visibleCanvasSize.width = this.svgElement.nativeElement.scrollWidth;
         this.visibleCanvasSize.height = this.svgElement.nativeElement.scrollHeight;
         this.updateCanvasBounds();
+
+
     }
+
+	splitNodeLabel(name: string): any[] {
+		const mll = 20; // max line length
+		var chunks = [];
+		
+		for (var i=0; i<Math.ceil(name.length/mll); i++) {
+			chunks.push(name.substring(i*mll,(i+1)*mll));
+		}
+
+		for (var i=0; i<chunks.length-1; i++) {
+			if (chunks[i].slice(-1) != " " && chunks[i+1].substring(0,1) != " ") {
+				var char_index:number = chunks[i].lastIndexOf(" ");
+				if (char_index != -1) {
+					chunks[i+1] = chunks[i].substring(char_index+1)+chunks[i+1];
+					chunks[i] = chunks[i].substring(0,char_index).trim();
+				}
+			}
+		}
+    	return chunks;
+  	}
 
     move(position:any, widgetDragged:Widget) {
 
