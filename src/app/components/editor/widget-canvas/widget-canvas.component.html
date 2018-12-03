@@ -1,6 +1,13 @@
 <div #widgetCanvas id="widget-canvas" (body:keyup)="handleShortcuts($event)" (mousedown)="startMouseSelect($event)" (mousemove)="widenMouseSelect($event)" (mouseup)="endMouseSelect($event)" (scroll)="widenMouseSelectScroll($event)">
     <svg #svgElement id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" (click)="unselectObjects()" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
 		<rect id="widget-canvas-svg-selection" *ngIf="mouseSelectRect.visible" [attr.x]="mouseSelectRect.position.x" [attr.y]="mouseSelectRect.position.y" [attr.width]="mouseSelectRect.width" [attr.height]="mouseSelectRect.height" />
+		<g class="connection" *ngFor="let connection of workflow.connections" [class.selected]="connection.selected">
+            <path [attr.stroke-width]="ui_constants.connectionWidth" stroke-linejoin="round" fill="none"
+                  [attr.d]="connection.bezierPoints"
+                  (click)="select($event, connection)"
+									(contextmenu)="onContextMenu($event, connection, 'connection')">
+            </path>
+        </g>
         <g [id]="'widget-' + widget.id" class="widget noselect" *ngFor="let widget of workflow.widgets"
            draggable-widget
            (positionChangeRequest)="move($event, widget)"
@@ -60,7 +67,7 @@
                    *ngIf="widget.can_interact"
                    [attr.x]="ui_constants.signalWidth + 2"
                    xlink:href="/public/images/hand-o-pointer.svg"/>
-						<foreignObject [attr.x]="0" [attr.y]="widget.boxHeight" [attr.width]="ui_constants.widgetWidth" height="160" style="text-align: center;">
+						<foreignObject [attr.x]="0" [attr.y]="widget.boxHeight" [attr.width]="ui_constants.widgetWidth" height="18px" style="text-align: center; overflow-y: visible;">
 							{{widget.name}}
 						</foreignObject>
             <text class="widget-error-icon" text-anchor="middle"
@@ -77,13 +84,6 @@
                *ngIf="widget.running">
                 <image class="widget-running-icon" width="20" height="20" xlink:href="/public/images/cog.svg"/>
             </g>
-        </g>
-        <g class="connection" *ngFor="let connection of workflow.connections" [class.selected]="connection.selected">
-            <path [attr.stroke-width]="ui_constants.connectionWidth" stroke-linejoin="round" fill="none"
-                  [attr.d]="connection.bezierPoints"
-                  (click)="select($event, connection)"
-									(contextmenu)="onContextMenu($event, connection, 'connection')">
-            </path>
         </g>
     </svg>
     <widget-dialog *ngFor="let widget of workflow.widgets"
