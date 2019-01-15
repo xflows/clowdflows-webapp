@@ -67,8 +67,15 @@ export class EditorComponent implements OnInit, OnDestroy {
     recommendWidget:Widget = null;
 
 	removeWorkflowTab(workflow:Workflow){
+
 		let index = this.workflows.indexOf(workflow);
-  		this.workflows.splice(index, 1);
+  	this.workflows.splice(index, 1);
+
+    if (workflow.is_subprocess) {
+      delete this.loadedSubprocesses[workflow.url];
+    }
+
+
 	}
 
     constructor(private domSanitizer:DomSanitizer,

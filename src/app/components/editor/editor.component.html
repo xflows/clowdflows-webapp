@@ -21,7 +21,8 @@
 						[heading]="workflow.name"
 						[active]="workflow.active"
 						[removable]="(i>0)"
-						(removed)="removeWorkflowTab(workflow)">
+						(removed)="removeWorkflowTab(workflow)"
+            (select)="switchToWorkflowTab(workflow)">
 					<widget-canvas [workflow]="workflow"
 						           (addConnectionRequest)="addConnection($event)"
 						           (deleteConnectionRequest)="deleteConnection($event)"
@@ -46,7 +47,7 @@
     		<div class="grabber grabber-active"  ></div>
     		<div class="content">
     			<logging [messages]="loggerService.messages"></logging>
-    		</div>  
+    		</div>
   		</div>
 	</div>
 	</div>

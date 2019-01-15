@@ -50,7 +50,7 @@ export class WidgetCanvasComponent implements OnInit {
 		scrollTop: 0,
 		start_position: {x: 0, y: 0}
 	}
-	
+
 	krenarray = [1,2];
 
     @ViewChild('svgElement') private svgElement:ElementRef;
@@ -70,7 +70,7 @@ export class WidgetCanvasComponent implements OnInit {
 	splitNodeLabel(name: string): any[] {
 		const mll = 20; // max line length
 		var chunks = [];
-		
+
 		for (var i=0; i<Math.ceil(name.length/mll); i++) {
 			chunks.push(name.substring(i*mll,(i+1)*mll));
 		}
@@ -117,7 +117,7 @@ export class WidgetCanvasComponent implements OnInit {
 					let x2 = widget.bounds.x2;
 					let y2 = widget.bounds.y2;
 					if (min_x > x) {
-						min_x = x;			
+						min_x = x;
 					}
 					if (min_y > y) {
 						min_y = y;
@@ -206,7 +206,7 @@ export class WidgetCanvasComponent implements OnInit {
 			this.mouseSelectRect.scrollTop = event.target.scrollTop;
 		}
 	}
-	
+
 	widenSelection (event:any) {
 		if (this.mouseSelectRect.visible) {
 			if (this.mouseSelectRect.direction.x == "right") {
@@ -242,7 +242,7 @@ export class WidgetCanvasComponent implements OnInit {
 
 			this.mouseSelectRect.width = Math.abs(this.mouseSelectRect.start_position.x-event.layerX);
 			this.mouseSelectRect.height = Math.abs(this.mouseSelectRect.start_position.y-event.layerY);
-			
+
 			let widgets = this.workflow.widgets
 			for (let widget of widgets) {
 				let x = widget.x+this.ui_constants.signalWidth;
