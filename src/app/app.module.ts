@@ -1,7 +1,8 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule}  from '@angular/platform-browser';
 import {AppComponent} from './app.component';
-import {HttpModule, Http, XHRBackend, RequestOptions, ConnectionBackend} from '@angular/http';
+import { XHRBackend} from '@angular/http';
+import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {UserService} from "./services/user.service";
 import {LoggedInGuard} from "./services/logged-in.guard";
 import {LoggerService} from "./services/logger.service";
@@ -32,7 +33,7 @@ import {PasswordResetComponent} from "./components/login/password-reset.componen
         BrowserModule,
         routing,
         FormsModule,
-        HttpModule,
+        HttpClientModule,
         EditorModule,
         SanitizeModule,
         CarouselModule.forRoot(),
@@ -60,12 +61,13 @@ import {PasswordResetComponent} from "./components/login/password-reset.componen
         LoggerService,
         LoggedInGuard,
         LoadingService,
-        {
-            provide: Http,
+        { provide: HTTP_INTERCEPTORS, useClass: HttpLoading, multi: true, deps: [LoadingService] }
+        /*{
+            provide: HttpClient,
             useClass: HttpLoading,
-            deps: [XHRBackend, RequestOptions, LoadingService],
-            useFactory: (backend:XHRBackend, defaultOptions:RequestOptions, loadingService:LoadingService) => new HttpLoading(backend, defaultOptions, loadingService)
-        }
+            deps: [XHRBackend, LoadingService],
+            useFactory: (backend:XHRBackend, loadingService:LoadingService) => new HttpLoading(backend, loadingService)
+        }*/
     ],
     bootstrap: [
         AppComponent,

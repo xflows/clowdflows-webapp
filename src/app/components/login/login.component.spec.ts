@@ -1,3 +1,5 @@
+
+import {of as observableOf, Observable} from 'rxjs';
 import {
     inject,
     TestBed, fakeAsync
@@ -6,7 +8,6 @@ import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
 import {LoginComponent} from "./login.component";
 import {FormsModule} from "@angular/forms";
-import {Observable} from "rxjs/Rx";
 import {FooterComponent} from "../footer/footer.component";
 import {AlertModule} from "ng2-bootstrap";
 
@@ -22,9 +23,9 @@ class MockUserService {
         if (username == TEST_CREDENTIALS.username &&
             password == TEST_CREDENTIALS.password) {
             this.loggedIn = true;
-            return Observable.of(true);
+            return observableOf(true);
         }
-        return Observable.of(false);
+        return observableOf(false);
     }
 
     logout(redirectUrl:string) {

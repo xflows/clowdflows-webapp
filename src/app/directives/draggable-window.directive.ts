@@ -1,4 +1,4 @@
-import {Directive, ElementRef, OnInit, Renderer, OnDestroy} from '@angular/core';
+import {Directive, ElementRef, OnInit, Renderer2, OnDestroy} from '@angular/core';
 
 @Directive({
     selector: '[draggable-window]',
@@ -13,12 +13,12 @@ export class DraggableWindow implements OnDestroy, OnInit {
     private Δy:number = 0;
     private panelEl:any;
 
-    constructor(private panelHeaderEl:ElementRef, private renderer:Renderer) {
+    constructor(private panelHeaderEl:ElementRef, private renderer:Renderer2) {
         this.panelEl = this.panelHeaderEl.nativeElement.parentElement;
     }
 
     public ngOnInit():void {
-        this.renderer.setElementAttribute(this.panelHeaderEl.nativeElement, 'draggable', 'true');
+      this.panelHeaderEl.nativeElement.setAttribute("draggable","true"); //this.renderer.setElementAttribute(this.panelHeaderEl.nativeElement, 'draggable', 'true');
     }
 
     onDragStart(event:MouseEvent) {
@@ -37,11 +37,11 @@ export class DraggableWindow implements OnDestroy, OnInit {
 
     doTranslation(x:number, y:number) {
         if (!x || !y) return;
-        this.renderer.setElementStyle(this.panelEl, 'top', (y - this.Δy) + 'px');
-        this.renderer.setElementStyle(this.panelEl, 'left', (x - this.Δx) + 'px');
+        this.panelEl.style.top = (y - this.Δy) + 'px'; //this.renderer.setElementStyle(this.panelEl, 'top', (y - this.Δy) + 'px');
+        this.panelEl.style.left = (x - this.Δx) + 'px'; //this.renderer.setElementStyle(this.panelEl, 'left', (x - this.Δx) + 'px');
     }
 
     public ngOnDestroy():void {
-        this.renderer.setElementAttribute(this.panelHeaderEl.nativeElement, 'draggable', 'false');
+      this.panelHeaderEl.nativeElement.setAttribute("draggable","false"); //this.renderer.setElementAttribute(this.panelHeaderEl.nativeElement, 'draggable', 'false');
     }
 }

@@ -18,15 +18,18 @@ export class WidgetLibraryService {
     init() {
         this.clowdflowsDataService.getWidgetLibrary()
             .then(data => {
+              if (data) {
                 let library = this.parseWidgetLibrary(data);
                 library = this.addSpecialWidgets(library);
                 this.widgetTree = library;
+              }
             });
     }
 
     private parseWidgetLibrary(data:Category[]):Category[] {
         let widgetTree:Category[] = [];
-        for (let cat of <Category[]> data) {
+        for (let index in data) {
+            let cat = data[index]
             widgetTree.push(new Category(cat.name, cat.user, cat.order, cat.children, cat.widgets));
         }
         return widgetTree;

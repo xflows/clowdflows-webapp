@@ -30,11 +30,12 @@ export class LoginComponent {
         this.userService
             .login(this.loginCredentials.username, this.loginCredentials.password)
             .subscribe((result) => {
+              console.log(result)
                 if (result.status == 200) {
                     this.router.navigate(['']);
                     this.loginError = '';
                 } else {
-                    this.loginError = result.errorText
+                    this.loginError = result["errorText"]
                 }
             });
     }
@@ -47,7 +48,7 @@ export class LoginComponent {
                     this.router.navigate(['']);
                     this.registrationError = '';
                 } else {
-                    this.registrationError = result.errorText
+                    this.registrationError = result["errorText"]
                 }
             });
     }

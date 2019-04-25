@@ -38,7 +38,9 @@ export class StreamingWidgetComponent implements OnInit, OnDestroy {
                 });
             this.clowdflowsDataService.getWidgetStreamVisualization(this.widget_id)
                 .then((response) => {
-                   this.widget_visualization_html = response.text();
+                  if (response) {
+                    this.widget_visualization_html = response.text();
+                  }
                 });
         });
     }

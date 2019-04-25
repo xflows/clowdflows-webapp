@@ -1,4 +1,4 @@
-import {Directive, ElementRef, EventEmitter, OnInit, Output, Renderer} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, OnInit, Output, Renderer2} from '@angular/core';
 
 @Directive({
     selector: '[draggable-widget]',
@@ -20,7 +20,7 @@ export class DraggableWidget implements OnInit {
     @Output() positionChangeRequest = new EventEmitter();
     @Output() endMoveRequest = new EventEmitter();
 
-    constructor(private _elementRef: ElementRef, private renderer:Renderer) {
+    constructor(private _elementRef: ElementRef, private renderer:Renderer2) {
         this.element = this._elementRef.nativeElement;
     }
 

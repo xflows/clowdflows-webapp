@@ -13,7 +13,6 @@ import {WidgetLibraryService} from "../../../services/widget-library.service";
 })
 export class WidgetTreeComponent {
 
-    //widgetTree:Category[];
     filterString:string = '';
     showImportWebserviceDialog = false;
     @Output() addWidgetRequest = new EventEmitter<AbstractWidget>();
@@ -21,7 +20,6 @@ export class WidgetTreeComponent {
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
                 private widgetLibraryService:WidgetLibraryService,
                 private loggerService:LoggerService) {
-        //this.widgetLibraryService.widgetTree = widgetLibraryService.widgetTree;
     }
 
     filterTree() {

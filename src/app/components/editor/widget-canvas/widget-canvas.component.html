@@ -86,7 +86,10 @@
             </text>
             <g [attr.transform]="'translate('+ (ui_constants.widgetWidth/2 - 10) + ',' + (widget.labelY + 5) + ')'"
                *ngIf="widget.running">
+               <g>
                 <image class="widget-running-icon" width="20" height="20" xlink:href="/public/images/cog.svg"/>
+                <animateTransform _ngcontent-c4="" attributeName="transform" attributeType="XML" dur="3s" repeatCount="indefinite" type="rotate" from="0 10 10" to="360 10 10"></animateTransform>
+              </g>
             </g>
         </g>
     </svg>

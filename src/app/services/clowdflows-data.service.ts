@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers, RequestOptions, Response} from "@angular/http";
+import {Response} from "@angular/http";
+import {HttpClient, HttpHeaders } from "@angular/common/http";
 //import 'rxjs/add/operator/toPromise';
 import {toPromise} from "rxjs/operator/toPromise";
+import {Category} from "../models/category";
 import {Workflow} from "../models/workflow";
 import {Widget} from "../models/widget";
 import {Connection} from "../models/connection";
@@ -22,16 +24,17 @@ export class ClowdFlowsDataService {
     importWorkflowUrl = this.workflowsUrl + 'import/';
     recommenderModelUrl = 'recommender-model/';
 
-    constructor(private http: Http, private loggerService: LoggerService) {
+    constructor(private http: HttpClient, private loggerService: LoggerService) {
     }
 
-    getRequestOptions(): RequestOptions {
-        let headers = new Headers();
+    getRequestOptions() {
         let auth_token = localStorage.getItem('auth_token');
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', `Token ${auth_token}`);
-        let options = new RequestOptions({headers: headers});
-        return options;
+        let headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${auth_token}`
+        });
+
+        return {headers: headers};
     }
 
     getFileUploadOption(input: WidgetInput) {
@@ -46,11 +49,10 @@ export class ClowdFlowsDataService {
 
     getWidgetLibrary() {
         let options = this.getRequestOptions();
-        options.body = '';
         return this.http
-            .get(`${API_ENDPOINT}${this.widgetLibraryUrl}`, options)
+            .get<Category[]>(`${API_ENDPOINT}${this.widgetLibraryUrl}`, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -65,7 +67,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${API_ENDPOINT}${this.workflowsUrl}`, JSON.stringify(workflowData), options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -74,7 +76,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${workflow.url}copy/`, {} , options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -89,13 +91,12 @@ export class ClowdFlowsDataService {
         return this.http
             .patch(workflow.url, JSON.stringify(workflowData), options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
     getWorkflow(idOrUrl: any, includePreview?: boolean): Promise<any> {
         let options = this.getRequestOptions();
-        options.body = '';
         let url = idOrUrl;
         if (typeof url === "number") {
             let id = idOrUrl;
@@ -108,13 +109,12 @@ export class ClowdFlowsDataService {
         return this.http
             .get(`${url}?preview=${preview}`, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
     getUserWorkflows(includePreview?: boolean): Promise<any> {
         let options = this.getRequestOptions();
-        options.body = '';
         let preview = 0;
         if (includePreview) {
             preview = 1;
@@ -122,13 +122,12 @@ export class ClowdFlowsDataService {
         return this.http
             .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1&preview=${preview}`, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
     getPublicWorkflows(includePreview?: boolean): Promise<any> {
         let options = this.getRequestOptions();
-        options.body = '';
         let preview = 0;
         if (includePreview) {
             preview = 1;
@@ -136,7 +135,7 @@ export class ClowdFlowsDataService {
         return this.http
             .get(`${API_ENDPOINT}${this.workflowsUrl}?preview=${preview}`, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -145,7 +144,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${workflow.url}run/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -163,7 +162,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${workflow.url}subprocess/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -172,7 +171,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${workflow.url}subprocess-input/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -181,7 +180,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${workflow.url}subprocess-forloop/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -190,7 +189,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${workflow.url}subprocess-xvalidation/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -199,25 +198,23 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${workflow.url}subprocess-output/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
-    visualizeWidget(widget: Widget): Promise<Response> {
+    visualizeWidget(widget: Widget): Promise<void | Response> {
         let options = this.getRequestOptions();
-        options.body = '';
         return this.http
-            .get(`${widget.url}visualize/`, options)
+            .get<Response>(`${widget.url}visualize/`, options)
             .toPromise()
             .then(html => html)
             .catch(error => this.handleError(error));
     }
 
-    interactWidget(widget: Widget): Promise<Response> {
+    interactWidget(widget: Widget): Promise<void | Response> {
         let options = this.getRequestOptions();
-        options.body = '';
         return this.http
-            .get(`${widget.url}interact/`, options)
+            .get<Response>(`${widget.url}interact/`, options)
             .toPromise()
             .then(html => html)
             .catch(error => this.handleError(error));
@@ -228,27 +225,26 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${widget.url}interact/`, JSON.stringify(data), options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
     getWidget(id: number): Promise<any> {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
-        options.body = '';
         return this.http
             .get(`${API_ENDPOINT}${this.widgetsUrl}${id}/?${date}`, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
-    createWidget(widgetData: any): Promise<Widget> {
+    createWidget(widgetData: any): Promise<void | Widget> {
         let options = this.getRequestOptions();
         return this.http
-            .post(`${API_ENDPOINT}${this.widgetsUrl}`, JSON.stringify(widgetData), options)
+            .post<Widget>(`${API_ENDPOINT}${this.widgetsUrl}`, JSON.stringify(widgetData), options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -266,7 +262,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${widget.url}copy/`, JSON.stringify(widget, Widget.omitKeys), options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -275,7 +271,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${widget.url}reset/`, '', options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -285,13 +281,12 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${widget.url}run/?interact=${interactFlag}`, '', options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
     deleteWidget(widget: Widget) {
         let options = this.getRequestOptions();
-        options.body = '';
         return this.http
             .delete(widget.url, options)
             .toPromise()
@@ -356,23 +351,21 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${API_ENDPOINT}${this.connectionsUrl}`, JSON.stringify(connectionData), options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
     fetchOutputValue(output: WidgetOutput) {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
-        options.body = '';
         return this.http
-            .get(`${output.url}value/?${date}`, options)
+            .get<any>(`${output.url}value/?${date}`, options)
             .toPromise()
-            .then(response => response.json());
+            .then(response => response);
     }
 
     deleteConnection(conn: Connection) {
         let options = this.getRequestOptions();
-        options.body = '';
         return this.http
             .delete(conn.url, options)
             .toPromise()
@@ -386,7 +379,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${API_ENDPOINT}${this.importWebserviceUrl}`, JSON.stringify(data), options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -396,18 +389,17 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${API_ENDPOINT}${this.importWorkflowUrl}`, JSON.stringify(data), options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
     exportWorkflow(workflowId: number) {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
-        options.body = '';
         return this.http
             .get(`${API_ENDPOINT}${this.workflowsUrl}${workflowId}/export/?${date}`, options)
             .toPromise()
-            .then(response => response.json());
+            .then(response => response);
     }
 
     editorUpdates(onUpdateCallback: any, workflow: Workflow) {
@@ -432,7 +424,6 @@ export class ClowdFlowsDataService {
 
     deleteWorkflow(workflow: Workflow) {
         let options = this.getRequestOptions();
-        options.body = '';
         return this.http
             .delete(workflow.url, options)
             .toPromise()
@@ -444,11 +435,10 @@ export class ClowdFlowsDataService {
 
     getRecommenderModel() {
         let options = this.getRequestOptions();
-        options.body = '';
         return this.http
             .get(`${API_ENDPOINT}${this.recommenderModelUrl}`, options)
             .toPromise()
-            .then(response => response.json());
+            .then(response => response);
     }
 
     // Streams:
@@ -456,20 +446,19 @@ export class ClowdFlowsDataService {
     getStream(id: number) {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
-        options.body = '';
         return this.http
-            .get(`${API_ENDPOINT}${this.streamsUrl}${id}/?${date}`, options)
+            .get<any>(`${API_ENDPOINT}${this.streamsUrl}${id}/?${date}`, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
     startStreaming(workflowId: number) {
         let options = this.getRequestOptions();
         return this.http
-            .post(`${API_ENDPOINT}${this.workflowsUrl}${workflowId}/start-streaming/`, {}, options)
+            .post<any>(`${API_ENDPOINT}${this.workflowsUrl}${workflowId}/start-streaming/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -478,7 +467,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${API_ENDPOINT}${this.streamsUrl}${id}/reset/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -487,7 +476,7 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${API_ENDPOINT}${this.streamsUrl}${id}/deactivate/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
@@ -496,16 +485,15 @@ export class ClowdFlowsDataService {
         return this.http
             .post(`${API_ENDPOINT}${this.streamsUrl}${id}/activate/`, {}, options)
             .toPromise()
-            .then(response => response.json())
+            .then(response => response)
             .catch(error => this.handleError(error));
     }
 
-    getWidgetStreamVisualization(id: number): Promise<Response> {
+    getWidgetStreamVisualization(id: number): Promise<void | Response> {
         let options = this.getRequestOptions();
         let date = new Date().toTimeString();  // FIX: better way to prevent GET caching
-        options.body = '';
         return this.http
-            .get(`${API_ENDPOINT}${this.widgetsUrl}${id}/stream-visualization?${date}`, options)
+            .get<Response>(`${API_ENDPOINT}${this.widgetsUrl}${id}/stream-visualization?${date}`, options)
             .toPromise()
             .then(html => html)
             .catch(error => this.handleError(error));

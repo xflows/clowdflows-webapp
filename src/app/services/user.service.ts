@@ -1,8 +1,11 @@
+
+import {of as observableOf, Observable} from 'rxjs';
+
+import {catchError, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders  } from "@angular/common/http";
 import { Router } from '@angular/router';
 import {API_ENDPOINT} from "../config";
-import {Observable} from "rxjs/Observable";
 
 
 @Injectable()
@@ -10,27 +13,28 @@ export class UserService {
     private loggedIn = false;
     public redirectUrl:string = null;
 
-    constructor(private http: Http, private router: Router) {
+    constructor(private http: HttpClient, private router: Router) {
         this.loggedIn = !!localStorage.getItem('auth_token');
     }
 
     login(username:string, password:string) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-
+        let headers = new HttpHeaders({
+           'Content-Type':  'application/json',
+        });
         return this.http
-            .post(`${API_ENDPOINT}auth/token/create/`, JSON.stringify({ username, password }), { headers })
-            .map((res) => {
+            .post(`${API_ENDPOINT}auth/token/create/`, JSON.stringify({ username, password }), {observe: 'response', headers: headers}).pipe(
+            map(res => {
                 if (res.status==200) {
                     localStorage.setItem('username', username);
-                    localStorage.setItem('auth_token', res.json().auth_token);
+                    let body:any = res.body
+                    localStorage.setItem('auth_token', body.auth_token);
                     this.loggedIn = true;
                 }
                 return {status: res.status};
-            }).catch((error: any) => {
-                return Observable.of({status: error.status,
-                    errorText: (error.status==400 ? error.json().non_field_errors.join(' ') : 'Something went wrong')});
-            });
+            }),catchError((error: any) => {
+               return observableOf({status: error.status,
+                    errorText: (error.status==400 ? error.error.non_field_errors.join(' ') : 'Something went wrong')});
+            }),);
     }
 
     logout(redirectUrl:string) {
@@ -41,61 +45,62 @@ export class UserService {
     }
 
     register(username: string, password: string, email: string) {
-        let headers = new Headers();
+        let headers = new HttpHeaders();
         headers.append('Content-Type', 'application/json');
 
         return this.http
-            .post(`${API_ENDPOINT}auth/users/create/`, JSON.stringify({username, password, email}), {headers})
-            .map((res) => {
+            .post(`${API_ENDPOINT}auth/users/create/`, JSON.stringify({username, password, email}), {observe: 'response', headers}).pipe(
+            map((res) => {
                 if (res.status==200) {
                     localStorage.setItem('username', username);
-                    localStorage.setItem('auth_token', res.json().auth_token);
+                    let body:any = res.body
+                    localStorage.setItem('auth_token', body.auth_token);
                     this.loggedIn = true;
                 }
                 return {status: res.status};
-            }).catch((error: any) => {
+            }),catchError((error: any) => {
                 let errors:Array<String>=[]
-                let body=error.json()
+                let body=error.error
                 Object.keys(body).forEach(function(key){
                     errors = errors.concat(body[key]);
                 });
 
-                return Observable.of({
+                return observableOf({
                     status: error.status,
                     errorText: (error.status == 400 ? errors.join(' ') : 'Something went wrong')
                 });
-            })
+            }),)
     }
 
     sendPasswordResetEmail(email:string): Observable<string> {
-        let headers = new Headers();
+        let headers = new HttpHeaders();
         headers.append('Content-Type', 'application/json');
 
         return this.http
-            .post(`${API_ENDPOINT}auth/password/reset/`, JSON.stringify({ email }), { headers })
-            .map(() => {
+            .post(`${API_ENDPOINT}auth/password/reset/`, JSON.stringify({ email }), { headers }).pipe(
+            map(() => {
                 return "ok"
-            }).catch((error: any) => {
-                return Observable.of("error")
-            })
+            }),catchError((error: any) => {
+                return observableOf("error")
+            }),)
     }
     confirmPasswordReset(uid:string, token: string, password: string): Observable<any> {
-        let headers = new Headers();
+        let headers = new HttpHeaders();
         headers.append('Content-Type', 'application/json');
 
         return this.http
-            .post(`${API_ENDPOINT}auth/password/reset/confirm/`, JSON.stringify({ uid: uid, token: token, new_password: password }), { headers })
-            .map((res) => {
+            .post(`${API_ENDPOINT}auth/password/reset/confirm/`, JSON.stringify({ uid: uid, token: token, new_password: password }), { observe: 'response', headers }).pipe(
+            map((res) => {
                 return {status: res.status,errorText: ''};
-            }).catch((error: any) => {
+            }),catchError((error: any) => {
                 let errors:Array<String>=[]
-                let body=error.json()
+                let body=error.error
                 Object.keys(body).forEach(function(key){
                     errors = errors.concat(body[key]);
                 });
-                return Observable.of({status: error.status,
+                return observableOf({status: error.status,
                     errorText: (error.status==400 ? errors.join(' ') : 'Something went wrong')})
-            })
+            }),)
     }
 
     isLoggedIn() {

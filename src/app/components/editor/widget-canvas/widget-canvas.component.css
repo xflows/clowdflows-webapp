@@ -127,11 +127,6 @@
 }
 #widget-canvas .widget .widget-running-icon {
   fill: #222;
-  transform-origin: 50% 50%;
-  -moz-animation: spinnerRotate 1.5s linear infinite;
-  -ms-animation: spinnerRotate 1.5s linear infinite;
-  -webkit-animation: spinnerRotate 1.5s linear infinite;
-  animation: spinnerRotate 1.5s linear infinite;
 }
 #widget-canvas .connection path {
   stroke: #a3a3a3;

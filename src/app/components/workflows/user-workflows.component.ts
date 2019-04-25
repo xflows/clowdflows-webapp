@@ -47,7 +47,9 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
     startStreaming(workflowId: number) {
         this.clowdflowsDataService.startStreaming(workflowId)
             .then(data => {
+              if (data) {
                 this.router.navigate(['streams', data.stream_id]);
+              }
             });
     }
 

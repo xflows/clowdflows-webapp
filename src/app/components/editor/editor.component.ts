@@ -120,8 +120,9 @@ export class EditorComponent implements OnInit, OnDestroy {
                 .then((data) => {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
-                        let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
-                        activeWorkflow.widgets.push(widget);
+                      let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
+                      activeWorkflow.widgets.push(widget);
+
                     }
                 });
         }
@@ -350,6 +351,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             .then((data) => {
                 let error = this.loggerService.reportMessage(data);
                 if (!error) {
+                  console.log(output)
                     output.value = data.value;
                 }
             });
@@ -518,8 +520,10 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .visualizeWidget(widget)
             .then((response) => {
+              if (response) {
                 widget.visualizationHtml = response.text();
                 widget.showVisualizationDialog = true;
+              }
             });
     }
 
@@ -527,13 +531,14 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.clowdflowsDataService
             .interactWidget(widget)
             .then((response) => {
+              if (response) {
                 widget.interactionHtml = response.text();
                 widget.showInteractionDialog = true;
+              }
             });
     }
 
     updateRecommendation(recommendWidget:CanvasElement) {
-        // this.recommendWidget = recommendWidget;
         let widgetRecommendation = this.recommenderService.getRecommendation(recommendWidget);
         this.widgetTreeComponent.updateRecommendation(widgetRecommendation);
     }
