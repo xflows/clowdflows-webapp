@@ -15,7 +15,7 @@ import {LoggerService} from "../../services/logger.service";
 })
 export class UserWorkflowsComponent extends WorkflowsComponent {
 
-    title: string = 'Your workflows';
+  title: string = 'Your workflows';
 	pages: number[] = []; // to mora pridt iz baze
 	n_all: number = 0; //no of all entries, more pridt iz baze
 	rpp: number = 10 //rows per page
@@ -33,15 +33,7 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
     }
 
     ngOnInit(): void {
-        this.clowdflowsDataService.getUserWorkflows()
-            .then(workflows => { // TOLE MORE VRNIT SAMO WORKFLOWE, KI JIH POKAŽEMO V TABELI!
-				this.pages = [1];
-				this.n = this.pages.slice(-1)[0];
-				this.n_all = workflows.length; // vsi rezultati
-				this.bounds.lower = (this.k-1)*this.rpp+1;
-				this.bounds.upper = this.bounds.lower-1+Math.min(this.rpp,this.n_all); //n_all so samo vidni rezultati!
-                this.workflows = <Workflow[]> workflows;
-            });
+        this.getUserWorkflowsBackend()
     }
 
     startStreaming(workflowId: number) {
@@ -62,16 +54,29 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
         this.clowdflowsDataService
             .deleteWorkflow(workflow)
             .then( ()=> {
-                let index = this.workflows.findIndex(w => w.id === workflow.id);
-                this.workflows.splice(index, 1);//remove element from array
+                //let index = this.workflows.findIndex(w => w.id === workflow.id);
+                //this.workflows.splice(index, 1);//remove element from array
+                this.getUserWorkflowsBackend() // tole bi blo bl prov!
             });
     }
 
 	changePage(p:number) {
 		if (p != this.k) {
 			this.k = p;
-			// zamenjaj podatke na strani!
+      this.getUserWorkflowsBackend()
 		}
 	}
+
+  getUserWorkflowsBackend() {
+    this.clowdflowsDataService.getUserWorkflows()
+        .then(workflows => { // TOLE MORE VRNIT SAMO WORKFLOWE, KI JIH POKAŽEMO V TABELI!
+          this.pages = Array.apply(null, {length: Math.ceil(workflows.length/10)}).map(Number.call, Number).map((x:any) => {return x+1})
+          this.n = this.pages.slice(-1)[0];
+          this.n_all = workflows.length; // vsi rezultati
+          this.bounds.lower = (this.k-1)*this.rpp+1;
+          this.bounds.upper = this.bounds.lower-1+Math.min(this.rpp,this.n_all); //n_all so samo vidni rezultati!
+          this.workflows = <Workflow[]> workflows.slice(this.bounds.lower-1,this.bounds.upper);
+        });
+  }
 
 }

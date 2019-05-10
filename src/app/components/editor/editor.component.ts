@@ -16,6 +16,7 @@ import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
 import {TabsetComponent} from "ng2-bootstrap";
 import {CanvasElement} from "../../models/canvas-element";
+const svg = require('save-svg-as-png');
 
 @Component({
     selector: 'editor',
@@ -488,6 +489,59 @@ export class EditorComponent implements OnInit, OnDestroy {
             widget.x = data.position.x;
             widget.y = data.position.y;
         }
+    }
+
+    saveWorkflowAsPNG() {
+
+      let svgCanvas = document.querySelectorAll(".tab-pane.active #widget-canvas-svg")[0];
+
+      let paths = svgCanvas.getElementsByTagName("path");
+      let rects = svgCanvas.getElementsByTagName("rect");
+      let texts = svgCanvas.getElementsByTagName("text");
+
+      for (let i=0; i<paths.length; i++) {
+        let cssStyle = window.getComputedStyle(paths[i]);
+        paths[i].style.stroke = cssStyle.stroke;
+      }
+      for (let i=0; i<rects.length; i++) {
+        let cssStyle = window.getComputedStyle(rects[i]);
+        rects[i].style.fill = cssStyle.fill;
+        rects[i].style["fill-opacity"] = cssStyle["fill-opacity"];
+        rects[i].style.stroke = cssStyle.stroke;
+        rects[i].style["stroke-width"] = cssStyle["stroke-width"];
+        rects[i].style["stroke-miterlimit"] = cssStyle["stroke-miterlimit"];
+        rects[i].style["stroke-dasharray"] = cssStyle["stroke-dasharray"];
+      }
+      for (let i=0; i<texts.length; i++) {
+        let cssStyle = window.getComputedStyle(texts[i]);
+        texts[i].style["font-family"] = cssStyle["font-family"];
+        texts[i].style.fill = cssStyle.fill;
+      }
+
+      svg.svgAsDataUri(svgCanvas).then(function (uri:any) {
+
+        for (let i=0; i<paths.length; i++) {
+          paths[i].removeAttribute("style");
+        }
+        for (let i=0; i<rects.length; i++) {
+          rects[i].removeAttribute("style");
+        }
+        for (let i=0; i<texts.length; i++) {
+          texts[i].removeAttribute("style");
+        }
+
+        return svg.download("diagram.svg", uri);
+      }).catch(function() {
+        for (let i=0; i<paths.length; i++) {
+          paths[i].removeAttribute("style");
+        }
+        for (let i=0; i<rects.length; i++) {
+          rects[i].removeAttribute("style");
+        }
+        for (let i=0; i<texts.length; i++) {
+          texts[i].removeAttribute("style");
+        }
+      });
     }
 
     openSubprocess(widget:Widget) {

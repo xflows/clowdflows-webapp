@@ -10,6 +10,7 @@ import {Workflow} from "../../../models/workflow";
 export class ToolbarComponent {
     @Input() workflow:Workflow;
     @Input() userWorkflows:Workflow[];
+    @Input() saveWorkflowAsPNG:any;
     @Output() runWorkflowRequest = new EventEmitter();
     @Output() saveWorkflowRequest = new EventEmitter<Workflow>();
     @Output() createWorkflowRequest = new EventEmitter();

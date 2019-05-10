@@ -56,7 +56,9 @@
                    [attr.height]="ui_constants.iconSide"
                    y="7"
                    [attr.x]="ui_constants.signalWidth + (ui_constants.widgetBoxWidth - ui_constants.iconSide)/2"
-                   [attr.href]="widget.icon"/>
+                   [attr.xlink:href]="widget.icon"/>
+                   //xlink:href="https://cdn.glitch.com/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg"/>
+
             <image class="widget-save-results-icon"
                    y="1"
                    *ngIf="widget.save_results"

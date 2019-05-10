@@ -140,6 +140,7 @@ export class ClowdFlowsDataService {
     }
 
     runWorkflow(workflow: Workflow): Promise<any> {
+      // tukaj morda treba, da ne poženeš znova workflow-a, ki se že izvaja
         let options = this.getRequestOptions();
         return this.http
             .post(`${workflow.url}run/`, {}, options)

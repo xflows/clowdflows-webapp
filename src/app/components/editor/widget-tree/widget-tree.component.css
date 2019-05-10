@@ -5,11 +5,18 @@
   position: relative;
   padding: 10px;
   border-right: 1px solid #231f20;
-  overflow: auto;
   overflow-x: hidden;
 }
 #widgets #widget-tree {
   margin-left: -20px;
+  max-height: calc(100% - 100px);
+  overflow: auto;
+  overflow-x: hidden;
+}
+.import-webservice-btn {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10px;
 }
 .import-webservice-dialog {
   position: absolute;

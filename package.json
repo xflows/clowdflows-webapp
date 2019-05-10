@@ -35,6 +35,7 @@
     "reflect-metadata": "~0.1.3",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
+    "save-svg-as-png": "^1.4.13",
     "typescript-collections": "~1.2.3",
     "typings": "~1.3.2",
     "url-loader": "~0.5.7",
