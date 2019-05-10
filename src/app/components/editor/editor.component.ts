@@ -531,7 +531,8 @@ export class EditorComponent implements OnInit, OnDestroy {
         }
 
         return svg.download("diagram.svg", uri);
-      }).catch(function() {
+      }).catch(function(err:any) {
+        console.log(err)
         for (let i=0; i<paths.length; i++) {
           paths[i].removeAttribute("style");
         }
