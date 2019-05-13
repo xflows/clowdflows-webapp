@@ -1,6 +1,7 @@
 
 import {of as observableOf, Observable} from 'rxjs';
 import {
+  getTestBed,
     inject,
     TestBed, fakeAsync
 } from '@angular/core/testing';
@@ -10,6 +11,7 @@ import {LoginComponent} from "./login.component";
 import {FormsModule} from "@angular/forms";
 import {FooterComponent} from "../footer/footer.component";
 import {AlertModule} from "ng2-bootstrap";
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 let TEST_CREDENTIALS = {
     username: 'testuser',
@@ -44,12 +46,18 @@ class MockRouter {
 
 describe('LoginComponent', () => {
 
+  let injector: TestBed;
+  let service: UserService;
+  let httpMock: HttpTestingController;
+
     beforeEach(() => {
+
         TestBed
             .configureTestingModule({
                 imports: [
                     FormsModule,
-                    AlertModule.forRoot()
+                    AlertModule.forRoot(),
+                    HttpClientTestingModule
                 ],
                 declarations: [
                     LoginComponent,
@@ -61,9 +69,30 @@ describe('LoginComponent', () => {
                 ]
             })
             .compileComponents();
+
+            injector = getTestBed();
+            service = injector.get(UserService);
+            httpMock = injector.get(HttpTestingController);
     });
 
-    it('should log in', fakeAsync(inject([UserService], (userService:UserService) => {
+
+    it('should log in', () => {
+      let serviceCopy = service;
+      var fixture = TestBed.createComponent(LoginComponent);
+      fixture.debugElement.componentInstance.loginCredentials = {
+          username: TEST_CREDENTIALS.username,
+          password: TEST_CREDENTIALS.password
+      };
+      fixture.debugElement.componentInstance.attemptLogin();
+      fixture.detectChanges();
+      fixture.whenStable().then(()=>{
+        expect(serviceCopy.isLoggedIn()).toBe(true);
+      });
+    });
+
+
+    /*it('should log in', fakeAsync(inject([UserService], (userService:UserService) => {
+      console.log("should log in im in")
         var fixture = TestBed.createComponent(LoginComponent);
         fixture.debugElement.componentInstance.loginCredentials = {
             username: TEST_CREDENTIALS.username,
@@ -72,11 +101,26 @@ describe('LoginComponent', () => {
         fixture.debugElement.componentInstance.attemptLogin();
         fixture.detectChanges();
         fixture.whenStable().then(()=>{
+          console.log(" lalala");
             expect(userService.isLoggedIn()).toBe(true);
         });
-    })));
+    })));*/
 
-    it('should not log in', fakeAsync(inject([UserService], (userService:UserService) => {
+    it('should not log in', () => {
+      let serviceCopy = service;
+      var fixture = TestBed.createComponent(LoginComponent);
+      fixture.debugElement.componentInstance.loginCredentials = {
+          username: TEST_CREDENTIALS.username,
+          password: 'wrongpassword'
+      };
+      fixture.debugElement.componentInstance.attemptLogin();
+      fixture.detectChanges();
+      fixture.whenStable().then(()=>{
+        expect(serviceCopy.isLoggedIn()).toBe(false);
+      });
+    });
+
+    /*it('should not log in', fakeAsync(inject([UserService], (userService:UserService) => {
         var fixture = TestBed.createComponent(LoginComponent);
         fixture.debugElement.componentInstance.loginCredentials = {
             username: TEST_CREDENTIALS.username,
@@ -87,5 +131,5 @@ describe('LoginComponent', () => {
         fixture.whenStable().then(()=>{
             expect(userService.isLoggedIn()).toBe(false);
         });
-    })));
+    })));*/
 });
