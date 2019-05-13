@@ -94,6 +94,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             // Handle subprocesses, for loop inputs, etc
             this.addSpecialWidget(abstractWidget);
         } else {
+          let newCoordinates = this.newWidgetCoordinates();
             // Regular widgets
             let activeWorkflow = this.activeWorkflow;
             let save_results = false;
@@ -102,8 +103,8 @@ export class EditorComponent implements OnInit, OnDestroy {
             }
             let widgetData = {
                 workflow: activeWorkflow.url,
-                x: 50,
-                y: 50,
+                x: newCoordinates.x,
+                y: newCoordinates.y,
                 name: abstractWidget.name,
                 abstract_widget: abstractWidget.id,
                 finished: false,
@@ -139,8 +140,21 @@ export class EditorComponent implements OnInit, OnDestroy {
                 .then((data) => {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
+                      let newCoordinates = this.newWidgetCoordinates();
+                      data.x = newCoordinates.x;
+                      data.y = newCoordinates.y;
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
+                        this.canvasComponent.saveWidgetPositionRequest.emit(widget);
                         activeWorkflow.widgets.push(widget);
+                        this.canvasComponent.updateCanvasBounds();
+                        setTimeout(function(canvasComponent){
+                          return function() {
+                            let widgetCanvas = canvasComponent.widgetCanvas.nativeElement;
+                            let svgElement = canvasComponent.svgElement.nativeElement;
+                            widgetCanvas.scrollTop = 0;
+                            widgetCanvas.scrollLeft = svgElement.getAttribute("width")-widgetCanvas.offsetWidth;
+                          }}(this.canvasComponent), 300); // ali se da to narediti bolje?!
+
                     }
                 });
         } else if (abstractWidget.name == specialWidgetNames.inputWidget) {
@@ -150,6 +164,9 @@ export class EditorComponent implements OnInit, OnDestroy {
                 .then((data) => {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
+                      let newCoordinates = this.newWidgetCoordinates();
+                      data.x = newCoordinates.x;
+                      data.y = newCoordinates.y;
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
                         activeWorkflow.widgets.push(widget);
                         if (activeWorkflow.subprocessWidget) {
@@ -164,6 +181,9 @@ export class EditorComponent implements OnInit, OnDestroy {
                 .then((data) => {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
+                      let newCoordinates = this.newWidgetCoordinates();
+                      data.x = newCoordinates.x;
+                      data.y = newCoordinates.y;
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
                         activeWorkflow.widgets.push(widget);
                         if (activeWorkflow.subprocessWidget) {
@@ -179,6 +199,9 @@ export class EditorComponent implements OnInit, OnDestroy {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         for (let widgetData of <Array<Widget>> data) {
+                          let newCoordinates = this.newWidgetCoordinates();
+                          widgetData.x = newCoordinates.x;
+                          widgetData.y = newCoordinates.y;
                             let widget:Widget = Widget.createFromJSON(widgetData, activeWorkflow);
                             activeWorkflow.widgets.push(widget);
                         }
@@ -195,6 +218,9 @@ export class EditorComponent implements OnInit, OnDestroy {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         for (let widgetData of <Array<Widget>> data) {
+                          let newCoordinates = this.newWidgetCoordinates();
+                          widgetData.x = newCoordinates.x;
+                          widgetData.y = newCoordinates.y;
                             let widget:Widget = Widget.createFromJSON(widgetData, activeWorkflow);
                             activeWorkflow.widgets.push(widget);
                         }
@@ -625,7 +651,6 @@ export class EditorComponent implements OnInit, OnDestroy {
                     this.workflows.push(this.workflow);
                     this.switchToWorkflowTab(this.workflow);
                     this.clowdflowsDataService.editorUpdates((data:any) => {
-                        // console.log(data);
 
                         switch(data.type) {
                             case "logMessage": {
@@ -657,5 +682,25 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.sub.unsubscribe();
+    }
+
+    newWidgetCoordinates() {
+      let widgets = this.workflow.widgets;
+      let mostRightWidget;
+      let maxX = -Infinity;
+      for (let i=0; i<widgets.length; i++) {
+        if (widgets[i].x > maxX) {
+          maxX = widgets[i].x;
+          mostRightWidget = widgets[i];
+        }
+      }
+
+      if (mostRightWidget) {
+        let mostRightWidgetDOM = document.getElementById("widget-"+mostRightWidget.id);
+        return {x: mostRightWidget.x+parseInt(mostRightWidgetDOM.getAttribute("width")), y: 50}
+      }
+      else {
+        return {x: 50, y: 50}
+      }
     }
 }

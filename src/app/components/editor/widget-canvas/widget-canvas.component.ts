@@ -53,8 +53,8 @@ export class WidgetCanvasComponent implements OnInit {
 
 	krenarray = [1,2];
 
-    @ViewChild('svgElement') private svgElement:ElementRef;
-    @ViewChild('widgetCanvas') private widgetCanvas:ElementRef;
+    @ViewChild('svgElement') public svgElement:ElementRef;
+    @ViewChild('widgetCanvas') public widgetCanvas:ElementRef;
 
     constructor(private contextMenuService:ContextMenuService) {
     }
@@ -162,22 +162,22 @@ export class WidgetCanvasComponent implements OnInit {
     }
 
     updateCanvasBounds() {
+
         if (this.workflow.widgets.length == 0)
             return;
 
         this.widgetBounds.x = 0;
         this.widgetBounds.y = 0;
 
-            for (let widget of this.workflow.widgets) {
-                if (widget.bounds.x2 > this.widgetBounds.x) {
-                    this.widgetBounds.x = widget.bounds.x2;
-                }
-                if (widget.bounds.y2 > this.widgetBounds.y) {
-                    this.widgetBounds.y = widget.bounds.y2;
-                }
-            }
-
-    }
+        for (let widget of this.workflow.widgets) {
+          if (widget.bounds.x2 > this.widgetBounds.x) {
+            this.widgetBounds.x = widget.bounds.x2;
+          }
+          if (widget.bounds.y2 > this.widgetBounds.y) {
+            this.widgetBounds.y = widget.bounds.y2;
+          }
+        }
+      }
 
     get canvasHeight() {
         return Math.max(this.widgetBounds.y, this.visibleCanvasSize.height);

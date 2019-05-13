@@ -34,7 +34,21 @@ export class ToolbarComponent {
     }
 
     runWorkflow() {
+      let widgets = this.workflow.widgets;
+      let widgetRunning = false;
+      for (let i=0; i<widgets.length; i++) {
+        if (widgets[i].running) {
+          widgetRunning = true;
+          break;
+        }
+      }
+
+      if (widgetRunning) {
+        alert("At least one widget is running. Please wait for it to finish.")
+      }
+      else {
         this.runWorkflowRequest.emit("");
+      }
     }
 
     saveWorkflow() {

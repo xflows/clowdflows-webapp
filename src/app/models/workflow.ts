@@ -24,7 +24,8 @@ export class Workflow {
                 public widget:string,
                 public template_parent:string,
                 public can_be_streaming:boolean,
-                public staff_pick:boolean) {
+                public staff_pick:boolean,
+                public running:boolean=false) {
         this.widgets = new Array<Widget>();
         for (let widget of widgets) {
             this.widgets.push(Widget.createFromJSON(widget, this));
