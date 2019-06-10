@@ -37,6 +37,19 @@ export class ClowdFlowsDataService {
         return {headers: headers};
     }
 
+    getTextRequestOptions() {
+
+      let auth_token = localStorage.getItem('auth_token');
+
+      return {
+        headers: new HttpHeaders({
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Authorization': `Token ${auth_token}`
+        }),
+        responseType: 'text' as 'json'
+      }
+    }
+
     getFileUploadOption(input: WidgetInput) {
         return {
             url: `${input.url}upload/`,
@@ -204,7 +217,7 @@ export class ClowdFlowsDataService {
     }
 
     visualizeWidget(widget: Widget): Promise<void | Response> {
-        let options = this.getRequestOptions();
+        let options = this.getTextRequestOptions();
         return this.http
             .get<Response>(`${widget.url}visualize/`, options)
             .toPromise()

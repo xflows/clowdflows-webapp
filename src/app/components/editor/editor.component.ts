@@ -602,7 +602,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             .visualizeWidget(widget)
             .then((response) => {
               if (response) {
-                widget.visualizationHtml = response.text();
+                widget.visualizationHtml = response;
                 widget.showVisualizationDialog = true;
               }
             });
@@ -651,7 +651,6 @@ export class EditorComponent implements OnInit, OnDestroy {
                     this.workflows.push(this.workflow);
                     this.switchToWorkflowTab(this.workflow);
                     this.clowdflowsDataService.editorUpdates((data:any) => {
-
                         switch(data.type) {
                             case "logMessage": {
                                 this.loggerService.receiveLogMessage(data)
