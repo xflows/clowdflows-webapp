@@ -14,7 +14,7 @@ import {specialWidgetNames} from '../../services/special-widgets';
 import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
-import {TabsetComponent} from "ng2-bootstrap";
+import {TabsetComponent} from "ngx-bootstrap";
 import {CanvasElement} from "../../models/canvas-element";
 const svg = require('save-svg-as-png');
 
@@ -24,9 +24,9 @@ const svg = require('save-svg-as-png');
     styles: [require('./editor.component.css')]
 })
 export class EditorComponent implements OnInit, OnDestroy {
-    @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent;
-    @ViewChild(WidgetTreeComponent) widgetTreeComponent: WidgetTreeComponent;
-    @ViewChild(TabsetComponent) tabsetComponent: TabsetComponent;
+    @ViewChild(WidgetCanvasComponent, {static: false}) canvasComponent:WidgetCanvasComponent;
+    @ViewChild(WidgetTreeComponent, {static: false}) widgetTreeComponent: WidgetTreeComponent;
+    @ViewChild(TabsetComponent, {static: false}) tabsetComponent: TabsetComponent;
     workflow:any = {};
     workflows:Workflow[] = [];
     userWorkflows:Workflow[] = [];
@@ -613,7 +613,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             .interactWidget(widget)
             .then((response) => {
               if (response) {
-                widget.interactionHtml = response.text();
+                widget.interactionHtml = response;
                 widget.showInteractionDialog = true;
               }
             });

@@ -102,5 +102,16 @@
                    (saveWidgetConfigurationRequest)="saveWidgetConfiguration($event)"
                    (resetWidgetRequest)="resetWidget($event)">
     </widget-dialog>
-    <context-menu></context-menu>
+    <context-menu-widget
+    (runWidgetRequest)="runWidget($event)"
+    (runWidgetWithInteractionRequest)="runWidgetWithInteraction($event)"
+    (fetchOutputResultsRequest)="fetchOutputResults($event)"
+    (resetWidgetRequest) = "resetWidget($event)"
+    (resetWorkflowRequest) = "resetWorkflow($event)"
+    (copyWidgetRequest) = "copyWidget($event)"
+    (deleteWidgetRequest) = "deleteWidget($event)"
+    ></context-menu-widget>
+    <context-menu-connection
+    (deleteConnectionRequest)="deleteConnection($event)"
+    ></context-menu-connection>
 </div>

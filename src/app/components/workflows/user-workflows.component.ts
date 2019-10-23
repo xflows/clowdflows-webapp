@@ -18,10 +18,10 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
   title: string = 'Your workflows';
 	pages: number[] = []; // to mora pridt iz baze
 	n_all: number = 0; //no of all entries, more pridt iz baze
-	rpp: number = 10 //rows per page
-	bounds: any = {lower: 0, upper: 0}
+	rpp: number = 2 //rows per page
 	n: number = 0;
 	k: number = 1;
+  bounds: any = {};
 
     constructor(domSanitizer: DomSanitizer,
                 clowdflowsDataService: ClowdFlowsDataService,
@@ -68,14 +68,13 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
 	}
 
   getUserWorkflowsBackend() {
-    this.clowdflowsDataService.getUserWorkflows()
-        .then(workflows => { // TOLE MORE VRNIT SAMO WORKFLOWE, KI JIH POKAŽEMO V TABELI!
-          this.pages = Array.apply(null, {length: Math.ceil(workflows.length/10)}).map(Number.call, Number).map((x:any) => {return x+1})
-          this.n = this.pages.slice(-1)[0];
-          this.n_all = workflows.length; // vsi rezultati
-          this.bounds.lower = (this.k-1)*this.rpp+1;
-          this.bounds.upper = this.bounds.lower-1+Math.min(this.rpp,this.n_all); //n_all so samo vidni rezultati!
-          this.workflows = <Workflow[]> workflows.slice(this.bounds.lower-1,this.bounds.upper);
+    //this.clowdflowsDataService.getUserWorkflows(false,{page: this.k, length: this.rpp, include_subprocesses: 0})
+    this.clowdflowsDataService.getUserWorkflows(false)
+        .then(results => { // TOLE MORE VRNIT SAMO WORKFLOWE, KI JIH POKAŽEMO V TABELI!
+          //this.n_all = results.n_all; // vsi rezultati
+          //this.bounds = {"lower": (this.k-1)*this.rpp+1, "upper": Math.min(this.n_all,this.k*this.rpp)}
+          //this.pages = Array.apply(null, {length: Math.ceil(results.n_all/this.rpp)}).map(Number.call, Number).map((x:any) => {return x+1})
+          this.workflows = <Workflow[]> results
         });
   }
 

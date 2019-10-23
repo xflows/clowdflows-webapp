@@ -9,8 +9,8 @@ import '@angular/router';
 import 'rxjs';
 // Other vendors for example jQuery, Lodash or Bootstrap
 // You can import js, ts, css, sass, ...
-import 'ng2-bootstrap';
-import 'angular2-contextmenu';
+import 'ngx-bootstrap';
+import 'ngx-contextmenu';
 
-import '../vendor/bootstrap/css/bootstrap.min.css';
-import '../vendor/font-awesome/css/font-awesome.min.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+//import '../vendor/font-awesome/css/font-awesome.min.css';

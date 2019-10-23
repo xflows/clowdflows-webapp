@@ -3,14 +3,14 @@ import {CommonModule}       from '@angular/common';
 import {FormsModule}        from '@angular/forms';
 import {EditorComponent}   from './editor.component';
 import {TreeViewComponent} from "./widget-tree/tree-view.component";
-import {ContextMenuComponent, ContextMenuService} from "angular2-contextmenu";
+import {ContextMenuModule, ContextMenuService} from "ngx-contextmenu";
 import {DraggableWidget} from "../../directives/draggable-widget.directive";
 import {WidgetDialogComponent} from "./widget-dialogs/widget-dialog.component";
 import {LoggingComponent} from "./logging/logging.component";
 import {WidgetCanvasComponent} from "./widget-canvas/widget-canvas.component";
 import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
-import {ModalModule, PopoverModule, TabsModule} from "ng2-bootstrap";
+import {ModalModule, PopoverModule, TabsModule} from "ngx-bootstrap";
 import {HttpClientModule} from "@angular/common/http";
 import {routing} from "../../app.routing";
 import {DndModule} from 'ng2-dnd';
@@ -23,6 +23,9 @@ import {Sanitize} from "../../pipes/sanitizejs.pipe";
 import {SanitizeModule} from "../../pipes/sanitize.module";
 import {TutorialComponent} from "./tutorial/tutorial.component";
 import {CutPipe} from "../../pipes/cut.pipe";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ContextMenuWidgetComponent } from './widget-canvas/context-menu-widget/context-menu-widget.component';
+import { ContextMenuConnectionComponent } from './widget-canvas/context-menu-connection/context-menu-connection.component';
 
 @NgModule({
     imports: [
@@ -31,11 +34,13 @@ import {CutPipe} from "../../pipes/cut.pipe";
         HttpClientModule,
         ModalModule.forRoot(),
         TabsModule.forRoot(),
+        ContextMenuModule.forRoot(),
         routing,
         Ng2UploaderModule,
         DndModule.forRoot(),
         SanitizeModule,
-        PopoverModule.forRoot()
+        PopoverModule.forRoot(),
+        FontAwesomeModule
     ],
     declarations: [
         EditorComponent,
@@ -45,13 +50,14 @@ import {CutPipe} from "../../pipes/cut.pipe";
         DraggableWidget,
         DraggableWindow,
         FocusOnVisible,
-        ContextMenuComponent,
         ToolbarComponent,
         WidgetTreeComponent,
         WidgetCanvasComponent,
         LoggingComponent,
         TutorialComponent,
-        CutPipe
+        CutPipe,
+        ContextMenuWidgetComponent,
+        ContextMenuConnectionComponent
     ],
     providers: [
         WidgetLibraryService,

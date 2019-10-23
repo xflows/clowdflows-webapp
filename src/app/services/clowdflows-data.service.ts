@@ -50,6 +50,18 @@ export class ClowdFlowsDataService {
       }
     }
 
+    getHtmlRequestOptions() {
+      let auth_token = localStorage.getItem('auth_token');
+
+      return {
+        headers: new HttpHeaders({
+          'Content-Type': 'text/html; charset=UTF-8',
+          'Authorization': `Token ${auth_token}`
+        }),
+        responseType: 'html' as 'json'
+      }
+    }
+
     getFileUploadOption(input: WidgetInput) {
         return {
             url: `${input.url}upload/`,
@@ -126,14 +138,20 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getUserWorkflows(includePreview?: boolean): Promise<any> {
+    getUserWorkflows(includePreview?: boolean, settings?: any): Promise<any> {
         let options = this.getRequestOptions();
         let preview = 0;
         if (includePreview) {
             preview = 1;
         }
+        let additional_settings = "";
+        if (settings) {
+          for (let key in settings) {
+            additional_settings += "&"+key+"="+settings[key];
+          }
+        }
         return this.http
-            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1&preview=${preview}`, options)
+            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1&preview=${preview}${additional_settings}`, options)
             .toPromise()
             .then(response => response)
             .catch(error => this.handleError(error));
@@ -226,7 +244,7 @@ export class ClowdFlowsDataService {
     }
 
     interactWidget(widget: Widget): Promise<void | Response> {
-        let options = this.getRequestOptions();
+        let options = this.getHtmlRequestOptions();
         return this.http
             .get<Response>(`${widget.url}interact/`, options)
             .toPromise()

@@ -1,5 +1,8 @@
-import 'core-js/es6';
-import 'core-js/es7/reflect';
+import 'core-js/es';
+import 'core-js/proposals/reflect-metadata';
+//import 'core-js/es/array';
+//import 'core-js/es6';
+//import 'core-js/es7/reflect';
 require('zone.js/dist/zone');
 if (process.env.ENV === 'production') {
     // Production

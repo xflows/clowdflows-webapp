@@ -16,7 +16,7 @@ export class WidgetDialogComponent {
     @Output() saveWidgetRequest = new EventEmitter<Widget>();
     @Output() saveWidgetConfigurationRequest = new EventEmitter<any>();
     @Output() resetWidgetRequest = new EventEmitter<any>();
-    @ViewChild('formContainer') private formContainer:ElementRef;
+    @ViewChild('formContainer', {static: false}) private formContainer:ElementRef;
 
     uploadFile:any;
 

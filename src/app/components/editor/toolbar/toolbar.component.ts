@@ -1,6 +1,8 @@
 import {Component, Output, EventEmitter, Input, ViewChild} from '@angular/core';
-import {ModalDirective} from 'ng2-bootstrap';
+import {ModalDirective} from 'ngx-bootstrap';
 import {Workflow} from "../../../models/workflow";
+import { faFile, faFolderOpen, faSave } from '@fortawesome/free-regular-svg-icons';
+import { faPlay, faCamera } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'toolbar',
@@ -8,6 +10,13 @@ import {Workflow} from "../../../models/workflow";
     styles: [require('./toolbar.component.css'),]
 })
 export class ToolbarComponent {
+
+    faPlay = faPlay
+    faCamera = faCamera
+    faFile = faFile
+    faFolderOpen = faFolderOpen
+    faSave = faSave
+
     @Input() workflow:Workflow;
     @Input() userWorkflows:Workflow[];
     @Input() saveWorkflowAsPNG:any;
@@ -15,9 +24,9 @@ export class ToolbarComponent {
     @Output() saveWorkflowRequest = new EventEmitter<Workflow>();
     @Output() createWorkflowRequest = new EventEmitter();
 
-    @ViewChild('createWorkflowModal') public createWorkflowModal: ModalDirective;
-    @ViewChild('openWorkflowModal') public openWorkflowModal: ModalDirective;
-    @ViewChild('saveWorkflowModal') public saveWorkflowModal: ModalDirective;
+    @ViewChild('createWorkflowModal', {static: false}) public createWorkflowModal: ModalDirective;
+    @ViewChild('openWorkflowModal', {static: false}) public openWorkflowModal: ModalDirective;
+    @ViewChild('saveWorkflowModal', {static: false}) public saveWorkflowModal: ModalDirective;
 
     constructor() {}
 

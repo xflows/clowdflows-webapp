@@ -1,11 +1,13 @@
 import {Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit} from '@angular/core';
-import {ContextMenuService} from 'angular2-contextmenu/angular2-contextmenu';
+import {ContextMenuComponent, ContextMenuService} from 'ngx-contextmenu';
 import {UI} from "../../../services/ui-constants";
 import {Output as WorkflowOutput} from "../../../models/output";
 import {Input as WorkflowInput} from "../../../models/input";
 import {Connection} from "../../../models/connection";
 import {Widget} from "../../../models/widget";
 import {Workflow} from "../../../models/workflow";
+import { ContextMenuWidgetComponent } from './context-menu-widget/context-menu-widget.component';
+import { ContextMenuConnectionComponent } from './context-menu-connection/context-menu-connection.component';
 
 @Component({
     selector: 'widget-canvas',
@@ -18,14 +20,14 @@ export class WidgetCanvasComponent implements OnInit {
     @Output() deleteConnectionRequest = new EventEmitter<Connection>();
     @Output() saveWidgetRequest = new EventEmitter<Widget>();
     @Output() saveWidgetPositionRequest = new EventEmitter<Widget>();
-    @Output() deleteWidgetRequest = new EventEmitter<Widget>();
+    @Output() runWidgetRequest = new EventEmitter<Widget>();
+    @Output() runAndInteractWidgetRequest = new EventEmitter<Widget>();
+    @Output() fetchOutputResultsRequest = new EventEmitter<WorkflowOutput>();
     @Output() resetWidgetRequest = new EventEmitter<Widget>();
     @Output() resetWorkflowRequest = new EventEmitter();
     @Output() copyWidgetRequest = new EventEmitter<Widget>();
-    @Output() runWidgetRequest = new EventEmitter<Widget>();
-    @Output() runAndInteractWidgetRequest = new EventEmitter<Widget>();
+    @Output() deleteWidgetRequest = new EventEmitter<Widget>();
     @Output() continueRunWorkflowRequest = new EventEmitter<String>();
-    @Output() fetchOutputResultsRequest = new EventEmitter<WorkflowOutput>();
     @Output() openSubprocessRequest = new EventEmitter<Widget>();
     @Output() showRecommendationsRequest = new EventEmitter<Widget>();
     @Output() saveWidgetConfigurationRequest = new EventEmitter<any>();
@@ -53,17 +55,22 @@ export class WidgetCanvasComponent implements OnInit {
 
 	krenarray = [1,2];
 
-    @ViewChild('svgElement') public svgElement:ElementRef;
-    @ViewChild('widgetCanvas') public widgetCanvas:ElementRef;
+    @ViewChild('svgElement', {static: false}) public svgElement:ElementRef;
+    @ViewChild('widgetCanvas', {static: false}) public widgetCanvas:ElementRef;
+    @ViewChild(ContextMenuWidgetComponent, {static: false}) contextMenuWidget: ContextMenuWidgetComponent;
+    @ViewChild(ContextMenuConnectionComponent, {static: false}) contextMenuConnection: ContextMenuConnectionComponent;
 
-    constructor(private contextMenuService:ContextMenuService) {
+    constructor(private contextMenuService: ContextMenuService) { }
+
+    ngAfterViewInit() {
+
+        this.visibleCanvasSize.width = this.svgElement.nativeElement.scrollWidth;
+        this.visibleCanvasSize.height = this.svgElement.nativeElement.scrollHeight;
+        //this.updateCanvasBounds(); ZAKAJ SM TO RABLA?
+
     }
 
     ngOnInit() {
-        this.visibleCanvasSize.width = this.svgElement.nativeElement.scrollWidth;
-        this.visibleCanvasSize.height = this.svgElement.nativeElement.scrollHeight;
-        this.updateCanvasBounds();
-
 
     }
 
@@ -309,17 +316,6 @@ export class WidgetCanvasComponent implements OnInit {
         widget.showDialog = true;
     }
 
-    showResults(widget:Widget) {
-        for (let output of widget.outputs) {
-            this.fetchOutputResultsRequest.emit(output);
-        }
-        widget.showResults = true;
-    }
-
-    showHelp(widget:Widget) {
-        widget.showHelp = true;
-    }
-
     showRenameDialog(widget:Widget) {
         widget.showRenameDialog = true;
     }
@@ -404,12 +400,16 @@ export class WidgetCanvasComponent implements OnInit {
         }
     }
 
-    deleteWidget(widget:Widget) {
-        this.deleteWidgetRequest.emit(widget);
+    runWidget(widget:Widget) {
+        this.runWidgetRequest.emit(widget);
     }
 
-    deleteConnection(connection:Connection) {
-        this.deleteConnectionRequest.emit(connection);
+    runWidgetWithInteraction(widget:Widget) {
+        this.runAndInteractWidgetRequest.emit(widget);
+    }
+
+    fetchOutputResults(output:WorkflowOutput) {
+        this.fetchOutputResultsRequest.emit(output);
     }
 
     resetWidget(widget:Widget) {
@@ -424,11 +424,12 @@ export class WidgetCanvasComponent implements OnInit {
         this.copyWidgetRequest.emit(widget);
     }
 
-    runWidget(widget:Widget) {
-        this.runWidgetRequest.emit(widget);
+    deleteWidget(widget:Widget) {
+        this.deleteWidgetRequest.emit(widget);
     }
-    runWidgetWithInteraction(widget:Widget) {
-        this.runAndInteractWidgetRequest.emit(widget);
+
+    deleteConnection(connection:Connection) {
+        this.deleteConnectionRequest.emit(connection);
     }
 
     continueRunWorkflow(event:any) {
@@ -455,67 +456,22 @@ export class WidgetCanvasComponent implements OnInit {
 
     public onContextMenu($event:MouseEvent, item:any, type:string):void {
 
-        $event.preventDefault();
+      $event.preventDefault();
+      $event.stopPropagation();
 
-		if (type == "widget") {
-		    this.contextMenuService.show.next({
-		        actions: [
-		            {
-		                html: () => `<span class="glyphicon glyphicon-play"></span> Run`,
-		                click: (widget:Widget) => this.runWidget(widget)
-		            },
-		            {
-		                html: () => `<span class="glyphicon glyphicon-alert"></span> Run & interact`,
-		                click: (widget:Widget) => this.runWidgetWithInteraction(widget)
-		            },
-		            {
-		                html: () => `<span class="glyphicon glyphicon-pencil"></span> Properties`,
-		                click: (widget:Widget) => this.showDialog(widget)
-		            },
-		            {
-		                html: () => `<span class="glyphicon glyphicon-stats"></span> Results`,
-		                click: (widget:Widget) => this.showResults(widget)
-		            },
-		            {
-		                html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset`,
-		                click: (widget:Widget) => this.resetWidget(widget)
-		            },
-		            {
-		                html: () => `<span class="glyphicon glyphicon-repeat"></span> Reset workflow`,
-		                click: (_:any) => this.resetWorkflow()
-		            },
-		            {
-		                html: () => `<span class="glyphicon glyphicon-console"></span> Rename`,
-		                click: (widget:Widget) => this.showRenameDialog(widget)
-		            },
-		            {
-		                html: () => `<span class="glyphicon glyphicon-copy"></span> Copy`,
-		                click: (widget:Widget) => this.copyWidget(widget)
-		            },
-		            {
-		                html: () => `<span class="glyphicon glyphicon-trash"></span> Delete`,
-		                click: (widget:Widget) => this.deleteWidget(widget)
-		            },
-		            {
-		                html: () => `<span class="glyphicon glyphicon-question-sign"></span> Help`,
-		                click: (widget:Widget) => this.showHelp(widget)
-		            },
-		        ],
-		        event: $event,
-		        item: item,
-		    });
-		}
-		else if (type == "connection") {
-			this.contextMenuService.show.next({
-		        actions: [
-		            {
-		                html: () => `<span class="glyphicon glyphicon-trash"></span> Remove`,
-		                click: (connection:Connection) => this.deleteConnection(connection)
-		            },
-		        ],
-		        event: $event,
-		        item: item,
-		    });
-		}
+        if (type == "widget") {
+          this.contextMenuService.show.next({
+            contextMenu: this.contextMenuWidget.contextMenu,
+            event: $event,
+            item: item
+          });
+        }
+        else if (type == "connection") {
+          this.contextMenuService.show.next({
+            contextMenu: this.contextMenuConnection.contextMenu,
+            event: $event,
+            item: item
+          });
+        }
     }
 }

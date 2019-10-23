@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 import {testWorkflows} from "../../../testing/data/workflows.testdata";
 import {WidgetCanvasComponent} from "./widget-canvas.component";
 import {WidgetDialogStub} from "../../../testing/stubs/widget-dialog.component.stub";
-import {ContextMenuService, ContextMenuComponent} from "angular2-contextmenu/angular2-contextmenu";
+import {ContextMenuService, ContextMenuComponent} from "ngx-contextmenu/ngx-contextmenu";
 import {Widget} from "../../../models/widget";
 
 describe('WidgetCanvasComponent', () => {

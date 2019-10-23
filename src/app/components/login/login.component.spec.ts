@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 import {LoginComponent} from "./login.component";
 import {FormsModule} from "@angular/forms";
 import {FooterComponent} from "../footer/footer.component";
-import {AlertModule} from "ng2-bootstrap";
+import {AlertModule} from "ngx-bootstrap";
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 let TEST_CREDENTIALS = {

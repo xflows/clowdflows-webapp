@@ -3,10 +3,9 @@ import {ToolbarComponent} from "./toolbar.component";
 import {testWorkflows} from "../../../testing/data/workflows.testdata";
 import {By} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
-import {ModalModule} from "ng2-bootstrap";
+import {ModalModule} from "ngx-bootstrap";
 import {RouterLinkStubDirective} from "../../../testing/stubs/router.stub";
 import {DebugElement} from "@angular/core";
-
 
 describe('ToolbarComponent', () => {
 
