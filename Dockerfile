@@ -8,6 +8,7 @@ COPY ./ /app
 FROM node:8-alpine as build
 WORKDIR /app
 COPY --from=dev /app /app
+RUN npm run postinstall
 RUN npm run build
 
 FROM nginx:1.17.5-alpine as prod
