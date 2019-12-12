@@ -1,9 +1,7 @@
 FROM node:8-alpine as dev
-COPY ./package.json /app/package.json
-COPY ./package-lock.json /app/package-lock.json
-WORKDIR /app
-RUN npm install
 COPY ./ /app
+WORKDIR /app
+RUN npm install --unsafe-perm
 
 FROM node:8-alpine as build
 WORKDIR /app
