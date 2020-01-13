@@ -613,7 +613,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             .interactWidget(widget)
             .then((response) => {
               if (response) {
-                widget.interactionHtml = response.text();
+                widget.interactionHtml = response;
                 widget.showInteractionDialog = true;
               }
             });
