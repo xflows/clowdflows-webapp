@@ -19,7 +19,6 @@
         </thead>
         <tbody>
         <ng-template ngFor let-workflow [ngForOf]="workflows">
-            <tr *ngIf="!workflow.is_subprocess">
                 <td class="name">{{workflow.name}}</td>
                 <td>
                     <a *ngIf="workflow.is_public" [routerLink]="['/workflow/', workflow.id]">{{base_url}}/workflow/{{workflow.id}}</a>
@@ -60,7 +59,6 @@
                     <a [routerLink]="" (click)="toggleWorkflowVisibility(workflow)" *ngIf="workflow.is_public">Make private</a> |
                     <a [routerLink]="['/export-workflow/', workflow.id]">Export to JSON</a>
                 </td>
-            </tr>
         </ng-template>
         </tbody>
     </table>

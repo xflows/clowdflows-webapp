@@ -138,14 +138,16 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getUserWorkflows(includePreview?: boolean): Promise<any> {
+    getUserWorkflows(page?: number, includePreview?: boolean): Promise<any> {
         let options = this.getRequestOptions();
         let preview = 0;
         if (includePreview) {
             preview = 1;
         }
+        
+        let pageParam = page ? '&page='+ page : '';
         return this.http
-            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1&preview=${preview}`, options)
+            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1&preview=${preview}${pageParam}`, options)
             .toPromise()
             .then(response => response)
             .catch(error => this.handleError(error));
