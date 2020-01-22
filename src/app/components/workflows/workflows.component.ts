@@ -30,10 +30,10 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
 
     ngOnInit():void {
         let includePreview = true;
-        this.clowdflowsDataService.getPublicWorkflows(includePreview)
-            .then(workflows => {
-                this.workflows = workflows;
-                this.staff_picks = workflows.filter((workflow:Workflow) => workflow.staff_pick);
+        this.clowdflowsDataService.getWorkflows(false, 0, includePreview)
+            .then(response => {
+                this.workflows = response.workflows;
+                this.staff_picks = response.workflows.filter((workflow:Workflow) => workflow.staff_pick);
             });
     }
 

@@ -16,8 +16,11 @@ import {LoggerService} from "../../services/logger.service";
 export class UserWorkflowsComponent extends WorkflowsComponent {
 
   title: string = 'Your workflows';
-	pages: number[] = []; // to mora pridt iz baze
-	n_all: number = 0; //no of all entries, more pridt iz baze
+  searchTerm : string = '';
+
+  // Pagination
+	pages: number[] = [];
+	n_all: number = 0;
 	bounds: any = {lower: 0, upper: 0}
 	n: number = 0;
 	k: number = 1;
@@ -65,7 +68,7 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
 	}
   
   getUserWorkflowsBackend() {
-    this.clowdflowsDataService.getUserWorkflows(this.k)
+    this.clowdflowsDataService.getWorkflows(true, this.k, false, this.searchTerm)
         .then(response => { 
           let pag = response.pagination;
           this.n = pag.num_pages;

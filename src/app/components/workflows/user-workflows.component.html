@@ -7,6 +7,11 @@
         </button>
     </p>
 
+    <form (ngSubmit)="getUserWorkflowsBackend()" (keyup.enter)="getUserWorkflowsBackend()">
+        <input type="text" placeholder="Search workflows ..." [(ngModel)]="searchTerm" required name="search" class="input-sm"/>
+        <button type="submit" class="btn"> Search </button>
+    </form>
+
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
@@ -64,6 +69,10 @@
         </ng-template>
         </tbody>
     </table>
+
+    <div *ngIf="workflows.length == 0" class="name text-center">
+        No workflows were found.
+    </div>
 	<span class="table-information">Showing {{bounds.lower}} to {{bounds.upper}} of {{n_all}} entries.</span>
 	<div class="table-pagination">
 		<div>

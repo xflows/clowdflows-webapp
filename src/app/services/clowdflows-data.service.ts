@@ -138,29 +138,25 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getUserWorkflows(page?: number, includePreview?: boolean): Promise<any> {
-        let options = this.getRequestOptions();
-        let preview = 0;
-        if (includePreview) {
-            preview = 1;
-        }
-        
-        let pageParam = page ? '&page='+ page : '';
-        return this.http
-            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1&preview=${preview}${pageParam}`, options)
-            .toPromise()
-            .then(response => response)
-            .catch(error => this.handleError(error));
+    getUserWorkflows(includePreview?: boolean){
+        return this.getWorkflows(true, 0, includePreview);
     }
 
-    getPublicWorkflows(includePreview?: boolean): Promise<any> {
+    getPublicWorkflows(includePreview?: boolean){
+        return this.getWorkflows(true, 0, includePreview);
+    }
+
+    getWorkflows(onlyUserWorkflows: boolean, page?: number,
+            includePreview?: boolean, searchTerm?: string): Promise<any> {
         let options = this.getRequestOptions();
-        let preview = 0;
-        if (includePreview) {
-            preview = 1;
-        }
+        let preview = includePreview ? 1 : 0;
+        let user = onlyUserWorkflows ? 1 : 0;
+
+        let pageParam = page ? '&page='+ page : '';
+        let searchParam = searchTerm ? '&search='+ searchTerm : '';
+
         return this.http
-            .get(`${API_ENDPOINT}${this.workflowsUrl}?preview=${preview}`, options)
+            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=${user}&preview=${preview}${pageParam}${searchParam}`, options)
             .toPromise()
             .then(response => response)
             .catch(error => this.handleError(error));
