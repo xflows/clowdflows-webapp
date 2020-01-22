@@ -14,10 +14,20 @@ import {LoggerService} from "../../services/logger.service";
     template: require('./explore-workflows.component.html')
 })
 export class WorkflowsComponent implements OnInit, OnDestroy {
+    // Abstract component representing a paginated list of workflows
+    // Extended by UserWorkflowsComponent and ExploreWorkflowsComponent
+    
     workflows:Workflow[] = [];
-    staff_picks:Workflow[] = [];
-    title:string = 'Explore workflows';
+    title:string = 'Workflows';
     base_url:string;
+    search_term : string = '';
+
+    // Pagination
+	pages: number[] = [];
+	n_all: number = 0;
+	bounds: any = {lower: 0, upper: 0}
+	n: number = 0;
+	k: number = 1;
 
     constructor(public domSanitizer:DomSanitizer,
                 public clowdflowsDataService:ClowdFlowsDataService,
@@ -29,12 +39,7 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit():void {
-        let includePreview = true;
-        this.clowdflowsDataService.getWorkflows(false, 0, includePreview)
-            .then(response => {
-                this.workflows = response.workflows;
-                this.staff_picks = response.workflows.filter((workflow:Workflow) => workflow.staff_pick);
-            });
+        this.getWorkflowsBackend()
     }
 
     getTrustedHTML(html:string) {
@@ -43,7 +48,6 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy():void {
         this.workflows = [];
-        this.staff_picks = [];
     }
 
     newWorkflow() {
@@ -73,7 +77,32 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/editor', data.id]);
                 }
             });
+    }
 
+    getWorkflowsBackend(){
+        // To be overriden by extending components
+    }
 
+    changePage(p:number) {
+		if (p != this.k) {
+			this.k = p;
+      this.getWorkflowsBackend()
+		}
+	}
+
+    // Assigns response data to attributes to be read by the template
+    updateAttributes(data: any){
+        let pag = data.pagination;
+          this.n = pag.num_pages;
+          this.n_all = pag.count;
+          this.bounds.lower = pag.page_start;
+          this.bounds.upper = pag.page_end;
+          this.workflows = <Workflow[]> data.workflows; // All wf-s on the current page
+          this.pages = this.range(1, pag.num_pages + 1);
+    }
+
+    // Returns an array of form [a, a+1, ... b]
+    range(a: number, b: number) : number[]{
+        return Array.apply(null, {length: b-a}).map((v: any, i: any) => i+a);
     }
 }

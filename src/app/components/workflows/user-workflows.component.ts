@@ -9,21 +9,13 @@ import {LoggerService} from "../../services/logger.service";
 
 
 @Component({
-    selector: 'workflows',
+    selector: 'user-workflows',
     styles: [require('./workflows.component.css')],
     template: require('./user-workflows.component.html')
 })
 export class UserWorkflowsComponent extends WorkflowsComponent {
 
   title: string = 'Your workflows';
-  searchTerm : string = '';
-
-  // Pagination
-	pages: number[] = [];
-	n_all: number = 0;
-	bounds: any = {lower: 0, upper: 0}
-	n: number = 0;
-	k: number = 1;
 
     constructor(domSanitizer: DomSanitizer,
                 clowdflowsDataService: ClowdFlowsDataService,
@@ -35,7 +27,7 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
     }
 
     ngOnInit(): void {
-        this.getUserWorkflowsBackend()
+        this.getWorkflowsBackend()
     }
 
     startStreaming(workflowId: number) {
@@ -56,33 +48,19 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
         this.clowdflowsDataService
             .deleteWorkflow(workflow)
             .then( ()=> {
-                this.getUserWorkflowsBackend() 
+                this.getWorkflowsBackend() 
             });
     }
-
-	changePage(p:number) {
-		if (p != this.k) {
-			this.k = p;
-      this.getUserWorkflowsBackend()
-		}
-	}
   
-  getUserWorkflowsBackend() {
-    this.clowdflowsDataService.getWorkflows(true, this.k, false, this.searchTerm)
-        .then(response => { 
-          let pag = response.pagination;
-          this.n = pag.num_pages;
-          this.n_all = pag.count;
-          this.bounds.lower = pag.page_start;
-          this.bounds.upper = pag.page_end;
-          this.workflows = <Workflow[]> response.workflows; // All wf-s on the current page
-          this.pages = this.range(1, pag.num_pages + 1);
-        });
-  }
+  getWorkflowsBackend() {
+    let user_only = true;
+    let current_page = this.k;
+    let no_preview = false;
 
-  // Returns an array of form [a, a+1, ... b]
-  range(a: number, b: number) : number[]{
-    return Array.apply(null, {length: b-a}).map((v: any, i: any) => i+a);
+    this.clowdflowsDataService.getWorkflows(user_only, current_page, no_preview, this.search_term)
+        .then(data => { 
+          super.updateAttributes(data);
+        });
   }
 
 }

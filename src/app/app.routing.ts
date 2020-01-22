@@ -3,9 +3,10 @@ import {EditorComponent} from "./components/editor/editor.component";
 import {LoginComponent} from "./components/login/login.component";
 import {LoggedInGuard} from "./services/logged-in.guard";
 import {HomeComponent} from "./components/home/home.component";
-import {UserWorkflowsComponent} from "./components/workflows/user-workflows.component";
 import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.component";
 import {WorkflowsComponent} from "./components/workflows/workflows.component";
+import {UserWorkflowsComponent} from "./components/workflows/user-workflows.component";
+import {ExploreWorkflowsComponent} from "./components/workflows/explore-workflows.component";
 import {ImportWorkflowComponent} from "./components/import-export/import-workflow.component";
 import {ExportWorkflowComponent} from "./components/import-export/export-workflow.component";
 import {StreamComponent} from "./components/streams/stream.component";
@@ -49,7 +50,7 @@ export const routes: Routes = [
     },
     {
         path: 'explore-workflows',
-        component: WorkflowsComponent,
+        component: ExploreWorkflowsComponent,
         canActivate: [LoggedInGuard]
     },
     {
