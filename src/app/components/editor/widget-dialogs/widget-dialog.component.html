@@ -1,8 +1,11 @@
-<div class="widget-dialog panel panel-primary"
+<div class="widget-dialog-wrapper">
+  <div class="widget-dialog panel panel-primary"
      focus-visible
-     *ngIf="widget.showDialog">
+     *ngIf="widget.showDialog"
+     cdkDragBoundary="body"
+     cdkDrag>
     <div class="panel-heading"
-         draggable-window>
+    cdkDragHandle>
         <h3 class="panel-title">{{widget.name}}</h3>
     </div>
     <div class="panel-body">
@@ -81,9 +84,11 @@
 
 <div class="widget-dialog panel panel-primary input-designation"
      focus-visible
-     *ngIf="widget.showInputDesignation">
+     *ngIf="widget.showInputDesignation"
+     cdkDragBoundary="body"
+     cdkDrag>
     <div class="panel-heading"
-         draggable-window>
+    cdkDragHandle>
         <h3 class="panel-title">{{widget.name}} input/output advanced settings</h3>
     </div>
     <div class="panel-body">
@@ -179,9 +184,11 @@
 
 <div class="widget-dialog panel panel-primary widget-results"
      focus-visible
-     *ngIf="widget.showResults">
+     *ngIf="widget.showResults"
+     cdkDragBoundary="body"
+     cdkDrag>
     <div class="panel-heading"
-         draggable-window>
+    cdkDragHandle>
         <h3 class="panel-title">{{widget.name}} results</h3>
     </div>
     <div class="panel-body">
@@ -210,9 +217,11 @@
 
 <div class="widget-dialog panel panel-primary"
      focus-visible
-     *ngIf="widget.showHelp">
+     *ngIf="widget.showHelp"
+     cdkDragBoundary="body"
+     cdkDrag>
     <div class="panel-heading"
-         draggable-window>
+    cdkDragHandle>
         <h3 class="panel-title">{{widget.name}} help</h3>
     </div>
     <div class="panel-body">
@@ -227,9 +236,11 @@
 
 <div class="widget-dialog panel panel-primary"
      focus-visible
-     *ngIf="widget.showRenameDialog">
+     *ngIf="widget.showRenameDialog"
+     cdkDragBoundary="body"
+     cdkDrag>
     <div class="panel-heading"
-         draggable-window>
+    cdkDragHandle>
         <h3 class="panel-title">{{widget.name}} rename</h3>
     </div>
     <div class="panel-body">
@@ -255,9 +266,11 @@
 
 <div class="widget-dialog panel panel-primary widget-visualization-dialog"
      focus-visible
-     *ngIf="widget.showVisualizationDialog">
+     *ngIf="widget.showVisualizationDialog"
+     cdkDragBoundary="body"
+     cdkDrag>
     <div class="panel-heading"
-         draggable-window>
+    cdkDragHandle>
         <h3 class="panel-title">{{widget.name}} visualization</h3>
     </div>
     <div class="panel-body" [innerHTML]="widget.visualizationHtml | sanitizecf">
@@ -271,9 +284,11 @@
 
 <div class="widget-dialog panel panel-primary widget-interaction-dialog"
      focus-visible
-     *ngIf="widget.showInteractionDialog">
+     *ngIf="widget.showInteractionDialog"
+     cdkDragBoundary="body"
+     cdkDrag>
     <div class="panel-heading"
-         draggable-window>
+    cdkDragHandle>
         <h3 class="panel-title">{{widget.name}} interaction</h3>
     </div>
     <div #formContainer class="panel-body" [innerHTML]="widget.interactionHtml | sanitizecf">
@@ -284,4 +299,5 @@
             <button (click)="applyInteraction()" class="btn btn-primary">Apply</button>
         </div>
     </div>
+</div>
 </div>

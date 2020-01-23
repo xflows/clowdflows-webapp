@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { ContextMenuComponent } from 'ngx-contextmenu';
+import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import {Widget} from "../../../../models/widget";
 import {Output as WorkflowOutput} from "../../../../models/output";
 
@@ -8,7 +8,8 @@ import {Output as WorkflowOutput} from "../../../../models/output";
   templateUrl: './context-menu-widget.component.html',
   //styleUrls: ['./context-menu-custom.css']
 })
-export class ContextMenuWidgetComponent implements OnInit {
+export class ContextMenuWidgetComponent {
+  
   @ViewChild('widgetMenu', {static: false}) contextMenu: ContextMenuComponent;
 
   @Output() runWidgetRequest = new EventEmitter<Widget>();
@@ -19,10 +20,7 @@ export class ContextMenuWidgetComponent implements OnInit {
   @Output() copyWidgetRequest = new EventEmitter<Widget>();
   @Output() deleteWidgetRequest = new EventEmitter<Widget>();
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  constructor(private contextMenuService: ContextMenuService) { }
 
   runWidget(widget:Widget) {
       this.runWidgetRequest.emit(widget);

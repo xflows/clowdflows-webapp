@@ -572,6 +572,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     openSubprocess(widget:Widget) {
+      console.log("open subprocess")
         let workflowUrl = widget.workflow_link;
         if (!(workflowUrl in this.loadedSubprocesses)) {
             this.clowdflowsDataService.getWorkflow(workflowUrl)

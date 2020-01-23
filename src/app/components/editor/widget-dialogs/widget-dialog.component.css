@@ -1,17 +1,29 @@
-.widget-dialog {
+.widget-dialog-wrapper {
+  height: 100%;
+  width: 100%;
   position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.widget-dialog {
+  position: fixed;
+  z-index: 1031;
   min-width: 400px;
   max-width: 90%;
   height: auto;
   max-height: 90%;
   overflow: auto;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  /*-webkit-transform: translate3d(-50%, -50%, 0px);
+  -moz-transform: translate3d(-50%, -50%, 0px);
+  -ms-transform: translate3d(-50%, -50%, 0px);
+  -o-transform: translate3d(-50%, -50%, 0px);
+  transform: translate3d(-50%, -50%, 0px);*/
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);

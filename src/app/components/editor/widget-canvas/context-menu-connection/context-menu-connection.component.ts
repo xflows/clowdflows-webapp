@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { ContextMenuComponent } from 'ngx-contextmenu';
+import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import {Connection} from "../../../../models/connection";
 
 @Component({
@@ -7,15 +7,12 @@ import {Connection} from "../../../../models/connection";
   templateUrl: './context-menu-connection.component.html',
   //styleUrls: ['./context-menu-custom.css']
 })
-export class ContextMenuConnectionComponent implements OnInit {
+export class ContextMenuConnectionComponent {
   @ViewChild('connectionMenu', {static: false}) contextMenu: ContextMenuComponent;
 
   @Output() deleteConnectionRequest = new EventEmitter<Connection>();
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  constructor( private contextMenuService: ContextMenuService ) { }
 
   deleteConnection(connection:Connection) {
       this.deleteConnectionRequest.emit(connection);

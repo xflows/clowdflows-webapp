@@ -138,36 +138,27 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
-    getUserWorkflows(includePreview?: boolean, settings?: any): Promise<any> {
-        let options = this.getRequestOptions();
-        let preview = 0;
-        if (includePreview) {
-            preview = 1;
-        }
-        let additional_settings = "";
-        if (settings) {
-          for (let key in settings) {
-            additional_settings += "&"+key+"="+settings[key];
-          }
-        }
-        return this.http
-            .get(`${API_ENDPOINT}${this.workflowsUrl}?user=1&preview=${preview}${additional_settings}`, options)
-            .toPromise()
-            .then(response => response)
-            .catch(error => this.handleError(error));
+    getUserWorkflows(includePreview?: boolean){
+        return this.getWorkflows(true, 0, includePreview);
     }
 
-    getPublicWorkflows(includePreview?: boolean): Promise<any> {
-        let options = this.getRequestOptions();
-        let preview = 0;
-        if (includePreview) {
-            preview = 1;
-        }
-        return this.http
-            .get(`${API_ENDPOINT}${this.workflowsUrl}?preview=${preview}`, options)
-            .toPromise()
-            .then(response => response)
-            .catch(error => this.handleError(error));
+    getPublicWorkflows(includePreview?: boolean){
+        return this.getWorkflows(true, 0, includePreview);
+    }
+
+    getWorkflows(onlyUserWorkflows: boolean, page?: number, includePreview?: boolean, searchTerm?: string): Promise<any> {
+      let options = this.getRequestOptions();
+      let preview = includePreview ? 1 : 0;
+      let user = onlyUserWorkflows ? 1 : 0;
+
+      let pageParam = page ? '&page='+ page : '';
+      let searchParam = searchTerm ? '&search='+ searchTerm : '';
+
+      return this.http
+      .get(`${API_ENDPOINT}${this.workflowsUrl}?user=${user}&preview=${preview}${pageParam}${searchParam}`, options)
+      .toPromise()
+      .then(response => response)
+      .catch(error => this.handleError(error));
     }
 
     runWorkflow(workflow: Workflow): Promise<any> {
@@ -329,7 +320,7 @@ export class ClowdFlowsDataService {
     saveWidgetPosition(widget: Widget) {
         let options = this.getRequestOptions();
         return this.http
-            .patch(widget.url, JSON.stringify({url: widget.url, x: widget.x, y: widget.y}), options)
+            .patch(widget.url, JSON.stringify({url: widget.url, x: Math.round(widget.x), y: Math.round(widget.y)}), options)
             .toPromise()
             .then(response => response)
             .catch(error => this.handleError(error));

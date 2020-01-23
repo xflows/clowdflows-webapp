@@ -7,6 +7,13 @@
         </button>
     </p>
 
+    <form (ngSubmit)="getWorkflowsBackend()" (keyup.enter)="getWorkflowsBackend()" class="input-group form-group col-sm-4" >
+        <input type="text" placeholder="Search workflows ..." [(ngModel)]="search_term" required name="search" class="form-control"/>
+        <div class="input-group-btn search-panel">
+          <button type="submit" class="btn btn-default"> Search </button>
+        </div> 
+    </form>
+
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
@@ -19,7 +26,7 @@
         </thead>
         <tbody>
         <ng-template ngFor let-workflow [ngForOf]="workflows">
-            <tr *ngIf="!workflow.is_subprocess">
+          <tr>
                 <td class="name">{{workflow.name}}</td>
                 <td>
                     <a *ngIf="workflow.is_public" [routerLink]="['/workflow/', workflow.id]">{{base_url}}/workflow/{{workflow.id}}</a>
@@ -60,10 +67,15 @@
                     <a [routerLink]="" (click)="toggleWorkflowVisibility(workflow)" *ngIf="workflow.is_public">Make private</a> |
                     <a [routerLink]="['/export-workflow/', workflow.id]">Export to JSON</a>
                 </td>
-            </tr>
+              </tr>
         </ng-template>
         </tbody>
     </table>
+
+    <div *ngIf="workflows.length == 0" class="name text-center">
+        No workflows were found.
+    </div>
+
 	<span class="table-information">Showing {{bounds.lower}} to {{bounds.upper}} of {{n_all}} entries.</span>
 	<div class="table-pagination">
 		<div>

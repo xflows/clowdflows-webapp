@@ -6,6 +6,7 @@ import {FormsModule} from "@angular/forms";
 import {ModalModule} from "ngx-bootstrap";
 import {RouterLinkStubDirective} from "../../../testing/stubs/router.stub";
 import {DebugElement} from "@angular/core";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('ToolbarComponent', () => {
 
@@ -18,7 +19,8 @@ describe('ToolbarComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 FormsModule,
-                ModalModule.forRoot()
+                ModalModule.forRoot(),
+                FontAwesomeModule
             ],
             declarations: [RouterLinkStubDirective, ToolbarComponent],
         });

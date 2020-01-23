@@ -6,18 +6,18 @@ module.exports = {
     devtool: 'inline-source-map',
 
     resolve: {
-        extensions: ['', '.js', '.ts']
+        extensions: ['.js', '.ts']
     },
 
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.ts$/,
-                loaders: ['ts', 'angular2-template-loader']
+                use: ['ts-loader', 'angular2-template-loader']
             },
             {
                 test: /\.html$/,
-                loader: 'html'
+                loader: 'html-loader'
 
             },
             {
@@ -32,7 +32,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 include: helpers.root('src', 'app'),
-                loader: 'raw'
+                loader: 'raw-loader'
             }
         ]
     },

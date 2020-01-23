@@ -26,6 +26,7 @@ import {CutPipe} from "../../pipes/cut.pipe";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ContextMenuWidgetComponent } from './widget-canvas/context-menu-widget/context-menu-widget.component';
 import { ContextMenuConnectionComponent } from './widget-canvas/context-menu-connection/context-menu-connection.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import { ContextMenuConnectionComponent } from './widget-canvas/context-menu-con
         DndModule.forRoot(),
         SanitizeModule,
         PopoverModule.forRoot(),
-        FontAwesomeModule
+        FontAwesomeModule,
+        DragDropModule
     ],
     declarations: [
         EditorComponent,

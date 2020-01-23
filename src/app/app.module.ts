@@ -16,6 +16,7 @@ import {ClowdFlowsDataService} from './services/clowdflows-data.service';
 import {EditorModule} from "./components/editor/editor.module";
 import {WorkflowsComponent} from "./components/workflows/workflows.component";
 import {UserWorkflowsComponent} from "./components/workflows/user-workflows.component";
+import {ExploreWorkflowsComponent} from "./components/workflows/explore-workflows.component";
 import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {LoadingService} from "./services/loading.service";
@@ -50,6 +51,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         FooterComponent,
         WorkflowsComponent,
         UserWorkflowsComponent,
+        ExploreWorkflowsComponent,
         WorkflowDetailComponent,
         ImportWorkflowComponent,
         ExportWorkflowComponent,

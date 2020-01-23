@@ -49,7 +49,7 @@ export class UserService {
         headers.append('Content-Type', 'application/json');
 
         return this.http
-            .post(`${API_ENDPOINT}auth/users/create/`, JSON.stringify({username, password, email}), {observe: 'response', headers}).pipe(
+            .post(`${API_ENDPOINT}auth/users/create/`, {username, password, email}, {observe: 'response', headers}).pipe(
             map((res) => {
                 if (res.status==200) {
                     localStorage.setItem('username', username);

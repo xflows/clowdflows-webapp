@@ -164,8 +164,8 @@ export class WidgetCanvasComponent implements OnInit {
 
         var widgetCanvasEl = this.widgetCanvas.nativeElement;
 
-		widgetCanvasEl.scrollTop = Math.max(widgetCanvasEl.scrollTop+y_diff, 0);
-		widgetCanvasEl.scrollLeft = Math.max(widgetCanvasEl.scrollLeft+x_diff,0);
+		//widgetCanvasEl.scrollTop = Math.max(widgetCanvasEl.scrollTop+y_diff, 0);
+		//widgetCanvasEl.scrollLeft = Math.max(widgetCanvasEl.scrollLeft+x_diff,0);
     }
 
     updateCanvasBounds() {
@@ -187,11 +187,13 @@ export class WidgetCanvasComponent implements OnInit {
       }
 
     get canvasHeight() {
-        return Math.max(this.widgetBounds.y, this.visibleCanvasSize.height);
+      this.visibleCanvasSize.height = Math.max(this.widgetBounds.y, this.visibleCanvasSize.height)
+      return this.visibleCanvasSize.height;
     }
 
     get canvasWidth() {
-        return Math.max(this.widgetBounds.x, this.visibleCanvasSize.width);
+      this.visibleCanvasSize.width = Math.max(this.widgetBounds.x, this.visibleCanvasSize.width);
+      return this.visibleCanvasSize.width;
     }
 
 	startMouseSelect(event:any) {
@@ -290,16 +292,16 @@ export class WidgetCanvasComponent implements OnInit {
 			for (let widget of this.workflow.widgets) {
 				if (widget.selected && (widget.x != widget.start_x || widget.y != widget.start_y)) {
 					this.saveWidgetPositionRequest.emit(widget);
-            		widget.start_x = widget.x;
-            		widget.start_y = widget.y;
+            		widget.start_x = Math.round(widget.x);
+            		widget.start_y = Math.round(widget.y);
 				}
 			}
 		}
 		else {
         	if (widgetDragged.x != widgetDragged.start_x || widgetDragged.y != widgetDragged.start_y) {
             	this.saveWidgetPositionRequest.emit(widgetDragged);
-            	widgetDragged.start_x = widgetDragged.x;
-            	widgetDragged.start_y = widgetDragged.y;
+            	widgetDragged.start_x = Math.round(widgetDragged.x);
+            	widgetDragged.start_y = Math.round(widgetDragged.y);
 			}
         }
     }
