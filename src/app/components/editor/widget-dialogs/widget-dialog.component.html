@@ -63,10 +63,10 @@
                        [name]="'input-' + p.name"
                        *ngIf="p.parameter_type == 'file'"
                        [title]="p.description"
+                       type="file"
                        ngFileSelect
-                       [options]="fileUploadOptions(p)"
-                       (onUpload)="handleUpload($event)"
-                       type="file" class="form-control"/>
+                      (uploadOutput)="onUploadOutput($event,p)"
+                      [uploadInput]="uploadInput"/>
                 <p class="help-block">{{p.description}}</p>
             </div>
             <p *ngIf="widget.parameters.length == 0">This widget has no parameters</p>

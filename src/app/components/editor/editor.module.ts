@@ -16,7 +16,7 @@ import {routing} from "../../app.routing";
 import {DndModule} from 'ng2-dnd';
 import {DraggableWindow} from "../../directives/draggable-window.directive";
 import {FocusOnVisible} from "../../directives/focus.directive";
-import {Ng2UploaderModule} from 'ng2-uploader/ng2-uploader'
+import {NgxUploaderModule} from 'ngx-uploader'
 import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
 import {Sanitize} from "../../pipes/sanitizejs.pipe";
@@ -37,7 +37,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         TabsModule.forRoot(),
         ContextMenuModule.forRoot(),
         routing,
-        Ng2UploaderModule,
+        NgxUploaderModule,
         DndModule.forRoot(),
         SanitizeModule,
         PopoverModule.forRoot(),
