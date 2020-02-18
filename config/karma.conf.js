@@ -1,4 +1,6 @@
 var webpackConfig = require('./webpack.test');
+const puppeteer = require('puppeteer');
+process.env.CHROME_BIN = puppeteer.executablePath();
 
 module.exports = function (config) {
     var _config = {
@@ -32,7 +34,7 @@ module.exports = function (config) {
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: ['PhantomJS'],
+        browsers: ['ChromeHeadless'],
         singleRun: true
     };
 

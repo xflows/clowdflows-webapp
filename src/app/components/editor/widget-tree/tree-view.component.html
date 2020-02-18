@@ -16,12 +16,15 @@
                     <span class="widget"
                           [class.hidden]="widget.hidden"
                           [class.recommendation]="widget.recommended_input || widget.recommended_output"
-                          (click)="addWidgetToCanvas(widget)"
                           [attr.title]="widget.name"
                           [popover]="widgetDescriptionPopover"
-                          placement="bottom"
+                          placement="left"
                           container="body"
-                          triggers="mouseenter:mouseleave">
+                          (mousedown)="startDrag($event,widget)"
+                          (cdkDragReleased)="endDrag($event)"
+                          (cdkDragMoved)="detectDrag($event,iconUrl(widget))"
+                          (body:mouseup)="detectMouseUp($event)"
+                          triggers="mouseenter:mouseleave" cdkDrag>
                     <img class="widget-tree-icon" src="{{ iconUrl(widget) }}"/>
                     <span class="widget-name">{{widget.name}}</span>
                     <span class="label label-success" [class.hidden]="!widget.recommended_output">

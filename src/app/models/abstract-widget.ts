@@ -13,6 +13,7 @@ export class AbstractWidget {
     inputs:AbstractInput[];
     hidden:boolean = false;
     always_save_results:boolean = false;
+    globalPosition:any;
 
     recommended_input:boolean = false;
     recommended_output:boolean = false;

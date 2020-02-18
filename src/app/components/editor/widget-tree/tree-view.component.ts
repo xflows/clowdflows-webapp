@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import {Category} from "../../../models/category";
 import {BASE_URL} from "../../../config";
 import {AbstractWidget} from "../../../models/abstract-widget";
@@ -11,6 +11,12 @@ import {AbstractWidget} from "../../../models/abstract-widget";
 export class TreeViewComponent {
     @Input() categories:Category[];
     @Output() addWidgetRequest = new EventEmitter<AbstractWidget>();
+
+    constructor(private el: ElementRef) { }
+
+    dragStatus:string = "none"
+    clonedEl:any;
+    widgetToAdd:AbstractWidget
 
     iconUrl(widget:AbstractWidget):string {
         let url = '/public/images/question-mark.png';
@@ -28,5 +34,44 @@ export class TreeViewComponent {
 
     addWidgetToCanvas(abstractWidget:AbstractWidget) {
         this.addWidgetRequest.emit(abstractWidget);
+    }
+
+    startDrag($event:any, abstractWidget:AbstractWidget) {
+      this.dragStatus = "mousedown"
+      this.widgetToAdd = abstractWidget
+    }
+
+    detectDrag($event:any,imgUrl:any) {
+      if (this.dragStatus == "mousedown") {
+        this.dragStatus = "dragged"
+        $event.source.element.nativeElement.setAttribute("style","cursor: url('"+imgUrl+"'), default !important; display: none;")
+        this.el.nativeElement.closest('body').setAttribute("style","cursor: url('"+imgUrl+"'), default !important;")
+
+        this.clonedEl = $event.source.element.nativeElement.cloneNode(true);
+        this.clonedEl.setAttribute("id","cloned-element")
+        this.clonedEl.setAttribute("style","display: auto;")
+        $event.source.element.nativeElement.parentNode.insertBefore(this.clonedEl, $event.source.element.nativeElement.nextSibling);
+      }
+    }
+
+    endDrag($event:any,abstractWidget:AbstractWidget) {
+      this.el.nativeElement.closest('body').setAttribute("style","cursor: default !important;")
+      $event.source.element.nativeElement.setAttribute("style","cursor: pointer;")
+      $event.source.reset();
+      this.clonedEl.remove()
+    }
+
+    detectMouseUp($event:any) {
+      if (this.dragStatus == "dragged") {
+        this.widgetToAdd.globalPosition = {x: $event.x, y: $event.y}
+        this.addWidgetRequest.emit(this.widgetToAdd);
+        this.dragStatus = "none";
+        this.widgetToAdd = undefined;
+      }
+      else if (this.dragStatus == "mousedown") {
+        this.addWidgetRequest.emit(this.widgetToAdd)
+        this.dragStatus = "none";
+        this.widgetToAdd = undefined;
+      }
     }
 }

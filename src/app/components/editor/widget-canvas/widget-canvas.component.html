@@ -1,5 +1,5 @@
 <div #widgetCanvas id="widget-canvas" (body:keyup)="handleShortcuts($event)" (mousedown)="startMouseSelect($event)" (mousemove)="widenMouseSelect($event)" (mouseup)="endMouseSelect($event)" (scroll)="widenMouseSelectScroll($event)">
-    <svg #svgElement id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" (click)="unselectObjects()" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
+    <svg #svgElement id="widget-canvas-svg" xmlns="http://www.w3.org/2000/svg" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
 		<rect id="widget-canvas-svg-selection" *ngIf="mouseSelectRect.visible" [attr.x]="mouseSelectRect.position.x" [attr.y]="mouseSelectRect.position.y" [attr.width]="mouseSelectRect.width" [attr.height]="mouseSelectRect.height" />
 		<g class="connection" *ngFor="let connection of workflow.connections" [class.selected]="connection.selected">
             <path [attr.stroke-width]="ui_constants.connectionWidth" stroke-linejoin="round" fill="none"
@@ -47,6 +47,7 @@
             <rect class="widget-box" [attr.x]="ui_constants.signalWidth" rx="2" ry="2"
                   (click)="select($event, widget)"
                   (dblclick)="handleDoubleClick(widget)"
+                  (mouseenter)="changeRightClickedWidget(widget)"
                   (contextmenu)="onContextMenu($event, widget,'widget')"
                   [attr.width]="ui_constants.widgetBoxWidth"
                   [attr.height]="widget.boxHeight"
@@ -60,10 +61,17 @@
                    //xlink:href="https://cdn.glitch.com/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg"/>
 
             <image class="widget-save-results-icon"
+                  (click) = "changeSaveResults(widget)"
                    y="1"
-                   *ngIf="widget.save_results"
+                   *ngIf="!widget.save_results && widget.outputs.length + widget.inputs.length > 0"
                    [attr.x]="ui_constants.signalWidth + ui_constants.widgetBoxWidth - 15"
                    xlink:href="/public/images/save_results.svg"/>
+            <image class="widget-save-results-icon active"
+                  (click) = "changeSaveResults(widget)"
+                    y="1"
+                    *ngIf="widget.save_results && widget.outputs.length + widget.inputs.length > 0"
+                    [attr.x]="ui_constants.signalWidth + ui_constants.widgetBoxWidth - 15"
+                    xlink:href="/public/images/save_results_active.svg"/>
             <image class="widget-can-interact-icon"
                    y="1"
                    *ngIf="widget.can_interact"
@@ -102,5 +110,18 @@
                    (saveWidgetConfigurationRequest)="saveWidgetConfiguration($event)"
                    (resetWidgetRequest)="resetWidget($event)">
     </widget-dialog>
-    <context-menu></context-menu>
+    <context-menu-widget
+    [widget]="rightClickedWidget"
+    (runWidgetRequest)="runWidget($event)"
+    (runWidgetWithInteractionRequest)="runWidgetWithInteraction($event)"
+    (changeSaveResultsRequest)="changeSaveResults($event)"
+    (fetchOutputResultsRequest)="fetchOutputResults($event)"
+    (resetWidgetRequest) = "resetWidget($event)"
+    (resetWorkflowRequest) = "resetWorkflow($event)"
+    (copyWidgetRequest) = "copyWidget($event)"
+    (deleteWidgetRequest) = "deleteWidget($event)"
+    ></context-menu-widget>
+    <context-menu-connection
+    (deleteConnectionRequest)="deleteConnection($event)"
+    ></context-menu-connection>
 </div>

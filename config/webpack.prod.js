@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var commonConfig = require('./webpack.common.js');
 var helpers = require('./helpers');
@@ -10,6 +10,7 @@ var api = require('./api.prod');
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 
 module.exports = webpackMerge(commonConfig, {
+    mode: 'production',
     devtool: 'source-map',
 
     output: {
@@ -19,15 +20,17 @@ module.exports = webpackMerge(commonConfig, {
         chunkFilename: '[id].[hash].chunk.js'
     },
 
-    htmlLoader: {
+    /*htmlLoader: {
         minimize: false // workaround for ng2
-    },
+    },*/
 
     plugins: [
-        new webpack.NoErrorsPlugin(),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin(),
-        new ExtractTextPlugin('[name].[hash].css'),
+        /*new webpack.NoErrorsPlugin(),*/
+        /*new webpack.optimize.DedupePlugin(),*/
+        /*new webpack.optimize.UglifyJsPlugin(),*/
+        new MiniCssExtractPlugin({
+          chunkFilename: '[name].[hash].css'
+        }),
         new CopyWebpackPlugin([
             { from: 'public', to: 'public' }
         ]),

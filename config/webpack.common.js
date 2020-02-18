@@ -1,11 +1,11 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var helpers = require('./helpers');
 var api = require('./api.dev');
 
 module.exports = {
-    styleLoader: require('extract-text-webpack-plugin').extract('style-loader', 'css-loader!less-loader'),
+    //styleLoader: require('extract-text-webpack-plugin').extract('style-loader', 'css-loader!less-loader'),
 
     entry: {
         'polyfills': './src/polyfills.ts',
@@ -14,18 +14,18 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['', '.js', '.ts']
+        extensions: ['.js', '.ts']
     },
 
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.ts$/,
-                loaders: ['ts', 'angular2-template-loader']
+                use: ['ts-loader', 'angular2-template-loader']
             },
             {
                 test: /\.html$/,
-                loader: 'html'
+                loader: 'html-loader'
             },
             {
                 test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -42,23 +42,35 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: helpers.root('src', 'app'),
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
+                use: [
+                  {
+                    loader: MiniCssExtractPlugin.loader,//ExtractTextPlugin.extract('style-loader', 'css?sourceMap')
+                    options: {
+                      sourceMap: true
+                    }
+                  },
+                  {
+                    loader: 'css-loader'
+                  }
+                ]
             },
             {
                 test: /\.css$/,
                 include: helpers.root('src', 'app'),
-                loader: 'raw'
+                loader: 'raw-loader'
             }
         ]
     },
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
+        /*new webpack.optimize.CommonsChunkPlugin({
             name: ['app', 'vendor', 'polyfills']
-        }),
+        }),*/
 
         new HtmlWebpackPlugin({
             template: 'src/index.html'
         })
-    ]
+    ],
+
+
 };

@@ -53,7 +53,7 @@ export class WidgetTreeComponent {
         }
 
         if (this.filterString.trim() == "") {
-            this.collapseAll();
+            //this.collapseAll();
         } else {
             for (let category of this.widgetLibraryService.widgetTree) {
                 applyFilter(category, this.filterString);
@@ -170,6 +170,6 @@ export class WidgetTreeComponent {
 
 	clearText() {
 		this.filterString = "";
-		this.filterTree();
+		this.collapseAll();
 	}
 }

@@ -1,10 +1,11 @@
 var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var commonConfig = require('./webpack.common.js');
 var helpers = require('./helpers');
 
 module.exports = webpackMerge(commonConfig, {
+    mode: 'development',
     devtool: 'cheap-module-eval-source-map',
 
     output: {
@@ -15,7 +16,9 @@ module.exports = webpackMerge(commonConfig, {
     },
 
     plugins: [
-        new ExtractTextPlugin('[name].css'),
+        new MiniCssExtractPlugin({
+          filename: '[name].css'
+        }),
         new webpack.DefinePlugin({
             'process.env': {
                 'API': JSON.stringify({})
@@ -29,6 +32,7 @@ module.exports = webpackMerge(commonConfig, {
     },
 
     watchOptions: {
-        poll: 1000 // Check for changes every second
-      }
+      poll: 1000 // Check for changes every second
+    }
+    
 });

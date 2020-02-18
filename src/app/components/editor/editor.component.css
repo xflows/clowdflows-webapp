@@ -95,11 +95,11 @@ tab {
 
 .grabber-vertical span.widget-tree-holder-span::after {
 	font-family: FontAwesome;
-	content: "\f104";
+	content: "\2039";
 }
 
 .grabber-vertical span.widget-tree-holder-span-closed::after {
-	content: "\f105";
+	content: "\203A";
 }
 
 .grabber-vertical {

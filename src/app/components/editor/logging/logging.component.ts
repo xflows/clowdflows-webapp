@@ -8,7 +8,7 @@ import {
     styles: [require('./logging.component.css'),]
 })
 export class LoggingComponent implements OnInit, AfterViewInit {
-    @ViewChild('log') private logContainer:ElementRef;
+    @ViewChild('log', {static: false}) private logContainer:ElementRef;
     @ViewChildren('msgEl') private messagesElements:QueryList<any>;
     @Input() messages:Array<any>;
     numberOfMessages:number = 0;

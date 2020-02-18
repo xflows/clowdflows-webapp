@@ -14,7 +14,7 @@ import {specialWidgetNames} from '../../services/special-widgets';
 import {WidgetTreeComponent} from "./widget-tree/widget-tree.component";
 import {RecommenderService} from "../../services/recommender.service";
 import {WidgetLibraryService} from "../../services/widget-library.service";
-import {TabsetComponent} from "ng2-bootstrap";
+import {TabsetComponent} from "ngx-bootstrap";
 import {CanvasElement} from "../../models/canvas-element";
 const svg = require('save-svg-as-png');
 
@@ -24,9 +24,9 @@ const svg = require('save-svg-as-png');
     styles: [require('./editor.component.css')]
 })
 export class EditorComponent implements OnInit, OnDestroy {
-    @ViewChild(WidgetCanvasComponent) canvasComponent:WidgetCanvasComponent;
-    @ViewChild(WidgetTreeComponent) widgetTreeComponent: WidgetTreeComponent;
-    @ViewChild(TabsetComponent) tabsetComponent: TabsetComponent;
+    @ViewChild(WidgetCanvasComponent, {static: false}) canvasComponent:WidgetCanvasComponent;
+    @ViewChild(WidgetTreeComponent, {static: false}) widgetTreeComponent: WidgetTreeComponent;
+    @ViewChild(TabsetComponent, {static: false}) tabsetComponent: TabsetComponent;
     workflow:any = {};
     workflows:Workflow[] = [];
     userWorkflows:Workflow[] = [];
@@ -88,13 +88,45 @@ export class EditorComponent implements OnInit, OnDestroy {
                 private recommenderService:RecommenderService) {
     }
 
+    globalPositionToLocalPosition(coordinates:any) {
+      let canvasEl:any = this.canvasComponent.widgetCanvas.nativeElement
+      let offsetTop:number = canvasEl.offsetTop;
+      let offsetLeft:number = canvasEl.offsetLeft;
+      let scrollTop:number = canvasEl.scrollTop;
+      let scrollLeft:number = canvasEl.scrollLeft;
+
+      let x:number = coordinates.x;
+      let y:number = coordinates.y;
+      x = coordinates.x-offsetLeft;
+      y = coordinates.y-offsetTop;
+
+      if (x > 0 && y > 0 && x < canvasEl.clientWidth && y < canvasEl.clientHeight) {
+        x = x+scrollLeft;
+        y = y+scrollTop;
+        return {x: x, y: y};
+      }
+      else {
+        return false;
+      }
+
+    }
+
     addWidget(abstractWidget:AbstractWidget) {
+
+      if (abstractWidget.globalPosition) {
+        abstractWidget.globalPosition = this.globalPositionToLocalPosition(abstractWidget.globalPosition);
+
+        if (abstractWidget.globalPosition == false) {
+          console.log("WIDGET OUT OF BOUNDS")
+          return;
+        }
+      }
 
         if (abstractWidget.special) {
             // Handle subprocesses, for loop inputs, etc
             this.addSpecialWidget(abstractWidget);
         } else {
-          let newCoordinates = this.newWidgetCoordinates();
+          let newCoordinates = this.newWidgetCoordinates(abstractWidget.globalPosition);
             // Regular widgets
             let activeWorkflow = this.activeWorkflow;
             let save_results = false;
@@ -140,7 +172,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                 .then((data) => {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
-                      let newCoordinates = this.newWidgetCoordinates();
+                      let newCoordinates = this.newWidgetCoordinates(abstractWidget.globalPosition);
                       data.x = newCoordinates.x;
                       data.y = newCoordinates.y;
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
@@ -164,7 +196,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                 .then((data) => {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
-                      let newCoordinates = this.newWidgetCoordinates();
+                      let newCoordinates = this.newWidgetCoordinates(abstractWidget.globalPosition);
                       data.x = newCoordinates.x;
                       data.y = newCoordinates.y;
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
@@ -181,7 +213,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                 .then((data) => {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
-                      let newCoordinates = this.newWidgetCoordinates();
+                      let newCoordinates = this.newWidgetCoordinates(abstractWidget.globalPosition);
                       data.x = newCoordinates.x;
                       data.y = newCoordinates.y;
                         let widget:Widget = Widget.createFromJSON(data, activeWorkflow);
@@ -199,7 +231,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         for (let widgetData of <Array<Widget>> data) {
-                          let newCoordinates = this.newWidgetCoordinates();
+                          let newCoordinates = this.newWidgetCoordinates(abstractWidget.globalPosition);
                           widgetData.x = newCoordinates.x;
                           widgetData.y = newCoordinates.y;
                             let widget:Widget = Widget.createFromJSON(widgetData, activeWorkflow);
@@ -218,7 +250,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                     let error = this.loggerService.reportMessage(data);
                     if (!error) {
                         for (let widgetData of <Array<Widget>> data) {
-                          let newCoordinates = this.newWidgetCoordinates();
+                          let newCoordinates = this.newWidgetCoordinates(abstractWidget.globalPosition);
                           widgetData.x = newCoordinates.x;
                           widgetData.y = newCoordinates.y;
                             let widget:Widget = Widget.createFromJSON(widgetData, activeWorkflow);
@@ -683,23 +715,29 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
-    newWidgetCoordinates() {
-      let widgets = this.workflow.widgets;
-      let mostRightWidget;
-      let maxX = -Infinity;
-      for (let i=0; i<widgets.length; i++) {
-        if (widgets[i].x > maxX) {
-          maxX = widgets[i].x;
-          mostRightWidget = widgets[i];
-        }
-      }
+    newWidgetCoordinates(globalPosition:any) {
 
-      if (mostRightWidget) {
-        let mostRightWidgetDOM = document.getElementById("widget-"+mostRightWidget.id);
-        return {x: mostRightWidget.x+parseInt(mostRightWidgetDOM.getAttribute("width")), y: 50}
+      if (globalPosition) {
+        return globalPosition;
       }
       else {
-        return {x: 50, y: 50}
+        let widgets = this.workflow.widgets;
+        let mostRightWidget;
+        let maxX = -Infinity;
+        for (let i=0; i<widgets.length; i++) {
+          if (widgets[i].x > maxX) {
+            maxX = widgets[i].x;
+            mostRightWidget = widgets[i];
+          }
+        }
+
+        if (mostRightWidget) {
+          let mostRightWidgetDOM = document.getElementById("widget-"+mostRightWidget.id);
+          return {x: mostRightWidget.x+parseInt(mostRightWidgetDOM.getAttribute("width")), y: 50}
+        }
+        else {
+          return {x: 50, y: 50}
+        }
       }
     }
 }

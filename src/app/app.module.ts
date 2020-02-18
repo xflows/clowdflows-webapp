@@ -7,7 +7,7 @@ import {UserService} from "./services/user.service";
 import {LoggedInGuard} from "./services/logged-in.guard";
 import {LoggerService} from "./services/logger.service";
 import {FormsModule} from "@angular/forms";
-import {AlertModule, CarouselModule} from "ng2-bootstrap";
+import {AlertModule, CarouselModule} from "ngx-bootstrap";
 import {routing} from './app.routing';
 import {LoginComponent} from "./components/login/login.component";
 import {ForgotPasswordComponent} from "./components/login/forgot-password.component";
@@ -16,7 +16,6 @@ import {ClowdFlowsDataService} from './services/clowdflows-data.service';
 import {EditorModule} from "./components/editor/editor.module";
 import {WorkflowsComponent} from "./components/workflows/workflows.component";
 import {UserWorkflowsComponent} from "./components/workflows/user-workflows.component";
-import {ExploreWorkflowsComponent} from "./components/workflows/explore-workflows.component";
 import {WorkflowDetailComponent} from "./components/workflows/workflow-detail.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {LoadingService} from "./services/loading.service";
@@ -28,6 +27,7 @@ import {StreamingWidgetComponent} from "./components/streams/streaming-widget.co
 import {SanitizeModule} from "./pipes/sanitize.module";
 import {EqualValidator} from "./directives/validateEqual.directive";
 import {PasswordResetComponent} from "./components/login/password-reset.component";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
     imports: [
@@ -38,7 +38,8 @@ import {PasswordResetComponent} from "./components/login/password-reset.componen
         EditorModule,
         SanitizeModule,
         CarouselModule.forRoot(),
-        AlertModule.forRoot()
+        AlertModule.forRoot(),
+        FontAwesomeModule
     ],
     declarations: [
         AppComponent,
@@ -49,7 +50,6 @@ import {PasswordResetComponent} from "./components/login/password-reset.componen
         FooterComponent,
         WorkflowsComponent,
         UserWorkflowsComponent,
-        ExploreWorkflowsComponent,
         WorkflowDetailComponent,
         ImportWorkflowComponent,
         ExportWorkflowComponent,

@@ -1,0 +1,36 @@
+<context-menu #widgetMenu>
+  <ng-template contextMenuItem (execute)='runWidget($event.item)'>
+    <span class="glyphicon glyphicon-play"></span> Run
+  </ng-template>
+  <ng-template contextMenuItem (execute)='runWidgetWithInteraction($event.item)'>
+    <span class="glyphicon glyphicon-alert"></span> Run & interact
+  </ng-template>
+  <ng-template contextMenuItem (execute)='changeSaveResults($event.item)'
+    *ngIf="widget != null && widget.outputs.length + widget.inputs.length > 0">
+    <img class="widget-save-results-icon" src="/public/images/save_results.svg"> Save results
+  </ng-template>
+  <ng-template contextMenuItem (execute)='showDialog($event.item)'>
+    <span class="glyphicon glyphicon-pencil"></span> Properties
+  </ng-template>
+  <ng-template contextMenuItem (execute)='showResults($event.item)'>
+    <span class="glyphicon glyphicon-stats"></span> Results
+  </ng-template>
+  <ng-template contextMenuItem (execute)='resetWidget($event.item)'>
+    <span class="glyphicon glyphicon-repeat"></span> Reset
+  </ng-template>
+  <ng-template contextMenuItem (execute)='resetWorkflow()'>
+    <span class="glyphicon glyphicon-repeat"></span> Reset workflow
+  </ng-template>
+  <ng-template contextMenuItem (execute)='showRenameDialog($event.item)'>
+    <span class="glyphicon glyphicon-console"></span> Rename
+  </ng-template>
+  <ng-template contextMenuItem (execute)='copyWidget($event.item)'>
+    <span class="glyphicon glyphicon-copy"></span> Copy
+  </ng-template>
+  <ng-template contextMenuItem (execute)='deleteWidget($event.item)'>
+    <span class="glyphicon glyphicon-trash"></span> Delete
+  </ng-template>
+  <ng-template contextMenuItem (execute)='showHelp($event.item)'>
+    <span class="glyphicon glyphicon-question-sign"></span> Help
+  </ng-template>
+</context-menu>

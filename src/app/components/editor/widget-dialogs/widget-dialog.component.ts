@@ -4,6 +4,7 @@ import {ClowdFlowsDataService} from "../../../services/clowdflows-data.service";
 import {Input as WidgetInput} from "../../../models/input";
 import {Output as WidgetOutput} from "../../../models/output";
 import {LoggerService} from "../../../services/logger.service";
+import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 
 @Component({
     selector: 'widget-dialog',
@@ -16,9 +17,12 @@ export class WidgetDialogComponent {
     @Output() saveWidgetRequest = new EventEmitter<Widget>();
     @Output() saveWidgetConfigurationRequest = new EventEmitter<any>();
     @Output() resetWidgetRequest = new EventEmitter<any>();
-    @ViewChild('formContainer') private formContainer:ElementRef;
+    @ViewChild('formContainer', {static: false}) private formContainer:ElementRef;
 
-    uploadFile:any;
+    fileToUpload: UploadFile;
+    uploadInput: EventEmitter<UploadInput>;
+    humanizeBytes: Function;
+    options: UploaderOptions;
 
     // Configuration variables
     listInputs:Array<WidgetInput> = [];
@@ -29,6 +33,11 @@ export class WidgetDialogComponent {
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
                 private loggerService:LoggerService) {
+
+                  this.options = { concurrency: 1, maxUploads: 1 };
+    this.uploadInput = new EventEmitter<UploadInput>();
+    this.humanizeBytes = humanizeBytes;
+    this.fileToUpload = null;
     }
 
     closeDialog() {
@@ -116,19 +125,39 @@ export class WidgetDialogComponent {
         parameter.deserialized_value = isChecked ? 'true' : 'false';
     }
 
-    fileUploadOptions(input:WidgetInput):any {
-        return this.clowdflowsDataService.getFileUploadOption(input);
+  onUploadOutput(output: UploadOutput, input:WidgetInput): void {
+    if (output.type === 'allAddedToQueue') {
+      let credentialOptions = this.clowdflowsDataService.getFileUploadOption(input);
+      const event: UploadInput = {
+        type: 'uploadFile',
+        url: credentialOptions.url,
+        headers: { 'Authorization': 'Token ' + credentialOptions.authToken },
+        method: 'POST',
+        file: this.fileToUpload
+      };
+
+      this.uploadInput.emit(event);
+    } else if (output.type === 'addedToQueue' && typeof output.file !== 'undefined') {
+      this.fileToUpload = output.file;
+    } else if (output.type === 'uploading' && typeof output.file !== 'undefined') {
+      this.fileToUpload = output.file;
+    } else if (output.type === 'cancelled' || output.type === 'removed') {
+      this.fileToUpload = null;
+    }
+    else if (output.type === 'rejected' && typeof output.file !== 'undefined') {
+      console.log(output.file.name + ' rejected');
     }
 
-    handleUpload(data:any):void {
-        if (data && data.response) {
-            data = JSON.parse(data.response);
-            let error = this.loggerService.reportMessage(data);
-            if (!error) {
-                this.uploadFile = data;
-            }
-        }
+    if (this.fileToUpload.progress.status == UploadStatus.Done) {
+      if (this.fileToUpload.response) {
+          let mssg = this.fileToUpload.response;
+          let error = this.loggerService.reportMessage(mssg);
+          if (!error) {
+              this.fileToUpload = mssg;
+          }
+      }
     }
+  }
 }
 
 function setOrPush(target:any, val:any) {
