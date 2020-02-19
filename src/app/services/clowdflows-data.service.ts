@@ -436,8 +436,9 @@ if (includePreview) {
 
     editorUpdates(onUpdateCallback: any, workflow: Workflow) {
         let editor = this;
-        let domain = window.location.hostname == 'localhost' ? DOMAIN : window.location.hostname;
-        let socket = new WebSocket(`ws://${domain}/editor-updates/?workflow_pk=${workflow.id}`);
+        let domain = window.location.hostname == 'localhost' ? "ws://"+DOMAIN : "wss://"+window.location.hostname;
+        console.log(domain)
+        let socket = new WebSocket(`${domain}/editor-updates/?workflow_pk=${workflow.id}`);
         socket.onmessage = function (e) {
             onUpdateCallback(JSON.parse(e.data));
         };
