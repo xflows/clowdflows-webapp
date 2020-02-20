@@ -37,6 +37,8 @@ export class WidgetCanvasComponent implements OnInit {
 
     rightClickedWidget:Widget = null;
 
+    imagedragged = false;
+
     widgetBounds = {
         x: 0,
         y: 0
@@ -462,9 +464,26 @@ export class WidgetCanvasComponent implements OnInit {
     }
 
     changeSaveResults(widget:Widget) {
-      widget.save_results = !(widget.save_results);
-      widget.finished = false;
-      this.saveWidget(widget);
+      if (widget.must_save == true) {
+        alert("This widget must save results!")
+      }
+      else {
+        widget.save_results = !(widget.save_results);
+        widget.finished = false;
+        this.saveWidget(widget);
+      }
+    }
+
+    dragimagestart() {
+      this.imagedragged = true;
+      return false;
+    }
+
+    dragimagestop(widget:Widget) {
+      if (this.imagedragged == false) {
+        this.changeSaveResults(widget)
+      }
+      this.imagedragged = false;
     }
 
     changeRightClickedWidget(widget:Widget) {

@@ -61,15 +61,17 @@
                    //xlink:href="https://cdn.glitch.com/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg"/>
 
             <image class="widget-save-results-icon"
-                  (click) = "changeSaveResults(widget)"
+                (dragstart) = "dragimagestart()"
+                  (click) = "dragimagestop(widget)"
                    y="1"
-                   *ngIf="!widget.save_results && widget.outputs.length + widget.inputs.length > 0"
+                   *ngIf="!widget.save_results && widget.outputs.length + widget.inputs.length > 0 && !widget.must_save"
                    [attr.x]="ui_constants.signalWidth + ui_constants.widgetBoxWidth - 15"
                    xlink:href="/public/images/save_results.svg"/>
             <image class="widget-save-results-icon active"
-                  (click) = "changeSaveResults(widget)"
+            (dragstart) = "dragimagestart()"
+                  (click) = "dragimagestop(widget)"
                     y="1"
-                    *ngIf="widget.save_results && widget.outputs.length + widget.inputs.length > 0"
+                    *ngIf="widget.must_save || (widget.save_results && widget.outputs.length + widget.inputs.length > 0)"
                     [attr.x]="ui_constants.signalWidth + ui_constants.widgetBoxWidth - 15"
                     xlink:href="/public/images/save_results_active.svg"/>
             <image class="widget-can-interact-icon"

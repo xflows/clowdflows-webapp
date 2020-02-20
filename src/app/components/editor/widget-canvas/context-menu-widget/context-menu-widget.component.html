@@ -6,7 +6,11 @@
     <span class="glyphicon glyphicon-alert"></span> Run & interact
   </ng-template>
   <ng-template contextMenuItem (execute)='changeSaveResults($event.item)'
-    *ngIf="widget != null && widget.outputs.length + widget.inputs.length > 0">
+    *ngIf="widget != null && widget.outputs.length + widget.inputs.length > 0 && widget.save_results == true && !(widget.must_save)">
+    <img class="widget-save-results-icon" src="/public/images/save_results.svg"> Do not save results
+  </ng-template>
+  <ng-template contextMenuItem (execute)='changeSaveResults($event.item)'
+    *ngIf="widget != null && widget.outputs.length + widget.inputs.length > 0 && widget.save_results == false && !(widget.must_save)">
     <img class="widget-save-results-icon" src="/public/images/save_results.svg"> Save results
   </ng-template>
   <ng-template contextMenuItem (execute)='showDialog($event.item)'>
