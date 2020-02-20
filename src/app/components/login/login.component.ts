@@ -30,7 +30,6 @@ export class LoginComponent {
         this.userService
             .login(this.loginCredentials.username, this.loginCredentials.password)
             .subscribe((result) => {
-              console.log(result)
                 if (result.status == 200) {
                     this.router.navigate(['']);
                     this.loginError = '';

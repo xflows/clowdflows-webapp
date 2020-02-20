@@ -34,7 +34,6 @@ export class ImportWorkflowComponent {
                 this.loadingService.isLoading = false;
                 let error = this.loggerService.reportMessage(data);
                 if (!error) {
-                    console.log(data);
                     this.router.navigate(['/workflow/', data.new_workflow_id]);
                 } else if ('message' in data) {
                     this.errorMsg = data.message;
