@@ -15,6 +15,9 @@ ul > li {
   display: block;
   overflow-style: marquee-block;
 }
+.widget:hover {
+  background-color: #fff8d8;
+}
 .widget-name {
   max-width: 180px;
   display: inline-block;
