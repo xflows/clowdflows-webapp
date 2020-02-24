@@ -16,6 +16,7 @@
            [attr.transform]="'translate('+ widget.x + ',' + widget.y + ')'">
             <g *ngFor="let input of widget.inputs; let i = index">
                 <rect class="input" [attr.x]="input.x" [attr.y]="input.y"
+                      [ngClass]="{'required': (input.required && input.connection == null)}"
                       [attr.width]="ui_constants.signalWidth"
                       [attr.height]="ui_constants.signalHeight"
                       [class.selected]="input.selected"

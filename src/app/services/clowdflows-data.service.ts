@@ -81,6 +81,27 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    private precheckWidgetInputs(widget:Widget) {
+      let inputs = widget.inputs;
+      for (let i=0; i<inputs.length; i++) {
+        if (inputs[i].required && inputs[i].connection == null) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private precheckWorkflowInputs(workflow:Workflow) {
+      let widgets = workflow.widgets;
+      for (let i=0; i<widgets.length; i++) {
+        let allowRunWidget = this.precheckWidgetInputs(widgets[i]);
+        if (!(allowRunWidget)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
     private handleError(error: any) {
         console.error('An error occurred', error);
         let message = error.message || error;
@@ -171,13 +192,22 @@ if (includePreview) {
     }
 
     runWorkflow(workflow: Workflow): Promise<any> {
-      // tukaj morda treba, da ne poženeš znova workflow-a, ki se že izvaja
-        let options = this.getRequestOptions();
-        return this.http
-            .post(`${workflow.url}run/`, {}, options)
-            .toPromise()
-            .then(response => response)
-            .catch(error => this.handleError(error));
+
+        let allowRunWorkflow = this.precheckWorkflowInputs(workflow);
+
+        if (allowRunWorkflow) {
+          // tukaj morda treba, da ne poženeš znova workflow-a, ki se že izvaja
+            let options = this.getRequestOptions();
+            return this.http
+                .post(`${workflow.url}run/`, {}, options)
+                .toPromise()
+                .then(response => response)
+                .catch(error => this.handleError(error));
+        }
+        else {
+          return Promise.resolve({status: "error", message: "One or more widgets are missing input(s)."});
+        }
+
     }
 
     resetWorkflow(workflow: Workflow): Promise<any> {
@@ -308,13 +338,22 @@ if (includePreview) {
     }
 
     runWidget(widget: Widget, interact: boolean) {
-        let options = this.getRequestOptions();
-        let interactFlag = interact ? 1 : 0;
-        return this.http
-            .post(`${widget.url}run/?interact=${interactFlag}`, '', options)
-            .toPromise()
-            .then(response => response)
-            .catch(error => this.handleError(error));
+
+        let allowRunWidget = this.precheckWidgetInputs(widget);
+
+        if (allowRunWidget) {
+          let options = this.getRequestOptions();
+          let interactFlag = interact ? 1 : 0;
+          return this.http
+              .post(`${widget.url}run/?interact=${interactFlag}`, '', options)
+              .toPromise()
+              .then(response => response)
+              .catch(error => this.handleError(error));
+        }
+        else {
+          return Promise.resolve({status: "error", message: "Widget is missing one or more input(s)."});
+        }
+
     }
 
     deleteWidget(widget: Widget) {

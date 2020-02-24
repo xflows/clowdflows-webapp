@@ -94,6 +94,9 @@
   -o-transition: fill 100ms ease-in-out;
   transition: fill 100ms ease-in-out;
 }
+#widget-canvas .widget .input.required {
+  stroke: red;
+}
 #widget-canvas .widget .input:hover,
 #widget-canvas .widget .output:hover {
   fill: #afdde9;
