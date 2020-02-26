@@ -21,9 +21,9 @@
 				<tab *ngFor="let workflow of workflows; let i = index" [attr.data-index]="i"
 						[heading]="workflow.name"
 						[active]="workflow.active"
+            (selectTab)="switchToWorkflowTab(workflow,i)"
 						[removable]="(i>0)"
-						(removed)="removeWorkflowTab(workflow)"
-            (select)="switchToWorkflowTab(workflow)">
+						(removed)="removeWorkflowTab(workflow)">
 					<widget-canvas [workflow]="workflow"
 						           (addConnectionRequest)="addConnection($event)"
 						           (deleteConnectionRequest)="deleteConnection($event)"

@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, HostListener} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, HostListener, ElementRef, ViewChildren, QueryList} from '@angular/core';
 import {ActivatedRoute, Router, Params} from '@angular/router';
 import {WidgetCanvasComponent} from "./widget-canvas/widget-canvas.component";
 import {AbstractWidget} from "../../models/abstract-widget";
@@ -27,6 +27,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     @ViewChild(WidgetCanvasComponent, {static: false}) canvasComponent:WidgetCanvasComponent;
     @ViewChild(WidgetTreeComponent, {static: false}) widgetTreeComponent: WidgetTreeComponent;
     @ViewChild(TabsetComponent, {static: false}) tabsetComponent: TabsetComponent;
+    @ViewChildren(WidgetCanvasComponent) canvasComponents: QueryList<WidgetCanvasComponent>;
     workflow:any = {};
     workflows:Workflow[] = [];
     userWorkflows:Workflow[] = [];
@@ -65,6 +66,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     tutorial:boolean = false;
     loadedSubprocesses:any = {};
     activeWorkflow:Workflow = null;
+    activeTabIndex:number = 0;
     recommendWidget:Widget = null;
 
 	removeWorkflowTab(workflow:Workflow){
@@ -89,7 +91,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     globalPositionToLocalPosition(coordinates:any) {
-      let canvasEl:any = this.canvasComponent.widgetCanvas.nativeElement
+      let activeCanvasComponent = this.canvasComponents.filter((can:any,index:any)=>index==this.activeTabIndex)[0]
+
+      let canvasEl:any = activeCanvasComponent.widgetCanvas.nativeElement
       let offsetTop:number = canvasEl.offsetTop;
       let offsetLeft:number = canvasEl.offsetLeft;
       let scrollTop:number = canvasEl.scrollTop;
@@ -612,7 +616,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                     subprocessWorkflow.subprocessWidget = widget;
                     this.workflows.push(subprocessWorkflow);
                     this.loadedSubprocesses[workflowUrl] = subprocessWorkflow;
-                    this.switchToWorkflowTab(subprocessWorkflow);
+                    this.switchToWorkflowTab(subprocessWorkflow,this.workflows.length-1);
                 });
         } else {
             let subprocessWorkflow = this.loadedSubprocesses[workflowUrl];
@@ -621,12 +625,15 @@ export class EditorComponent implements OnInit, OnDestroy {
         widget.selected = false;
     }
 
-    switchToWorkflowTab(workflowToActivate:Workflow) {
+    switchToWorkflowTab(workflowToActivate:Workflow,index:number = 0) {
+
         for (let workflow of this.workflows) {
             workflow.active = false;
         }
         workflowToActivate.active = true;
         this.activeWorkflow = workflowToActivate;
+
+        this.activeTabIndex = index;
     }
 
     visualizeWidget(widget:Widget) {

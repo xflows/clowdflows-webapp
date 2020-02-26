@@ -9,9 +9,8 @@
 }
 #widgets #widget-tree {
   margin-left: -20px;
-  max-height: calc(100% - 100px);
+  max-height: calc(100% - 50px);
   overflow: auto;
-  overflow-x: hidden;
 }
 .import-webservice-btn {
   position: absolute;

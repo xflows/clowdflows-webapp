@@ -75,7 +75,7 @@ export class WidgetCanvasComponent implements OnInit {
     }
 
     ngOnInit() {
-
+      this.updateCanvasBounds();
     }
 
 	splitNodeLabel(name: string): any[] {

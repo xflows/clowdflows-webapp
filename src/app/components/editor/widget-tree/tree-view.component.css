@@ -14,6 +14,7 @@ ul > li {
 .widget {
   display: block;
   overflow-style: marquee-block;
+  white-space: nowrap;
 }
 .widget:hover {
   background-color: #fff8d8;

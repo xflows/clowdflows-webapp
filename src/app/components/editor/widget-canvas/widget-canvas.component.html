@@ -20,7 +20,9 @@
                       [attr.width]="ui_constants.signalWidth"
                       [attr.height]="ui_constants.signalHeight"
                       [class.selected]="input.selected"
-                      (click)="select($event, input)"/>
+                      (click)="select($event, input)">
+                      <title>{{input.description}}</title>
+                </rect>
                 <text class="signal-text"
                       [attr.x]="input.x + 20"
                       [attr.y]="input.y + ui_constants.signalHeight - 3"
@@ -35,7 +37,9 @@
                       [attr.width]="ui_constants.signalWidth"
                       [attr.height]="ui_constants.signalHeight"
                       [class.selected]="output.selected"
-                      (click)="select($event, output)"/>
+                      (click)="select($event, output)">
+                      <title>{{output.description}}</title>
+                </rect>
                 <text class="signal-text"
                       [attr.x]="output.x + 20"
                       [attr.y]="output.y + ui_constants.signalHeight - 3"
