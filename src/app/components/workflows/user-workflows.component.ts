@@ -9,7 +9,7 @@ import {LoggerService} from "../../services/logger.service";
 
 
 @Component({
-  selector: 'workflows',
+  selector: 'user-workflows',
   styles: [require('./workflows.component.css')],
   template: require('./user-workflows.component.html')
 })
@@ -27,10 +27,7 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
     }
 
     ngOnInit(): void {
-      this.clowdflowsDataService.getUserWorkflows()
-      .then(workflows => {
-        this.workflows = <Workflow[]> workflows;
-      })
+      this.getWorkflowsBackend()
     }
 
     startStreaming(workflowId: number) {
@@ -53,18 +50,18 @@ export class UserWorkflowsComponent extends WorkflowsComponent {
       .then( ()=> {
         //let index = this.workflows.findIndex(w => w.id === workflow.id);
                 //this.workflows.splice(index, 1);//remove element from array
-                this.getUserWorkflowsBackend() // tole bi blo bl prov!
+                this.getWorkflowsBackend()  // tole bi blo bl prov!
       });
     }
 
+    getWorkflowsBackend() {
+      let user_only = true;
+      let current_page = this.k;
+      let no_preview = false;
 
-    getUserWorkflowsBackend() {
-      this.clowdflowsDataService.getUserWorkflows()
-    .then(workflows => { // TOLE MORE VRNIT SAMO WORKFLOWE, KI JIH POKAŽEMO V TABELI!
-      this.workflows = <Workflow[]> workflows;
+      this.clowdflowsDataService.getWorkflows(user_only, current_page, no_preview, this.search_term)
+          .then(data => {
+            super.updateAttributes(data);
           });
     }
-
-
-
   }
