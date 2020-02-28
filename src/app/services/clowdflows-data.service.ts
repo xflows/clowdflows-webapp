@@ -85,7 +85,9 @@ export class ClowdFlowsDataService {
       let inputs = widget.inputs;
       for (let i=0; i<inputs.length; i++) {
         if (inputs[i].required && inputs[i].connection == null) {
-          return false;
+          if (inputs[i].multi_id == 0 || (inputs[i].multi_id > 0 && inputs[i].order == 1)) {
+            return false;
+          }
         }
       }
       return true;
