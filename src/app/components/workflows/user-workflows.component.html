@@ -7,7 +7,7 @@
         </button>
     </p>
 
-    <form (ngSubmit)="getWorkflowsBackend()" (keyup.enter)="getWorkflowsBackend()" class="input-group form-group col-sm-4" >
+    <form (ngSubmit)="changePage(1)" (keyup.enter)="changePage(1)" class="input-group form-group col-sm-4" >
         <input type="text" placeholder="Search workflows ..." [(ngModel)]="search_term" required name="search" class="form-control"/>
         <div class="input-group-btn search-panel">
             <button type="submit" class="btn btn-default"> Search </button>
