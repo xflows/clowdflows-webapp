@@ -19,11 +19,11 @@ export class TreeViewComponent {
     widgetToAdd:AbstractWidget
 
     iconUrl(widget:AbstractWidget):string {
-      console.log(widget)
         let url = '/public/images/question-mark.png';
         if (widget.static_image && !widget.special) {
             url = `${BASE_URL}/static/${widget.cfpackage}/icons/treeview/${widget.static_image}`;
         } else if (widget.special) {  // We provide full paths for special widget icons
+          console.log(widget.static_image)
             url = widget.static_image;
         }
         return url;
