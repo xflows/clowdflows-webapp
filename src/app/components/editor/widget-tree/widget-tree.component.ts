@@ -25,7 +25,13 @@ export class WidgetTreeComponent {
     filterTree() {
         function applyFilter(category:Category, filterString:string) {
             let hide = true;
-            let filterRegEx = new RegExp(filterString, 'i');
+            let filterRegEx;
+            try {
+              filterRegEx = new RegExp(filterString, 'i');
+            }
+            catch (error) {
+              filterRegEx = new RegExp("neobstajaumetno", 'i');
+            }
             if (category.name.match(filterRegEx)) {
                 hide = false;
             }
@@ -53,7 +59,7 @@ export class WidgetTreeComponent {
         }
 
         if (this.filterString.trim() == "") {
-            //this.collapseAll();
+            this.collapseAll();
         } else {
             for (let category of this.widgetLibraryService.widgetTree) {
                 applyFilter(category, this.filterString);
@@ -91,17 +97,17 @@ export class WidgetTreeComponent {
     }
 
     updateRecommendation(widgetRecommendation:WidgetRecommendation) {
-        if (this.widgetLibraryService.widgetTree == null) {
+      // CURRENTLY NOT WORKING!
+        /*if (this.widgetLibraryService.widgetTree == null) {
             return;
         }
-        this.resetRecommendations();
-
         if (widgetRecommendation == null) {
             return;
         }
+        this.resetRecommendations();
         for (let category of this.widgetLibraryService.widgetTree) {
             WidgetTreeComponent.markRecommendation(category, widgetRecommendation);
-        }
+        }*/
     }
 
     resetRecommendations() {

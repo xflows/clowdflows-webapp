@@ -19,6 +19,7 @@ export class TreeViewComponent {
     widgetToAdd:AbstractWidget
 
     iconUrl(widget:AbstractWidget):string {
+      console.log(widget)
         let url = '/public/images/question-mark.png';
         if (widget.static_image && !widget.special) {
             url = `${BASE_URL}/static/${widget.cfpackage}/icons/treeview/${widget.static_image}`;
@@ -42,6 +43,7 @@ export class TreeViewComponent {
     }
 
     detectDrag($event:any,imgUrl:any) {
+      console.log(imgUrl)
       if (this.dragStatus == "mousedown") {
         this.dragStatus = "dragged"
         $event.source.element.nativeElement.setAttribute("style","cursor: url('"+imgUrl+"'), default !important; display: none;")
