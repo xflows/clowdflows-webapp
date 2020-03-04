@@ -31,7 +31,9 @@ export class ClowdFlowsDataService {
         let auth_token = localStorage.getItem('auth_token');
         let headers = new HttpHeaders({
           'Content-Type': 'application/json',
-          'Authorization': `Token ${auth_token}`
+          'Authorization': `Token ${auth_token}`,
+          'Cache-Control':  'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
+          'Pragma': 'no-cache',
         });
 
         return {headers: headers};
@@ -44,7 +46,9 @@ export class ClowdFlowsDataService {
       return {
         headers: new HttpHeaders({
           'Content-Type': 'text/plain; charset=utf-8',
-          'Authorization': `Token ${auth_token}`
+          'Authorization': `Token ${auth_token}`,
+          'Cache-Control':  'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
+          'Pragma': 'no-cache',
         }),
         responseType: 'text' as 'json'
       }
@@ -56,7 +60,9 @@ export class ClowdFlowsDataService {
       return {
         headers: new HttpHeaders({
           'Content-Type': 'text/html; charset=UTF-8',
-          'Authorization': `Token ${auth_token}`
+          'Authorization': `Token ${auth_token}`,
+          'Cache-Control':  'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
+          'Pragma': 'no-cache',
         }),
         responseType: 'html' as 'json'
       }
