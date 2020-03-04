@@ -82,10 +82,8 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
     }
 
     changePage(p:number) {
-		if (p != this.k) {
-			this.k = p;
-      this.getWorkflowsBackend()
-		}
+		this.k = p;
+        this.getWorkflowsBackend();
 	}
 
     // Assigns response data to attributes to be read by the template
