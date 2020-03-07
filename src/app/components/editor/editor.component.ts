@@ -268,6 +268,42 @@ export class EditorComponent implements OnInit, OnDestroy {
         }
     }
 
+    // Merge selected widgets into a new Subprocess
+    mergeIntoSubprocess(selected:Widget[]){
+        let activeWorkflow = this.activeWorkflow;
+        let selected_ids = selected.map(w => w.id)
+        this.clowdflowsDataService
+            .mergeIntoSubprocess(activeWorkflow, selected_ids)
+            .then((data) => {
+                let error = this.loggerService.reportMessage(data);
+                if(!error){
+
+                    // Delete canvas elements
+                    let conns = activeWorkflow.connections.filter(c => 
+                        selected.includes(c.input.widget) || selected.includes(c.output.widget))
+                    for(let c of conns){
+                            let idx = activeWorkflow.connections.indexOf(c);
+                            activeWorkflow.connections.splice(idx, 1);
+                    }
+
+                    for(let w of selected){
+                        let idx = activeWorkflow.widgets.indexOf(w);
+                        activeWorkflow.widgets.splice(idx, 1);
+                    }
+
+                    // Add new elements to canvas
+                    let widget:Widget = Widget.createFromJSON(data.widget, activeWorkflow);
+                    activeWorkflow.widgets.push(widget);
+
+                    for(let c of data.connections){
+                        let connection:Connection = Connection.createFromJSON(c, activeWorkflow);
+                        activeWorkflow.connections.push(connection);
+                    }
+
+                }
+            })
+    }
+
     copyWidget(widget:Widget) {
         let activeWorkflow = this.activeWorkflow;
         this.clowdflowsDataService

@@ -34,6 +34,9 @@
   <ng-template contextMenuItem (execute)='deleteWidget($event.item)'>
     <span class="glyphicon glyphicon-trash"></span> Delete
   </ng-template>
+  <ng-template contextMenuItem (execute)='mergeIntoSubprocess()'>
+    <span class="glyphicon glyphicon-resize-small"></span> Merge selection into subprocess
+  </ng-template>
   <ng-template contextMenuItem (execute)='showHelp($event.item)'>
     <span class="glyphicon glyphicon-question-sign"></span> Help
   </ng-template>

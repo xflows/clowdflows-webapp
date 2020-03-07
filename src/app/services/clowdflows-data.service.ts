@@ -222,6 +222,15 @@ export class ClowdFlowsDataService {
             .catch(error => this.handleError(error));
     }
 
+    mergeIntoSubprocess(workflow: Workflow, selected: Widget[]): Promise<any> {
+        let options = this.getRequestOptions();
+        return this.http
+            .post(`${workflow.url}merge/`, JSON.stringify(selected, Widget.omitKeys), options)
+            .toPromise()
+            .then(response => response)
+            .catch(error => this.handleError(error));
+    }
+
     addInputToSubprocess(workflow: Workflow): Promise<any> {
         let options = this.getRequestOptions();
         return this.http

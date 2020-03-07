@@ -20,6 +20,12 @@ export class Connection {
         this.updateOutputWidgetRef(output_widget, output);
     }
 
+    public static createFromJSON(data:any, workflow:Workflow) : Connection{
+        let input_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.input_widget);
+        let output_widget:Widget = workflow.widgets.find((widget:Widget) => widget.url == data.output_widget);
+        return new Connection(data.url, output_widget, input_widget, data.output, data.input, workflow);
+    }
+
     updateInputWidgetRef(inputWidget:Widget, inputUrl:string) {
         this.input_widget = inputWidget;
         this.input = inputWidget.inputs.find(inputObj => inputObj.url == inputUrl);

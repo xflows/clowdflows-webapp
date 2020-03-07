@@ -22,6 +22,7 @@ export class ContextMenuWidgetComponent {
   @Output() copyWidgetRequest = new EventEmitter<Widget>();
   @Output() deleteWidgetRequest = new EventEmitter<Widget>();
   @Output() changeSaveResultsRequest = new EventEmitter<Widget>();
+  @Output() mergeIntoSubprocessRequest = new EventEmitter();
 
   constructor(private contextMenuService: ContextMenuService) {}
 
@@ -70,6 +71,10 @@ export class ContextMenuWidgetComponent {
 
   showHelp(widget:Widget) {
       widget.showHelp = true;
+  }
+
+  mergeIntoSubprocess() {
+    this.mergeIntoSubprocessRequest.emit("");
   }
 
 }
