@@ -288,7 +288,10 @@ export class EditorComponent implements OnInit, OnDestroy {
 
                     for(let w of selected){
                         let idx = activeWorkflow.widgets.indexOf(w);
-                        activeWorkflow.widgets.splice(idx, 1);
+                        if(w.type != "input" && w.type != "output")
+                            activeWorkflow.widgets.splice(idx, 1);
+                        else 
+                            w.selected = false;
                     }
 
                     // Add new elements to canvas

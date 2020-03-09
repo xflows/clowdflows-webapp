@@ -411,16 +411,6 @@ export class WidgetCanvasComponent implements OnInit {
         }
     }
 
-    getSelectedWidgets() {
-        let selected : Widget[] = [];
-        for (let widget of this.workflow.widgets) {
-            if (widget.selected) {
-                selected.push(widget);
-            }
-        }
-        return selected;
-    }
-
     runWidget(widget:Widget) {
         this.runWidgetRequest.emit(widget);
     }
@@ -463,7 +453,7 @@ export class WidgetCanvasComponent implements OnInit {
 
     // Merge selected widgets into a Subprocess
     mergeIntoSubprocess() {
-        let selected = this.getSelectedWidgets();
+        let selected = this.workflow.widgets.filter(w => w.selected);
         this.mergeIntoSubprocessRequest.emit(selected);
     }
 
