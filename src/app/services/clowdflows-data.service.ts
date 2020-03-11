@@ -31,7 +31,7 @@ export class ClowdFlowsDataService {
         let auth_token = localStorage.getItem('auth_token');
         let headers = new HttpHeaders({
           'Content-Type': 'application/json',
-          'Authorization': `Token ${auth_token}`
+          'Authorization': `Token ${auth_token}`,
         });
 
         return {headers: headers};

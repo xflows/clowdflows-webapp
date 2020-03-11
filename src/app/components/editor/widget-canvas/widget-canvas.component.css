@@ -60,8 +60,9 @@
   fill: #fff5c2;
 }
 #widget-canvas .widget .widget-box.selected {
-  fill: #ffe45c;
-  stroke: #333333;
+  fill: #fffceb;
+  stroke: #ffe45c;
+  stroke-width: 2.5px;
 }
 #widget-canvas .widget .widget-save-results-icon {
   opacity: 0.5;
