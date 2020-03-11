@@ -23,7 +23,7 @@
   border-right: 1px solid #231f20;
 }
 #widget-canvas-svg-selection {
-	fill: rgba(255,255,0,0.4);
+	fill: rgba(255,228,92,0.4);
 	stroke-width: 1;
 	stroke: lightgray;
 }
