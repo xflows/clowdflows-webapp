@@ -15,6 +15,7 @@ import {LoggerService} from "../../services/logger.service";
 export class WorkflowDetailComponent extends WorkflowsComponent {
 
     workflow:Workflow = null;
+    loaded:boolean = false;
     sub:any;
 
     constructor(domSanitizer:DomSanitizer,
@@ -35,6 +36,7 @@ export class WorkflowDetailComponent extends WorkflowsComponent {
             this.clowdflowsDataService.getWorkflow(id, includePreview)
                 .then(workflow => {
                     this.workflow = workflow;
+                    this.loaded = true;
                 });
         });
     }

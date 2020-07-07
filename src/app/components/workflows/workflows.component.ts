@@ -18,6 +18,9 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
     workflows:Workflow[] = [];
     title:string = 'Workflows';
     base_url:string;
+
+    copying: boolean = false;
+
     search_term : string = '';
 
     // Pagination
@@ -67,9 +70,11 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
     }
 
     copyWorkflow(workflow: Workflow) {
+        this.copying = true;
         this.clowdflowsDataService
             .copyWorkflow(workflow)
             .then((data:any) => {
+                this.copying=false;
                 let error = this.loggerService.reportMessage(data);
                 if (!error) {
                     this.router.navigate(['/editor', data.id]);
