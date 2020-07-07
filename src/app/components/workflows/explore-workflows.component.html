@@ -1,82 +1,96 @@
 <main class="container">
 
-    <h1>Staff picks</h1>
-    <div id="staff-picks">
-        <carousel>
-            <ng-template ngFor let-workflow [ngForOf]="staff_picks">
-                <slide class="row" *ngIf="!workflow.is_subprocess && workflow.is_public">
-                    <div class="col-sm-6">
-                        <h2 class="name">{{workflow.name}}
-                            <small>by {{workflow.user.username}}</small>
-                        </h2>
-                        <p class="description">
-                            {{workflow.description}}
-                        </p>
-                        <p>
-                            <a class="btn btn-primary btn-sm" [routerLink]="['/workflow/', workflow.id]"><i
-                                    class="fa fa-link"
-                                    aria-hidden="true"></i>
-                                Share
-                                link</a>
-                            <a class="btn btn-success btn-sm" [routerLink]="" (click)="copyWorkflow(workflow)">Launch (creates a personal copy)</a>
-                            <a class="btn btn-default btn-sm" [routerLink]="['/editor/', workflow.id]"
-                               *ngIf="workflow.user.username == userService.getUsername()">Edit</a>
-                        </p>
-                    </div>
-                    <div class="col-sm-6 preview-container" [innerHTML]="getTrustedHTML(workflow.preview)">
-                    </div>
-                </slide>
-            </ng-template>
-        </carousel>
+    <div *ngIf="!loaded" style="margin-top:50px;" class="text-center">Loading workflows... Please wait...<br>
+    <br>
+
+        <i class="text-center fa fa-spinner fa-3x fa-spin"></i>
+
+
     </div>
-
-    <h1>{{ title }}</h1>
-
-    <form (ngSubmit)="changePage(1)" (keyup.enter)="changePage(1)" class="input-group form-group col-sm-4">
-        <input type="text" placeholder="Search workflows ..." [(ngModel)]="search_term" required name="search" class="form-control"/>
-        <div class="input-group-btn search-panel">
-            <button type="submit" class="btn btn-default"> Search </button>
+    <div *ngIf="loaded">
+        <h1>Staff picks</h1>
+        <div id="staff-picks">
+            <carousel>
+                <ng-template ngFor let-workflow [ngForOf]="staff_picks">
+                    <slide class="row" *ngIf="!workflow.is_subprocess && workflow.is_public">
+                        <div class="col-sm-6">
+                            <h2 class="name">{{workflow.name}}
+                                <small>by {{workflow.user.username}}</small>
+                            </h2>
+                            <p class="description">
+                                {{workflow.description}}
+                            </p>
+                            <p>
+                                <a class="btn btn-primary btn-sm" [routerLink]="['/workflow/', workflow.id]"><i
+                                        class="fa fa-link"
+                                        aria-hidden="true"></i>
+                                    Share
+                                    link</a>
+                                <a class="btn btn-success btn-sm" [routerLink]="" (click)="copyWorkflow(workflow)">Launch
+                                    (creates a personal copy)</a>
+                                <a class="btn btn-default btn-sm" [routerLink]="['/editor/', workflow.id]"
+                                   *ngIf="workflow.user.username == userService.getUsername()">Edit</a>
+                            </p>
+                        </div>
+                        <div class="col-sm-6 preview-container" [innerHTML]="getTrustedHTML(workflow.preview)">
+                        </div>
+                    </slide>
+                </ng-template>
+            </carousel>
         </div>
-    </form>
 
-    <ng-template ngFor let-workflow [ngForOf]="workflows">
-        <section class="row" *ngIf="!workflow.is_subprocess && workflow.is_public">
-            <div class="col-sm-6">
-                <h2 class="name">{{workflow.name}}
-                    <small>by {{workflow.user.username}}</small>
-                </h2>
-                <p class="description">
-                    {{workflow.description}}
-                </p>
-                <p>
-                    <a class="btn btn-primary btn-sm" [routerLink]="['/workflow/', workflow.id]"><i class="fa fa-link"
-                                                                                                    aria-hidden="true"></i>
-                        Share
-                        link</a>
-                    <a class="btn btn-success btn-sm" [routerLink]="" (click)="copyWorkflow(workflow)">Launch (creates a personal copy)</a>
-                    <a class="btn btn-default btn-sm" [routerLink]="['/editor/', workflow.id]"
-                       *ngIf="workflow.user.username == userService.getUsername()">Edit</a>
-                </p>
-            </div>
-            <div class="col-sm-6 preview-container" [innerHTML]="getTrustedHTML(workflow.preview)">
-            </div>
-        </section>
-    </ng-template>
+        <h1>{{ title }}</h1>
 
-    <span class="table-information">Showing {{bounds.lower}} to {{bounds.upper}} of {{n_all}} entries.</span>
-	<div class="table-pagination">
-		<div>
-			<span>Pages:</span>
-			<ng-template ngFor let-p [ngForOf]="pages">
-				<button class="table-pagination-button btn btn-default" [class.btn-success] = "p==k" *ngIf="p==1 || p==n || p==k || p==k-1 || p==k+1; else pagesDots" (click)="changePage(p)">
-					{{p}}
-				</button>
-				<ng-template #pagesDots>
-					<span class="table-pagination-dots" *ngIf="p==k-2 || p==k+2">...</span>
-				</ng-template>
-			</ng-template>
-		</div>
-	</div>
+        <form (ngSubmit)="changePage(1)" (keyup.enter)="changePage(1)" class="input-group form-group col-sm-4">
+            <input type="text" placeholder="Search workflows ..." [(ngModel)]="search_term" required name="search"
+                   class="form-control"/>
+            <div class="input-group-btn search-panel">
+                <button type="submit" class="btn btn-default"> Search</button>
+            </div>
+        </form>
+
+        <ng-template ngFor let-workflow [ngForOf]="workflows">
+            <section class="row" *ngIf="!workflow.is_subprocess && workflow.is_public">
+                <div class="col-sm-6">
+                    <h2 class="name">{{workflow.name}}
+                        <small>by {{workflow.user.username}}</small>
+                    </h2>
+                    <p class="description">
+                        {{workflow.description}}
+                    </p>
+                    <p>
+                        <a class="btn btn-primary btn-sm" [routerLink]="['/workflow/', workflow.id]"><i
+                                class="fa fa-link"
+                                aria-hidden="true"></i>
+                            Share
+                            link</a>
+                        <a class="btn btn-success btn-sm" [routerLink]="" (click)="copyWorkflow(workflow)">Launch
+                            (creates a personal copy)</a>
+                        <a class="btn btn-default btn-sm" [routerLink]="['/editor/', workflow.id]"
+                           *ngIf="workflow.user.username == userService.getUsername()">Edit</a>
+                    </p>
+                </div>
+                <div class="col-sm-6 preview-container" [innerHTML]="getTrustedHTML(workflow.preview)">
+                </div>
+            </section>
+        </ng-template>
+
+        <span class="table-information">Showing {{bounds.lower}} to {{bounds.upper}} of {{n_all}} entries.</span>
+        <div class="table-pagination">
+            <div>
+                <span>Pages:</span>
+                <ng-template ngFor let-p [ngForOf]="pages">
+                    <button class="table-pagination-button btn btn-default" [class.btn-success]="p==k"
+                            *ngIf="p==1 || p==n || p==k || p==k-1 || p==k+1; else pagesDots" (click)="changePage(p)">
+                        {{p}}
+                    </button>
+                    <ng-template #pagesDots>
+                        <span class="table-pagination-dots" *ngIf="p==k-2 || p==k+2">...</span>
+                    </ng-template>
+                </ng-template>
+            </div>
+        </div>
+    </div>
 
     <div class="push"></div>
 </main>

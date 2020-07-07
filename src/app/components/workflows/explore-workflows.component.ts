@@ -17,6 +17,8 @@ export class ExploreWorkflowsComponent extends WorkflowsComponent {
 
     staff_picks: Workflow[] = [];
 
+    loaded: boolean = false;
+
     title: string = 'Explore workflows';
 
     constructor(domSanitizer: DomSanitizer,
@@ -41,6 +43,7 @@ export class ExploreWorkflowsComponent extends WorkflowsComponent {
         .then(data => {
             super.updateAttributes(data);
             this.staff_picks = this.workflows.filter((workflow:Workflow) => workflow.staff_pick);
+            this.loaded = true;
         });
   }
 
