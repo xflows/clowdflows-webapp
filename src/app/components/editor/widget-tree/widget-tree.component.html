@@ -3,16 +3,27 @@
         <div class="form-group">
             <input type="text" name="filter-query" class="form-control input-sm" placeholder="Widget search"
                    [(ngModel)]="filterString" (ngModelChange)="filterTree()">
-			<span *ngIf="filterString"
-              (click)="clearText()"
-              class="glyphicon glyphicon-remove form-control-feedback"
-              style="cursor: pointer; pointer-events: all; padding-top: 10px"
-              uib-tooltip="clear">
+            <span *ngIf="filterString"
+                  (click)="clearText()"
+                  class="glyphicon glyphicon-remove form-control-feedback"
+                  style="cursor: pointer; pointer-events: all; padding-top: 10px"
+                  uib-tooltip="clear">
         </span>
         </div>
     </form>
+
+    <div *ngIf="widgetLibraryService.loading" class="text-center">
+        <div style="vertical-align: middle;">
+            <br>
+            <br>
+            <br><br><br>
+            <i class="text-center fa fa-spinner fa-2x fa-spin"></i>
+        </div>
+    </div>
+
     <div id="widget-tree">
-        <tree-view [categories]="widgetLibraryService.widgetTree" (addWidgetRequest)="addWidgetToCanvas($event)"></tree-view>
+        <tree-view [categories]="widgetLibraryService.widgetTree"
+                   (addWidgetRequest)="addWidgetToCanvas($event)"></tree-view>
     </div>
     <!--<a class="import-webservice-btn btn btn-info btn-sm" (click)="openImportWebserviceDialog()">Import webservice</a>-->
 </div>

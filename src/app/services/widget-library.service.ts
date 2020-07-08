@@ -10,18 +10,21 @@ export class WidgetLibraryService {
 
     // A mapping between abstract input ids and abstract output ids
     public widgetTree: Category[];
+    public loading: boolean = true;
 
     constructor(public clowdflowsDataService: ClowdFlowsDataService) {
         this.init();
     }
 
     init() {
+        this.loading = true;
         this.clowdflowsDataService.getWidgetLibrary()
             .then(data => {
               if (data) {
                 let library = this.parseWidgetLibrary(data);
                 library = this.addSpecialWidgets(library);
                 this.widgetTree = library;
+                this.loading = false;
               }
             });
     }

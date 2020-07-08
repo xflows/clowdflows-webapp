@@ -32,6 +32,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     workflows:Workflow[] = [];
     userWorkflows:Workflow[] = [];
     sub:any;
+    loading:boolean = true;
 
 	resizeComp:any = {width: {open: true}, height: {height: 100, oldY: 0}, grabber: false}
 
@@ -511,9 +512,11 @@ export class EditorComponent implements OnInit, OnDestroy {
             widget: null,
             template_parent: null
         };
+        this.loading = true;
         this.clowdflowsDataService
             .createWorkflow(workflowData)
             .then((data:any) => {
+                this.loading = false;
                 let error = this.loggerService.reportMessage(data);
                 if (!error) {
                     this.router.navigate(['/editor', data.id]);
@@ -522,9 +525,11 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     saveWorkflow(workflow:Workflow) {
+	    this.loading = true;
         this.clowdflowsDataService
             .saveWorkflowInfo(workflow)
             .then((data:any) => {
+                this.loading = false;
                 this.loggerService.reportMessage(data);
             });
     }
@@ -610,8 +615,10 @@ export class EditorComponent implements OnInit, OnDestroy {
     openSubprocess(widget:Widget) {
         let workflowUrl = widget.workflow_link;
         if (!(workflowUrl in this.loadedSubprocesses)) {
+            this.loading = true;
             this.clowdflowsDataService.getWorkflow(workflowUrl)
                 .then(data => {
+                    this.loading = false;
                     let subprocessWorkflow = Workflow.createFromJSON(data);
                     subprocessWorkflow.subprocessWidget = widget;
                     this.workflows.push(subprocessWorkflow);
@@ -708,6 +715,7 @@ export class EditorComponent implements OnInit, OnDestroy {
                     }, this.workflow);
 
                     this.loggerService.success("Successfully loaded workflow.");
+                    this.loading = false;
                 });
 
             // Fetch all of the user's workflows
