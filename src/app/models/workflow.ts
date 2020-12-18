@@ -25,6 +25,7 @@ export class Workflow {
                 public template_parent:string,
                 public can_be_streaming:boolean,
                 public staff_pick:boolean,
+                public copy_time:number,
                 public running:boolean=false) {
         this.widgets = new Array<Widget>();
         for (let widget of widgets) {
@@ -47,7 +48,8 @@ export class Workflow {
 
     public static createFromJSON(data:any):Workflow {
         return new Workflow(data.id, data.url, data.widgets, data.connections, data.is_subprocess, data.name,
-            data.is_public, data.user, data.stream, data.description, data.widget, data.template_parent, data.can_be_streaming, data.staff_pick);
+            data.is_public, data.user, data.stream, data.description, data.widget, data.template_parent, data.can_be_streaming,
+            data.staff_pick, data.copy_time);
     }
 
 }

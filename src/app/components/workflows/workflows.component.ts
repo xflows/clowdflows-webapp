@@ -21,6 +21,11 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
 
     copying: boolean = false;
 
+    elapsed: number = 0;
+    copy_time: number = 0;
+
+    copy_interval_id: null | ReturnType<typeof setInterval> = null;
+
     search_term : string = '';
 
     // Pagination
@@ -71,15 +76,31 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
 
     copyWorkflow(workflow: Workflow) {
         this.copying = true;
+        this.elapsed = 0;
+        this.copy_time = workflow.copy_time
+        this.copy_interval_id = setInterval(() => {
+            this.elapsed = this.elapsed + 1;
+        }, 1000);
         this.clowdflowsDataService
             .copyWorkflow(workflow)
             .then((data:any) => {
                 this.copying=false;
+                clearInterval(this.copy_interval_id);
                 let error = this.loggerService.reportMessage(data);
                 if (!error) {
                     this.router.navigate(['/editor', data.id]);
                 }
             });
+    }
+
+    getCopyProgressBarPercentage() {
+        if (this.copy_time == 0) {
+            this.copy_time = 10
+        }
+        if (this.copy_time < this.elapsed) {
+            this.copy_time = this.elapsed + 10
+        }
+        return ((this.elapsed / this.copy_time) * 100)
     }
 
     getWorkflowsBackend(){

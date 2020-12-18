@@ -14,6 +14,14 @@
 
 
     </div>
+    <div *ngIf="copying" style="margin-top:50px;" class="text-center">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" [ngStyle]="{width: getCopyProgressBarPercentage()+'%'}" aria-valuemin="0"
+                 aria-valuemax="100"></div>
+        </div>
+    </div>
+
+
     <div *ngIf="loaded && !copying">
         <h1>Staff picks</h1>
         <div id="staff-picks">
