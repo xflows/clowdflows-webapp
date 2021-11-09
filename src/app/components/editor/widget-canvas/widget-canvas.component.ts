@@ -451,10 +451,18 @@ export class WidgetCanvasComponent implements OnInit {
 
     handleShortcuts(event:any) {
         if (event.keyCode == 46) {  // Delete
-            // Check that it doesn't come from an input field
-            if (event.srcElement.localName != "input") {
-                this.deleteSelectedObjects();
-            }
+
+          // check no dialogs are open
+          let noDialogs = true;
+          for (let widget of this.workflow.widgets) {
+              if (widget.showDialog)
+                noDialogs = false;
+          }
+
+          if (noDialogs == true) {
+            this.deleteSelectedObjects();
+          }
+
         } else if (event.keyCode == 113) {  // F2 - rename
             for (let widget of this.workflow.widgets) {
                 if (widget.selected)
