@@ -11,6 +11,7 @@ import 'rxjs';
 // You can import js, ts, css, sass, ...
 import 'ngx-bootstrap';
 import 'ngx-contextmenu';
+import 'ngx-clipboard';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 //import '../vendor/font-awesome/css/font-awesome.min.css';

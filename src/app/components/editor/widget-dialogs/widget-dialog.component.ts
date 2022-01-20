@@ -4,6 +4,7 @@ import {ClowdFlowsDataService} from "../../../services/clowdflows-data.service";
 import {Input as WidgetInput} from "../../../models/input";
 import {Output as WidgetOutput} from "../../../models/output";
 import {LoggerService} from "../../../services/logger.service";
+import { ClipboardService } from 'ngx-clipboard';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions, UploadStatus } from 'ngx-uploader';
 
 @Component({
@@ -30,9 +31,12 @@ export class WidgetDialogComponent {
     listOutputs:Array<WidgetOutput> = [];
     benchmark:boolean = false;
 
+    copiedToClipboard:boolean = false;
+
 
     constructor(private clowdflowsDataService:ClowdFlowsDataService,
-                private loggerService:LoggerService) {
+                private loggerService:LoggerService,
+                private clipboardApi: ClipboardService) {
 
                   this.options = { concurrency: 1, maxUploads: 1 };
     this.uploadInput = new EventEmitter<UploadInput>();
@@ -54,6 +58,20 @@ export class WidgetDialogComponent {
 
     closeInteractionDialog() {
         this.widget.showInteractionDialog = false;
+    }
+
+    copyToClipboard() {
+      let resultsDiv = document.getElementById("widgetvisualization-"+this.widget.id).firstElementChild;
+      if (this.widget.name == "Display String") {
+        resultsDiv = resultsDiv.firstElementChild
+      }
+      this.clipboardApi.copyFromContent(resultsDiv.innerHTML)
+      this.copiedToClipboard = true;
+
+      setTimeout(()=>{
+        this.copiedToClipboard = false;
+      },2000)
+
     }
 
     showInputDesignation() {
