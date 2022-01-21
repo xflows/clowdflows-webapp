@@ -278,12 +278,12 @@
     <div class="panel-body" style="text-align: center; padding-top: 0px;"
     *ngIf="widget.name == 'Display String' || widget.name == 'Object viewer'"
     >
-    <button (click)="copyToClipboard()" class="btn btn-primary">Copy to clipboard</button>
     <div *ngIf="copiedToClipboard" style="margin-top:5px; background-color: gray; color: white;">Copied to clipboard</div>
     </div>
     <div class="panel-footer">
         <div class="form-group form-group-sm">
             <button (click)="closeVisualizationDialog()" class="btn btn-default">Close</button>
+            <button style="float: right;" *ngIf="widget.name == 'Display String' || widget.name == 'Object viewer'" (click)="copyToClipboard()" class="btn btn-primary">Copy to clipboard</button>
         </div>
     </div>
 </div>
