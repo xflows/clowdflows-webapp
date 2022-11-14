@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "ClowdFlows webapp to consume the ClowdFlows API",
   "scripts": {
-    "start": "webpack-dev-server --inline --progress --port 8080 --host 0.0.0.0 --watch-content-base",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider; webpack-dev-server --inline --progress --port 8080 --host 0.0.0.0 --watch-content-base",
     "test": "karma start",
-    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider; rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail",
     "postinstall": "typings install",
     "less": "watch-less -d src/ -e .css"
   },
