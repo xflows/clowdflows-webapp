@@ -19,6 +19,8 @@
         <tr>
             <th>Workflow title</th>
             <th>Public URL</th>
+            <th>Last modified</th>
+            <th>Created</th>
             <th style="width:15%;">Streaming</th>
             <th style="width:30%;">Action</th>
         </tr>
@@ -32,6 +34,11 @@
                     <a *ngIf="workflow.is_public" [routerLink]="['/workflow/', workflow.id]">{{base_url}}/workflow/{{workflow.id}}</a>
                     <ng-template [ngIf]="!workflow.is_public">This workflow is private</ng-template>
                 </td>
+
+                <td class="name">{{workflow.last_modified == null ? '*' : workflow.last_modified|date:'medium'}}</td>
+
+                <td class="name">{{workflow.creation_time == null ? '*' : workflow.creation_time|date:'medium'}}</td>
+
                 <td>
                     <ng-template [ngIf]="workflow.can_be_streaming">
                         <ng-template [ngIf]="workflow.stream != null">
