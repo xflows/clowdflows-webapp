@@ -475,8 +475,9 @@ export class ClowdFlowsDataService {
 
     editorUpdates(onUpdateCallback: any, workflow: Workflow) {
         let editor = this;
-        let port = window.location.port == "" ? "" : ":"+window.location.port
-        let domain = window.location.protocol == 'http:' ? "ws://"+window.location.hostname+port : "wss://"+window.location.hostname;
+//         let port = window.location.port == "" ? "" : ":8000" //window.location.port
+//         let domain = window.location.protocol == 'http:' ? "ws://"+window.location.hostname+port : "wss://"+window.location.hostname;
+        let domain = window.location.protocol == 'http:' ? "ws://"+DOMAIN : "wss://"+window.location.hostname;
         let socket = new WebSocket(`${domain}/editor-updates/?workflow_pk=${workflow.id}`);
         socket.onmessage = function (e) {
             onUpdateCallback(JSON.parse(e.data));
