@@ -21,6 +21,11 @@
             <h1>{{ workflow.name }}
                 <small>by {{workflow.user.username}}</small>
             </h1>
+
+            <h5>
+                Last modified: {{workflow.last_modified == null ? '?' : workflow.last_modified|date:'medium'}}
+            </h5>
+
             <section class="row" *ngIf="!workflow.is_subprocess">
                 <div class="col-sm-12">
                     <div class="preview-container" [innerHTML]="getTrustedHTML(workflow.preview)">

@@ -32,6 +32,11 @@
                             <h2 class="name">{{workflow.name}}
                                 <small>by {{workflow.user.username}}</small>
                             </h2>
+
+                            <h5>
+                                Last modified: {{workflow.last_modified == null ? '?' : workflow.last_modified|date:'medium'}}
+                            </h5>
+
                             <p class="description">
                                 {{workflow.description}}
                             </p>
@@ -70,9 +75,15 @@
                     <h2 class="name">{{workflow.name}}
                         <small>by {{workflow.user.username}}</small>
                     </h2>
+
+                    <h5>
+                        Last modified: {{workflow.last_modified == null ? '?' : workflow.last_modified|date:'medium'}}
+                    </h5>
+
                     <p class="description">
                         {{workflow.description}}
                     </p>
+
                     <p>
                         <a class="btn btn-primary btn-sm" [routerLink]="['/workflow/', workflow.id]"><i
                                 class="fa fa-link"
